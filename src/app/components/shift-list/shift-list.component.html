@@ -57,11 +57,15 @@
   <p>Loading...</p>
 </div>
 
+<p *ngIf="this.selectedShift()">
+  Component: {{ this.selectedShift()?.name }}. Service:
+  {{ this.shiftService.getSelectedShiftValue()?.name }}.
+</p>
 <mat-grid-list cols="5" rowHeight="1:1.4" gutterSize="16px">
   <mat-grid-tile *ngFor="let shift of shifts()">
     <shift
       [shift]="shift"
-      [isSelected]="selectedShift === shift"
+      [isSelected]="isSelected(shift)"
       (shiftSelected)="selectShift(shift)"
     ></shift>
   </mat-grid-tile>

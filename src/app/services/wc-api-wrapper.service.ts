@@ -24,4 +24,10 @@ export class WcApiWrapperService {
       }
     );
   }
+
+  getProductById(id: number): Observable<any> {
+    return this.http.get<any>(this.backendUrl + `/products/${id}`, {
+      headers: this.headers,
+    });
+  }
 }

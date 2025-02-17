@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { IMAGE_MAP, WcProduct } from '../components/shift/shift.model';
 import { WcApiWrapperService } from './wc-api-wrapper.service';
-import { catchError, map, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +9,11 @@ import { catchError, map, Observable } from 'rxjs';
 export class ShiftsService {
   wcHttp = inject(WcApiWrapperService);
   shifts: Observable<Array<WcProduct>>;
+
+  private readonly selectedShiftSubject = new BehaviorSubject<WcProduct | null>(
+    null
+  );
+  selectedShift$ = this.selectedShiftSubject.asObservable();
 
   constructor() {
     this.shifts = this.wcHttp.getProducts(22);
@@ -22,11 +27,25 @@ export class ShiftsService {
       description: product.description,
       stock_quantity: product.stock_quantity,
       stock_status: product.stock_status,
+      purchasable: product.purchasable,
       imagePath: product.id in IMAGE_MAP ? IMAGE_MAP[product.id] : undefined,
+      attributes: product.attributes,
     };
   }
 
-  get getShiftsBackend() {
+  setSelectedShift(shift: WcProduct | null): void {
+    this.selectedShiftSubject.next(shift);
+  }
+
+  get getSelectedShift(): Observable<WcProduct | null> {
+    return this.selectedShift$;
+  }
+
+  getSelectedShiftValue(): WcProduct | null {
+    return this.selectedShiftSubject.getValue();
+  }
+
+  get listAllShifts() {
     return this.shifts.pipe(
       map((products: any[]) => products.map(this.mapProduct)),
       catchError((err) => {
@@ -34,5 +53,9 @@ export class ShiftsService {
         throw err;
       })
     );
+  }
+
+  getShiftById(id: number): Observable<WcProduct> {
+    return this.wcHttp.getProductById(id).pipe(map(this.mapProduct));
   }
 }

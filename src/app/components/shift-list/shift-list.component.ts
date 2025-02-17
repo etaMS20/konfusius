@@ -1,4 +1,11 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  OnInit,
+  Output,
+  signal,
+} from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { WcProduct } from '../shift/shift.model';
 import { ShiftComponent } from '../shift/shift.component';
@@ -12,27 +19,38 @@ import { NgFor, NgIf } from '@angular/common';
   styleUrl: './shift-list.component.scss',
 })
 export class ShiftListComponent implements OnInit {
+  @Output() shiftsLoadedChange = new EventEmitter<boolean>();
   shiftService = inject(ShiftsService);
   shifts = signal<Array<WcProduct>>([]);
   shiftsLoaded = signal<boolean>(false);
+  selectedShift = signal<WcProduct | null>(null);
 
   ngOnInit(): void {
     this.queryShifts();
+    this.shiftService.getSelectedShift.subscribe((shift) => {
+      this.selectedShift.set(shift);
+    });
   }
 
-  selectedShift: WcProduct | null = null;
+  isSelected(shift: WcProduct): boolean {
+    return this.selectedShift() === shift;
+  }
 
   selectShift(shift: WcProduct) {
-    this.selectedShift = this.selectedShift === shift ? null : shift;
-
-    if (this.selectedShift === shift) console.log('Selected product:', shift);
+    this.shiftService.setSelectedShift(this.isSelected(shift) ? null : shift);
   }
 
   queryShifts() {
-    this.shiftService.getShiftsBackend.subscribe((products) => {
+    this.shiftService.listAllShifts.subscribe((products) => {
       this.shifts.set(products);
       this.shiftsLoaded.set(true);
       console.log('Shifts:', this.shifts());
+    });
+  }
+
+  queryProduct(id: number) {
+    this.shiftService.getShiftById(id).subscribe((product) => {
+      console.log('Product:', product);
     });
   }
 }

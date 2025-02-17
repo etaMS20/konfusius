@@ -1,11 +1,22 @@
-header {
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #87b7e7;
+  padding: 0px 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensure it stays on top of other content */
+}
+
+.header-content {
   display: flex;
-  padding-inline: 16px;
-  padding-block: 8px;
-  background-color: #333;
-  color: white;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
+}
+
+.header-content h1 {
+  margin: 0;
 }
 
 nav {

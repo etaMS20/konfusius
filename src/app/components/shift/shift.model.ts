@@ -12,7 +12,18 @@ export interface WcProduct {
   description?: string;
   stock_quantity: number | null;
   stock_status: string;
+  purchasable?: boolean;
   imagePath?: string;
+  attributes?: Array<WcProductAttribute>;
+}
+
+export interface WcProductAttribute {
+  id: number;
+  name: string;
+  position: number;
+  visible: boolean;
+  variation: boolean;
+  options: Array<string>;
 }
 
 // TODO: map from API
