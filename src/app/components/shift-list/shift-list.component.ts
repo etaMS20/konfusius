@@ -1,46 +1,38 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { Shift } from '../shift/shift.model';
+import { WcProduct } from '../shift/shift.model';
 import { ShiftComponent } from '../shift/shift.component';
 import { ShiftsService } from '../../services/shifts.service';
-import { catchError } from 'rxjs';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'shift-list',
-  imports: [MatGridListModule, ShiftComponent, NgFor],
+  imports: [MatGridListModule, ShiftComponent, NgFor, NgIf],
   templateUrl: './shift-list.component.html',
   styleUrl: './shift-list.component.scss',
 })
 export class ShiftListComponent implements OnInit {
   shiftService = inject(ShiftsService);
-  shifts = signal<Array<Shift>>([]);
-  products = signal<any>([]);
+  shifts = signal<Array<WcProduct>>([]);
+  shiftsLoaded = signal<boolean>(false);
 
   ngOnInit(): void {
-    this.shifts.set(this.shiftService.shifts);
+    this.queryShifts();
   }
 
-  selectedShift: Shift | null = null;
+  selectedShift: WcProduct | null = null;
 
-  selectShift(shift: Shift) {
+  selectShift(shift: WcProduct) {
     this.selectedShift = this.selectedShift === shift ? null : shift;
 
     if (this.selectedShift === shift) console.log('Selected product:', shift);
   }
 
   queryShifts() {
-    console.log('Querying shifts...');
-    this.shiftService.getShiftsBackend
-      .pipe(
-        catchError((err) => {
-          console.error('Error fetching shifts:', err);
-          throw err;
-        })
-      )
-      .subscribe((shifts) => {
-        this.products.set(shifts);
-        console.log('Shifts:', this.products());
-      });
+    this.shiftService.getShiftsBackend.subscribe((products) => {
+      this.shifts.set(products);
+      this.shiftsLoaded.set(true);
+      console.log('Shifts:', this.shifts());
+    });
   }
 }

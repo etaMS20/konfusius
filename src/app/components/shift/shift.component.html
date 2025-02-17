@@ -3,7 +3,7 @@
   (click)="onShiftSelect($event)"
   [ngClass]="{ selected: isSelected }"
 >
-  <img [src]="shift.imagePath" alt="{{ shift.title }}" class="product-image" />
-  <h3 class="product-title">{{ shift.title }}</h3>
+  <img [src]="shift.imagePath" alt="{{ shift.name }}" class="product-image" />
+  <h3 class="product-title">{{ shift.name }}</h3>
   <button (click)="openDetailsDialog($event)">Info</button>
 </div>

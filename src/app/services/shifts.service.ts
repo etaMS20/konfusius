@@ -1,51 +1,38 @@
 import { inject, Injectable } from '@angular/core';
-import { Shift } from '../components/shift/shift.model';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { CONSUMER_KEY, CONSUMER_SECRET } from '../../config/http.config';
+import { IMAGE_MAP, WcProduct } from '../components/shift/shift.model';
+import { WcApiWrapperService } from './wc-api-wrapper.service';
+import { catchError, map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShiftsService {
-  http = inject(HttpClient);
-  shifts: Array<Shift>;
-  shiftsBe?: Array<Shift>;
+  wcHttp = inject(WcApiWrapperService);
+  shifts: Observable<Array<WcProduct>>;
 
   constructor() {
-    this.shifts = [
-      {
-        title: 'Kiosk',
-        imagePath: '/kiosk_1.png',
-        description: 'This is a detailed description.',
-        available: true,
-      },
-      {
-        title: 'Bar',
-        imagePath: '/bar.png',
-        description: 'This is a detailed description.',
-        available: true,
-      },
-      {
-        title: 'Abbau',
-        imagePath: '/abbau.png',
-        description: 'This is a detailed description.',
-        available: true,
-      },
-      {
-        title: '/Awareness',
-        imagePath: 'awareness.png',
-        description: 'This is a detailed description.',
-        available: true,
-      },
-    ];
+    this.shifts = this.wcHttp.getProducts(22);
+  }
+
+  mapProduct(product: any): WcProduct {
+    return {
+      id: product.id,
+      slug: product.slug,
+      name: product.name,
+      description: product.description,
+      stock_quantity: product.stock_quantity,
+      stock_status: product.stock_status,
+      imagePath: product.id in IMAGE_MAP ? IMAGE_MAP[product.id] : undefined,
+    };
   }
 
   get getShiftsBackend() {
-    const authHeader = 'Basic ' + btoa(CONSUMER_KEY + ':' + CONSUMER_SECRET);
-    const headers = new HttpHeaders().set('Authorization', authHeader);
-
-    return this.http.get<any>('/wp-json/wc/v3', {
-      headers,
-    });
+    return this.shifts.pipe(
+      map((products: any[]) => products.map(this.mapProduct)),
+      catchError((err) => {
+        console.error('Error fetching shifts:', err);
+        throw err;
+      })
+    );
   }
 }
