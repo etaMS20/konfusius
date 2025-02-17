@@ -1,21 +1,24 @@
 <div class="footer" *ngIf="selectedShift$ | async as selectedShift">
   <div class="footer-content">
     <div class="left-container">
-      <h4>{{ selectedShift.name }}</h4>
+      <h4>Schicht: {{ selectedShift.name }}</h4>
       <div *ngFor="let attribute of selectedShift.attributes">
-        <p>Kategorie: {{ attribute.name }}</p>
+        <p>Produkt-ID: {{ selectedShift.id }}</p>
       </div>
     </div>
     <div class="middle-container">
       <div *ngFor="let attribute of selectedShift.attributes">
-        <mat-radio-group>
-          <mat-radio-button
-            *ngFor="let option of attribute.options"
-            [value]="option"
-          >
-            {{ option }}
-          </mat-radio-button>
-        </mat-radio-group>
+        <mat-form-field appearance="fill">
+          <mat-label>{{ attribute.name }}</mat-label>
+          <mat-select>
+            <mat-option
+              *ngFor="let option of attribute.options"
+              [value]="option"
+            >
+              {{ option }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
     </div>
     <div class="right-container">

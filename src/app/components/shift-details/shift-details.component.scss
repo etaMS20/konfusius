@@ -1,3 +1,14 @@
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 .footer {
   position: fixed;
   bottom: 0;
@@ -8,6 +19,7 @@
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
   z-index: 999; /* Ensure it stays on top of other content */
   box-sizing: border-box; /* Ensure padding is included in the width */
+  animation: slideUp 0.3s ease-out; /* animation */
 }
 
 .footer-content {
@@ -18,7 +30,7 @@
 
 .left-container {
   flex: 1;
-  max-width: 200px;
+  max-width: 300px;
 }
 
 .middle-container {

@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ShiftDialogComponent } from '../shift-dialog/shift-dialog.component';
 import { CommonModule } from '@angular/common';
+import { WcProduct } from './shift.model';
 
 @Component({
   selector: 'shift',
@@ -12,11 +13,20 @@ import { CommonModule } from '@angular/common';
   imports: [MatCardModule, MatExpansionModule, CommonModule],
 })
 export class ShiftComponent {
-  @Input() shift: any;
+  @Input() shift!: WcProduct;
   @Input() isSelected: boolean = false;
   @Output() shiftSelected = new EventEmitter<any>();
-
+  isSelectedSignal = signal(this.isSelected);
   constructor(private readonly dialog: MatDialog) {}
+
+  ngOnChanges(): void {
+    this.isSelectedSignal.set(this.isSelected);
+  }
+
+  ngOnInit(): void {
+    // Manually sync the signal with the initial state
+    this.isSelectedSignal.set(this.isSelected);
+  }
 
   onShiftSelect(event: Event): void {
     this.shiftSelected.emit();

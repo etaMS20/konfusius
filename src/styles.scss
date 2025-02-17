@@ -1,4 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
 
 html,
 body {
@@ -55,4 +55,15 @@ img {
   max-width: 100%;
   height: auto;
   border-radius: 8px;
+}
+
+// Customize the entire app. Change :root to your selector if you want to scope the styles.
+:root {
+  @include mat.select-overrides(
+    (
+      panel-background-color: orange,
+      enabled-trigger-text-color: red,
+      container-elevation-shadow: 0 0 0 0 rgba(0, 0, 0, 0.5),
+    )
+  );
 }

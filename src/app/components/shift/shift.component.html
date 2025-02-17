@@ -1,7 +1,7 @@
 <div
   class="product-card"
   (click)="onShiftSelect($event)"
-  [ngClass]="{ selected: isSelected }"
+  [ngClass]="{ selected: isSelectedSignal() }"
 >
   <img [src]="shift.imagePath" alt="{{ shift.name }}" class="product-image" />
   <h3 class="product-title">{{ shift.name }}</h3>
