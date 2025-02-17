@@ -1,0 +1,10 @@
+<mat-grid-list cols="4" rowHeight="1:1" gutterSize="16px">
+  <mat-grid-tile *ngFor="let shift of shifts()">
+    <shift
+      [shift]="shift"
+      [isSelected]="selectedShift === shift"
+      (shiftSelected)="selectShift(shift)"
+    ></shift>
+  </mat-grid-tile>
+</mat-grid-list>
+<button (click)="queryShifts()">Test</button>

@@ -1,0 +1,35 @@
+<div class="login-form">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <img src="/schweini_1.png" alt="Logo" class="form-field-image" />
+    <mat-form-field appearance="fill">
+      <mat-label>Passwort</mat-label>
+      <input
+        matInput
+        type="password"
+        formControlName="password"
+        (input)="onInput()"
+        (blur)="updateErrorMessage()"
+        required
+      />
+      <!-- error message -->
+      <mat-error
+        *ngIf="
+          loginForm.controls['password'].invalid &&
+          loginForm.controls['password'].touched
+        "
+      >
+        {{ errorMessage }}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- button to submit the form -->
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="!loginForm.touched"
+    >
+      Anmelden
+    </button>
+  </form>
+</div>

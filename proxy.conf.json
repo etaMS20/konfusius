@@ -1,0 +1,8 @@
+{
+    "/wp-json": {
+      "target": "https://konfusius.org",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    }
+  }
