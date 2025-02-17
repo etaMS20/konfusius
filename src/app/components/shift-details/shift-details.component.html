@@ -1,6 +1,27 @@
-<div class="footer">
+<div class="footer" *ngIf="selectedShift$ | async as selectedShift">
   <div class="footer-content">
-    <p>Gewählte Schicht</p>
-    <button (click)="closeFooter()">Close</button>
+    <div class="left-container">
+      <h4>{{ selectedShift.name }}</h4>
+      <div *ngFor="let attribute of selectedShift.attributes">
+        <p>Kategorie: {{ attribute.name }}</p>
+      </div>
+    </div>
+    <div class="middle-container">
+      <div *ngFor="let attribute of selectedShift.attributes">
+        <mat-radio-group>
+          <mat-radio-button
+            *ngFor="let option of attribute.options"
+            [value]="option"
+          >
+            {{ option }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+    <div class="right-container">
+      <button mat-raised-button color="primary" (click)="checkout()">
+        Checkout
+      </button>
+    </div>
   </div>
 </div>
