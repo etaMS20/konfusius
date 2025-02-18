@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Shift component with selection functionality.
 - Shift details component with dynamic content and animations.
 - Proxy configuration for local development.
+- WP Api Client dep
 
 ### Changed
 

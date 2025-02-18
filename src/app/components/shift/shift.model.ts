@@ -30,6 +30,11 @@ export interface WcProductAttribute {
   terms: Array<WcProductTerm>;
 }
 
+export interface WcProductVariationKey {
+  attribute: string;
+  value: string;
+}
+
 // TODO: map from API
 export const IMAGE_MAP: { [key: number]: string } = {
   1547: '/abbau.png', // test
