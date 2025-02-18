@@ -78,7 +78,6 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.loginForm.value);
     if (this.loginForm.valid) {
       sessionStorage.setItem('auth', '1');
       const targetRoute = this.redirectUrl ? this.redirectUrl : '/';

@@ -12,10 +12,10 @@
           <mat-label>{{ attribute.name }}</mat-label>
           <mat-select>
             <mat-option
-              *ngFor="let option of attribute.options"
-              [value]="option"
+              *ngFor="let term of attribute.terms"
+              [value]="term.name"
             >
-              {{ option }}
+              {{ term.name }}
             </mat-option>
           </mat-select>
         </mat-form-field>

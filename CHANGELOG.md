@@ -22,3 +22,4 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Resolved issues with environment variable loading in Angular.
+- wrong type for store endpoint

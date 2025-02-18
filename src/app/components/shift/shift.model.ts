@@ -5,6 +5,12 @@ export interface Shift {
   imagePath?: string;
 }
 
+export interface WcProductTerm {
+  id: number;
+  name: string;
+  slug: string;
+}
+
 export interface WcProduct {
   id: number;
   slug?: string;
@@ -20,10 +26,8 @@ export interface WcProduct {
 export interface WcProductAttribute {
   id: number;
   name: string;
-  position: number;
-  visible: boolean;
-  variation: boolean;
-  options: Array<string>;
+  has_variations: boolean;
+  terms: Array<WcProductTerm>;
 }
 
 // TODO: map from API

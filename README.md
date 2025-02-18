@@ -34,7 +34,7 @@ The app is still in early development.
 
    The Application reads the `.env` file on runtime using a custom webpack setup.
 
-   **This whole requirement is (hopefully) deprecated soon**, once the wp-json backend has been setup to allow unauthorized request against the `/wc/store/v1` endpoint [WC Store API](https://github.com/woocommerce/woocommerce-blocks/tree/trunk/src/StoreApi)).
+   **This whole requirement is (hopefully) deprecated soon**, once the wp-json backend has been setup to allow unauthorized request against the `/wc/store/v1` endpoint [WC Store API](https://github.com/woocommerce/woocommerce-blocks/tree/trunk/src/StoreApi).
 
 5. Serve Locally
 
@@ -52,3 +52,4 @@ The app is still in early development.
 ## Current frontend Ideas
 
 - disable ticket route when store not available
+- change login form error detection
