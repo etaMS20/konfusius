@@ -36,11 +36,19 @@ The app is still in early development.
 
    **This whole requirement is (hopefully) deprecated soon**, once the wp-json backend has been setup to allow unauthorized request against the `/wc/store/v1` endpoint [WC Store API](https://github.com/woocommerce/woocommerce-blocks/tree/trunk/src/StoreApi).
 
-5. Serve Locally
+   Devs must request the keys from WP admins.
 
-   ```bash
-   ng serve
-   ```
+---
+
+## Serving the app locally
+
+to serve the app u can use angular cli commands from project root
+
+```bash
+ng serve
+```
+
+Open a browser and head to [localhost:4200](http://localhost:4200/)
 
 ---
 
@@ -48,6 +56,7 @@ The app is still in early development.
 
 - set WP server to allow cross-origin requests (CORS) as we currently have to proxy local HTTP requests to the WC backend
 - configure server to allow unauthenticated requests against `/wc/store/v1` endpoint
+- add appropriate image meta-data in WP backend, so we don't have to map the image paths
 
 ## Current frontend Ideas
 
