@@ -1,13 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { IMAGE_MAP, WcProduct } from '../components/shift/shift.model';
-import { WcApiWrapperService } from './wc-api-wrapper.service';
+import { WcStoreApiWrapper } from './wc-store-wrapper.service';
 import { BehaviorSubject, catchError, map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShiftsService {
-  wcHttp = inject(WcApiWrapperService);
+  wcHttp = inject(WcStoreApiWrapper);
   shifts: Observable<Array<WcProduct>>;
 
   private readonly selectedShiftSubject = new BehaviorSubject<WcProduct | null>(

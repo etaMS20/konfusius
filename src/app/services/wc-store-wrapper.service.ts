@@ -1,13 +1,18 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CONSUMER_KEY, CONSUMER_SECRET } from '../../config/http.config';
+import {
+  BACKEND,
+  CONSUMER_KEY,
+  CONSUMER_SECRET,
+} from '../../config/http.config';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class WcApiWrapperService {
-  readonly backendUrl = '/wp-json/wc/v3';
+export class WcStoreApiWrapper {
+  // readonly backendUrl = '/wp-json/wc/v3';
+  private readonly backendUrl = BACKEND;
   headers: HttpHeaders;
   authHeader: string;
 
