@@ -62,3 +62,4 @@ Open a browser and head to [localhost:4200](http://localhost:4200/)
 
 - disable ticket route when store not available
 - change login form error detection
+- move loading indicator to component
