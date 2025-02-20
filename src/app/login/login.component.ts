@@ -12,6 +12,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+import { GuestAuth } from '../services/auth.model';
 
 @Component({
   selector: 'app-login',
@@ -26,6 +28,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit {
+  private readonly auth = inject(AuthService);
   private readonly fb = inject(UntypedFormBuilder);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
@@ -37,7 +40,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       password: new FormControl('', [
         Validators.required,
-        this.passwordValidator.bind(this),
+        // this.passwordValidator.bind(this),
       ]),
       remember: [true],
     });
@@ -45,14 +48,11 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.redirectUrl = this.route.snapshot.queryParamMap.get('redirect');
+    this.loginForm.controls['password'].markAsTouched();
   }
 
   passwordValidator(control: AbstractControl): ValidationErrors | null {
-    const password = control.value;
-    if (password && password !== this.pw) {
-      return { invalidPassword: true };
-    }
-    return null; // pw valid
+    return null;
   }
 
   get errorMessage(): string {
@@ -60,8 +60,8 @@ export class LoginComponent implements OnInit {
     if (control?.hasError('required')) {
       return 'Passwort ist erforderlich';
     }
-    if (control?.hasError('invalidPassword')) {
-      return 'Das eingegebene Passwort ist falsch';
+    if (control?.hasError('incorrect')) {
+      return 'Falsches Passwort';
     }
     return '';
   }
@@ -77,13 +77,23 @@ export class LoginComponent implements OnInit {
     this.loginForm.controls['password'].markAsTouched();
   }
 
-  onSubmit() {
-    if (this.loginForm.valid) {
-      sessionStorage.setItem('auth', '1');
-      const targetRoute = this.redirectUrl ? this.redirectUrl : '/';
-      this.router.navigate([targetRoute]);
-    } else {
-      alert('Password nicht korrekt');
-    }
+  onSubmit(): void {
+    const password = this.loginForm.get('password')?.value;
+
+    this.auth.authenticateGuest(password).subscribe({
+      next: (response: GuestAuth) => {
+        sessionStorage.setItem('auth', JSON.stringify(response));
+        const targetRoute = this.redirectUrl ? this.redirectUrl : '/';
+        this.router.navigate([targetRoute]);
+      },
+      error: (error) => {
+        if (error.status === 403) {
+          this.loginForm.get('password')?.setErrors({ incorrect: true });
+          this.loginForm.controls['password'].markAsTouched();
+        } else {
+          alert('An error occurred. Please try again later.');
+        }
+      },
+    });
   }
 }
