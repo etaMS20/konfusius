@@ -21,8 +21,13 @@ export class WcStoreApiWrapper {
   constructor(private readonly http: HttpClient) {
     // this.authHeader = 'Basic ' + btoa(CONSUMER_KEY + ':' + CONSUMER_SECRET);
     // this.headers = new HttpHeaders().set('Authorization', this.authHeader);
-    this.headers = new HttpHeaders().set('Nonce', '7d4fc8f3ce');
+    this.headers = new HttpHeaders().set(
+      'Nonce',
+      sessionStorage.getItem('nonce') ?? ''
+    );
   }
+
+  // TODO: if nonce missing -> login
 
   /** Products */
 
@@ -61,6 +66,7 @@ export class WcStoreApiWrapper {
     };
     return this.http.post<any>(this.wcStoreBackend + `/cart/add-item`, body, {
       headers: this.headers,
+      withCredentials: true,
     });
   }
 }

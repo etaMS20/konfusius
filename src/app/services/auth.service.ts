@@ -10,19 +10,19 @@ import { GuestAuth } from './auth.model';
 export class AuthService {
   private readonly customBackend = BACKEND + '/custom/v1';
   private readonly jwtAuthBackend = BACKEND + '/jwt-auth/v1';
-  headers: HttpHeaders;
+  // headers: HttpHeaders;
 
   constructor(private readonly http: HttpClient) {
-    this.headers = new HttpHeaders().set('Content-Type', 'application/json');
+    // this.headers = new HttpHeaders().set('Content-Type', 'application/json');
   }
 
   private isGuestAuth(obj: any): obj is GuestAuth {
     return obj && typeof obj.token === 'string';
   }
 
-  isAuthenticated(): boolean {
-    const authData = sessionStorage.getItem('auth');
-    return authData ? this.isGuestAuth(JSON.parse(authData)) : false;
+  sessionHasNonce(): boolean {
+    const nonce = sessionStorage.getItem('nonce');
+    return nonce !== null;
   }
 
   /** we use a custom endpoint to authenticate guests */
@@ -31,7 +31,7 @@ export class AuthService {
       this.customBackend + `/guest-auth`,
       { password: pw },
       {
-        headers: this.headers,
+        // headers: this.headers,
       }
     );
   }

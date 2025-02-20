@@ -82,7 +82,8 @@ export class LoginComponent implements OnInit {
 
     this.auth.authenticateGuest(password).subscribe({
       next: (response: GuestAuth) => {
-        sessionStorage.setItem('auth', JSON.stringify(response));
+        sessionStorage.setItem('nonce', response.nonce);
+        sessionStorage.setItem('token', response.token);
         const targetRoute = this.redirectUrl ? this.redirectUrl : '/';
         this.router.navigate([targetRoute]);
       },
