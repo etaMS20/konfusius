@@ -36,3 +36,4 @@ All notable changes to this project will be documented in this file.
 - added JWT_AUTH_SECRET_KEY and JWT_AUTH_CORS_ENABLE=true to wp-config.php
 - added Child of the current theme
 - modified functions.php in child theme to support custom auth endpoint
+- added CORS header to functions.php

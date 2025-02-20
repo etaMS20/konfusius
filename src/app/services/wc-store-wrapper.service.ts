@@ -12,22 +12,23 @@ import { WcProductVariationKey } from '../components/shift/shift.model';
   providedIn: 'root',
 })
 export class WcStoreApiWrapper {
-  // readonly backendUrl = '/wp-json/wc/v3';
-  private readonly backendUrl = BACKEND; // get from environment
-  headers: HttpHeaders;
-  authHeader: string;
+  private readonly backendUrl = BACKEND; // get from environment.ts
+  private readonly wcStoreBackend = BACKEND + '/wc/store/v1';
 
-  // TODO: The wc store endpoint does not require auth normally
+  headers: HttpHeaders;
+  // authHeader: string;
+
   constructor(private readonly http: HttpClient) {
-    this.authHeader = 'Basic ' + btoa(CONSUMER_KEY + ':' + CONSUMER_SECRET); // get from environment
-    this.headers = new HttpHeaders().set('Authorization', this.authHeader);
+    // this.authHeader = 'Basic ' + btoa(CONSUMER_KEY + ':' + CONSUMER_SECRET);
+    // this.headers = new HttpHeaders().set('Authorization', this.authHeader);
+    this.headers = new HttpHeaders().set('Nonce', '7d4fc8f3ce');
   }
 
   /** Products */
 
   getProducts(cat: number, qnt = 50): Observable<any> {
     return this.http.get<any>(
-      this.backendUrl + `/products?per_page=${qnt}&category=${cat}`,
+      this.wcStoreBackend + `/products?per_page=${qnt}&category=${cat}`,
       {
         headers: this.headers,
       }
@@ -35,7 +36,7 @@ export class WcStoreApiWrapper {
   }
 
   getProductById(id: number): Observable<any> {
-    return this.http.get<any>(this.backendUrl + `/products/${id}`, {
+    return this.http.get<any>(this.wcStoreBackend + `/products/${id}`, {
       headers: this.headers,
     });
   }
@@ -43,14 +44,14 @@ export class WcStoreApiWrapper {
   /** Cart */
 
   getCart(): Observable<any> {
-    return this.http.get<any>(this.backendUrl + `/cart`, {
+    return this.http.get<any>(this.wcStoreBackend + `/cart`, {
       headers: this.headers,
     });
   }
 
   addProductToCart(
     id: number,
-    variation: WcProductVariationKey,
+    variation?: WcProductVariationKey,
     qnt = 1
   ): Observable<any> {
     const body = {
@@ -58,7 +59,7 @@ export class WcStoreApiWrapper {
       quantity: qnt,
       variation: variation,
     };
-    return this.http.post<any>(this.backendUrl + `/cart/add-item`, body, {
+    return this.http.post<any>(this.wcStoreBackend + `/cart/add-item`, body, {
       headers: this.headers,
     });
   }

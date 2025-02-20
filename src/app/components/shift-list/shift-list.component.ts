@@ -48,9 +48,15 @@ export class ShiftListComponent implements OnInit {
     });
   }
 
-  queryProduct(id: number) {
+  queryShift(id: number) {
     this.shiftService.getShiftById(id).subscribe((product) => {
       console.log('Product:', product);
+    });
+  }
+
+  addShiftToCart(id: number) {
+    this.shiftService.addShiftToCart(id).subscribe((response) => {
+      console.log(response);
     });
   }
 }

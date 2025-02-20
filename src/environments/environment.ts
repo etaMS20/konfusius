@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  backendUrl: '/wp-json/wc/store/v1',
+  backendUrl: 'https://konfusius.org/wp-json',
   consumerKey: process.env['CONSUMER_KEY'],
   consumerSecret: process.env['CONSUMER_SECRET'],
 };

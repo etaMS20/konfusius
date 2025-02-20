@@ -58,4 +58,8 @@ export class ShiftsService {
   getShiftById(id: number): Observable<WcProduct> {
     return this.wcHttp.getProductById(id).pipe(map(this.mapProduct));
   }
+
+  addShiftToCart(id: number): Observable<WcProduct> {
+    return this.wcHttp.addProductToCart(id);
+  }
 }
