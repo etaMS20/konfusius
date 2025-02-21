@@ -66,4 +66,11 @@ img {
       container-elevation-shadow: 0 0 0 0 rgba(0, 0, 0, 0.5),
     )
   );
+
+  @include mat.tooltip-overrides(
+    (
+      container-color: white,
+      supporting-text-color: red,
+    )
+  );
 }

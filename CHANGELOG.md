@@ -9,8 +9,8 @@ All notable changes to this project will be documented in this file.
 - Initial setup for the project.
 - Integration with WordPress backend.
 - Environment configuration for development and production.
-- Shift component with selection functionality.
-- Shift details component with dynamic content and animations.
+- Product component with selection functionality.
+- Product details component with dynamic content and animations.
 - Proxy configuration for local development.
 - WP Api Client dep
 
@@ -19,6 +19,8 @@ All notable changes to this project will be documented in this file.
 - Switched from npm to pnpm for dependency management.
 - Updated environment configuration to use `.env` file for local development.
 - switched to custom-webpack builder to load env on runtime
+- refactored auth
+- changed naming from shift to product
 
 ### Fixed
 
@@ -37,3 +39,4 @@ All notable changes to this project will be documented in this file.
 - added Child of the current theme
 - modified functions.php in child theme to support custom auth endpoint
 - added CORS header to functions.php
+- added allowed origin to backend to be able to save cookies from other origins

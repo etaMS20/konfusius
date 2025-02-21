@@ -1,0 +1,9 @@
+<div class="product-details-dialog">
+  <h2>{{ product.title }}</h2>
+  <img
+    [src]="product.imagePath"
+    alt="{{ product.title }}"
+    class="product-detail-image"
+  />
+  <p [innerHTML]="sanitizedDescription"></p>
+</div>

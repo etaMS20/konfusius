@@ -1,10 +1,3 @@
-export interface Shift {
-  title: string;
-  available: boolean;
-  description?: string;
-  imagePath?: string;
-}
-
 export interface WcProductTerm {
   id: number;
   name: string;
@@ -13,6 +6,7 @@ export interface WcProductTerm {
 
 export interface WcProduct {
   id: number;
+  type: string;
   slug?: string;
   name?: string;
   description?: string;

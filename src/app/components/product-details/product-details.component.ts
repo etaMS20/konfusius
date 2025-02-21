@@ -1,16 +1,16 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ShiftsService } from '../../services/shifts.service';
+import { ProductService } from '../../services/product.service';
 import { Observable } from 'rxjs';
-import { WcProduct } from '../shift/shift.model';
+import { WcProduct } from '../product/product.model';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
-  selector: 'app-shift-details',
-  templateUrl: './shift-details.component.html',
-  styleUrls: ['./shift-details.component.scss'],
+  selector: 'app-product-details',
+  templateUrl: './product-details.component.html',
+  styleUrls: ['./product-details.component.scss'],
   standalone: true,
   imports: [
     CommonModule,
@@ -19,12 +19,12 @@ import { MatDividerModule } from '@angular/material/divider';
     MatDividerModule,
   ],
 })
-export class ShiftDetailsComponent implements OnInit {
-  private readonly shiftsService = inject(ShiftsService);
-  selectedShift$!: Observable<WcProduct | null>;
+export class ProductDetailsComponent implements OnInit {
+  private readonly productsService = inject(ProductService);
+  selectedProduct$!: Observable<WcProduct | null>;
 
   ngOnInit(): void {
-    this.selectedShift$ = this.shiftsService.getSelectedShift;
+    this.selectedProduct$ = this.productsService.getSelectedProduct;
   }
 
   checkout() {

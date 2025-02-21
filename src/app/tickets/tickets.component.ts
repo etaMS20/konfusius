@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { ShiftListComponent } from '../components/shift-list/shift-list.component';
-import { ShiftDetailsComponent } from '../components/shift-details/shift-details.component';
+import { ProductListComponent } from '../components/product-list/product-list.component';
+import { ProductDetailsComponent } from '../components/product-details/product-details.component';
 
 @Component({
   selector: 'app-tickets',
-  imports: [MatGridListModule, ShiftListComponent, ShiftDetailsComponent],
+  imports: [MatGridListModule, ProductListComponent, ProductDetailsComponent],
   templateUrl: './tickets.component.html',
   styleUrl: './tickets.component.scss',
 })

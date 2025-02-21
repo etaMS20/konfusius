@@ -37,7 +37,14 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "lodash",
+              "sha.js",
+              "url-parse",
+              "oauth-1.0a",
+              "create-hmac"
+            ]
           },
           "configurations": {
             "production": {

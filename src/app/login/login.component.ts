@@ -13,7 +13,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { GuestAuth } from '../services/auth.model';
 
 @Component({
   selector: 'app-login',
@@ -28,11 +27,10 @@ import { GuestAuth } from '../services/auth.model';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit {
-  private readonly auth = inject(AuthService);
+  private readonly authService = inject(AuthService);
   private readonly fb = inject(UntypedFormBuilder);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  private readonly pw: string = 'miaumiau';
   loginForm: any;
   redirectUrl: string | null = null;
 
@@ -40,7 +38,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       password: new FormControl('', [
         Validators.required,
-        // this.passwordValidator.bind(this),
+        this.passwordValidator.bind(this),
       ]),
       remember: [true],
     });
@@ -51,6 +49,7 @@ export class LoginComponent implements OnInit {
     this.loginForm.controls['password'].markAsTouched();
   }
 
+  // we don't validate the pw within the form, but maybe useful later
   passwordValidator(control: AbstractControl): ValidationErrors | null {
     return null;
   }
@@ -78,23 +77,14 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const password = this.loginForm.get('password')?.value;
+    const passwordInput = this.loginForm.get('password')?.value;
 
-    this.auth.authenticateGuest(password).subscribe({
-      next: (response: GuestAuth) => {
-        sessionStorage.setItem('nonce', response.nonce);
-        sessionStorage.setItem('token', response.token);
-        const targetRoute = this.redirectUrl ? this.redirectUrl : '/';
-        this.router.navigate([targetRoute]);
-      },
-      error: (error) => {
-        if (error.status === 403) {
-          this.loginForm.get('password')?.setErrors({ incorrect: true });
-          this.loginForm.controls['password'].markAsTouched();
-        } else {
-          alert('An error occurred. Please try again later.');
-        }
-      },
-    });
+    if (this.authService.loginGuestWithPw(passwordInput)) {
+      const targetRoute = this.redirectUrl ? this.redirectUrl : '/';
+      this.router.navigate([targetRoute]);
+    } else {
+      this.loginForm.get('password')?.setErrors({ incorrect: true });
+      this.loginForm.controls['password'].markAsTouched();
+    }
   }
 }

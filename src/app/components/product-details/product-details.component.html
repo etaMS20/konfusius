@@ -1,13 +1,13 @@
-<div class="footer" *ngIf="selectedShift$ | async as selectedShift">
+<div class="footer" *ngIf="selectedProduct$ | async as selectedProduct">
   <div class="footer-content">
     <div class="left-container">
-      <h4>Schicht: {{ selectedShift.name }}</h4>
-      <div *ngFor="let attribute of selectedShift.attributes">
-        <p>Produkt-ID: {{ selectedShift.id }}</p>
+      <h4>Schicht: {{ selectedProduct.name }}</h4>
+      <div *ngFor="let attribute of selectedProduct.attributes">
+        <p>Produkt-ID: {{ selectedProduct.id }}</p>
       </div>
     </div>
     <div class="middle-container">
-      <div *ngFor="let attribute of selectedShift.attributes">
+      <div *ngFor="let attribute of selectedProduct.attributes">
         <mat-form-field appearance="fill">
           <mat-label>{{ attribute.name }}</mat-label>
           <mat-select>

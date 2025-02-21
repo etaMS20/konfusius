@@ -3,16 +3,16 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-shift-dialog',
-  templateUrl: './shift-dialog.component.html',
-  styleUrls: ['./shift-dialog.component.scss'],
+  selector: 'app-product-dialog',
+  templateUrl: './product-dialog.component.html',
+  styleUrls: ['./product-dialog.component.scss'],
   standalone: true,
 })
-export class ShiftDialogComponent implements OnInit {
+export class ProductDialogComponent implements OnInit {
   sanitizedDescription?: SafeHtml;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public shift: any,
+    @Inject(MAT_DIALOG_DATA) public product: any,
     private readonly sanitizer: DomSanitizer
   ) {}
 
@@ -22,7 +22,7 @@ export class ShiftDialogComponent implements OnInit {
 
   sanitizeDescription(): void {
     this.sanitizedDescription = this.sanitizer.bypassSecurityTrustHtml(
-      this.shift.description || ''
+      this.product.description || ''
     );
   }
 }

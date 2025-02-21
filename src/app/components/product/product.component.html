@@ -1,0 +1,16 @@
+<div
+  class="product-card"
+  (click)="onProductSelect($event)"
+  [ngClass]="{ selected: isSelectedSignal() }"
+  matTooltip="{{ product.type }}"
+  [matTooltipPosition]="'above'"
+  matTooltipHideDelay="10"
+>
+  <img
+    [src]="product.imagePath"
+    alt="{{ product.name }}"
+    class="product-image"
+  />
+  <h3 class="product-title">{{ product.name }}</h3>
+  <button (click)="openDetailsDialog($event)">Info</button>
+</div>

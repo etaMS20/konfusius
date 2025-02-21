@@ -1,4 +1,4 @@
-<div class="loading-container" *ngIf="!shiftsLoaded()">
+<div class="loading-container" *ngIf="!productsLoaded()">
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="200"
@@ -57,17 +57,13 @@
   <p>Loading...</p>
 </div>
 
-<p *ngIf="this.selectedShift()">
-  Component: {{ this.selectedShift()?.name }}. Service:
-  {{ this.shiftService.getSelectedShiftValue()?.name }}.
-</p>
 <mat-grid-list cols="5" rowHeight="1:1.4" gutterSize="16px">
-  <mat-grid-tile *ngFor="let shift of shifts()">
-    <shift
-      [shift]="shift"
-      [isSelected]="isSelected(shift)"
-      (shiftSelected)="selectShift(shift)"
-    ></shift>
+  <mat-grid-tile *ngFor="let product of products()">
+    <product
+      [product]="product"
+      [isSelected]="isSelected(product)"
+      (productSelected)="selectProduct(product)"
+    ></product>
   </mat-grid-tile>
 </mat-grid-list>
-<button (click)="this.addShiftToCart(1547)">Test</button>
+<button (click)="this.addProductToCart('1547')">Test</button>
