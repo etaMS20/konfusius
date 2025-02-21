@@ -29,21 +29,18 @@ export class ProductListComponent implements OnInit {
 
   products = signal<Array<WcProduct>>([]);
   productsLoaded = signal<boolean>(false);
-  selectedProduct = signal<WcProduct | null>(null);
 
   ngOnInit(): void {
     this.initProducts();
-    this.selectedProduct.set(null);
     this.productSelected.emit(null);
   }
 
   isSelected(product: WcProduct): boolean {
-    return this.selectedProduct() === product;
+    return this.productSelectionService.getSelectedProduct() === product;
   }
 
   selectProduct(product: WcProduct) {
     const isSelected = this.isSelected(product);
-    this.selectedProduct.set(isSelected ? null : product);
     this.productSelectionService.setSelectedProduct(
       isSelected ? null : product
     );
@@ -57,12 +54,6 @@ export class ProductListComponent implements OnInit {
       );
       this.products.set(products);
       this.productsLoaded.set(true);
-    });
-  }
-
-  addProductToCart(id: number) {
-    this.cartService.addProductToCart(id).subscribe((response) => {
-      console.log(response);
     });
   }
 }

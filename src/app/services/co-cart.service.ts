@@ -32,13 +32,15 @@ export class CoCartService {
     return from(this.coCartHttp.get('products', { id: id.toString() }));
   }
 
-  listProductVariations(id: number): Observable<WcProductVariations> {
+  listProductVariations(id: number): Observable<any> {
     return from(this.coCartHttp.get(`products/${id}/variations`));
   }
 
   // Cart
 
   addProductToCart(id: number): Observable<WcProduct> {
-    return from(this.coCartHttp.post('cart/add-item', { id }, null));
+    return from(
+      this.coCartHttp.post('cart/add-item', { id: id.toString() }, null)
+    );
   }
 }

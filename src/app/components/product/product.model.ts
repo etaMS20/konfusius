@@ -1,3 +1,12 @@
+export type KonfusiusShiftVar = WcProduct & {
+  attributes: KonfusiusAttributes;
+  variations: WcProductVariations;
+};
+
+export type KonfusiusAttributes = {
+  ['attribute_zeiten']: WcProductAttributeOptions;
+};
+
 export interface WcProduct {
   id: number;
   type: string;
@@ -12,21 +21,16 @@ export interface WcProduct {
   variations?: WcProductVariations;
 }
 
-export type WcProductVariation = {
-  id: number;
+export type WcProductAttributeOptions = {
+  [key: string]: string;
 };
-
-export type WcProductVariations = {
-  [key: string]: WcProductVariation;
-};
-
-interface WcProductAttribute {
+export interface WcProductAttribute {
   id: number;
   name: string;
   position: number;
   is_attribute_visible: boolean;
   used_for_variation: boolean;
-  options: string[];
+  options: WcProductAttributeOptions;
 }
 
 export interface WcProductAttributes {
@@ -37,6 +41,14 @@ export interface WcProductVariationKey {
   attribute: string;
   value: string;
 }
+
+export type WcProductVariation = {
+  id: number;
+};
+
+export type WcProductVariations = {
+  [key: string]: WcProductVariation;
+};
 
 // TODO: map from API
 export const IMAGE_MAP: { [key: number]: string } = {

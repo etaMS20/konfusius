@@ -1,13 +1,20 @@
-import { Component, inject, Input, input, OnInit } from '@angular/core';
-import { ProductService } from '../../services/product.service';
-import { Observable, of, Subject, throwError } from 'rxjs';
-import { catchError, filter, takeUntil } from 'rxjs/operators';
-import { WcProduct, WcProductVariations } from '../product/product.model';
+import {
+  Component,
+  effect,
+  inject,
+  Input,
+  OnChanges,
+  OnInit,
+  signal,
+  SimpleChanges,
+} from '@angular/core';
+import { WcProduct, KonfusiusShiftVar } from '../product/product.model';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { CoCartService } from '../../services/co-cart.service';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-product-details',
@@ -19,22 +26,34 @@ import { CoCartService } from '../../services/co-cart.service';
     MatFormFieldModule,
     MatSelectModule,
     MatDividerModule,
+    MatButtonModule,
   ],
 })
-export class ProductDetailsComponent implements OnInit {
-  @Input() product: WcProduct | null = null;
+export class ProductDetailsComponent {
+  @Input() product = signal<KonfusiusShiftVar | WcProduct | null>(null);
   private readonly cartService = inject(CoCartService);
 
-  selectedProductVariations?: WcProductVariations;
+  variations = signal<any[] | null>(null);
 
-  ngOnInit(): void {
+  constructor() {
+    effect(() => {
+      const currentProduct = this.product();
+      if (currentProduct) {
+        this.queryProductVariations(currentProduct);
+      }
+    });
+  }
+
+  queryProductVariations(newProduct: WcProduct) {
     this.cartService
-      .listProductVariations(1547)
-      .subscribe((variations) => (this.selectedProductVariations = variations));
+      .listProductVariations(newProduct.id)
+      .subscribe((response) => {
+        this.variations.set(response.data.length > 0 ? response.data : null);
+        console.log(this.variations());
+      });
   }
 
   checkout() {
-    // Logic to close the footer, e.g., hide it or emit an event to the parent component
     console.log('Footer closed');
   }
 }

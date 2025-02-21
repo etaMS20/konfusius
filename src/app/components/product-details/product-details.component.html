@@ -1,19 +1,16 @@
-<div class="footer" *ngIf="product">
+<div class="footer" *ngIf="product()">
   <div class="footer-content">
     <div class="left-container">
-      <h4>Schicht: {{ product.name }}</h4>
-      <p>Produkt-ID: {{ product.id }}</p>
+      <h4>Schicht: {{ product()?.name }}</h4>
+      <p>Produkt-ID: {{ product()?.id }}</p>
     </div>
     <div class="middle-container">
-      <div *ngFor="let attribute of product.attributes | keyvalue">
-        <mat-form-field appearance="fill">
-          <mat-label>{{ attribute.value.name }}</mat-label>
-          <mat-select>
-            <mat-option
-              *ngFor="let option of attribute.value.options"
-              [value]="option"
-            >
-              {{ option }}
+      <div *ngIf="variations()">
+        <mat-form-field appearance="fill" style="width: 100%; max-width: 400px">
+          <mat-label>Wähle eine Schicht</mat-label>
+          <mat-select panelWidth="auto">
+            <mat-option *ngFor="let option of variations()" [value]="option">
+              {{ option.name }}
             </mat-option>
           </mat-select>
         </mat-form-field>
