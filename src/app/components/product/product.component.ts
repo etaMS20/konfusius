@@ -5,13 +5,14 @@ import {
   EventEmitter,
   signal,
   SimpleChanges,
+  computed,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ProductDialogComponent } from '../product-dialog/product-dialog.component';
 import { CommonModule } from '@angular/common';
-import { WcProduct } from './product.model';
+import { ProductTypeLabels, WcProduct } from './product.model';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
@@ -26,6 +27,7 @@ export class ProductComponent {
   @Output() productSelected = new EventEmitter<any>();
 
   isSelectedSignal = signal(this.isSelected);
+  productTooltip = computed(() => ProductTypeLabels[this.product.type]);
 
   constructor(private readonly dialog: MatDialog) {}
 

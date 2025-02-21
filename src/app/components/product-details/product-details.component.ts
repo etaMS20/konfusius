@@ -1,14 +1,16 @@
 import {
   Component,
+  computed,
   effect,
   inject,
   Input,
-  OnChanges,
-  OnInit,
   signal,
-  SimpleChanges,
 } from '@angular/core';
-import { WcProduct, KonfusiusShiftVar } from '../product/product.model';
+import {
+  WcProduct,
+  KonfusiusShiftVar,
+  WcProductTypes,
+} from '../product/product.model';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -34,6 +36,12 @@ export class ProductDetailsComponent {
   private readonly cartService = inject(CoCartService);
 
   variations = signal<any[] | null>(null);
+  variationKey = computed(() => {
+    return Object.keys(this.product()!.attributes ?? []);
+  });
+  isProductVariable = computed(() => {
+    return this.product()?.type === WcProductTypes.VARIABLE;
+  });
 
   constructor() {
     effect(() => {
@@ -44,16 +52,14 @@ export class ProductDetailsComponent {
     });
   }
 
-  queryProductVariations(newProduct: WcProduct) {
-    this.cartService
-      .listProductVariations(newProduct.id)
-      .subscribe((response) => {
-        this.variations.set(response.data.length > 0 ? response.data : null);
-        console.log(this.variations());
-      });
+  queryProductVariations(product: WcProduct) {
+    this.cartService.listProductVariations(product.id).subscribe((response) => {
+      this.variations.set(response.data.length > 0 ? response.data : null);
+    });
   }
 
   checkout() {
-    console.log('Footer closed');
+    // this.cartService.addProductToCart(this.)
+    console.log(this.variationKey());
   }
 }

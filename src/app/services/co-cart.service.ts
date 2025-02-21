@@ -36,7 +36,17 @@ export class CoCartService {
     return from(this.coCartHttp.get(`products/${id}/variations`));
   }
 
+  getVariationById(productId: number, variationId: number): Observable<any> {
+    return from(
+      this.coCartHttp.get(`products/${productId}/variations/${variationId}`)
+    );
+  }
+
   // Cart
+
+  getCartById(cartId: string): Observable<any> {
+    return from(this.coCartHttp.get(`cart`, { cartId }));
+  }
 
   addProductToCart(id: number): Observable<WcProduct> {
     return from(

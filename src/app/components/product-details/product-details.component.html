@@ -5,7 +5,7 @@
       <p>Produkt-ID: {{ product()?.id }}</p>
     </div>
     <div class="middle-container">
-      <div *ngIf="variations()">
+      <div *ngIf="isProductVariable()">
         <mat-form-field appearance="fill" style="width: 100%; max-width: 400px">
           <mat-label>Wähle eine Schicht</mat-label>
           <mat-select panelWidth="auto">

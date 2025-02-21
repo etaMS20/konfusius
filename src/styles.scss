@@ -1,5 +1,23 @@
 @use '@angular/material' as mat;
 
+// https://www.fusonic.net/de/blog/angular-material-customization
+
+html {
+  // Tooltip
+  /* border-radius */
+  --mdc-plain-tooltip-container-shape: 10px;
+  /* color */
+  --mdc-plain-tooltip-container-color: #9fffd7c5;
+  --mdc-plain-tooltip-supporting-text-color: #000000;
+
+  /* typography */ 
+  --mdc-plain-tooltip-supporting-text-line-height: 16px
+  --mdc-plain-tooltip-supporting-text-font: Roboto, sans-serif;
+  --mdc-plain-tooltip-supporting-text-size: 16px;
+  --mdc-plain-tooltip-supporting-text-weight: 500;
+  --mdc-plain-tooltip-supporting-text-tracking: .0333333333em
+}
+
 html,
 body {
   margin: 0;
@@ -64,13 +82,6 @@ img {
       panel-background-color: orange,
       enabled-trigger-text-color: red,
       container-elevation-shadow: 0 0 0 0 rgba(0, 0, 0, 0.5),
-    )
-  );
-
-  @include mat.tooltip-overrides(
-    (
-      container-color: white,
-      supporting-text-color: red,
     )
   );
 }

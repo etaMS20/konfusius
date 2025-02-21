@@ -7,9 +7,19 @@ export type KonfusiusAttributes = {
   ['attribute_zeiten']: WcProductAttributeOptions;
 };
 
+export enum WcProductTypes {
+  VARIABLE = 'variable',
+  SIMPLE = 'simple',
+}
+
+export const ProductTypeLabels = {
+  [WcProductTypes.VARIABLE]: 'Schicht mit variablen Zeiten',
+  [WcProductTypes.SIMPLE]: 'Einfache Schicht',
+};
+
 export interface WcProduct {
   id: number;
-  type: string;
+  type: WcProductTypes;
   slug?: string;
   name?: string;
   description?: string;

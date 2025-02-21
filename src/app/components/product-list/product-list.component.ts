@@ -1,5 +1,6 @@
 import {
   Component,
+  computed,
   EventEmitter,
   inject,
   OnInit,
@@ -16,19 +17,22 @@ import { ProductSelectionService } from '../../services/product-selection.servic
 
 @Component({
   selector: 'product-list',
-  imports: [MatGridListModule, ProductComponent, NgFor, NgIf],
+  imports: [MatGridListModule, ProductComponent, NgFor],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
 })
 export class ProductListComponent implements OnInit {
   @Output() productSelected = new EventEmitter<WcProduct | null>();
+  @Output() productsLoading = new EventEmitter<boolean>(true);
 
   productService = inject(ProductService);
   cartService = inject(CoCartService);
   productSelectionService = inject(ProductSelectionService);
 
   products = signal<Array<WcProduct>>([]);
-  productsLoaded = signal<boolean>(false);
+  productsLoaded = computed<boolean>(() => {
+    return this.products().length > 0;
+  });
 
   ngOnInit(): void {
     this.initProducts();
@@ -53,7 +57,7 @@ export class ProductListComponent implements OnInit {
         this.productService.mapProduct(product)
       );
       this.products.set(products);
-      this.productsLoaded.set(true);
+      this.productsLoading.emit(false);
     });
   }
 }

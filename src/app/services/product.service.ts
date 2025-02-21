@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
 import { IMAGE_MAP, WcProduct } from '../components/product/product.model';
-import { WcApiWrapper } from './wc-wrapper.service';
 import { map, Observable } from 'rxjs';
 import { CoCartService } from './co-cart.service';
 
@@ -11,7 +10,6 @@ import { CoCartService } from './co-cart.service';
   providedIn: 'root',
 })
 export class ProductService {
-  wcHttp = inject(WcApiWrapper);
   coCartService = inject(CoCartService);
 
   constructor() {}
