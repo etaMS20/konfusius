@@ -1,21 +1,19 @@
-<div class="footer" *ngIf="selectedProduct$ | async as selectedProduct">
+<div class="footer" *ngIf="product">
   <div class="footer-content">
     <div class="left-container">
-      <h4>Schicht: {{ selectedProduct.name }}</h4>
-      <div *ngFor="let attribute of selectedProduct.attributes">
-        <p>Produkt-ID: {{ selectedProduct.id }}</p>
-      </div>
+      <h4>Schicht: {{ product.name }}</h4>
+      <p>Produkt-ID: {{ product.id }}</p>
     </div>
     <div class="middle-container">
-      <div *ngFor="let attribute of selectedProduct.attributes">
+      <div *ngFor="let attribute of product.attributes | keyvalue">
         <mat-form-field appearance="fill">
-          <mat-label>{{ attribute.name }}</mat-label>
+          <mat-label>{{ attribute.value.name }}</mat-label>
           <mat-select>
             <mat-option
-              *ngFor="let term of attribute.terms"
-              [value]="term.name"
+              *ngFor="let option of attribute.value.options"
+              [value]="option"
             >
-              {{ term.name }}
+              {{ option }}
             </mat-option>
           </mat-select>
         </mat-form-field>

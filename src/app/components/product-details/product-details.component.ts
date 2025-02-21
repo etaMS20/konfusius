@@ -1,11 +1,13 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, input, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product.service';
-import { Observable } from 'rxjs';
-import { WcProduct } from '../product/product.model';
+import { Observable, of, Subject, throwError } from 'rxjs';
+import { catchError, filter, takeUntil } from 'rxjs/operators';
+import { WcProduct, WcProductVariations } from '../product/product.model';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
+import { CoCartService } from '../../services/co-cart.service';
 
 @Component({
   selector: 'app-product-details',
@@ -20,11 +22,15 @@ import { MatDividerModule } from '@angular/material/divider';
   ],
 })
 export class ProductDetailsComponent implements OnInit {
-  private readonly productsService = inject(ProductService);
-  selectedProduct$!: Observable<WcProduct | null>;
+  @Input() product: WcProduct | null = null;
+  private readonly cartService = inject(CoCartService);
+
+  selectedProductVariations?: WcProductVariations;
 
   ngOnInit(): void {
-    this.selectedProduct$ = this.productsService.getSelectedProduct;
+    this.cartService
+      .listProductVariations(1547)
+      .subscribe((variations) => (this.selectedProductVariations = variations));
   }
 
   checkout() {

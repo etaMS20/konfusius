@@ -11,7 +11,8 @@ import { WcProduct } from '../product/product.model';
 import { ProductComponent } from '../product/product.component';
 import { ProductService } from '../../services/product.service';
 import { NgFor, NgIf } from '@angular/common';
-import { CartService } from '../../services/cart.service';
+import { CoCartService } from '../../services/co-cart.service';
+import { ProductSelectionService } from '../../services/product-selection.service';
 
 @Component({
   selector: 'product-list',
@@ -20,19 +21,20 @@ import { CartService } from '../../services/cart.service';
   styleUrl: './product-list.component.scss',
 })
 export class ProductListComponent implements OnInit {
-  @Output() productsLoadedChange = new EventEmitter<boolean>();
+  @Output() productSelected = new EventEmitter<WcProduct | null>();
+
   productService = inject(ProductService);
-  cartService = inject(CartService);
+  cartService = inject(CoCartService);
+  productSelectionService = inject(ProductSelectionService);
 
   products = signal<Array<WcProduct>>([]);
   productsLoaded = signal<boolean>(false);
   selectedProduct = signal<WcProduct | null>(null);
 
   ngOnInit(): void {
-    this.queryProducts();
-    this.productService.getSelectedProduct.subscribe((product) => {
-      this.selectedProduct.set(product);
-    });
+    this.initProducts();
+    this.selectedProduct.set(null);
+    this.productSelected.emit(null);
   }
 
   isSelected(product: WcProduct): boolean {
@@ -40,26 +42,25 @@ export class ProductListComponent implements OnInit {
   }
 
   selectProduct(product: WcProduct) {
-    this.productService.setSelectedProduct(
-      this.isSelected(product) ? null : product
+    const isSelected = this.isSelected(product);
+    this.selectedProduct.set(isSelected ? null : product);
+    this.productSelectionService.setSelectedProduct(
+      isSelected ? null : product
     );
+    this.productSelected.emit(isSelected ? null : product);
   }
 
-  queryProducts() {
-    this.productService.listAllProducts.subscribe((products) => {
+  initProducts() {
+    this.cartService.listProducts().subscribe((response) => {
+      const products = response.data.products.map((product: any) =>
+        this.productService.mapProduct(product)
+      );
       this.products.set(products);
       this.productsLoaded.set(true);
-      console.log('Product:', this.products());
     });
   }
 
-  queryProduct(id: number) {
-    this.productService.getProductById(id).subscribe((product) => {
-      console.log('Product:', product);
-    });
-  }
-
-  addProductToCart(id: string) {
+  addProductToCart(id: number) {
     this.cartService.addProductToCart(id).subscribe((response) => {
       console.log(response);
     });

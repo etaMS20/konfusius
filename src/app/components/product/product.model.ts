@@ -1,9 +1,3 @@
-export interface WcProductTerm {
-  id: number;
-  name: string;
-  slug: string;
-}
-
 export interface WcProduct {
   id: number;
   type: string;
@@ -14,14 +8,29 @@ export interface WcProduct {
   stock_status: string;
   purchasable?: boolean;
   imagePath?: string;
-  attributes?: Array<WcProductAttribute>;
+  attributes?: WcProductAttributes;
+  variations?: WcProductVariations;
 }
 
-export interface WcProductAttribute {
+export type WcProductVariation = {
+  id: number;
+};
+
+export type WcProductVariations = {
+  [key: string]: WcProductVariation;
+};
+
+interface WcProductAttribute {
   id: number;
   name: string;
-  has_variations: boolean;
-  terms: Array<WcProductTerm>;
+  position: number;
+  is_attribute_visible: boolean;
+  used_for_variation: boolean;
+  options: string[];
+}
+
+export interface WcProductAttributes {
+  [key: string]: WcProductAttribute;
 }
 
 export interface WcProductVariationKey {
