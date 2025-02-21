@@ -17,6 +17,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { CoCartService } from '../../services/co-cart.service';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-product-details',
@@ -29,6 +30,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatSelectModule,
     MatDividerModule,
     MatButtonModule,
+    MatTooltipModule,
   ],
 })
 export class ProductDetailsComponent {
@@ -41,6 +43,9 @@ export class ProductDetailsComponent {
   });
   isProductVariable = computed(() => {
     return this.product()?.type === WcProductTypes.VARIABLE;
+  });
+  tooltipMessage = computed<string>(() => {
+    return this.variations() ? '' : `${this.variationKey()} nicht verfügbar...`;
   });
 
   constructor() {

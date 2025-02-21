@@ -16,6 +16,11 @@ html {
   --mdc-plain-tooltip-supporting-text-size: 16px;
   --mdc-plain-tooltip-supporting-text-weight: 500;
   --mdc-plain-tooltip-supporting-text-tracking: .0333333333em
+
+  // Select
+  /* default/primary color */
+  --mat-select-disabled-trigger-text-color: rgba(150, 150, 150, 0.38);
+  --mat-select-disabled-arrow-color: rgba(150, 150, 150, 0.38);
 }
 
 html,

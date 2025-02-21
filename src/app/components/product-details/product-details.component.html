@@ -6,9 +6,13 @@
     </div>
     <div class="middle-container">
       <div *ngIf="isProductVariable()">
-        <mat-form-field appearance="fill" style="width: 100%; max-width: 400px">
+        <mat-form-field
+          appearance="fill"
+          style="width: 100%; max-width: 400px"
+          [matTooltip]="tooltipMessage()"
+        >
           <mat-label>Wähle eine Schicht</mat-label>
-          <mat-select panelWidth="auto">
+          <mat-select panelWidth="auto" [disabled]="!variations()">
             <mat-option *ngFor="let option of variations()" [value]="option">
               {{ option.name }}
             </mat-option>
