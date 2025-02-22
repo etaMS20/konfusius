@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, from } from 'rxjs';
-import {
-  WcProduct,
-  WcProductVariation,
-  WcProductVariations,
-} from '../components/product/product.model';
+import { WcProduct } from '../components/product/product.model';
 import CoCart from '@cocart/cocart-rest-api';
-import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',

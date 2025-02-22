@@ -18,6 +18,13 @@ import { MatDividerModule } from '@angular/material/divider';
 import { CoCartService } from '../../services/co-cart.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import {
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { DisableControlDirective } from '../../directives/disable-control.directive';
 
 @Component({
   selector: 'app-product-details',
@@ -31,12 +38,17 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatDividerModule,
     MatButtonModule,
     MatTooltipModule,
+    ReactiveFormsModule,
+    DisableControlDirective,
   ],
 })
 export class ProductDetailsComponent {
   @Input() product = signal<KonfusiusShiftVar | WcProduct | null>(null);
   private readonly cartService = inject(CoCartService);
+  private readonly fb = inject(FormBuilder);
+  selectForm: any;
 
+  /** Signals */
   variations = signal<any[] | null>(null);
   variationKey = computed(() => {
     return Object.keys(this.product()!.attributes ?? []);
@@ -49,6 +61,10 @@ export class ProductDetailsComponent {
   });
 
   constructor() {
+    this.selectForm = this.fb.group({
+      variationId: new FormControl<number | null>(null, [Validators.required]),
+    });
+
     effect(() => {
       const currentProduct = this.product();
       if (currentProduct) {
@@ -60,11 +76,18 @@ export class ProductDetailsComponent {
   queryProductVariations(product: WcProduct) {
     this.cartService.listProductVariations(product.id).subscribe((response) => {
       this.variations.set(response.data.length > 0 ? response.data : null);
+
+      if (this.selectForm) {
+        this.selectForm.controls.variationId.setValidators(
+          this.variations() ? [Validators.required] : []
+        );
+        this.selectForm.controls.variationId.updateValueAndValidity();
+      }
     });
   }
 
   checkout() {
-    // this.cartService.addProductToCart(this.)
-    console.log(this.variationKey());
+    const checkoutId = this.selectForm.get('variationId').value;
+    this.cartService.addProductToCart(checkoutId);
   }
 }

@@ -12,8 +12,13 @@
           [matTooltip]="tooltipMessage()"
         >
           <mat-label>Wähle eine Schicht</mat-label>
-          <mat-select panelWidth="auto" [disabled]="!variations()">
-            <mat-option *ngFor="let option of variations()" [value]="option">
+          <mat-select
+            [formControl]="selectForm.controls.variationId"
+            panelWidth="auto"
+            [required]="variations() ? true : false"
+            [disableControl]="!variations()"
+          >
+            <mat-option *ngFor="let option of variations()" [value]="option.id">
               {{ option.name }}
             </mat-option>
           </mat-select>
