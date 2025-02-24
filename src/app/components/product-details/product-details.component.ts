@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
   computed,
@@ -7,24 +8,22 @@ import {
   signal,
 } from '@angular/core';
 import {
-  WcProduct,
-  KonfusiusShiftVar,
-  WcProductTypes,
-} from '../product/product.model';
-import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { MatDividerModule } from '@angular/material/divider';
-import { CoCartService } from '../../services/co-cart.service';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import {
   FormBuilder,
   FormControl,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { throwError } from 'rxjs';
+import { catchError, concatMap } from 'rxjs/operators';
 import { DisableControlDirective } from '../../directives/disable-control.directive';
+import { ErrorDialogService } from '../../errors/error-dialog.service';
+import { WcStoreAPI } from '../../services/wc-store-api.service';
+import { WcProduct, WcProductTypes } from '../../models/product.model';
 
 @Component({
   selector: 'app-product-details',
@@ -43,21 +42,21 @@ import { DisableControlDirective } from '../../directives/disable-control.direct
   ],
 })
 export class ProductDetailsComponent {
-  @Input() product = signal<KonfusiusShiftVar | WcProduct | null>(null);
-  private readonly cartService = inject(CoCartService);
+  @Input() product = signal<WcProduct | null>(null);
+  private readonly wcStore = inject(WcStoreAPI);
   private readonly fb = inject(FormBuilder);
+  private readonly errorService = inject(ErrorDialogService);
   selectForm: any;
 
   /** Signals */
   variations = signal<any[] | null>(null);
-  variationKey = computed(() => {
-    return Object.keys(this.product()!.attributes ?? []);
-  });
   isProductVariable = computed(() => {
     return this.product()?.type === WcProductTypes.VARIABLE;
   });
   tooltipMessage = computed<string>(() => {
-    return this.variations() ? '' : `${this.variationKey()} nicht verfügbar...`;
+    return this.variations()
+      ? ''
+      : `Es sind leider keine Zeiten mehr für diese Schicht verfügbar`;
   });
 
   constructor() {
@@ -74,20 +73,36 @@ export class ProductDetailsComponent {
   }
 
   queryProductVariations(product: WcProduct) {
-    this.cartService.listProductVariations(product.id).subscribe((response) => {
-      this.variations.set(response.data.length > 0 ? response.data : null);
+    this.wcStore
+      .listProductVariations(product.id, ['instock'])
+      .subscribe((response) => {
+        // only list variations that are in stock
+        this.variations.set(response.length > 0 ? response : null);
+        console.log(this.variations());
 
-      if (this.selectForm) {
-        this.selectForm.controls.variationId.setValidators(
-          this.variations() ? [Validators.required] : []
-        );
-        this.selectForm.controls.variationId.updateValueAndValidity();
-      }
-    });
+        if (this.selectForm) {
+          this.selectForm.controls.variationId.setValidators(
+            this.variations() ? [Validators.required] : []
+          );
+          this.selectForm.controls.variationId.updateValueAndValidity();
+        }
+      });
   }
 
   checkout() {
     const checkoutId = this.selectForm.get('variationId').value;
-    this.cartService.addProductToCart(checkoutId);
+
+    this.wcStore
+      .deleteAllCartItems()
+      .pipe(
+        concatMap(() => this.wcStore.addItemToCart(checkoutId)),
+        catchError((error) => {
+          this.errorService.handleError(error);
+          return throwError(() => error);
+        })
+      )
+      .subscribe({
+        next: (response) => console.log(response),
+      });
   }
 }

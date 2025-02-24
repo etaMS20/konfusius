@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { ProductListComponent } from '../components/product-list/product-list.component';
 import { ProductDetailsComponent } from '../components/product-details/product-details.component';
-import { WcProduct } from '../components/product/product.model';
+import { WcProduct } from '../models/product.model';
 import { ProductSelectionService } from '../services/product-selection.service';
 import { NgIf } from '@angular/common';
 import { LoadingIndicatorComponent } from '../components/loading-indicator/loading-indicator.component';
@@ -33,9 +33,7 @@ export class TicketsComponent {
     this.productSelectionService.selectedProduct$.subscribe({
       next: (product) => {
         this.selectedProduct.set(product);
-        setTimeout(() => {
-          this.loadingService.loadingOff();
-        }, 500);
+        this.loadingService.loadingOff();
       },
       error: () => {},
     });

@@ -1,3 +1,4 @@
+import { NgFor } from '@angular/common';
 import {
   Component,
   computed,
@@ -8,12 +9,11 @@ import {
   signal,
 } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { WcProduct } from '../product/product.model';
-import { ProductComponent } from '../product/product.component';
-import { ProductService } from '../../services/product.service';
-import { NgFor, NgIf } from '@angular/common';
-import { CoCartService } from '../../services/co-cart.service';
 import { ProductSelectionService } from '../../services/product-selection.service';
+import { ProductService } from '../../services/product.service';
+import { WcStoreAPI } from '../../services/wc-store-api.service';
+import { ProductComponent } from '../product/product.component';
+import { WcProduct } from '../../models/product.model';
 
 @Component({
   selector: 'product-list',
@@ -26,8 +26,8 @@ export class ProductListComponent implements OnInit {
   @Output() productsLoading = new EventEmitter<boolean>(true);
 
   productService = inject(ProductService);
-  cartService = inject(CoCartService);
   productSelectionService = inject(ProductSelectionService);
+  wcStore = inject(WcStoreAPI);
 
   products = signal<Array<WcProduct>>([]);
   productsLoaded = computed<boolean>(() => {
@@ -52,12 +52,29 @@ export class ProductListComponent implements OnInit {
   }
 
   initProducts() {
-    this.cartService.listProducts().subscribe((response) => {
-      const products = response.data.products.map((product: any) =>
+    this.wcStore.listProducts().subscribe((response) => {
+      const products = response.map((product: any) =>
         this.productService.mapProduct(product)
       );
       this.products.set(products);
       this.productsLoading.emit(false);
     });
+  }
+
+  testCheckout() {
+    const billing = {
+      first_name: 'Peter',
+      last_name: 'Venkman',
+      company: '',
+      address_1: '550 Central Park West',
+      address_2: 'Corner Penthouse Spook Central',
+      city: 'New York',
+      state: 'NY',
+      postcode: '10023',
+      country: 'US',
+      email: 'admin@example.com',
+      phone: '555-2368',
+    };
+    this.wcStore.checkout(billing).subscribe((r) => console.log(r));
   }
 }

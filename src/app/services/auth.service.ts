@@ -33,18 +33,18 @@ export class AuthService {
   loginGuestWithPw(passwordInput: string): boolean {
     const inputHash = this.hashPassword(passwordInput);
     if (inputHash === this.storedPasswordHash) {
-      localStorage.setItem('auth', inputHash);
+      localStorage.setItem('konfusiusAuth', inputHash);
       return true;
     }
     return false;
   }
 
   isAuthenticated(): boolean {
-    return localStorage.getItem('auth') === this.storedPasswordHash;
+    return localStorage.getItem('konfusiusAuth') === this.storedPasswordHash;
   }
 
   logout(): void {
-    localStorage.removeItem('auth');
+    localStorage.removeItem('konfusiusAuth');
   }
 
   // TODO: Maybe useful later

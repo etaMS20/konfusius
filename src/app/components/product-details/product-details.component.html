@@ -19,16 +19,20 @@
             [disableControl]="!variations()"
           >
             <mat-option *ngFor="let option of variations()" [value]="option.id">
-              {{ option.name }}
+              {{ option.variation }}
             </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
     </div>
     <div class="right-container">
-      <button mat-raised-button color="primary" (click)="checkout()">
-        Checkout
-      </button>
+      <section>
+        <div class="checkout-button-row">
+          <button mat-raised-button (click)="checkout()">
+            <mat-label class="checkout-label">Weiter zum Checkout</mat-label>
+          </button>
+        </div>
+      </section>
     </div>
   </div>
 </div>

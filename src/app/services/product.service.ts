@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { IMAGE_MAP, WcProduct } from '../components/product/product.model';
 import { map, Observable } from 'rxjs';
-import { CoCartService } from './co-cart.service';
+import { IMAGE_MAP, WcProduct } from '../models/product.model';
+import { WcStoreAPI } from './wc-store-api.service';
 
 /**
  * service to map the api responses to typed objects
@@ -10,7 +10,7 @@ import { CoCartService } from './co-cart.service';
   providedIn: 'root',
 })
 export class ProductService {
-  coCartService = inject(CoCartService);
+  wcStore = inject(WcStoreAPI);
 
   constructor() {}
 
@@ -21,9 +21,8 @@ export class ProductService {
       slug: product.slug,
       name: product.name,
       description: product.description,
-      stock_quantity: product.stock_quantity,
-      stock_status: product.stock_status,
-      purchasable: product.purchasable,
+      is_in_stock: product.is_in_stock,
+      is_purchasable: product.is_purchasable,
       imagePath: product.id in IMAGE_MAP ? IMAGE_MAP[product.id] : undefined,
       attributes: product.attributes,
       variations: product.variations,
@@ -31,6 +30,6 @@ export class ProductService {
   }
 
   getProductById(id: number): Observable<WcProduct> {
-    return this.coCartService.getProductById(id).pipe(map(this.mapProduct));
+    return this.wcStore.getProductById(id).pipe(map(this.mapProduct));
   }
 }

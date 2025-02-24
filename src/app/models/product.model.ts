@@ -1,12 +1,3 @@
-export type KonfusiusShiftVar = WcProduct & {
-  attributes: KonfusiusAttributes;
-  variations: WcProductVariations;
-};
-
-export type KonfusiusAttributes = {
-  ['attribute_zeiten']: WcProductAttributeOptions;
-};
-
 export enum WcProductTypes {
   VARIABLE = 'variable',
   SIMPLE = 'simple',
@@ -23,41 +14,33 @@ export interface WcProduct {
   slug?: string;
   name?: string;
   description?: string;
-  stock_quantity: number | null;
-  stock_status: string;
-  purchasable?: boolean;
+  is_in_stock: boolean;
+  is_purchasable: boolean;
   imagePath?: string;
-  attributes?: WcProductAttributes;
-  variations?: WcProductVariations;
+  attributes?: Array<WcProductAttribute>;
+  variations?: Array<WcProductVariation>;
 }
 
-export type WcProductAttributeOptions = {
-  [key: string]: string;
+export type WcProductAttributeTerm = {
+  id: number;
+  name: string;
+  slug?: string;
 };
 export interface WcProductAttribute {
   id: number;
   name: string;
-  position: number;
-  is_attribute_visible: boolean;
-  used_for_variation: boolean;
-  options: WcProductAttributeOptions;
-}
-
-export interface WcProductAttributes {
-  [key: string]: WcProductAttribute;
-}
-
-export interface WcProductVariationKey {
-  attribute: string;
-  value: string;
+  has_variations: boolean;
+  terms: Array<WcProductAttributeTerm>;
 }
 
 export type WcProductVariation = {
   id: number;
+  attributes: Array<WcProductVariationAttributes>;
 };
 
-export type WcProductVariations = {
-  [key: string]: WcProductVariation;
+export type WcProductVariationAttributes = {
+  name: string;
+  value: string;
 };
 
 // TODO: map from API
