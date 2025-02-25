@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   EventEmitter,
+  HostListener,
   inject,
   OnInit,
   Output,
@@ -34,9 +35,31 @@ export class ProductListComponent implements OnInit {
     return this.products().length > 0;
   });
 
+  cols: number = 5;
+
   ngOnInit(): void {
     this.initProducts();
     this.productSelected.emit(null);
+    this.updateCols();
+  }
+
+  updateCols(): void {
+    const width = window.innerWidth;
+
+    if (width <= 600) {
+      this.cols = 2;
+    } else if (width <= 960) {
+      this.cols = 3;
+    } else if (width <= 1280) {
+      this.cols = 4;
+    } else {
+      this.cols = 5;
+    }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(): void {
+    this.updateCols();
   }
 
   isSelected(product: WcProduct): boolean {

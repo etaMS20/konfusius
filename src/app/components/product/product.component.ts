@@ -46,7 +46,10 @@ export class ProductComponent {
     event.stopPropagation();
     this.dialog.open(ProductDialogComponent, {
       data: this.product,
-      width: '800px',
+      width: '60vw',
+      height: '60vw',
+      maxWidth: '2000px',
+      maxHeight: '2000px',
     });
   }
 }

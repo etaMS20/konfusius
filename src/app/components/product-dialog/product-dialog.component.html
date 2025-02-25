@@ -1,9 +1,27 @@
 <div class="product-details-dialog">
-  <h2>{{ product.title }}</h2>
-  <img
-    [src]="product.imagePath"
-    alt="{{ product.title }}"
-    class="product-detail-image"
-  />
-  <p [innerHTML]="sanitizedDescription"></p>
+  <button
+    mat-icon-button
+    aria-label="close dialog"
+    (click)="closeDialog()"
+    class="close-button"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+  <section>
+    <h2>{{ product.name }}</h2>
+  </section>
+  <mat-divider />
+  <section>
+    <div class="image-container">
+      <img
+        [src]="product.imagePath"
+        alt="{{ product.title }}"
+        class="product-detail-image"
+      />
+    </div>
+  </section>
+  <mat-divider />
+  <div class="product-content">
+    <p [innerHTML]="sanitizedDescription"></p>
+  </div>
 </div>

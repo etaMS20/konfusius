@@ -74,7 +74,7 @@ export class ProductDetailsComponent {
 
   queryProductVariations(product: WcProduct) {
     this.wcStore
-      .listProductVariations(product.id, ['instock'])
+      .listProductVariations(product.id, ['instock', 'outofstock'])
       .subscribe((response) => {
         // only list variations that are in stock
         this.variations.set(response.length > 0 ? response : null);
