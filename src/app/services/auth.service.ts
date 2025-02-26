@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BACKEND, CREDENTIALS } from '../../config/http.config';
+import { BACKEND, GUEST_PW, SALT } from '../../config/http.config';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, Observable, of } from 'rxjs';
 import { GuestAuth } from './auth.model';
@@ -16,8 +16,8 @@ export class AuthService {
   private readonly storedPasswordHash: string;
 
   constructor(private readonly http: HttpClient) {
-    this.salt = CREDENTIALS.salt!;
-    this.storedPasswordHash = this.hashPassword(CREDENTIALS.password!);
+    this.salt = SALT!;
+    this.storedPasswordHash = this.hashPassword(GUEST_PW!);
   }
 
   get getStoredPwHash() {

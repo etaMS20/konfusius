@@ -3,5 +3,6 @@ export const environment = {
   backendUrl: '/wp-json',
   consumerKey: process.env['CONSUMER_KEY'],
   consumerSecret: process.env['CONSUMER_SECRET'],
-  credentials: { password: process.env['PW'], salt: process.env['SALT'] },
+  password: process.env['GUEST_PW'],
+  salt: process.env['SALT'],
 };

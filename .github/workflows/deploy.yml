@@ -8,6 +8,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      GUEST_PW: ${{ secrets.GUEST_PW }
+      SALT: ${{ secrets.SALT }
 
     steps:
       - name: checkout repository
