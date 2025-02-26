@@ -39,6 +39,6 @@ All notable changes to this project will be documented in this file.
 - added Child of the current theme
 - modified functions.php in child theme to support custom auth endpoint
 - added CORS header to functions.php
-- added allowed origin to backend to be able to save cookies from other origins
+- added allowed origin to backend to be able to save cookies from other origin
 
 https://dev.to/stephenwhitmore/take-your-wordpress-site-farther-with-angular-3o6p
