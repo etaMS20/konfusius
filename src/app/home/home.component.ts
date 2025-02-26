@@ -1,23 +1,35 @@
 import { Component } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { ImageSliderComponent } from '../components/image-slider/image-slider.component';
 
 @Component({
   selector: 'app-home',
-  imports: [MatGridListModule],
+  imports: [MatGridListModule, ImageSliderComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-  items = [
+  imageObject: Array<object> = [
     {
-      imagePath: '/abbau.png',
-      title: 'Item 1',
+      image: '/abbau.png',
+      thumbImage: '/abbau.png',
     },
     {
-      imagePath: '/abbau.png',
-      title: 'Item 2',
+      image: '/abbau.png',
+      thumbImage: '/abbau.png',
     },
-    // Add more items as needed
+    {
+      image: '/abbau.png',
+      thumbImage: '/abbau.png',
+    },
+    {
+      image: '/abbau.png',
+      thumbImage: '/abbau.png',
+    },
+    {
+      image: '/abbau.png',
+      thumbImage: '/abbau.png',
+    },
   ];
 
   showInfo(item: any) {

@@ -1,0 +1,31 @@
+name: deploy to gh-pages
+
+on:
+  push:
+    branches:
+      - main # Change this to your default branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+
+      - name: setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: install deps
+        run: npm ci
+
+      - name: build application
+        run: npm run build -- --configuration=production --base-href /<repo-name>/
+
+      - name: deploy to gh-pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: dist/konfusius # Update to match your Angular output folder
