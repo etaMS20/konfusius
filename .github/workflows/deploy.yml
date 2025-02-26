@@ -20,6 +20,7 @@ jobs:
 
       - name: install pnpm and deps
         run: |
+          npm install -g @angular/cli
           npm install -g pnpm
           pnpm install
 
