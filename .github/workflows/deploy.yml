@@ -20,7 +20,7 @@ jobs:
 
       - name: install pnpm and deps
         run: |
-          npm install -g @angular/cli
+          npm install -g @angular/cli --save-dev
           npm install -g pnpm
           pnpm install
 
@@ -32,3 +32,4 @@ jobs:
         with:
           branch: gh-pages
           folder: dist/konfusius
+          token: ${{ secrets.GH_PAGES_TOKEN }}
