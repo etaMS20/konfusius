@@ -24,7 +24,7 @@ jobs:
           pnpm install
 
       - name: build application
-        run: pnpm run build -- --configuration=production --base-href /konfusius/
+        run: pnpm ng build --configuration=production --base-href /konfusius/
 
       - name: deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
