@@ -23,6 +23,8 @@ jobs:
 
       - name: install pnpm and deps
         run: |
+          echo "GUEST_PW is set: ${{ secrets.GUEST_PW }}" 
+          echo "SALT is set: ${{ secrets.SALT }}"         
           npm install -g @angular/cli --save-dev
           npm install -g pnpm
           pnpm install
