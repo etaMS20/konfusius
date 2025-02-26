@@ -3,7 +3,7 @@ name: deploy to gh-pages
 on:
   push:
     branches:
-      - main # Change this to your default branch
+      - main
 
 jobs:
   build:
@@ -18,14 +18,16 @@ jobs:
         with:
           node-version: 18
 
-      - name: install deps
-        run: npm ci
+      - name: install pnpm and deps
+        run: |
+          npm install -g pnpm
+          pnpm install
 
       - name: build application
-        run: npm run build -- --configuration=production --base-href /<repo-name>/
+        run: pnpm run build -- --configuration=production --base-href /konfusius/
 
       - name: deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: dist/konfusius # Update to match your Angular output folder
+          folder: dist/konfusius
