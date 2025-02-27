@@ -29,14 +29,11 @@ jobs:
 
       - name: set environment file
         run: |
-          echo "export const environment = {" > src/environments/environment.prod.ts
-          echo "  production: true," >> src/environments/environment.prod.ts
-          echo "  GUEST_PW: \"${{ secrets.GUEST_PW }}\"," >> src/environments/environment.prod.ts
-          echo "  SALT: \"${{ secrets.SALT }}\"" >> src/environments/environment.prod.ts
-          echo "};" >> src/environments/environment.prod.ts
+          sed -i 's/REPLACE_PASSWORD/${{ secrets.GUEST_PW }}/g' src/environments/environment.prod.ts
+          sed -i 's/REPLACE_SALT/${{ secrets.SALT }}/g' src/environments/environment.prod.ts
 
       - name: compile application
-        run: pnpx ng build --configuration=production --base-href /konfusius/
+        run: pnpm ng build --configuration=production --base-href /konfusius/
 
       - name: deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4

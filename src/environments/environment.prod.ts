@@ -3,6 +3,6 @@ export const environment = {
   backendUrl: '/wp-json',
   consumerKey: '',
   consumerSecret: '',
-  password: '',
-  salt: '',
+  password: 'REPLACE_PASSWORD',
+  salt: 'REPLACE_SALT',
 };
