@@ -10,9 +10,9 @@ import { ImageSliderComponent } from '../components/image-slider/image-slider.co
 })
 export class HomeComponent {
   carouselImages = [
-    { url: '/abbau.png', alt: 'First slide' },
-    { url: '/bar_keller.png', alt: 'Second slide' },
-    { url: '/bar.png', alt: 'Third slide' },
+    { url: 'assets/schichten/abbau.png', alt: 'First slide' },
+    { url: 'assets/schichten/bar_keller.png', alt: 'Second slide' },
+    { url: 'assets/schichten/bar.png', alt: 'Third slide' },
   ];
 
   showInfo(item: any) {

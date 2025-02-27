@@ -43,12 +43,9 @@ interface CarouselImage {
   ],
 })
 export class ImageSliderComponent implements OnInit, OnDestroy {
-  @Input() images: CarouselImage[] = [
-    { url: '/assets/images/slide1.jpg', alt: 'Slide 1' },
-    { url: '/assets/images/slide2.jpg', alt: 'Slide 2' },
-    { url: '/assets/images/slide3.jpg', alt: 'Slide 3' },
-  ];
-  @Input() autoPlayInterval = 5000; // 5 seconds
+  @Input() images: CarouselImage[] = [];
+  @Input() autoPlayInterval = 5000;
+  @Input() height: number = 200;
 
   private autoPlayTimer?: number;
   currentIndex = signal(0);

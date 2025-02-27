@@ -45,16 +45,16 @@ export type WcProductVariationAttributes = {
 
 // TODO: map from API
 export const IMAGE_MAP: { [key: number]: string } = {
-  1547: '/abbau.png', // test
-  1253: '/abbau.png', // kaffee tee
-  1247: '/kiosk_2.png', // Aufräumen Keller
-  962: '/awareness.png', // awareness
-  602: '/abbau.png', // Abbau (montag)
-  601: '/abbau.png', // Sauna
-  597: '/workshops.png', // artist
-  590: '/klo.png', // Müll
-  50: '/kantine.png', // Küche
-  30: '/bar_keller.png', // Bar keller
-  19: '/bar.png', // Bar draußen
-  13: '/kiosk_1.png', // Kiosk
+  1547: 'assets/schichten/abbau.png', // test
+  1253: 'assets/schichten/abbau.png', // kaffee tee
+  1247: 'assets/schichten/kiosk_2.png', // Aufräumen Keller
+  962: 'assets/schichten/awareness.png', // awareness
+  602: 'assets/schichten/abbau.png', // Abbau (montag)
+  601: 'assets/schichten/abbau.png', // Sauna
+  597: 'assets/schichten/workshops.png', // artist
+  590: 'assets/schichten/klo.png', // Müll
+  50: 'assets/schichten/kantine.png', // Küche
+  30: 'assets/schichten/bar_keller.png', // Bar keller
+  19: 'assets/schichten/bar.png', // Bar draußen
+  13: 'assets/schichten/kiosk_1.png', // Kiosk
 };

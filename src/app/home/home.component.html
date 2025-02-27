@@ -1,7 +1,11 @@
 <div class="home-container">
   <!-- Top Image -->
   <div class="image-container">
-    <img src="/konfusius_cropped.jpg" alt="konfusius" class="header-image" />
+    <img
+      src="assets/konfusius_cropped.jpg"
+      alt="konfusius"
+      class="header-image"
+    />
   </div>
   <!-- Title -->
   <h1 class="title">St. Konfusius Festival</h1>
@@ -11,6 +15,7 @@
     <app-image-slider
       [images]="carouselImages"
       [autoPlayInterval]="5000"
+      [style.height]="'700px'"
     ></app-image-slider>
 
     <div class="grid-main">
