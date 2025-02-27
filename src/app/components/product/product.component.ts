@@ -48,8 +48,8 @@ export class ProductComponent {
       data: this.product,
       width: '60vw',
       height: '60vw',
-      maxWidth: '2000px',
-      maxHeight: '2000px',
+      maxWidth: '800px',
+      maxHeight: '800px',
     });
   }
 }
