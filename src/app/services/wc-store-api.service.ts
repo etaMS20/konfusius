@@ -46,35 +46,51 @@ export class WcStoreAPI {
   // cart
 
   getCart(): Observable<any> {
-    return this.http.get(this.storeApiBackend + '/cart');
-  }
-
-  addItemToCart(id: number, quantity = 1): Observable<any> {
-    return this.http.post(this.storeApiBackend + '/cart/add-item', {
-      id,
-      quantity,
+    return this.http.get(this.storeApiBackend + '/cart', {
+      withCredentials: true,
     });
   }
 
+  addItemToCart(id: number, quantity = 1): Observable<any> {
+    return this.http.post(
+      this.storeApiBackend + '/cart/add-item',
+      {
+        id,
+        quantity,
+      },
+      { withCredentials: true }
+    );
+  }
+
   deleteAllCartItems(): Observable<any> {
-    return this.http.delete(this.storeApiBackend + '/cart/items');
+    return this.http.delete(this.storeApiBackend + '/cart/items', {
+      withCredentials: true,
+    });
   }
 
   updateCustomerData(
     billing_address: WcShippingAddress,
     shipping_address?: WcShippingAddress
   ): Observable<any> {
-    return this.http.post(this.storeApiBackend + '/cart/update-customer', {
-      billing_address,
-      shipping_address,
-    });
+    return this.http.post(
+      this.storeApiBackend + '/cart/update-customer',
+      {
+        billing_address,
+        shipping_address,
+      },
+      { withCredentials: true }
+    );
   }
 
   // checkout
 
   checkout(billingAddress: any): Observable<any> {
-    return this.http.post(this.storeApiBackend + '/checkout', {
-      billing_address: billingAddress,
-    });
+    return this.http.post(
+      this.storeApiBackend + '/checkout',
+      {
+        billing_address: billingAddress,
+      },
+      { withCredentials: true }
+    );
   }
 }

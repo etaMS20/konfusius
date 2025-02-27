@@ -23,6 +23,13 @@ html {
   );
 }
 
+/* 
+background: url(./assets/b_prediction1.png) no-repeat center;
+background-size: cover;
+height: 100%;
+background-attachment: scroll; Allows the background to scroll with the content
+ */
+
 html,
 body {
   margin: 0;
@@ -65,19 +72,6 @@ p {
   font-size: 1rem;
   color: #292929;
   margin: 10px 0;
-}
-
-/* Additional Global Styles */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
 }
 
 // Customize the entire app. Change :root to your selector if you want to scope the styles.

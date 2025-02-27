@@ -7,33 +7,87 @@
       class="header-image"
     />
   </div>
+
   <!-- Title -->
   <h1 class="title">St. Konfusius Festival</h1>
 
-  <!-- Grid Layout -->
-  <div class="grid-container">
-    <app-image-slider
-      [images]="carouselImages"
-      [autoPlayInterval]="5000"
-      [style.height]="'700px'"
-    ></app-image-slider>
+  <!-- Main Grid Layout -->
+  <div class="main-grid">
+    <!-- Left Section - Image Sliders -->
+    <section class="left-section">
+      <app-image-slider [images]="carouselImages" [autoPlayInterval]="5000">
+      </app-image-slider>
 
-    <div class="grid-main">
-      <h2>Liebe Freunde der Sonne & der guten Laune,</h2>
-      <p>
-        Konfusius der 6. - Ein weiterer Festivalsommer steht vor der Tür, Zeit
-        den letzten Rost vom Winter wegzuölen mit geschmeidigen Beats in einer
-        warmen und liebevollen Atmosphäre. liebevollen Atmosphäre.
-      </p>
-    </div>
-    <div class="grid-info">
-      <h3>Eckdaten</h3>
-      <ul>
-        <li>Ort: St.Konfusius Kloster (irgendwo im Rheingau)</li>
-        <li>Datum: 23-25. Mai 2025</li>
-        <li>Festival & Camping für 180 Personen</li>
-        <li>Anmeldezeitraum: 23.03. - 30.04.2025 (19:00 Uhr Anmeldeschluss)</li>
-      </ul>
-    </div>
+      <app-image-slider [images]="carouselImages" [autoPlayInterval]="6000">
+      </app-image-slider>
+
+      <app-image-slider [images]="carouselImages" [autoPlayInterval]="7000">
+      </app-image-slider>
+    </section>
+
+    <!-- Middle Section - Main Content -->
+    <section class="middle-section">
+      <div class="content-wrapper">
+        <h2>Liebe Freunde der Sonne & der guten Laune,</h2>
+        <p>
+          Konfusius der 6. - Ein weiterer Festivalsommer steht vor der Tür, Zeit
+          den letzten Rost vom Winter wegzuölen mit geschmeidigen Beats in einer
+          warmen und liebevollen Atmosphäre.
+        </p>
+        <p>
+          Lasst uns gemeinsam die Natur genießen, zu guter Musik tanzen und eine
+          unvergessliche Zeit verbringen. Das St. Konfusius Festival steht für
+          Gemeinschaft, Kreativität und pure Lebensfreude.
+        </p>
+        <p>
+          Seid dabei, wenn wir wieder Geschichte schreiben und das Kloster in
+          einen Ort der Begegnung und des gemeinsamen Feierns verwandeln.
+        </p>
+      </div>
+    </section>
+
+    <!-- Right Section - Quick Info -->
+    <section class="right-section">
+      <div class="info-box">
+        <h3>Eckdaten</h3>
+        <ul>
+          <li>Ort: St.Konfusius Kloster (irgendwo im Rheingau)</li>
+          <li>Datum: 23-25. Mai 2025</li>
+          <li>Festival & Camping für 180 Personen</li>
+          <li>
+            Anmeldezeitraum: 23.03. - 30.04.2025 (19:00 Uhr Anmeldeschluss)
+          </li>
+        </ul>
+      </div>
+    </section>
   </div>
+
+  <!-- Bottom Section -->
+  <section class="bottom-section">
+    <div class="content-wrapper">
+      <h2>Weitere Informationen</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <h3>Anreise</h3>
+          <p>
+            Details zur Anreise und Parkmöglichkeiten werden nach erfolgreicher
+            Anmeldung bekannt gegeben.
+          </p>
+        </div>
+        <div class="info-item">
+          <h3>Verpflegung</h3>
+          <p>
+            Für Getränke und Speisen ist während des gesamten Festivals gesorgt.
+          </p>
+        </div>
+        <div class="info-item">
+          <h3>Camping</h3>
+          <p>
+            Zeltplätze sind im Ticketpreis inbegriffen. Bringt euer eigenes
+            Camping-Equipment mit.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
