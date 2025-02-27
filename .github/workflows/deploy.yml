@@ -23,8 +23,7 @@ jobs:
 
       - name: install pnpm and deps
         run: |
-          corepack enable
-          corepack install -g pnpm@10.4.1
+          npm install -g pnpm@10.4.1
           pnpm config set store-dir .pnpm-store
           pnpm install
 
