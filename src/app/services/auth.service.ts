@@ -56,11 +56,18 @@ export class AuthService {
 
   /** we use a custom endpoint to authenticate guests */
   authenticateGuest(pw: string): Observable<GuestAuth> {
+    const jwtToken = localStorage.getItem('jwtToken');
+
+    let headers = new HttpHeaders();
+    if (jwtToken) {
+      headers.set('Authorization', `Bearer ${jwtToken}`);
+    }
+
     return this.http.post<GuestAuth>(
       this.customBackend + `/guest-auth`,
       { password: pw },
       {
-        // headers: this.headers,
+        headers,
       }
     );
   }

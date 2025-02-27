@@ -6,18 +6,16 @@ import { WcCustomerInfo, WcShippingAddress } from '../models/customer.model';
 
 // https://github.com/woocommerce/woocommerce/blob/trunk/plugins/woocommerce/src/StoreApi/docs
 
-// TODO: Use cart API for adding products
-
 @Injectable({
   providedIn: 'root',
 })
 export class WcStoreAPI {
   private readonly customBackend = BACKEND + '/custom/v1';
   private readonly storeApiBackend = BACKEND + '/wc/store/v1';
-  private readonly header: HttpHeaders;
+  private readonly headers: HttpHeaders;
 
   constructor(private readonly http: HttpClient) {
-    this.header = new HttpHeaders({});
+    this.headers = new HttpHeaders({ 'Content-Type': 'application/json' });
   }
 
   // Products
@@ -25,7 +23,8 @@ export class WcStoreAPI {
   listProducts(category = 22, per_page = 50): Observable<any> {
     return this.http.get(
       this.storeApiBackend +
-        `/products?per_page=${per_page}&category=${category}`
+        `/products?per_page=${per_page}&category=${category}`,
+      { headers: this.headers }
     );
   }
 
@@ -39,7 +38,8 @@ export class WcStoreAPI {
   ): Observable<any> {
     return this.http.get(
       this.storeApiBackend +
-        `/products?type=variation&parent=${parentId}&stock_status=${stockStatus}`
+        `/products?type=variation&parent=${parentId}&stock_status=${stockStatus}`,
+      { headers: this.headers }
     );
   }
 
@@ -47,6 +47,7 @@ export class WcStoreAPI {
 
   getCart(): Observable<any> {
     return this.http.get(this.storeApiBackend + '/cart', {
+      headers: this.headers,
       withCredentials: true,
     });
   }
@@ -58,12 +59,13 @@ export class WcStoreAPI {
         id,
         quantity,
       },
-      { withCredentials: true }
+      { headers: this.headers, withCredentials: true }
     );
   }
 
   deleteAllCartItems(): Observable<any> {
     return this.http.delete(this.storeApiBackend + '/cart/items', {
+      headers: this.headers,
       withCredentials: true,
     });
   }
@@ -78,7 +80,7 @@ export class WcStoreAPI {
         billing_address,
         shipping_address,
       },
-      { withCredentials: true }
+      { headers: this.headers, withCredentials: true }
     );
   }
 
@@ -90,7 +92,7 @@ export class WcStoreAPI {
       {
         billing_address: billingAddress,
       },
-      { withCredentials: true }
+      { headers: this.headers, withCredentials: true }
     );
   }
 }

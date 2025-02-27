@@ -9,7 +9,7 @@
   </div>
 
   <!-- Title -->
-  <h1 class="title">St. Konfusius Festival</h1>
+  <h1 class="title">St. Konfusius Festival VI</h1>
 
   <!-- Main Grid Layout -->
   <div class="main-grid">
@@ -28,21 +28,9 @@
     <!-- Middle Section - Main Content -->
     <section class="middle-section">
       <div class="content-wrapper">
-        <h2>Liebe Freunde der Sonne & der guten Laune,</h2>
-        <p>
-          Konfusius der 6. - Ein weiterer Festivalsommer steht vor der Tür, Zeit
-          den letzten Rost vom Winter wegzuölen mit geschmeidigen Beats in einer
-          warmen und liebevollen Atmosphäre.
-        </p>
-        <p>
-          Lasst uns gemeinsam die Natur genießen, zu guter Musik tanzen und eine
-          unvergessliche Zeit verbringen. Das St. Konfusius Festival steht für
-          Gemeinschaft, Kreativität und pure Lebensfreude.
-        </p>
-        <p>
-          Seid dabei, wenn wir wieder Geschichte schreiben und das Kloster in
-          einen Ort der Begegnung und des gemeinsamen Feierns verwandeln.
-        </p>
+        <h2>Liebe Freunde der Sonne & der guten Laune</h2>
+        <div [innerHTML]="this.introText()"></div>
+        <div [innerHTML]="this.programText()"></div>
       </div>
     </section>
 

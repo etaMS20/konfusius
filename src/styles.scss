@@ -30,15 +30,9 @@ height: 100%;
 background-attachment: scroll; Allows the background to scroll with the content
  */
 
-html,
 body {
-  margin: 0;
-  padding: 0;
-  color: #333;
   line-height: 1.6;
   font-family: 'Roboto', sans-serif;
-  padding-top: 30px;
-  padding-bottom: 150px;
 }
 
 * {
