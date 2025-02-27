@@ -27,13 +27,16 @@ jobs:
           npm install -g pnpm
           pnpm install
 
-      - name: Create Environment File
+      - name: Replace Environment File
         run: |
           echo "export const environment = {" > src/environments/environment.prod.ts
           echo "  production: true," >> src/environments/environment.prod.ts
-          echo "  GUEST_PW: '${{ secrets.GUEST_PW }}'," >> src/environments/environment.prod.ts
-          echo "  SALT: '${{ secrets.SALT }}'" >> src/environments/environment.prod.ts
+          echo "  GUEST_PW: \"${{ secrets.GUEST_PW }}\"," >> src/environments/environment.prod.ts
+          echo "  SALT: \"${{ secrets.SALT }}\"" >> src/environments/environment.prod.ts
           echo "};" >> src/environments/environment.prod.ts
+
+      - name: Debug Environment File
+        run: cat src/environments/environment.prod.ts
 
       - name: build application
         run: ng build --configuration=production --base-href /konfusius/
