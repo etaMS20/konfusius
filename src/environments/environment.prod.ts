@@ -1,5 +1,8 @@
 export const environment = {
   production: true,
-  GUEST_PW: '',
-  SALT: '',
+  backendUrl: '/wp-json',
+  consumerKey: '',
+  consumerSecret: '',
+  password: '',
+  salt: '',
 };
