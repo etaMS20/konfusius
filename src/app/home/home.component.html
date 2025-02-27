@@ -8,7 +8,11 @@
 
   <!-- Grid Layout -->
   <div class="grid-container">
-    <image-slider></image-slider>
+    <app-image-slider
+      [images]="carouselImages"
+      [autoPlayInterval]="5000"
+    ></app-image-slider>
+
     <div class="grid-main">
       <h2>Liebe Freunde der Sonne & der guten Laune,</h2>
       <p>

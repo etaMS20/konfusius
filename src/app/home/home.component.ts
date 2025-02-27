@@ -9,27 +9,10 @@ import { ImageSliderComponent } from '../components/image-slider/image-slider.co
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-  imageObject: Array<object> = [
-    {
-      image: '/abbau.png',
-      thumbImage: '/abbau.png',
-    },
-    {
-      image: '/abbau.png',
-      thumbImage: '/abbau.png',
-    },
-    {
-      image: '/abbau.png',
-      thumbImage: '/abbau.png',
-    },
-    {
-      image: '/abbau.png',
-      thumbImage: '/abbau.png',
-    },
-    {
-      image: '/abbau.png',
-      thumbImage: '/abbau.png',
-    },
+  carouselImages = [
+    { url: '/abbau.png', alt: 'First slide' },
+    { url: '/bar_keller.png', alt: 'Second slide' },
+    { url: '/bar.png', alt: 'Third slide' },
   ];
 
   showInfo(item: any) {

@@ -1,5 +1,33 @@
-<swiper-container [slidesPerView]="2" [loop]="true">
-  <swiper-slide>Slide 1</swiper-slide>
-  <swiper-slide>Slide 2</swiper-slide>
-  <swiper-slide>Slide 3</swiper-slide>
-</swiper-container>
+<div
+  class="carousel-container"
+  (mouseenter)="pauseAutoPlay()"
+  (mouseleave)="resumeAutoPlay()"
+>
+  <!-- Main image container -->
+  <div class="carousel-slide" [@slideAnimation]="currentIndex()">
+    <img
+      [src]="currentImage().url"
+      [alt]="currentImage().alt"
+      class="carousel-image"
+    />
+  </div>
+
+  <!-- Navigation arrows -->
+  <button mat-icon-button class="nav-button prev-button" (click)="previous()">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+
+  <button mat-icon-button class="nav-button next-button" (click)="next()">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+
+  <!-- Dot indicators -->
+  <div class="carousel-dots">
+    <button
+      class="dot"
+      *ngFor="let _ of images; let i = index"
+      [class.active]="i === currentIndex()"
+      (click)="goToSlide(i)"
+    ></button>
+  </div>
+</div>

@@ -80,7 +80,8 @@
           "builder": "@angular-builders/custom-webpack:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "konfusius:build:production"
+              "buildTarget": "konfusius:build:production",
+              "proxyConfig": "proxy.conf.json"
             },
             "development": {
               "buildTarget": "konfusius:build:development",
