@@ -23,20 +23,21 @@ The app is still in early development.
    pnpm i
    ```
 
-4. API Key Requirement
+4. Env Variables
 
-   In the current setup, this app needs to access the [WC REST API](https://woocommerce.github.io/woocommerce-rest-api-docs). We therefore need to create a `.env` file in the project root containing the Keys:
+   The application required certain env variables to function (like guest password, backend url , etc.)
 
-   ```.env
-   CONSUMER_KEY=<wc-api-key>
-   CONSUMER_SECRET=<wc-api-secret>
+   In development config, the Application reads the `.env` file on runtime using a custom `webpack.config.ts` setup. Devs must request the required Secrets from WP admins.
+
+   ```json
+   serve.configurations.development:
+   {
+      "buildTarget": "konfusius:build:development",
+      "proxyConfig": "proxy.conf.json"
+   },
    ```
 
-   The Application reads the `.env` file on runtime using a custom webpack setup.
-
-   **This whole requirement is (hopefully) deprecated soon**, once the wp-json backend has been setup to allow unauthorized request against the `/wc/store/v1` endpoint [WC Store API](https://github.com/woocommerce/woocommerce-blocks/tree/trunk/src/StoreApi).
-
-   Devs must request the keys from WP admins.
+   In production config, the variables are set by ci configuration
 
 ---
 

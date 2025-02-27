@@ -33,6 +33,7 @@ export class LoginComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   loginForm: any;
   redirectUrl: string | null = null;
+  pw = '';
 
   constructor() {
     this.loginForm = this.fb.group({
@@ -47,6 +48,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.redirectUrl = this.route.snapshot.queryParamMap.get('redirect');
     this.loginForm.controls['password'].markAsTouched();
+    this.pw = this.authService.getStoredPwHash;
   }
 
   // we don't validate the pw within the form, but maybe useful later

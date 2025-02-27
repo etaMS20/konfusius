@@ -1,6 +1,7 @@
 <div class="login-form">
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <img src="/schweini_1.png" alt="Logo" class="form-field-image" />
+    <a>{{ this.pw }}</a>
     <mat-form-field appearance="fill">
       <mat-label>Passwort</mat-label>
       <input

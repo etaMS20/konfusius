@@ -27,7 +27,7 @@ jobs:
           npm install -g pnpm
           pnpm install
 
-      - name: Replace Environment File
+      - name: set environment file
         run: |
           echo "export const environment = {" > src/environments/environment.prod.ts
           echo "  production: true," >> src/environments/environment.prod.ts
@@ -35,7 +35,7 @@ jobs:
           echo "  SALT: \"${{ secrets.SALT }}\"" >> src/environments/environment.prod.ts
           echo "};" >> src/environments/environment.prod.ts
 
-      - name: Debug Environment File
+      - name: debug environment file
         run: cat src/environments/environment.prod.ts
 
       - name: build application
