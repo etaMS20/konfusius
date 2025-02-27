@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  backendUrl: '/wp-json',
+  backendUrl: 'https://konfusius.org/wp-json',
   consumerKey: '',
   consumerSecret: '',
   password: 'REPLACE_PASSWORD',
