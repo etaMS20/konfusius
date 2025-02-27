@@ -36,7 +36,7 @@ jobs:
           echo "};" >> src/environments/environment.prod.ts
 
       - name: compile application
-        run: ng build --configuration=production --base-href /konfusius/
+        run: pnpx ng build --configuration=production --base-href /konfusius/
 
       - name: deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
