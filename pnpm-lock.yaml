@@ -82,7 +82,7 @@ importers:
         specifier: ^19.1.7
         version: 19.1.8(@angular/compiler-cli@19.1.7(@angular/compiler@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0)))(typescript@5.7.3))(@angular/compiler@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0)))(@types/node@22.13.4)(chokidar@4.0.3)(jiti@1.21.7)(karma@6.4.4)(typescript@5.7.3)(vite@6.0.11(@types/node@22.13.4)(jiti@1.21.7)(less@4.2.1)(sass@1.83.1)(terser@5.37.0))
       '@angular/cli':
-        specifier: ^19.1.7
+        specifier: ^19.1.8
         version: 19.1.8(@types/node@22.13.4)(chokidar@4.0.3)
       '@angular/compiler-cli':
         specifier: ^19.1.6

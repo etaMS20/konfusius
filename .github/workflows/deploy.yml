@@ -19,12 +19,13 @@ jobs:
       - name: setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20.18.3
 
       - name: install pnpm and deps
         run: |
-          npm install -g @angular/cli --save-dev
-          npm install -g pnpm
+          corepack enable
+          corepack install -g pnpm@10.4.1
+          pnpm config set store-dir .pnpm-store
           pnpm install
 
       - name: set environment file
@@ -35,10 +36,7 @@ jobs:
           echo "  SALT: \"${{ secrets.SALT }}\"" >> src/environments/environment.prod.ts
           echo "};" >> src/environments/environment.prod.ts
 
-      - name: debug environment file
-        run: cat src/environments/environment.prod.ts
-
-      - name: build application
+      - name: compile application
         run: ng build --configuration=production --base-href /konfusius/
 
       - name: deploy to gh-pages
