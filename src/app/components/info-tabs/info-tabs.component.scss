@@ -1,0 +1,227 @@
+// Variables
+$primary-color: #9c27b0;
+$text-color: #2c1810;
+
+.content-wrapper {
+  padding: 0 30px;
+  position: relative;
+
+  h2 {
+    text-align: center;
+    color: $text-color;
+    font-size: 2.2rem;
+    margin-bottom: 30px;
+    font-family: 'MedievalSharp', cursive;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+
+    &::before,
+    &::after {
+      content: '✧';
+      margin: 0 15px;
+      color: $primary-color;
+    }
+  }
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  padding: 0 20px;
+
+  .info-item {
+    text-align: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 8px;
+    border: 1px solid rgba($text-color, 0.2);
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    h3 {
+      color: $text-color;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      font-family: 'MedievalSharp', cursive;
+      position: relative;
+      padding-bottom: 10px;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 2px;
+        background: $primary-color;
+      }
+    }
+
+    p {
+      color: $text-color;
+      line-height: 1.6;
+      font-family: 'Crimson Pro', serif;
+      font-size: 1.1rem;
+    }
+  }
+}
+
+.festival-tabs {
+  ::ng-deep {
+    // Tab headers styling
+    .mat-mdc-tab-header {
+      border-bottom: 2px solid rgba($text-color, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .mat-mdc-tab {
+      padding: 0 24px;
+      min-width: 160px;
+
+      &.mdc-tab--active {
+        background-color: rgba($primary-color, 0.1);
+      }
+
+      .mdc-tab__content {
+        flex-direction: row;
+        gap: 8px;
+      }
+
+      .mat-icon {
+        margin-right: 8px;
+      }
+    }
+
+    // Ink bar styling (the line under the active tab)
+    .mdc-tab-indicator__content--underline {
+      border-color: $primary-color;
+    }
+
+    // Tab labels
+    .mdc-tab__text-label {
+      color: $text-color;
+      font-family: 'Crimson Pro', serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.5px;
+    }
+  }
+}
+
+// Tab content styling
+.tab-content {
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+  border: 1px solid rgba($text-color, 0.1);
+  margin: 0 auto;
+  max-width: 800px;
+
+  h3 {
+    color: $text-color;
+    font-size: 1.8rem;
+    margin-bottom: 16px;
+    font-family: 'MedievalSharp', cursive;
+    text-align: center;
+    position: relative;
+    padding-bottom: 12px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 2px;
+      background: $primary-color;
+    }
+  }
+
+  p {
+    color: $text-color;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    text-align: center;
+    margin-bottom: 24px;
+    font-family: 'Crimson Pro', serif;
+  }
+
+  .additional-info {
+    background: rgba(255, 255, 255, 0.4);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid rgba($text-color, 0.1);
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+
+      li {
+        color: $text-color;
+        padding-left: 24px;
+        position: relative;
+        font-family: 'Crimson Pro', serif;
+        font-size: 1.1rem;
+        line-height: 1.4;
+
+        &::before {
+          content: '❧';
+          position: absolute;
+          left: 0;
+          color: $primary-color;
+        }
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .info-tabs-section {
+    .festival-tabs {
+      ::ng-deep {
+        .mat-mdc-tab {
+          min-width: 120px;
+          padding: 0 16px;
+        }
+      }
+    }
+
+    .tab-content {
+      padding: 16px;
+
+      .additional-info ul {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .info-tabs-section {
+    .content-wrapper {
+      padding: 0 15px;
+    }
+
+    .festival-tabs {
+      ::ng-deep {
+        .mat-mdc-tab {
+          min-width: auto;
+          padding: 0 12px;
+
+          .mat-icon {
+            margin-right: 4px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+<div class="content-wrapper">
+  <h2>Weitere Informationen</h2>
+
+  <mat-tab-group animationDuration="500ms" class="festival-tabs">
+    <mat-tab *ngFor="let tab of tabs">
+      <ng-template mat-tab-label>
+        <mat-icon>{{ tab.icon }}</mat-icon>
+        <span>{{ tab.label }}</span>
+      </ng-template>
+
+      <div class="tab-content">
+        <h3>{{ tab.title }}</h3>
+        <p>{{ tab.description }}</p>
+        <div class="additional-info">
+          <ul>
+            <li *ngFor="let point of tab.bulletPoints">
+              {{ point }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
