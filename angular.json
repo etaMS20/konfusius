@@ -62,11 +62,12 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "with": "src/environments/environment.staging.ts"
                 }
               ]
             },
             "production": {
+              "baseHref": "/wp-content/angular-app",
               "budgets": [
                 {
                   "type": "initial",
@@ -79,7 +80,7 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all",
+              "outputHashing": "none",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",

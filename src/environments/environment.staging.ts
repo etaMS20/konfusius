@@ -3,6 +3,6 @@ export const environment = {
   backendUrl: 'https://konfusius.org/wp-json',
   consumerKey: '',
   consumerSecret: '',
-  password: 'miauindev',
-  salt: 'konfusius',
+  password: 'REPLACE_PASSWORD',
+  salt: 'REPLACE_SALT',
 };
