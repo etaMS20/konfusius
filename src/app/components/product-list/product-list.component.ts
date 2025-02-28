@@ -47,13 +47,17 @@ export class ProductListComponent implements OnInit {
     const width = window.innerWidth;
 
     if (width <= 600) {
-      this.cols = 2;
+      this.cols = 2; // small screens (e.g., mobile)
     } else if (width <= 960) {
-      this.cols = 3;
+      this.cols = 3; // medium screens (e.g., tablets)
     } else if (width <= 1280) {
-      this.cols = 4;
+      this.cols = 4; // larger screens (e.g., small laptops)
+    } else if (width <= 1920) {
+      this.cols = 5; // FHD screens (e.g., standard desktops)
+    } else if (width <= 3840) {
+      this.cols = 6; // 4K screens (3840px wide)
     } else {
-      this.cols = 5;
+      this.cols = 7; // ultra-wide monitors
     }
   }
 

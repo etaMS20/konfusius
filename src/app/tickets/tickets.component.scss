@@ -1,7 +1,20 @@
-mat-grid-tile {
-  background: lightblue;
+$text-color: #2c1810;
+
+.content-container {
+  padding-top: 80px;
 }
 
 .heading-center {
   text-align: center;
+}
+
+h2 {
+  color: $text-color;
+  font-size: 2rem;
+  margin-bottom: 25px;
+  font-family: 'MedievalSharp', cursive;
+  text-align: center;
+  border-bottom: 2px solid rgba($text-color, 0.3);
+  padding-bottom: 15px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
