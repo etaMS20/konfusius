@@ -67,7 +67,7 @@
               ]
             },
             "production": {
-              "baseHref": "/wp-content/angular-app",
+              "baseHref": "/wp-content/angular-app/",
               "budgets": [
                 {
                   "type": "initial",
