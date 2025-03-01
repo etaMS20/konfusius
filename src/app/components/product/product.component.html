@@ -14,5 +14,7 @@
     class="product-image"
   />
   <h3 class="product-title">{{ product.name }}</h3>
-  <button (click)="openDetailsDialog($event)">Beschreibung</button>
+  <button mat-raised-button (click)="openDetailsDialog($event)">
+    Beschreibung
+  </button>
 </mat-card>

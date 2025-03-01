@@ -1,0 +1,30 @@
+.billing-container {
+  width: 300px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding-top: 80px;
+}
+
+input {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 5px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+}
+
+/* Error message styling */
+mat-error {
+  color: #f44336;
+  font-size: 0.875rem;
+}

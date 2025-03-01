@@ -1,0 +1,78 @@
+<div class="billing-container">
+  <h2>Billing Address</h2>
+  <form [formGroup]="billingForm" (ngSubmit)="submitForm()">
+    <mat-label for="first_name">First Name*:</mat-label>
+    <input id="first_name" type="text" formControlName="first_name" />
+    <mat-error
+      *ngIf="
+        billingForm.controls['first_name'].invalid &&
+        billingForm.controls['first_name'].touched
+      "
+    >
+      First Name is required (min 2 characters).
+    </mat-error>
+
+    <mat-label for="last_name">Last Name*:</mat-label>
+    <input id="last_name" type="text" formControlName="last_name" />
+    <div
+      *ngIf="
+        billingForm.controls['last_name'].invalid &&
+        billingForm.controls['last_name'].touched
+      "
+    >
+      Last Name is required (min 2 characters).
+    </div>
+
+    <mat-label for="address_1">Address Line*:</mat-label>
+    <input id="address_1" type="text" formControlName="address_1" />
+
+    <mat-label for="address_2">Additional Address Line:</mat-label>
+    <input id="address_2" type="text" formControlName="address_2" />
+
+    <mat-label for="city">City*:</mat-label>
+    <input id="city" type="text" formControlName="city" />
+
+    <mat-label for="state">State:</mat-label>
+    <input id="state" type="text" formControlName="state" />
+
+    <mat-label for="postcode">ZIP Code*:</mat-label>
+    <input id="postcode" type="text" formControlName="postcode" />
+    <div
+      *ngIf="
+        billingForm.controls['postcode'].invalid &&
+        billingForm.controls['postcode'].touched
+      "
+    >
+      Enter a valid 5-digit ZIP code.
+    </div>
+
+    <mat-label for="country">Country*:</mat-label>
+    <input id="country" type="text" formControlName="country" />
+
+    <mat-label for="email">Email*:</mat-label>
+    <input id="email" type="email" formControlName="email" />
+    <div
+      *ngIf="
+        billingForm.controls['email'].invalid &&
+        billingForm.controls['email'].touched
+      "
+    >
+      Enter a valid email address.
+    </div>
+
+    <mat-label for="phone">Phone:</mat-label>
+    <input id="phone" type="tel" formControlName="phone" />
+    <div
+      *ngIf="
+        billingForm.controls['phone'].invalid &&
+        billingForm.controls['phone'].touched
+      "
+    >
+      Enter a valid phone number.
+    </div>
+
+    <button mat-raised-button="submit" [disabled]="billingForm.invalid">
+      Submit
+    </button>
+  </form>
+</div>

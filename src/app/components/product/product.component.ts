@@ -14,12 +14,19 @@ import { ProductDialogComponent } from '../product-dialog/product-dialog.compone
 import { CommonModule } from '@angular/common';
 import { ProductTypeLabels, WcProduct } from '../../models/product.model';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss'],
-  imports: [MatCardModule, MatExpansionModule, CommonModule, MatTooltipModule],
+  imports: [
+    MatCardModule,
+    MatExpansionModule,
+    CommonModule,
+    MatTooltipModule,
+    MatButtonModule,
+  ],
 })
 export class ProductComponent {
   @Input() product!: WcProduct;

@@ -2,7 +2,18 @@
   <div class="footer-content">
     <div class="left-container">
       <h4>Schicht: {{ product()?.name }}</h4>
-      <p>Produkt-ID: {{ product()?.id }}</p>
+      <p>
+        Ticket Preis:
+        {{
+          formatPrice(
+            product()?.prices?.price,
+            product()?.prices?.currency_decimal_separator,
+            product()?.prices?.currency_minor_unit,
+            product()?.prices?.currency_thousand_separator
+          )
+        }}
+        {{ product()?.prices?.currency_symbol }}
+      </p>
     </div>
     <div class="middle-container">
       <div *ngIf="isProductVariable()">
@@ -11,7 +22,7 @@
           style="width: 100%; max-width: 400px"
           [matTooltip]="tooltipMessage()"
         >
-          <mat-label>Wähle eine Schicht</mat-label>
+          <mat-label>Wähle eine Zeit</mat-label>
           <mat-select
             [formControl]="selectForm.controls.variationId"
             panelWidth="auto"
@@ -28,7 +39,11 @@
     <div class="right-container">
       <section>
         <div class="checkout-button-row">
-          <button mat-raised-button (click)="checkout()">
+          <button
+            [disabled]="!isFormValid"
+            mat-raised-button
+            (click)="checkout()"
+          >
             <mat-label class="checkout-label">Weiter zum Checkout</mat-label>
           </button>
         </div>

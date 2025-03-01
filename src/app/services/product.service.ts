@@ -26,6 +26,7 @@ export class ProductService {
       imagePath: product.id in IMAGE_MAP ? IMAGE_MAP[product.id] : undefined,
       attributes: product.attributes,
       variations: product.variations,
+      prices: product.prices,
     };
   }
 

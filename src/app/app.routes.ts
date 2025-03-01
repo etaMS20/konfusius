@@ -25,4 +25,12 @@ export const routes: Routes = [
       return import('./login/login.component').then((m) => m.LoginComponent);
     },
   },
+  {
+    path: 'checkout',
+    loadComponent: () => {
+      return import('./components/checkout/billing/billing.component').then(
+        (m) => m.CheckoutComponent
+      );
+    },
+  },
 ];

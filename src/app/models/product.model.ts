@@ -19,6 +19,20 @@ export interface WcProduct {
   imagePath?: string;
   attributes?: Array<WcProductAttribute>;
   variations?: Array<WcProductVariation>;
+  prices: WcPrice;
+}
+
+export interface WcPrice {
+  price: string;
+  regular_price: string;
+  sale_price: string;
+  currency_code: string;
+  currency_symbol: string;
+  currency_minor_unit: number;
+  currency_decimal_separator: string;
+  currency_thousand_separator: string;
+  currency_prefix: string;
+  currency_suffix: string;
 }
 
 export type WcProductAttributeTerm = {

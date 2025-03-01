@@ -24,6 +24,7 @@ import { DisableControlDirective } from '../../directives/disable-control.direct
 import { ErrorDialogService } from '../../errors/error-dialog.service';
 import { WcStoreAPI } from '../../services/wc-store-api.service';
 import { WcProduct, WcProductTypes } from '../../models/product.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-details',
@@ -46,6 +47,7 @@ export class ProductDetailsComponent {
   private readonly wcStore = inject(WcStoreAPI);
   private readonly fb = inject(FormBuilder);
   private readonly errorService = inject(ErrorDialogService);
+  private readonly router = inject(Router);
   selectForm: any;
 
   /** Signals */
@@ -69,6 +71,7 @@ export class ProductDetailsComponent {
       if (currentProduct) {
         this.queryProductVariations(currentProduct);
       }
+      this.selectForm.reset();
     });
   }
 
@@ -89,6 +92,27 @@ export class ProductDetailsComponent {
       });
   }
 
+  formatPrice(
+    price?: string,
+    decimalSeparator: string = ',',
+    decimalPlaces: number = 2,
+    thousandSeparator: string = '.'
+  ): string {
+    let numericPrice = parseFloat(price ?? 'NaN');
+    const factor = Math.pow(10, decimalPlaces);
+    const formattedPrice = (numericPrice / factor).toFixed(decimalPlaces);
+    let [integerPart, decimalPart] = formattedPrice.split('.');
+    integerPart = integerPart.replace(
+      /\B(?=(\d{3})+(?!\d))/g,
+      thousandSeparator
+    );
+    return `${integerPart}${decimalSeparator}${decimalPart}`;
+  }
+
+  get isFormValid(): boolean {
+    return this.selectForm.valid;
+  }
+
   checkout() {
     const checkoutId = this.selectForm.get('variationId').value;
 
@@ -102,7 +126,10 @@ export class ProductDetailsComponent {
         })
       )
       .subscribe({
-        next: (response) => console.log(response),
+        complete: () => {
+          // waiting for the addItem request to return OK
+          this.router.navigate(['/checkout']);
+        },
       });
   }
 }
