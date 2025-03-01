@@ -6,30 +6,15 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Initial setup for the project.
-- Integration with WordPress backend.
-- Environment configuration for development and production.
-- Product component with selection functionality.
-- Product details component with dynamic content and animations.
-- Proxy configuration for local development.
-- WP Api Client dep
+- developing v0
 
 ### Changed
 
-- Switched from npm to pnpm for dependency management.
-- Updated environment configuration to use `.env` file for local development.
-- switched to custom-webpack builder to load env on runtime
-- refactored auth
-- changed naming from shift to product
-
 ### Fixed
-
-- Resolved issues with environment variable loading in Angular.
-- wrong type for store endpoint
 
 ---
 
-## dev notes
+## Dev Notes
 
 ### Backend
 

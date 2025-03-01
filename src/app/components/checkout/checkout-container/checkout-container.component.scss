@@ -1,0 +1,37 @@
+.checkout-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.checkout-content {
+  display: flex;
+  gap: 30px;
+}
+
+.billing-section {
+  flex: 3;
+}
+
+.cart-section {
+  flex: 2;
+}
+
+/* Responsive layout */
+@media (max-width: 900px) {
+  .checkout-content {
+    flex-direction: column-reverse;
+  }
+
+  .billing-section,
+  .cart-section {
+    width: 100%;
+  }
+}

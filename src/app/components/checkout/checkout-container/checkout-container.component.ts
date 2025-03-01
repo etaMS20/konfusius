@@ -1,0 +1,49 @@
+import { Component, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { CartTotalsComponent } from '../cart-totals/cart-totals.component';
+import { BillingComponent } from '../billing/billing.component';
+import { WcBillingAddress } from '../../../models/customer.model';
+import { WcStoreAPI } from '../../../services/wc-store-api.service';
+import { catchError, throwError } from 'rxjs';
+import { ErrorDialogService } from '../../shared/errors/error-dialog.service';
+import { WcCart } from '../../../models/cart.model';
+
+@Component({
+  selector: 'app-checkout-container',
+  standalone: true,
+  imports: [CommonModule, CartTotalsComponent, BillingComponent],
+  templateUrl: './checkout-container.component.html',
+  styleUrls: ['./checkout-container.component.scss'],
+})
+export class CheckoutContainerComponent {
+  wcStoreApi = inject(WcStoreAPI);
+  errorService = inject(ErrorDialogService);
+  cart = signal<WcCart | null>(null);
+
+  constructor() {
+    this.wcStoreApi
+      .getCart()
+      .pipe(
+        catchError((error) => {
+          this.errorService.handleError(error);
+          return throwError(() => error);
+        })
+      )
+      .subscribe((response: WcCart) => {
+        this.cart.set(response);
+      });
+  }
+
+  onBillingFormSubmit(billingInfo: WcBillingAddress) {
+    // In a real application, you would process the checkout here
+    // This might include:
+    // 1. Sending the order to your backend
+    // 2. Processing payment
+    // 3. Redirecting to a confirmation page
+    console.log('Checkout submitted with billing info:', billingInfo);
+    console.log('Product purchased:', this.cart);
+
+    // Example of showing an alert for demo purposes
+    alert('Order submitted successfully!');
+  }
+}

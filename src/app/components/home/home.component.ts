@@ -1,9 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { ImageSliderComponent } from '../components/image-slider/image-slider.component';
-import { WordPressApiService } from '../services/wp-api.service';
+import { ImageSliderComponent } from '../shared/image-slider/image-slider.component';
+import { WordPressApiService } from '../../services/wp-api.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { InfoTabsComponent } from '../components/info-tabs/info-tabs.component';
+import { InfoTabsComponent } from './info-tabs/info-tabs.component';
 
 @Component({
   selector: 'app-home',

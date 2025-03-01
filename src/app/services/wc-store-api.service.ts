@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BACKEND } from '../../config/http.config';
-import { WcCustomerInfo, WcShippingAddress } from '../models/customer.model';
+import { WcShippingAddress } from '../models/customer.model';
 
 // https://github.com/woocommerce/woocommerce/blob/trunk/plugins/woocommerce/src/StoreApi/docs
 

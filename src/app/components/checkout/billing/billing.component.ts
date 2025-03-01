@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -16,7 +16,8 @@ import { MatError, MatLabel } from '@angular/material/form-field';
   templateUrl: './billing.component.html',
   styleUrl: './billing.component.scss',
 })
-export class CheckoutComponent {
+export class BillingComponent {
+  @Output() formSubmit = new EventEmitter<WcBillingAddress>();
   billingForm: FormGroup;
 
   constructor(private readonly fb: FormBuilder) {
@@ -34,13 +35,23 @@ export class CheckoutComponent {
     });
   }
 
-  submitForm() {
+  onSubmit() {
     if (this.billingForm.valid) {
       const billingData: WcBillingAddress = this.billingForm.value;
-      console.log('Billing Address:', billingData);
-      alert('Billing Address Submitted!');
+      console.log(billingData);
+      this.formSubmit.emit(this.billingForm.value);
     } else {
-      alert('Please fill in all required fields correctly.');
+      this.markFormGroupTouched(this.billingForm);
     }
+  }
+
+  private markFormGroupTouched(formGroup: FormGroup) {
+    Object.values(formGroup.controls).forEach((control) => {
+      control.markAsTouched();
+
+      if ((control as FormGroup).controls) {
+        this.markFormGroupTouched(control as FormGroup);
+      }
+    });
   }
 }

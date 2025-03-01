@@ -1,12 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { ProductListComponent } from '../components/product-list/product-list.component';
-import { ProductDetailsComponent } from '../components/product-details/product-details.component';
-import { WcProduct } from '../models/product.model';
-import { ProductSelectionService } from '../services/product-selection.service';
 import { NgIf } from '@angular/common';
-import { LoadingIndicatorComponent } from '../components/loading-indicator/loading-indicator.component';
-import { LoadingService } from '../services/loading.service';
+import { ProductListComponent } from './product-list/product-list.component';
+import { ProductDetailsComponent } from './product-details/product-details.component';
+import { LoadingIndicatorComponent } from '../loading-indicator/loading-indicator.component';
+import { WcProduct } from '../../models/product.model';
+import { LoadingService } from '../../services/loading.service';
+import { ProductSelectionService } from '../../services/product-selection.service';
 
 @Component({
   selector: 'app-tickets',

@@ -19,11 +19,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { throwError } from 'rxjs';
-import { catchError, concatMap } from 'rxjs/operators';
-import { DisableControlDirective } from '../../directives/disable-control.directive';
-import { ErrorDialogService } from '../../errors/error-dialog.service';
-import { WcStoreAPI } from '../../services/wc-store-api.service';
-import { WcProduct, WcProductTypes } from '../../models/product.model';
+import { catchError, concatMap, tap } from 'rxjs/operators';
+import { DisableControlDirective } from '../../../directives/disable-control.directive';
+import { ErrorDialogService } from '../../shared/errors/error-dialog.service';
+import { WcStoreAPI } from '../../../services/wc-store-api.service';
+import { WcProduct, WcProductTypes } from '../../../models/product.model';
 import { Router } from '@angular/router';
 
 @Component({
@@ -126,6 +126,9 @@ export class ProductDetailsComponent {
         })
       )
       .subscribe({
+        next: (response) => {
+          console.log('Item successfully added to cart:', response.items[0]);
+        },
         complete: () => {
           // waiting for the addItem request to return OK
           this.router.navigate(['/checkout']);

@@ -23,6 +23,15 @@ html {
   );
 }
 
+// universal reset for user agent styling
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 /* 
 background: url(./assets/b_prediction1.png) no-repeat center;
 background-size: cover;
@@ -31,8 +40,8 @@ background-attachment: scroll; Allows the background to scroll with the content
  */
 
 body {
-  line-height: 1.6;
-  font-family: 'Roboto', sans-serif;
+  margin-top: 100px;
+  max-width: 1600px;
 }
 
 * {
@@ -76,4 +85,12 @@ p {
       container-elevation-shadow: 0 0 0 0 rgba(0, 0, 0, 0.5),
     )
   );
+}
+
+/* Error message styling */
+mat-error {
+  color: #f44336;
+  font-size: 0.875rem;
+  display: block; // Ensures the error message is on its own line
+  margin-top: 4px; // Adds some spacing between the input and the error message
 }

@@ -6,14 +6,16 @@ export const routes: Routes = [
     path: '',
     pathMatch: 'full',
     loadComponent: () => {
-      return import('./home/home.component').then((m) => m.HomeComponent);
+      return import('./components/home/home.component').then(
+        (m) => m.HomeComponent
+      );
     },
     canActivate: [AuthGuard],
   },
   {
     path: 'tickets',
     loadComponent: () => {
-      return import('./tickets/tickets.component').then(
+      return import('./components/tickets/tickets.component').then(
         (m) => m.TicketsComponent
       );
     },
@@ -22,15 +24,17 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () => {
-      return import('./login/login.component').then((m) => m.LoginComponent);
+      return import('./components/login/login.component').then(
+        (m) => m.LoginComponent
+      );
     },
   },
   {
     path: 'checkout',
     loadComponent: () => {
-      return import('./components/checkout/billing/billing.component').then(
-        (m) => m.CheckoutComponent
-      );
+      return import(
+        './components/checkout/checkout-container/checkout-container.component'
+      ).then((m) => m.CheckoutContainerComponent);
     },
   },
 ];

@@ -1,10 +1,17 @@
 .billing-container {
-  width: 300px;
+  max-width: 600px;
   margin: auto;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  padding-top: 80px;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
 }
 
 input {
@@ -21,10 +28,4 @@ button {
   border: none;
   width: 100%;
   cursor: pointer;
-}
-
-/* Error message styling */
-mat-error {
-  color: #f44336;
-  font-size: 0.875rem;
 }

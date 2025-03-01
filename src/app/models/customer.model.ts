@@ -1,8 +1,3 @@
-export interface WcCustomerInfo {
-  billing_address: WcBillingAddress;
-  shipping_address?: WcShippingAddress;
-}
-
 export interface WcBillingAddress {
   first_name: string;
   last_name: string;

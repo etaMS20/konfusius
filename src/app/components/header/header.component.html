@@ -1,61 +1,67 @@
-<mat-toolbar class="header-toolbar" [class.scrolled]="isScrolled">
-  <div class="container">
-    <div class="logo-container">
-      <a routerLink="/" class="logo-link">
-        <img
-          src="assets/logo_stretched_nav.png"
-          alt="Logo"
-          class="logo-image"
-        />
-      </a>
-    </div>
+<header>
+  <mat-toolbar class="header-toolbar" [class.scrolled]="isScrolled">
+    <div class="container">
+      <div class="logo-container">
+        <a routerLink="/" class="logo-link">
+          <img
+            src="assets/logo_stretched_nav.png"
+            alt="Logo"
+            class="logo-image"
+          />
+        </a>
+      </div>
 
-    <!-- Desktop Navigation -->
-    <div class="nav-links desktop-nav">
-      <button mat-button routerLink="/tickets" routerLinkActive="active-link">
-        <mat-icon>confirmation_number</mat-icon>
-        Zu den Schichten
+      <!-- Desktop Navigation -->
+      <div class="nav-links desktop-nav">
+        <button mat-button routerLink="/tickets" routerLinkActive="active-link">
+          <mat-icon>confirmation_number</mat-icon>
+          Zu den Schichten
+        </button>
+
+        <button
+          mat-button
+          routerLink="/dashboard"
+          routerLinkActive="active-link"
+        >
+          <mat-icon>help_outline</mat-icon>
+          FAQ
+        </button>
+      </div>
+
+      <!-- Mobile Navigation Toggle -->
+      <button
+        mat-icon-button
+        class="menu-toggle"
+        (click)="toggleMenu()"
+        aria-label="Toggle navigation menu"
+      >
+        <mat-icon>{{ isMenuOpen() ? 'close' : 'menu' }}</mat-icon>
       </button>
+    </div>
+  </mat-toolbar>
 
-      <button mat-button routerLink="/dashboard" routerLinkActive="active-link">
+  <!-- Mobile Navigation Menu -->
+  <div class="mobile-nav" [class.open]="isMenuOpen()">
+    <div class="mobile-nav-links">
+      <a
+        mat-button
+        routerLink="/tickets"
+        routerLinkActive="active-link"
+        (click)="toggleMenu()"
+      >
+        <mat-icon>confirmation_number</mat-icon>
+        Tickets
+      </a>
+
+      <a
+        mat-button
+        routerLink="/dashboard"
+        routerLinkActive="active-link"
+        (click)="toggleMenu()"
+      >
         <mat-icon>help_outline</mat-icon>
         FAQ
-      </button>
+      </a>
     </div>
-
-    <!-- Mobile Navigation Toggle -->
-    <button
-      mat-icon-button
-      class="menu-toggle"
-      (click)="toggleMenu()"
-      aria-label="Toggle navigation menu"
-    >
-      <mat-icon>{{ isMenuOpen() ? 'close' : 'menu' }}</mat-icon>
-    </button>
   </div>
-</mat-toolbar>
-
-<!-- Mobile Navigation Menu -->
-<div class="mobile-nav" [class.open]="isMenuOpen()">
-  <div class="mobile-nav-links">
-    <a
-      mat-button
-      routerLink="/tickets"
-      routerLinkActive="active-link"
-      (click)="toggleMenu()"
-    >
-      <mat-icon>confirmation_number</mat-icon>
-      Tickets
-    </a>
-
-    <a
-      mat-button
-      routerLink="/dashboard"
-      routerLinkActive="active-link"
-      (click)="toggleMenu()"
-    >
-      <mat-icon>help_outline</mat-icon>
-      FAQ
-    </a>
-  </div>
-</div>
+</header>

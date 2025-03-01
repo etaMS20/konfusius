@@ -10,11 +10,11 @@ import {
   signal,
 } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { ProductSelectionService } from '../../services/product-selection.service';
-import { ProductService } from '../../services/product.service';
-import { WcStoreAPI } from '../../services/wc-store-api.service';
+import { ProductSelectionService } from '../../../services/product-selection.service';
+import { ProductService } from '../../../services/product.service';
+import { WcStoreAPI } from '../../../services/wc-store-api.service';
 import { ProductComponent } from '../product/product.component';
-import { WcProduct } from '../../models/product.model';
+import { WcProduct } from '../../../models/product.model';
 
 @Component({
   selector: 'product-list',
