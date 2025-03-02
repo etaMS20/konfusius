@@ -1,5 +1,5 @@
 <div class="billing-container">
-  <h2>Billing Address</h2>
+  <h2>Rechnungsadresse</h2>
   <form [formGroup]="billingForm" (ngSubmit)="onSubmit()">
     <mat-label for="first_name">First Name*:</mat-label>
     <input
@@ -117,7 +117,7 @@
     </mat-error>
 
     <button mat-raised-button="submit" [disabled]="billingForm.invalid">
-      Submit
+      Adressinformationen Bestätigen
     </button>
   </form>
 </div>

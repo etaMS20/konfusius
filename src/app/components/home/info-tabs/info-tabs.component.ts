@@ -2,19 +2,18 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
+import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 
 interface InfoTab {
   icon: string;
   label: string;
-  title: string;
-  description: string;
-  bulletPoints: string[];
+  content?: string;
 }
 
 @Component({
   selector: 'app-info-tabs',
   standalone: true,
-  imports: [CommonModule, MatTabsModule, MatIconModule],
+  imports: [CommonModule, MatTabsModule, MatIconModule, MatExpansionModule],
   templateUrl: './info-tabs.component.html',
   styleUrls: ['./info-tabs.component.scss'],
 })
@@ -23,40 +22,17 @@ export class InfoTabsComponent {
     {
       icon: 'directions_car',
       label: 'Anreise',
-      title: 'Anreise & Parken',
-      description:
-        'Details zur Anreise und Parkmöglichkeiten werden nach erfolgreicher Anmeldung bekannt gegeben.',
-      bulletPoints: [
-        'Shuttleservice vom Bahnhof verfügbar',
-        'Ausreichend Parkplätze vorhanden',
-        'Fahrgemeinschaften werden empfohlen',
-      ],
+      content: '',
     },
     {
       icon: 'restaurant',
       label: 'Verpflegung',
-      title: 'Essen & Getränke',
-      description:
-        'Für Getränke und Speisen ist während des gesamten Festivals gesorgt.',
-      bulletPoints: [
-        'Verschiedene Food Trucks vor Ort',
-        'Getränkestand mit lokalen Spezialitäten',
-        'Vegetarische und vegane Optionen',
-        'Eigene Getränke für das Camping erlaubt',
-      ],
+      content: '',
     },
     {
       icon: 'camping',
       label: 'Camping',
-      title: 'Camping Informationen',
-      description:
-        'Zeltplätze sind im Ticketpreis inbegriffen. Bringt euer eigenes Camping-Equipment mit.',
-      bulletPoints: [
-        'Sanitäre Anlagen vorhanden',
-        'Stromanschlüsse in ausgewiesenen Bereichen',
-        'Gemeinsamer Grillbereich',
-        '24/7 Security auf dem Gelände',
-      ],
+      content: '',
     },
   ];
 }

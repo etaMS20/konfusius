@@ -1,9 +1,10 @@
 import { WcBillingAddress, WcShippingAddress } from './customer.model';
 import {
+  WcCartTotals,
+  WcItemTotals,
   WcPaymentMethod,
   WcPaymentRequirement,
   WcPrice,
-  WcTotals,
 } from './price.model';
 
 export interface WcCart {
@@ -22,7 +23,7 @@ export interface WcCart {
   payment_requirements: Array<WcPaymentRequirement>;
   shipping_address: WcShippingAddress;
   shipping_rates: Array<any>;
-  totals: WcTotals;
+  totals: WcCartTotals;
 }
 
 export interface WcCartItem {
@@ -52,7 +53,7 @@ export interface WcCartItem {
   }>;
   item_data: Array<any>;
   prices: WcPrice;
-  totals: WcTotals;
+  totals: WcItemTotals;
   catalog_visibility: string;
   extensions: object;
 }

@@ -48,6 +48,7 @@ $text-color: #2c1810;
       font-family: 'MedievalSharp', cursive;
       position: relative;
       padding-bottom: 10px;
+      width: 100%;
 
       &::after {
         content: '';
@@ -118,7 +119,7 @@ $text-color: #2c1810;
   border-radius: 8px;
   border: 1px solid rgba($text-color, 0.1);
   margin: 0 auto;
-  max-width: 800px;
+  display: flex;
 
   h3 {
     color: $text-color;
@@ -150,78 +151,58 @@ $text-color: #2c1810;
     font-family: 'Crimson Pro', serif;
   }
 
-  .additional-info {
-    background: rgba(255, 255, 255, 0.4);
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid rgba($text-color, 0.1);
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 16px;
 
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 16px;
+    li {
+      color: $text-color;
+      padding-left: 24px;
+      position: relative;
+      font-family: 'Crimson Pro', serif;
+      font-size: 1.1rem;
+      line-height: 1.4;
 
-      li {
-        color: $text-color;
-        padding-left: 24px;
-        position: relative;
-        font-family: 'Crimson Pro', serif;
-        font-size: 1.1rem;
-        line-height: 1.4;
-
-        &::before {
-          content: '❧';
-          position: absolute;
-          left: 0;
-          color: $primary-color;
-        }
+      &::before {
+        content: '>';
+        position: absolute;
+        left: 0;
+        color: $primary-color;
       }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  ::ng-deep {
+    .mat-expansion-panel-body {
+      padding: 0 5px 5px !important;
     }
   }
 }
 
 // Responsive adjustments
 @media (max-width: 768px) {
+  .content-wrapper {
+    padding: 0 5px; // Reduced from 30px but not too tight
+  }
+
   .info-tabs-section {
     .festival-tabs {
       ::ng-deep {
         .mat-mdc-tab {
           min-width: 120px;
-          padding: 0 16px;
+          padding: 3px;
         }
       }
     }
 
     .tab-content {
-      padding: 16px;
-
-      .additional-info ul {
-        grid-template-columns: 1fr;
-      }
-    }
-  }
-}
-
-@media (max-width: 480px) {
-  .info-tabs-section {
-    .content-wrapper {
-      padding: 0 15px;
-    }
-
-    .festival-tabs {
-      ::ng-deep {
-        .mat-mdc-tab {
-          min-width: auto;
-          padding: 0 12px;
-
-          .mat-icon {
-            margin-right: 4px;
-          }
-        }
-      }
+      padding: 3px;
     }
   }
 }

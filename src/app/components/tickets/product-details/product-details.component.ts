@@ -127,7 +127,7 @@ export class ProductDetailsComponent {
       )
       .subscribe({
         next: (response) => {
-          console.log('Item successfully added to cart:', response.items[0]);
+          console.log('Item successfully added to cart:', response);
         },
         complete: () => {
           // waiting for the addItem request to return OK

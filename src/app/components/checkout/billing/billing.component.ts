@@ -22,23 +22,21 @@ export class BillingComponent {
 
   constructor(private readonly fb: FormBuilder) {
     this.billingForm = this.fb.group({
-      first_name: ['', [Validators.required, Validators.minLength(2)]],
-      last_name: ['', [Validators.required, Validators.minLength(2)]],
-      address_1: ['', Validators.required],
-      address_2: [''],
-      city: ['', Validators.required],
-      state: [''],
-      postcode: ['', [Validators.required, Validators.pattern('^[0-9]{5}$')]],
-      country: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.pattern('^[0-9]+$')]],
+      first_name: [null, [Validators.required, Validators.minLength(2)]],
+      last_name: [null, [Validators.required, Validators.minLength(2)]],
+      address_1: [null, Validators.required],
+      address_2: [null],
+      city: [null, Validators.required],
+      state: [null],
+      postcode: [null, [Validators.required, Validators.pattern('^[0-9]{5}$')]],
+      country: [null, Validators.required],
+      email: [null, [Validators.required, Validators.email]],
+      phone: [null, [Validators.pattern('^[0-9]+$')]],
     });
   }
 
   onSubmit() {
     if (this.billingForm.valid) {
-      const billingData: WcBillingAddress = this.billingForm.value;
-      console.log(billingData);
       this.formSubmit.emit(this.billingForm.value);
     } else {
       this.markFormGroupTouched(this.billingForm);

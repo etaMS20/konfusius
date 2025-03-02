@@ -20,22 +20,43 @@ export class CartTotalsComponent {
   });
 
   get cartTotalPrice(): string {
-    return formatPrice(this.cartTotals()).totalPrice;
-  }
-
-  get cartSubTotalPrice(): string {
-    return formatPrice(this.cartTotals()).totalPrice;
+    const ct = this.cartTotals();
+    if (ct)
+      return formatPrice(
+        ct.total_price,
+        ct.currency_thousand_separator,
+        ct.currency_decimal_separator,
+        ct.currency_minor_unit
+      );
+    else return '';
   }
 
   get cartItemTotalPrice(): string {
-    return formatPrice(this.cartItem()?.totals).totalPrice;
+    const ct = this.cartItem()?.totals;
+    if (ct)
+      return formatPrice(
+        ct.line_total,
+        ct.currency_thousand_separator,
+        ct.currency_decimal_separator,
+        ct.currency_minor_unit
+      );
+    else return '';
   }
 
   get cartItemSubTotalPrice(): string {
-    return formatPrice(this.cartItem()?.totals).totalPrice;
+    const ct = this.cartItem()?.totals;
+    if (ct)
+      return formatPrice(
+        ct.line_subtotal,
+        ct.currency_thousand_separator,
+        ct.currency_decimal_separator,
+        ct.currency_minor_unit
+      );
+    else return '';
   }
 
   get hasItem(): boolean {
-    return this.cart!.items_count > 0;
+    if (this.cart) return this.cart.items_count > 0;
+    else return false;
   }
 }
