@@ -1,11 +1,12 @@
 $text-color: #2c1810;
 
-.content-container {
-  padding-top: 80px;
-}
-
-.heading-center {
-  text-align: center;
+.ticket-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  flex-grow: 1;
 }
 
 h2 {

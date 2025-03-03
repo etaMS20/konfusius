@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { WcBillingAddress } from '../../../models/customer.model';
+import { WcBillingAddress } from '../../../../models/customer.model';
 import { NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatError, MatLabel } from '@angular/material/form-field';
@@ -13,8 +13,8 @@ import { MatError, MatLabel } from '@angular/material/form-field';
 @Component({
   selector: 'app-billing',
   imports: [ReactiveFormsModule, NgIf, MatButtonModule, MatError, MatLabel],
-  templateUrl: './billing.component.html',
-  styleUrl: './billing.component.scss',
+  templateUrl: './billing-input.component.html',
+  styleUrl: './billing-input.component.scss',
 })
 export class BillingComponent {
   @Output() formSubmit = new EventEmitter<WcBillingAddress>();

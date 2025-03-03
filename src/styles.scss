@@ -40,8 +40,23 @@ background-attachment: scroll; Allows the background to scroll with the content
  */
 
 body {
-  margin-top: 100px;
-  max-width: 1600px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; // Keeps the top margin while allowing horizontal centering
+  min-height: 100vh; // Ensures the body takes up full viewport height
+  margin: 50px auto 0; // Changed to auto horizontal margins
+  width: 100%; // Ensures body takes full width
+}
+
+footer {
+  position: flex;
+  bottom: 0;
+  left: 0;
+}
+
+.app-wrapper {
+  width: 100%;
+  max-width: 1600px; // Moved max-width to wrapper
 }
 
 * {

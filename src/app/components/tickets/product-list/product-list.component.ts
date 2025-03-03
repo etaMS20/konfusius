@@ -87,21 +87,4 @@ export class ProductListComponent implements OnInit {
       this.productsLoading.emit(false);
     });
   }
-
-  testCheckout() {
-    const billing = {
-      first_name: 'Peter',
-      last_name: 'Venkman',
-      company: '',
-      address_1: '550 Central Park West',
-      address_2: 'Corner Penthouse Spook Central',
-      city: 'New York',
-      state: 'NY',
-      postcode: '10023',
-      country: 'US',
-      email: 'admin@example.com',
-      phone: '555-2368',
-    };
-    this.wcStore.checkout(billing).subscribe((r) => console.log(r));
-  }
 }

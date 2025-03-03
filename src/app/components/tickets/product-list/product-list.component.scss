@@ -1,0 +1,6 @@
+.mat-grid-list {
+  display: flex !important;
+  position: static !important; /* Resets position to default */
+  flex: 1 1 auto; /* Allow it to grow and shrink properly */
+  min-height: 0; /* Important for flex children with overflow */
+}

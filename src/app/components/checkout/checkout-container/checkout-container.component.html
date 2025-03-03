@@ -3,11 +3,21 @@
 
   <div class="checkout-content">
     <div class="billing-section">
-      <app-billing (formSubmit)="onBillingFormSubmit($event)"></app-billing>
+      <app-billing
+        *ngIf="!billingAddressSet() || billingAddressEdit()"
+        (formSubmit)="onBillingFormSubmit($event)"
+      ></app-billing>
+      <app-billing-overview
+        *ngIf="billingAddressSet() && !billingAddressEdit()"
+        [billingData]="billingAddress()"
+        (edit)="onBillingAddressEdit($event)"
+      ></app-billing-overview>
     </div>
 
     <div class="cart-section">
       <app-cart-totals [cart]="cart()"> </app-cart-totals>
     </div>
   </div>
+
+  <button (click)="checkout()">BESTELLEN</button>
 </div>

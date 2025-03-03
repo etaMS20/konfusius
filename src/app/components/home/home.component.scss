@@ -119,7 +119,7 @@ $text-color: #2c1810;
   }
 
   .content-wrapper {
-    padding: 40px;
+    padding: 20px;
     position: relative;
     border-radius: 10px;
     font-family: 'Roboto', sans-serif;
@@ -154,7 +154,7 @@ $text-color: #2c1810;
       font-size: 1.2rem;
       text-align: left;
       position: relative;
-      padding: 0 20px;
+      padding: 0 5px;
 
       &:first-letter {
       }
@@ -353,7 +353,7 @@ $text-color: #2c1810;
 
   .middle-section .content-wrapper,
   .right-section .info-box {
-    padding: 20px;
+    padding: 5px;
   }
 
   .image-container {

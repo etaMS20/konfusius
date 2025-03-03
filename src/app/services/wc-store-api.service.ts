@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BACKEND } from '../../config/http.config';
-import { WcShippingAddress } from '../models/customer.model';
+import { WcBillingAddress, WcShippingAddress } from '../models/customer.model';
 
 // https://github.com/woocommerce/woocommerce/blob/trunk/plugins/woocommerce/src/StoreApi/docs
 
@@ -86,11 +86,43 @@ export class WcStoreAPI {
 
   // checkout
 
-  checkout(billingAddress: any): Observable<any> {
+  checkout(
+    billingAddress?: WcBillingAddress,
+    paymentMethod?: string,
+    shippingAddress?: WcShippingAddress,
+    paymentData?: Array<any>,
+    customerNote?: string
+  ): Observable<any> {
     return this.http.post(
       this.storeApiBackend + '/checkout',
       {
         billing_address: billingAddress,
+        payment_method: paymentMethod,
+        payment_data: paymentData,
+        shipping_address: shippingAddress,
+        customerNote: customerNote,
+      },
+      { headers: this.headers, withCredentials: true }
+    );
+  }
+
+  checkoutOrder(
+    key: string,
+    billingAddress: WcBillingAddress,
+    shippingAddress: WcShippingAddress,
+    paymentMethod: string,
+    paymentData: Array<any>,
+    billingEmail?: string
+  ): Observable<any> {
+    return this.http.post(
+      this.storeApiBackend + '/checkout',
+      {
+        key: key,
+        billing_address: billingAddress,
+        payment_method: paymentMethod,
+        payment_data: paymentData,
+        shipping_address: shippingAddress,
+        billing_email: billingEmail,
       },
       { headers: this.headers, withCredentials: true }
     );

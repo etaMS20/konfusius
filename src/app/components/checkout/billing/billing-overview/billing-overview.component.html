@@ -1,0 +1,43 @@
+<div *ngIf="billingData; else noData">
+  <div class="billing-overview-container">
+    <h2>Billing Address Overview</h2>
+
+    <div class="overview-item">
+      <strong>First Name:</strong> {{ billingData.first_name }}
+    </div>
+    <div class="overview-item">
+      <strong>Last Name:</strong> {{ billingData.last_name }}
+    </div>
+    <div class="overview-item">
+      <strong>Address Line 1:</strong> {{ billingData.address_1 }}
+    </div>
+    <div class="overview-item" *ngIf="billingData.address_2">
+      <strong>Address Line 2:</strong> {{ billingData.address_2 }}
+    </div>
+    <div class="overview-item">
+      <strong>City:</strong> {{ billingData.city }}
+    </div>
+    <div class="overview-item" *ngIf="billingData.state">
+      <strong>State:</strong> {{ billingData.state }}
+    </div>
+    <div class="overview-item">
+      <strong>ZIP Code:</strong> {{ billingData.postcode }}
+    </div>
+    <div class="overview-item">
+      <strong>Country:</strong> {{ billingData.country }}
+    </div>
+    <div class="overview-item">
+      <strong>Email:</strong> {{ billingData.email }}
+    </div>
+    <div class="overview-item" *ngIf="billingData.phone">
+      <strong>Phone:</strong> {{ billingData.phone }}
+    </div>
+
+    <button mat-raised-button (click)="editAddress()">Edit Address</button>
+  </div>
+</div>
+
+<!-- This is the 'else' template for when billingData is not available -->
+<ng-template #noData>
+  <p>No billing address available.</p>
+</ng-template>
