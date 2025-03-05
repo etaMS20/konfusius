@@ -21,7 +21,7 @@
       <div class="content-wrapper">
         <h2>Liebe Freunde der Sonne & der guten Laune</h2>
         <div [innerHTML]="this.introText()"></div>
-        <div [innerHTML]="this.programText()"></div>
+        <div [innerHTML]="this.introText2()"></div>
       </div>
     </section>
 
@@ -29,14 +29,7 @@
     <section class="right-section">
       <div class="info-box">
         <h3>Eckdaten</h3>
-        <ul>
-          <li>Ort: St.Konfusius Kloster (irgendwo im Rheingau)</li>
-          <li>Datum: 23-25. Mai 2025</li>
-          <li>Festival & Camping für 180 Personen</li>
-          <li>
-            Anmeldezeitraum: 23.03. - 30.04.2025 (19:00 Uhr Anmeldeschluss)
-          </li>
-        </ul>
+        <div [innerHTML]="this.eckDaten()"></div>
       </div>
     </section>
   </div>

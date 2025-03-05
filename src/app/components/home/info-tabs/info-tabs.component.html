@@ -1,14 +1,14 @@
 <div class="content-wrapper">
-  <h2>Weitere Informationen</h2>
+  <h3>Win paar wichtige Infos...</h3>
+  <app-pdf-viewer />
 
   <mat-accordion>
-    <mat-expansion-panel *ngFor="let tab of tabs">
+    <mat-expansion-panel *ngFor="let tab of tabs()">
       <mat-expansion-panel-header>
         <mat-icon>{{ tab.icon }}</mat-icon>
         <span>{{ tab.label }}</span>
       </mat-expansion-panel-header>
-
-      <div class="tab-content"></div>
+      <div class="tab-content" [innerHTML]="tab.content"></div>
     </mat-expansion-panel>
   </mat-accordion>
 </div>

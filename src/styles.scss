@@ -27,8 +27,6 @@ html {
 *,
 *::before,
 *::after {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
@@ -63,17 +61,6 @@ footer {
   outline: none;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: #000000;
-  margin: 20px 0;
-  font-family: 'Arial', sans-serif;
-}
-
 h1 {
   font-size: 2.5rem;
 }
@@ -87,9 +74,16 @@ h3 {
 }
 
 p {
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: #292929;
   margin: 10px 0;
+}
+
+li {
+  color: #292929;
+  margin: 10px 0;
+  font-size: 1.1rem;
+  // font-family: 'MedievalSharp', cursive;
 }
 
 // Customize the entire app. Change :root to your selector if you want to scope the styles.

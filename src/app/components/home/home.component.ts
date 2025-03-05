@@ -3,7 +3,6 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { WordPressApiService } from '../../services/wp-api.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { InfoTabsComponent } from './info-tabs/info-tabs.component';
-import { MappingService } from '../../services/mapping.service';
 import { ImageContainerComponent } from './image-container/image-container.component';
 
 @Component({
@@ -16,7 +15,9 @@ export class HomeComponent {
   private readonly wpApi = inject(WordPressApiService);
 
   introText = signal<SafeHtml>('');
-  programText = signal<SafeHtml>('');
+  introText2 = signal<SafeHtml>('');
+  eckDaten = signal<SafeHtml>('');
+
   textLoadedP = signal<boolean>(false);
 
   constructor(private readonly sanitizer: DomSanitizer) {
@@ -25,16 +26,16 @@ export class HomeComponent {
       this.textLoadedP.set(true); // mark as loaded
     });
 
-    this.wpApi.getPostById(1713).subscribe((r) => {
-      this.programText.set(this.sanitizeText(r.content.rendered));
+    this.wpApi.getPostById(1733).subscribe((r) => {
+      this.introText2.set(this.sanitizeText(r.content.rendered));
+    });
+
+    this.wpApi.getPostById(1735).subscribe((r) => {
+      this.eckDaten.set(this.sanitizeText(r.content.rendered));
     });
   }
 
   sanitizeText(text: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(text);
-  }
-
-  showInfo(item: any) {
-    console.log('Info for:', item);
   }
 }

@@ -18,7 +18,14 @@
     "target": "es2022",
     "module": "esnext",
     "types": ["node"],
-    "lib": ["es2022", "dom"]
+    "lib": ["es2022", "dom"],
+    "baseUrl": ".",
+    "rootDir": ".",
+    "paths": {
+      "@config/*": ["src/config/*"],
+      "@shared/*": ["src/app/components/shared/*"],
+      "@components/*": ["src/app/components/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

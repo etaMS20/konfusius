@@ -41,7 +41,7 @@ import { WPMappedImage } from '../../../models/media.model';
 export class ImageSliderComponent implements OnInit, OnDestroy {
   @Input() images: WPMappedImage[] = [];
   @Input() autoPlayInterval = 5000;
-  @Input() height: number = 200;
+  @Input() height: number = 300;
 
   private autoPlayTimer?: number;
   currentIndex = signal(0);

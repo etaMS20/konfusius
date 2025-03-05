@@ -27,3 +27,9 @@ All notable changes to this project will be documented in this file.
 - added allowed origin to backend to be able to save cookies from other origin
 
 https://dev.to/stephenwhitmore/take-your-wordpress-site-farther-with-angular-3o6p
+
+### TODO
+
+- custom payment method (plugin)
+- custom endpoints to retrieve billing custom fields
+- move DOM sanitizer to Service

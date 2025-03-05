@@ -11,15 +11,7 @@ $text-color: #2c1810;
     color: $text-color;
     font-size: 2.2rem;
     margin-bottom: 30px;
-    font-family: 'MedievalSharp', cursive;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-
-    &::before,
-    &::after {
-      content: '✧';
-      margin: 0 15px;
-      color: $primary-color;
-    }
   }
 }
 
@@ -45,7 +37,6 @@ $text-color: #2c1810;
       color: $text-color;
       font-size: 1.5rem;
       margin-bottom: 15px;
-      font-family: 'MedievalSharp', cursive;
       position: relative;
       padding-bottom: 10px;
       width: 100%;
@@ -65,7 +56,6 @@ $text-color: #2c1810;
     p {
       color: $text-color;
       line-height: 1.6;
-      font-family: 'Crimson Pro', serif;
       font-size: 1.1rem;
     }
   }
@@ -105,7 +95,6 @@ $text-color: #2c1810;
     // Tab labels
     .mdc-tab__text-label {
       color: $text-color;
-      font-family: 'Crimson Pro', serif;
       font-size: 1.1rem;
       letter-spacing: 0.5px;
     }
@@ -119,13 +108,11 @@ $text-color: #2c1810;
   border-radius: 8px;
   border: 1px solid rgba($text-color, 0.1);
   margin: 0 auto;
-  display: flex;
 
   h3 {
     color: $text-color;
     font-size: 1.8rem;
     margin-bottom: 16px;
-    font-family: 'MedievalSharp', cursive;
     text-align: center;
     position: relative;
     padding-bottom: 12px;
@@ -148,7 +135,6 @@ $text-color: #2c1810;
     line-height: 1.6;
     text-align: center;
     margin-bottom: 24px;
-    font-family: 'Crimson Pro', serif;
   }
 
   ul {
@@ -163,7 +149,6 @@ $text-color: #2c1810;
       color: $text-color;
       padding-left: 24px;
       position: relative;
-      font-family: 'Crimson Pro', serif;
       font-size: 1.1rem;
       line-height: 1.4;
 
