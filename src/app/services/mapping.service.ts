@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IMAGE_MAP, WcProduct } from '../models/product.model';
-import { WPImageSizeApiKey } from '../models/media.model';
+import { WPImageSizeApiKey, WPMappedImage } from '../models/media.model';
 
 /**
  * service to map the api responses to typed objects
@@ -27,27 +27,26 @@ export class MappingService {
     };
   }
 
-  mapImageUrls(data: any) {
-    const mobile: string[] = [];
-    const large: string[] = [];
-    const full: string[] = [];
+  mapImageUrls(data: any): WPMappedImage[] {
+    const images: WPMappedImage[] = [];
 
     data.forEach((item: any) => {
-      if (item.media_details.sizes.medium) {
-        mobile.push(
-          item.media_details.sizes[WPImageSizeApiKey.MOBILE].source_url,
-        );
-      }
-      if (item.media_details.sizes.large) {
-        large.push(
-          item.media_details.sizes[WPImageSizeApiKey.MEDIUM].source_url,
-        );
-      }
-      if (item.media_details.sizes.full) {
-        full.push(item.guid.rendered);
-      }
+      const materialImage: WPMappedImage = {
+        url: item.guid.rendered,
+        alt: item.alt_text || '', // Optional alt text, if available
+        title: item.title.rendered || '', // Optional title, if available
+        category: item.attachment_category || [], // Optional category, if available
+        sizes: {
+          [WPImageSizeApiKey.MOBILE]:
+            item.media_details.sizes.medium?.source_url || '',
+          [WPImageSizeApiKey.MEDIUM]:
+            item.media_details.sizes.large?.source_url || '',
+          [WPImageSizeApiKey.FULL]: item.guid.rendered,
+        },
+      };
+      images.push(materialImage);
     });
 
-    return { mobile, large, full };
+    return images;
   }
 }

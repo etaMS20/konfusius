@@ -1,13 +1,22 @@
 <div class="image-show-container">
-  <app-image-slider [images]="carouselImages" [autoPlayInterval]="10_000">
+  <app-image-slider
+    *ngIf="gallery1()"
+    [images]="gallery1() || []"
+    [autoPlayInterval]="10000"
+  >
   </app-image-slider>
 
-  <app-image-slider [images]="carouselImages" [autoPlayInterval]="10_100">
+  <app-image-slider
+    *ngIf="gallery1()"
+    [images]="gallery1() || []"
+    [autoPlayInterval]="10100"
+  >
   </app-image-slider>
 
-  <app-image-slider [images]="carouselImages" [autoPlayInterval]="10_200">
-  </app-image-slider>
-
-  <app-image-slider [images]="carouselImages" [autoPlayInterval]="10_300">
+  <app-image-slider
+    *ngIf="gallery1()"
+    [images]="gallery1() || []"
+    [autoPlayInterval]="10200"
+  >
   </app-image-slider>
 </div>

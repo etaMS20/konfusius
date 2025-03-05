@@ -34,7 +34,7 @@ export class WordPressApiService {
 
   getMediaImages(
     category?: WPCategory,
-    perPage: number = 1000,
+    perPage: number = 100,
   ): Observable<any> {
     const params: any = { per_page: perPage };
     if (category !== undefined) params.attachment_category = category;

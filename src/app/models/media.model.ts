@@ -21,7 +21,7 @@ export enum WPImageSizeApiKey {
 /**
  * We use this simplified model for all images on the website
  */
-export interface MaterialImage {
+export interface WPMappedImage {
   url: string;
   alt?: string;
   title?: string;

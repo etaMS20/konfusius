@@ -72,7 +72,7 @@ $text-color: #2c1810;
 // Main Grid Layout
 .main-grid {
   display: grid;
-  grid-template-columns: 1fr 2.5fr 1fr;
+  grid-template-columns: 1.4fr 2.5fr 1.1fr;
   gap: 30px;
   margin-bottom: 40px;
   min-height: 0;
@@ -81,32 +81,7 @@ $text-color: #2c1810;
 
 // Left Section - Image Sliders
 .left-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 20% 0;
-
-  app-carousel {
-    width: 100%;
-    height: 250px;
-    display: block;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    border: 4px solid $text-color;
-    position: relative;
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.3);
-      pointer-events: none;
-    }
-  }
+  display: block;
 }
 
 // Middle Section - Scroll Design
@@ -276,13 +251,7 @@ $text-color: #2c1810;
   }
 
   .left-section {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-
-    app-carousel {
-      height: 200px;
-    }
+    display: none;
   }
 
   .middle-section .content-wrapper {
@@ -320,7 +289,7 @@ $text-color: #2c1810;
   }
 
   .left-section {
-    display: none; // TODO: only show 1 image slide on mobile vertical
+    display: none; // TODO: Improve to show only 1 slider on mobile
     grid-template-columns: 1fr;
   }
 

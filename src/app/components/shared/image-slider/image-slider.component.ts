@@ -11,11 +11,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { trigger, transition, style, animate } from '@angular/animations';
-
-interface CarouselImage {
-  url: string;
-  alt: string;
-}
+import { WPMappedImage } from '../../../models/media.model';
 
 @Component({
   selector: 'app-image-slider',
@@ -43,7 +39,7 @@ interface CarouselImage {
   ],
 })
 export class ImageSliderComponent implements OnInit, OnDestroy {
-  @Input() images: CarouselImage[] = [];
+  @Input() images: WPMappedImage[] = [];
   @Input() autoPlayInterval = 5000;
   @Input() height: number = 200;
 
@@ -51,7 +47,7 @@ export class ImageSliderComponent implements OnInit, OnDestroy {
   currentIndex = signal(0);
   isPaused = signal(false);
 
-  totalSlides = computed(() => this.images.length);
+  totalSlides = computed(() => this.images?.length);
   currentImage = computed(() => this.images[this.currentIndex()]);
 
   constructor() {
