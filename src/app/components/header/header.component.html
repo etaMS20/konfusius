@@ -13,10 +13,23 @@
 
       <!-- Desktop Navigation -->
       <div class="nav-links desktop-nav">
-        <button mat-button routerLink="/tickets" routerLinkActive="active-link">
-          <mat-icon>confirmation_number</mat-icon>
-          Zu den Schichten
-        </button>
+        <span
+          matTooltip="Die Anmeldung ist noch nicht freigeschaltet"
+          [matTooltipPosition]="'above'"
+          matTooltipHideDelay="200"
+          matTooltipShowDelay="100"
+          [matTooltipDisabled]="ticketsActive()"
+        >
+          <button
+            mat-button
+            routerLink="/tickets"
+            routerLinkActive="active-link"
+            [disabled]="!ticketsActive()"
+          >
+            <mat-icon>confirmation_number</mat-icon>
+            Zur Anmeldung
+          </button>
+        </span>
 
         <button
           mat-button
@@ -45,12 +58,15 @@
     <div class="mobile-nav-links">
       <a
         mat-button
-        routerLink="/tickets"
+        [routerLink]="ticketsActive() ? '/tickets' : null"
         routerLinkActive="active-link"
         (click)="toggleMenu()"
+        [class.disabled-mobile-nav-option]="!ticketsActive()"
       >
         <mat-icon>confirmation_number</mat-icon>
-        Tickets
+        {{
+          ticketsActive() ? 'Zur Anmeldung' : 'Zur Anmeldung (bald verfügbar)'
+        }}
       </a>
 
       <a

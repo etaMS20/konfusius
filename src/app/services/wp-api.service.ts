@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BACKEND } from '../../config/http.config';
+import { WPCategory } from '../models/media.model';
 
 // TODO: Setup caching
 @Injectable({
@@ -31,30 +32,21 @@ export class WordPressApiService {
     });
   }
 
-  // Create a new post
-  createPost(postData: any): Observable<any> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer YOUR_ACCESS_TOKEN`, // You need to handle authentication
+  getMediaImages(
+    category?: WPCategory,
+    perPage: number = 1000,
+  ): Observable<any> {
+    const params: any = { per_page: perPage };
+    if (category !== undefined) params.attachment_category = category;
+    return this.http.get(`${this.apiUrl}/media`, {
+      params,
+      headers: this.headers,
     });
-
-    return this.http.post(`${this.apiUrl}/posts`, postData, { headers });
   }
 
-  // Update a post
-  updatePost(id: number, postData: any): Observable<any> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer YOUR_ACCESS_TOKEN`, // Add the token or basic auth
+  getMediaImageById(id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/media/${id}`, {
+      headers: this.headers,
     });
-
-    return this.http.put(`${this.apiUrl}/posts/${id}`, postData, { headers });
-  }
-
-  // Delete a post
-  deletePost(id: number): Observable<any> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer YOUR_ACCESS_TOKEN`, // Add the token or basic auth
-    });
-
-    return this.http.delete(`${this.apiUrl}/posts/${id}`, { headers });
   }
 }

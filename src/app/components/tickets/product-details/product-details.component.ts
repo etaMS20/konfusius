@@ -19,7 +19,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { throwError } from 'rxjs';
-import { catchError, concatMap, tap } from 'rxjs/operators';
+import { catchError, concatMap } from 'rxjs/operators';
 import { DisableControlDirective } from '../../../directives/disable-control.directive';
 import { ErrorDialogService } from '../../shared/errors/error-dialog.service';
 import { WcStoreAPI } from '../../../services/wc-store-api.service';

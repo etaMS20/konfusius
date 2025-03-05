@@ -28,15 +28,15 @@ interface CarouselImage {
       transition(':increment', [
         style({ transform: 'translateX(100%)', opacity: 0 }),
         animate(
-          '300ms ease-out',
-          style({ transform: 'translateX(0)', opacity: 1 })
+          '500ms ease-out',
+          style({ transform: 'translateX(0)', opacity: 1 }),
         ),
       ]),
       transition(':decrement', [
         style({ transform: 'translateX(-100%)', opacity: 0 }),
         animate(
-          '300ms ease-out',
-          style({ transform: 'translateX(0)', opacity: 1 })
+          '500ms ease-out',
+          style({ transform: 'translateX(0)', opacity: 1 }),
         ),
       ]),
     ]),
@@ -55,7 +55,6 @@ export class ImageSliderComponent implements OnInit, OnDestroy {
   currentImage = computed(() => this.images[this.currentIndex()]);
 
   constructor() {
-    // Setup effect for autoplay
     effect(() => {
       if (!this.isPaused()) {
         this.startAutoPlay();
@@ -75,13 +74,13 @@ export class ImageSliderComponent implements OnInit, OnDestroy {
 
   next() {
     this.currentIndex.update((current) =>
-      current === this.images.length - 1 ? 0 : current + 1
+      current === this.images.length - 1 ? 0 : current + 1,
     );
   }
 
   previous() {
     this.currentIndex.update((current) =>
-      current === 0 ? this.images.length - 1 : current - 1
+      current === 0 ? this.images.length - 1 : current - 1,
     );
   }
 

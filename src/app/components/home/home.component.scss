@@ -83,7 +83,8 @@ $text-color: #2c1810;
 .left-section {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  justify-content: space-between;
+  padding: 20% 0;
 
   app-carousel {
     width: 100%;
@@ -123,7 +124,9 @@ $text-color: #2c1810;
     position: relative;
     border-radius: 10px;
     font-family: 'Roboto', sans-serif;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 0 50px rgba(0, 0, 0, 0.1);
+    box-shadow:
+      0 4px 15px rgba(0, 0, 0, 0.2),
+      inset 0 0 50px rgba(0, 0, 0, 0.1);
 
     // Scroll edges
     &::before,
@@ -317,6 +320,7 @@ $text-color: #2c1810;
   }
 
   .left-section {
+    display: none; // TODO: only show 1 image slide on mobile vertical
     grid-template-columns: 1fr;
   }
 

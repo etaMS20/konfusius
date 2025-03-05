@@ -11,10 +11,10 @@ import {
 } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { ProductSelectionService } from '../../../services/product-selection.service';
-import { ProductService } from '../../../services/product.service';
 import { WcStoreAPI } from '../../../services/wc-store-api.service';
 import { ProductComponent } from '../product/product.component';
 import { WcProduct } from '../../../models/product.model';
+import { MappingService } from '../../../services/mapping.service';
 
 @Component({
   selector: 'product-list',
@@ -26,7 +26,7 @@ export class ProductListComponent implements OnInit {
   @Output() productSelected = new EventEmitter<WcProduct | null>();
   @Output() productsLoading = new EventEmitter<boolean>(true);
 
-  productService = inject(ProductService);
+  mappingService = inject(MappingService);
   productSelectionService = inject(ProductSelectionService);
   wcStore = inject(WcStoreAPI);
 
@@ -73,7 +73,7 @@ export class ProductListComponent implements OnInit {
   selectProduct(product: WcProduct) {
     const isSelected = this.isSelected(product);
     this.productSelectionService.setSelectedProduct(
-      isSelected ? null : product
+      isSelected ? null : product,
     );
     this.productSelected.emit(isSelected ? null : product);
   }
@@ -81,7 +81,7 @@ export class ProductListComponent implements OnInit {
   initProducts() {
     this.wcStore.listProducts().subscribe((response) => {
       const products = response.map((product: any) =>
-        this.productService.mapProduct(product)
+        this.mappingService.mapProduct(product),
       );
       this.products.set(products);
       this.productsLoading.emit(false);

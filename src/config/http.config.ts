@@ -5,3 +5,4 @@ export const CONSUMER_KEY = environment.consumerKey ?? '';
 export const CONSUMER_SECRET = environment.consumerSecret ?? '';
 export const GUEST_PW = environment.password;
 export const SALT = environment.salt;
+export const TICKETS_ON = false;
