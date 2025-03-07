@@ -1,7 +1,8 @@
 <div class="content-wrapper">
   <h3>Win paar wichtige Infos...</h3>
-  <app-pdf-viewer />
-
+  <div class="pdf-downloads">
+    <app-pdf-download-viewer [srcLink]="pdfUrl()" />
+  </div>
   <mat-accordion>
     <mat-expansion-panel *ngFor="let tab of tabs()">
       <mat-expansion-panel-header>

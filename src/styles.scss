@@ -30,6 +30,10 @@ html {
   box-sizing: border-box;
 }
 
+.hiddenCanvasElement {
+  display: hidden;
+}
+
 /* 
 background: url(./assets/b_prediction1.png) no-repeat center;
 background-size: cover;
@@ -50,11 +54,6 @@ footer {
   position: flex;
   bottom: 0;
   left: 0;
-}
-
-.app-wrapper {
-  width: 100%;
-  max-width: 1600px; // Moved max-width to wrapper
 }
 
 * {
