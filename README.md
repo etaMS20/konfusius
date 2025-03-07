@@ -53,6 +53,18 @@ Open a browser and head to [localhost:4200](http://localhost:4200/)
 
 ---
 
+## Current Setup to build the app for wordpress
+
+1. Compile with production config and custom base-href
+
+```
+ng build --configuration=production --base-href=/wp-content/angular-app/
+```
+
+2. Upload the local content of `dist/konfusius` to `wp-content/angular-app`
+
+---
+
 ## Current backend/devOps TODOS
 
 - set WP server to allow cross-origin requests (CORS) as we currently have to proxy local HTTP requests to the WC backend

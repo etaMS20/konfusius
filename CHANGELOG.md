@@ -33,3 +33,7 @@ https://dev.to/stephenwhitmore/take-your-wordpress-site-farther-with-angular-3o6
 - custom payment method (plugin)
 - custom endpoints to retrieve billing custom fields
 - move DOM sanitizer to Service
+- implement [fullscreen directive](https://medium.com/@milan.barac/angular-fullscreen-cd8b788c348f)
+- fix product selection init
+- implement caching
+- implement Ui for "Digitale Anmeldeliste"
