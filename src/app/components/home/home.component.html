@@ -20,8 +20,12 @@
     <section class="middle-section">
       <div class="content-wrapper">
         <h2>Liebe Freunde der Sonne & der guten Laune</h2>
-        <div [innerHTML]="this.introText()"></div>
-        <div [innerHTML]="this.introText2()"></div>
+        @if (introText(); as p) {
+          <div [innerHTML]="p.content.rendered | safeHtml"></div>
+        }
+        @if (introText2(); as p) {
+          <div [innerHTML]="p.content.rendered | safeHtml"></div>
+        }
       </div>
     </section>
 
@@ -29,7 +33,9 @@
     <section class="right-section">
       <div class="info-box">
         <h3>Eckdaten</h3>
-        <div [innerHTML]="this.eckDaten()"></div>
+        @if (eckDaten(); as p) {
+          <div [innerHTML]="p.content.rendered | safeHtml"></div>
+        }
       </div>
     </section>
   </div>

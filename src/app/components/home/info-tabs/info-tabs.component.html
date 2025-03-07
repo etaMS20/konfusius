@@ -8,7 +8,7 @@
         <mat-icon>{{ tab.icon }}</mat-icon>
         <span>{{ tab.label }}</span>
       </mat-expansion-panel-header>
-      <div class="tab-content" [innerHTML]="tab.content"></div>
+      <div class="tab-content" [innerHTML]="tab.content | safeHtml"></div>
     </mat-expansion-panel>
   </mat-accordion>
 </div>

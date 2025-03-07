@@ -1,41 +1,41 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { WordPressApiService } from '../../services/wp-api.service';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { InfoTabsComponent } from './info-tabs/info-tabs.component';
 import { ImageContainerComponent } from './image-container/image-container.component';
+import { BlogPost } from 'src/app/models/blog-post.model';
+import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
 
 @Component({
   selector: 'app-home',
-  imports: [MatGridListModule, InfoTabsComponent, ImageContainerComponent],
+  imports: [
+    MatGridListModule,
+    InfoTabsComponent,
+    ImageContainerComponent,
+    SafeHtmlPipe,
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   private readonly wpApi = inject(WordPressApiService);
 
-  introText = signal<SafeHtml>('');
-  introText2 = signal<SafeHtml>('');
-  eckDaten = signal<SafeHtml>('');
+  introText = signal<BlogPost | undefined>(undefined);
+  introText2 = signal<BlogPost | undefined>(undefined);
+  eckDaten = signal<BlogPost | undefined>(undefined);
 
-  textLoadedP = signal<boolean>(false);
-
-  constructor(private readonly sanitizer: DomSanitizer) {
-    this.wpApi.getPostById(1706).subscribe((r) => {
-      this.introText.set(this.sanitizeText(r.content.rendered));
-      this.textLoadedP.set(true); // mark as loaded
+  ngOnInit(): void {
+    this.wpApi.getPostById(1706).subscribe((post) => {
+      this.introText.set(post);
     });
 
-    this.wpApi.getPostById(1733).subscribe((r) => {
-      this.introText2.set(this.sanitizeText(r.content.rendered));
+    this.wpApi.getPostById(1733).subscribe((post) => {
+      this.introText2.set(post);
     });
 
-    this.wpApi.getPostById(1735).subscribe((r) => {
-      this.eckDaten.set(this.sanitizeText(r.content.rendered));
+    this.wpApi.getPostById(1735).subscribe((post) => {
+      this.eckDaten.set(post);
     });
-  }
-
-  sanitizeText(text: string): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(text);
   }
 }

@@ -1,16 +1,17 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { WordPressApiService } from '../../../services/wp-api.service';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { PdfViewer } from '../../shared/pdf-viewer/pdf-viewer.component';
+import { BlogPost } from 'src/app/models/blog-post.model';
+import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
 
 interface InfoTab {
   icon: string;
   label: string;
-  content?: string | SafeHtml;
+  content?: string;
 }
 
 @Component({
@@ -22,52 +23,49 @@ interface InfoTab {
     MatIconModule,
     MatExpansionModule,
     PdfViewer,
+    SafeHtmlPipe,
   ],
   templateUrl: './info-tabs.component.html',
   styleUrls: ['./info-tabs.component.scss'],
 })
-export class InfoTabsComponent {
+export class InfoTabsComponent implements OnInit {
   private readonly wpApi = inject(WordPressApiService);
 
-  campingText = signal<SafeHtml>('');
-  anmeldungText = signal<SafeHtml>('');
-  regelnText = signal<SafeHtml>('');
+  campingText = signal<BlogPost | undefined>(undefined);
+  anmeldungText = signal<BlogPost | undefined>(undefined);
+  regelnText = signal<BlogPost | undefined>(undefined);
 
   tabs = computed<InfoTab[]>(() => {
     return [
       {
         icon: '',
         label: 'Verpflegung & Camping',
-        content: this.campingText(),
+        content: this.campingText()?.content.rendered,
       },
       {
         icon: '',
         label: 'Partizipation & Anmeldung',
-        content: this.anmeldungText(),
+        content: this.anmeldungText()?.content.rendered,
       },
       {
         icon: '',
         label: 'Verhaltenskodex & Klauseregeln',
-        content: this.regelnText(),
+        content: this.regelnText()?.content.rendered,
       },
     ];
   });
 
-  constructor(private readonly sanitizer: DomSanitizer) {
-    this.wpApi.getPostById(1737).subscribe((r) => {
-      this.campingText.set(this.sanitizeText(r.content.rendered));
+  ngOnInit(): void {
+    this.wpApi.getPostById(1737).subscribe((post) => {
+      this.campingText.set(post);
     });
 
-    this.wpApi.getPostById(1739).subscribe((r) => {
-      this.anmeldungText.set(this.sanitizeText(r.content.rendered));
+    this.wpApi.getPostById(1739).subscribe((post) => {
+      this.anmeldungText.set(post);
     });
 
-    this.wpApi.getPostById(1741).subscribe((r) => {
-      this.regelnText.set(this.sanitizeText(r.content.rendered));
+    this.wpApi.getPostById(1741).subscribe((post) => {
+      this.regelnText.set(post);
     });
-  }
-
-  sanitizeText(text: string): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(text);
   }
 }
