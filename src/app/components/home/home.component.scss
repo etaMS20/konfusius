@@ -183,8 +183,8 @@ $text-color: #2c1810;
 
 // Bottom Section
 .info-tabs-section {
-  margin-top: 30px;
-  padding: 20px 0;
+  margin: 30px auto;
+  padding: 10px 5px;
   background: rgba(255, 255, 255, 0.9);
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -195,6 +195,10 @@ $text-color: #2c1810;
 
 // Responsive Design
 @media (max-width: 1200px) {
+  .info-tabs-section {
+    width: 95vw;
+  }
+
   .main-grid {
     grid-template-columns: 1fr 1.2fr 1fr;
     gap: 20px;
