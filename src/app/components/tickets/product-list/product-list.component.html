@@ -1,16 +1,11 @@
 <div class="product-container">
-  <mat-grid-list
-    [cols]="cols"
-    rowHeight="1:1.4"
-    gutterSize="16px"
-    class="ticket-grid"
-  >
-    <mat-grid-tile *ngFor="let product of products()">
+  <div class="product-grid">
+    <div class="product-grid-item" *ngFor="let product of products()">
       <product
         [product]="product"
         [isSelected]="isSelected(product)"
         (productSelected)="selectProduct(product)"
       ></product>
-    </mat-grid-tile>
-  </mat-grid-list>
+    </div>
+  </div>
 </div>

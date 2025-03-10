@@ -1,6 +1,16 @@
 <div class="ticket-container">
   <h2>Schichten</h2>
-  <loading-indicator />
-  <product-list />
-  <app-product-details *ngIf="selectedProduct()" [product]="selectedProduct" />
+
+  <div class="ticket-container__content">
+    <loading-indicator></loading-indicator>
+    <product-list></product-list>
+    <app-product-details
+      *ngIf="selectedProduct()"
+      [product]="selectedProduct"
+    ></app-product-details>
+  </div>
+
+  <footer class="ticket-container__footer">
+    <!-- Footer content here -->
+  </footer>
 </div>

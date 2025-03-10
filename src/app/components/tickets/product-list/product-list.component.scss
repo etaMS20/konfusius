@@ -1,6 +1,39 @@
-.mat-grid-list {
-  display: flex !important;
-  position: static !important; /* Resets position to default */
-  flex: 1 1 auto; /* Allow it to grow and shrink properly */
-  min-height: 0; /* Important for flex children with overflow */
+:host {
+  display: block;
+  width: 100%;
+}
+
+.product-container {
+  width: 100%;
+  padding: auto;
+}
+
+// Responsive CSS Grid with explicit breakpoints and increased gap
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); // Default to 4 columns
+  gap: 50px;
+  width: 100%;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  @media (max-width: 400px) {
+    grid-template-columns: 1fr; // 1 column only on very small devices
+  }
+
+  &-item {
+    width: 100%;
+    min-height: 350px;
+  }
 }

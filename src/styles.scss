@@ -23,30 +23,26 @@ html {
   );
 }
 
-// universal reset for user agent styling
+// aggressive reset
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-.hiddenCanvasElement {
-  display: hidden;
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
-
-/* 
-background: url(./assets/b_prediction1.png) no-repeat center;
-background-size: cover;
-height: 100%;
-background-attachment: scroll; Allows the background to scroll with the content
- */
 
 body {
   display: flex;
   justify-content: center;
-  align-items: flex-start; // Keeps the top margin while allowing horizontal centering
-  min-height: 100vh; // Ensures the body takes up full viewport height
-  margin: 50px auto 0; // Changed to auto horizontal margins
+  align-items: flex-start;
+  min-height: 100vh;
+  margin: 50px auto 0;
   width: 100%;
   max-width: 1400px;
 }
@@ -83,7 +79,6 @@ li {
   color: #292929;
   margin: 10px 0;
   font-size: 1.1rem;
-  // font-family: 'MedievalSharp', cursive;
 }
 
 // Customize the entire app. Change :root to your selector if you want to scope the styles.

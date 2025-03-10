@@ -3,8 +3,8 @@ import {
   Component,
   computed,
   EventEmitter,
-  HostListener,
   inject,
+  OnDestroy,
   OnInit,
   Output,
   signal,
@@ -15,6 +15,7 @@ import { WcStoreAPI } from '../../../services/wc-store-api.service';
 import { ProductComponent } from '../product/product.component';
 import { WcProduct } from '../../../models/product.model';
 import { MappingService } from '../../../services/mapping.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'product-list',
@@ -22,7 +23,7 @@ import { MappingService } from '../../../services/mapping.service';
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent implements OnInit, OnDestroy {
   @Output() productSelected = new EventEmitter<WcProduct | null>();
   @Output() productsLoading = new EventEmitter<boolean>(true);
 
@@ -35,35 +36,18 @@ export class ProductListComponent implements OnInit {
     return this.products().length > 0;
   });
 
-  cols: number = 5;
+  private readonly destroy$ = new Subject<void>();
+
+  constructor() {}
 
   ngOnInit(): void {
     this.initProducts();
     this.productSelected.emit(null);
-    this.updateCols();
   }
 
-  updateCols(): void {
-    const width = window.innerWidth;
-
-    if (width <= 600) {
-      this.cols = 2; // small screens (e.g., mobile)
-    } else if (width <= 960) {
-      this.cols = 3; // medium screens (e.g., tablets)
-    } else if (width <= 1280) {
-      this.cols = 4; // larger screens (e.g., small laptops)
-    } else if (width <= 1920) {
-      this.cols = 5; // FHD screens (e.g., standard desktops)
-    } else if (width <= 3840) {
-      this.cols = 6; // 4K screens (3840px wide)
-    } else {
-      this.cols = 7; // ultra-wide monitors
-    }
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(): void {
-    this.updateCols();
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   isSelected(product: WcProduct): boolean {
