@@ -25,6 +25,7 @@ import { ErrorDialogService } from '../../shared/errors/error-dialog.service';
 import { WcStoreAPI } from '../../../services/wc-store-api.service';
 import { WcProduct, WcProductTypes } from '../../../models/product.model';
 import { Router } from '@angular/router';
+import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
 
 @Component({
   selector: 'app-product-details',
@@ -40,6 +41,7 @@ import { Router } from '@angular/router';
     MatTooltipModule,
     ReactiveFormsModule,
     DisableControlDirective,
+    SafeHtmlPipe,
   ],
 })
 export class ProductDetailsComponent {
@@ -85,7 +87,7 @@ export class ProductDetailsComponent {
 
         if (this.selectForm) {
           this.selectForm.controls.variationId.setValidators(
-            this.variations() ? [Validators.required] : []
+            this.variations() ? [Validators.required] : [],
           );
           this.selectForm.controls.variationId.updateValueAndValidity();
         }
@@ -96,7 +98,7 @@ export class ProductDetailsComponent {
     price?: string,
     decimalSeparator: string = ',',
     decimalPlaces: number = 2,
-    thousandSeparator: string = '.'
+    thousandSeparator: string = '.',
   ): string {
     let numericPrice = parseFloat(price ?? 'NaN');
     const factor = Math.pow(10, decimalPlaces);
@@ -104,7 +106,7 @@ export class ProductDetailsComponent {
     let [integerPart, decimalPart] = formattedPrice.split('.');
     integerPart = integerPart.replace(
       /\B(?=(\d{3})+(?!\d))/g,
-      thousandSeparator
+      thousandSeparator,
     );
     return `${integerPart}${decimalSeparator}${decimalPart}`;
   }
@@ -123,7 +125,7 @@ export class ProductDetailsComponent {
         catchError((error) => {
           this.errorService.handleError(error);
           return throwError(() => error);
-        })
+        }),
       )
       .subscribe({
         next: (response) => {

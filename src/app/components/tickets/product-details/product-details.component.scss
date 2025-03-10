@@ -1,3 +1,106 @@
+$footer-bg: #f8f9fa;
+$footer-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+$animation-duration: 0.3s;
+$breakpoint-mobile: 768px;
+$footer-height-desktop: 90px;
+$footer-height-mobile: 200px;
+
+:host {
+  // TODO: set vars globally
+  --footer-height-desktop: #{$footer-height-desktop};
+  --footer-height-mobile: #{$footer-height-mobile};
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: $footer-bg;
+  padding: 20px;
+  box-shadow: $footer-shadow;
+  z-index: 999;
+  box-sizing: border-box;
+  animation: slideUp $animation-duration ease-out;
+
+  // Modern approach using CSS Grid for layout
+  &-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 20px;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+
+    // Responsive layout for mobile
+    @media (max-width: $breakpoint-mobile) {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto;
+      gap: 16px;
+    }
+
+    // Left container with product info
+    .left-container {
+      h4 {
+        margin: 0 0 8px 0;
+        font-size: 1.1rem;
+        font-weight: 500;
+      }
+
+      p {
+        margin: 0;
+        font-size: 0.95rem;
+        color: #555;
+      }
+
+      @media (max-width: $breakpoint-mobile) {
+        grid-row: 1;
+        text-align: center;
+        margin-bottom: 8px;
+
+        h4 {
+          font-size: 1.2rem;
+        }
+      }
+    }
+
+    // Middle container with dropdown
+    .middle-container {
+      @media (max-width: $breakpoint-mobile) {
+        grid-row: 2;
+        width: 100%;
+      }
+
+      mat-form-field {
+        width: 100%;
+      }
+    }
+
+    // Right container with button
+    .right-container {
+      display: flex;
+      justify-content: flex-end;
+
+      @media (max-width: $breakpoint-mobile) {
+        grid-row: 3;
+        justify-content: center;
+      }
+
+      .checkout-button-row {
+        button {
+          min-width: 180px;
+
+          .checkout-label {
+            font-size: 1rem;
+            white-space: nowrap;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Animation keyframes
 @keyframes slideUp {
   from {
     transform: translateY(100%);
@@ -9,66 +112,15 @@
   }
 }
 
-.footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: #f8f9fa;
-  padding: 20px;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-  z-index: 999; /* Ensure it stays on top of other content */
-  box-sizing: border-box; /* Ensure padding is included in the width */
-  animation: slideUp 0.3s ease-out; /* animation */
-}
-
-.footer-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center; /* Vertically center the content */
-}
-
-.left-container {
-  flex: 1;
-  max-width: 300px;
-}
-
-.middle-container {
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-}
-
-.right-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* Vertically center the buttons */
-  align-items: flex-end; /* Align buttons to the right */
-}
-
-.footer-content h4,
-.footer-content p {
-  margin: 0;
-}
-
-// BUTTON
-
-section {
-  display: table;
-}
-
-.checkout-label {
-  display: table-cell;
-  font-size: 16px;
-  margin-left: 8px;
-  min-width: 120px;
-}
-
+// Ensure the button styling is modern
 .checkout-button-row {
-  display: table-cell;
-  max-width: 600px;
-}
+  button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
 
-.checkout-button-row .mat-mdc-button-base {
-  margin: 8px 8px 8px 0;
+    &:disabled {
+      opacity: 0.7;
+    }
+  }
 }

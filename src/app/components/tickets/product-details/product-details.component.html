@@ -15,13 +15,10 @@
         {{ product()?.prices?.currency_symbol }}
       </p>
     </div>
+
     <div class="middle-container">
       <div *ngIf="isProductVariable()">
-        <mat-form-field
-          appearance="fill"
-          style="width: 100%; max-width: 400px"
-          [matTooltip]="tooltipMessage()"
-        >
+        <mat-form-field appearance="fill" [matTooltip]="tooltipMessage()">
           <mat-label>Wähle eine Zeit</mat-label>
           <mat-select
             [formControl]="selectForm.controls.variationId"
@@ -30,24 +27,24 @@
             [disableControl]="!variations()"
           >
             <mat-option *ngFor="let option of variations()" [value]="option.id">
-              {{ option.variation }}
+              <span [innerHTML]="option.variation | safeHtml"></span>
             </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
     </div>
+
     <div class="right-container">
-      <section>
-        <div class="checkout-button-row">
-          <button
-            [disabled]="!isFormValid"
-            mat-raised-button
-            (click)="checkout()"
-          >
-            <mat-label class="checkout-label">Weiter zum Checkout</mat-label>
-          </button>
-        </div>
-      </section>
+      <div class="checkout-button-row">
+        <button
+          [disabled]="!isFormValid"
+          mat-raised-button
+          color="primary"
+          (click)="checkout()"
+        >
+          <span class="checkout-label">Weiter zum Checkout</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>
