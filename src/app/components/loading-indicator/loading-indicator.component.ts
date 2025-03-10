@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   Component,
   ContentChild,
@@ -17,7 +17,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'loading-indicator',
-  imports: [AsyncPipe, NgTemplateOutlet, MatProgressSpinnerModule],
+  imports: [AsyncPipe, MatProgressSpinnerModule],
   templateUrl: './loading-indicator.component.html',
   styleUrl: './loading-indicator.component.scss',
 })
@@ -32,7 +32,7 @@ export class LoadingIndicatorComponent implements OnInit {
 
   constructor(
     private readonly loadingService: LoadingService,
-    private readonly router: Router
+    private readonly router: Router,
   ) {
     this.loading$ = this.loadingService.loading$;
   }
@@ -47,7 +47,7 @@ export class LoadingIndicatorComponent implements OnInit {
             } else if (event instanceof RouteConfigLoadEnd) {
               this.loadingService.loadingOff();
             }
-          })
+          }),
         )
         .subscribe();
     }

@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- moved DOM sanitizer to Pipe
+
 ### Fixed
 
 ---
@@ -30,10 +32,10 @@ https://dev.to/stephenwhitmore/take-your-wordpress-site-farther-with-angular-3o6
 
 ### TODO
 
-- custom payment method (plugin)
-- custom endpoints to retrieve billing custom fields
-- move DOM sanitizer to Service
-- implement [fullscreen directive](https://medium.com/@milan.barac/angular-fullscreen-cd8b788c348f)
-- fix product selection init
-- implement caching
-- implement Ui for "Digitale Anmeldeliste"
+- custom payment method (can have)
+- custom endpoints to retrieve billing custom fields (must have)
+- implement [fullscreen directive](https://medium.com/@milan.barac/angular-fullscreen-cd8b788c348f) (can have)
+- fix product selection init (must have)
+- implement caching (should have)
+- implement Ui for "Digitale Anmeldeliste" (can have)
+- extra login token for crew (must have)
