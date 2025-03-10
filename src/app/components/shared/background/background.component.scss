@@ -8,6 +8,7 @@
   background-size: cover;
   background-attachment: fixed;
   transition: background-position 0.1s;
+  z-index: -1;
 
   // Ground pattern applied as a separate pseudo-element
   /*   &::after {

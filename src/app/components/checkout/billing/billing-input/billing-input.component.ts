@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  input,
+  Input,
+  OnChanges,
+  output,
+  Output,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -9,6 +17,7 @@ import { WcBillingAddress } from '../../../../models/customer.model';
 import { NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatError, MatLabel } from '@angular/material/form-field';
+import { WcCart } from 'src/app/models/cart.model';
 
 @Component({
   selector: 'app-billing',
@@ -16,7 +25,8 @@ import { MatError, MatLabel } from '@angular/material/form-field';
   templateUrl: './billing-input.component.html',
   styleUrl: './billing-input.component.scss',
 })
-export class BillingComponent {
+export class BillingComponent implements OnChanges {
+  cart = input<WcCart | null>(null);
   @Output() formSubmit = new EventEmitter<WcBillingAddress>();
   billingForm: FormGroup;
 
@@ -32,6 +42,28 @@ export class BillingComponent {
       country: [null, Validators.required],
       email: [null, [Validators.required, Validators.email]],
       phone: [null, [Validators.pattern('^[0-9]+$')]],
+    });
+  }
+
+  ngOnChanges() {
+    const billingAddress = this.cart()?.billing_address;
+    if (billingAddress) {
+      this.setFormValues(billingAddress);
+    }
+  }
+
+  setFormValues(billingAddress: WcBillingAddress) {
+    this.billingForm.setValue({
+      first_name: billingAddress.first_name,
+      last_name: billingAddress.last_name,
+      address_1: billingAddress.address_1,
+      address_2: billingAddress.address_2,
+      city: billingAddress.city,
+      state: billingAddress.state,
+      postcode: billingAddress.postcode,
+      country: billingAddress.country,
+      email: billingAddress.email,
+      phone: billingAddress.phone,
     });
   }
 

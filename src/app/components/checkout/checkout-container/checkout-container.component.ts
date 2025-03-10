@@ -7,17 +7,11 @@ import { WcStoreAPI } from '../../../services/wc-store-api.service';
 import { catchError, throwError } from 'rxjs';
 import { ErrorDialogService } from '../../shared/errors/error-dialog.service';
 import { WcCart } from '../../../models/cart.model';
-import { BillingOverviewComponent } from '../billing/billing-overview/billing-overview.component';
 
 @Component({
   selector: 'app-checkout-container',
   standalone: true,
-  imports: [
-    CommonModule,
-    CartTotalsComponent,
-    BillingComponent,
-    BillingOverviewComponent,
-  ],
+  imports: [CommonModule, CartTotalsComponent, BillingComponent],
   templateUrl: './checkout-container.component.html',
   styleUrls: ['./checkout-container.component.scss'],
 })
@@ -26,10 +20,8 @@ export class CheckoutContainerComponent {
   errorService = inject(ErrorDialogService);
   cart = signal<WcCart | null>(null);
 
-  billingAddressSet = signal<boolean>(false);
-  billingAddressEdit = signal<boolean>(false);
   billingAddress = computed(() => {
-    return this.billingAddressSet() ? this.cart()?.billing_address : undefined;
+    return this.cart()?.billing_address;
   });
 
   constructor() {
@@ -39,21 +31,16 @@ export class CheckoutContainerComponent {
         catchError((error) => {
           this.errorService.handleError(error);
           return throwError(() => error);
-        })
+        }),
       )
       .subscribe((response: WcCart) => {
         this.cart.set(response);
       });
   }
 
-  onBillingAddressEdit(editMode: boolean) {
-    this.billingAddressEdit.set(editMode);
-  }
-
   onBillingFormSubmit(billingAddress: WcBillingAddress) {
-    this.wcStoreApi.updateCustomerData(billingAddress).subscribe(() => {
-      this.billingAddressSet.set(true);
-      this.billingAddressEdit.set(false);
+    this.wcStoreApi.updateCustomerData(billingAddress).subscribe((r) => {
+      console.log(r);
     });
   }
 

@@ -15,7 +15,9 @@
     <tbody>
       <tr>
         <td>{{ cartItem()?.name }}</td>
-        <td>{{ cartItem()!.variation[0].value }}</td>
+        <td>
+          <span [innerHTML]="cartItem()!.variation[0].value | safeHtml"></span>
+        </td>
         <td>
           {{ cartItemSubTotalPrice }} {{ cartItem()!.totals.currency_symbol }}
         </td>
@@ -25,10 +27,6 @@
   </table>
 
   <div *ngIf="hasItem" class="totals-section">
-    <!--     <div *ngIf="taxRate > 0" class="totals-row">
-      <span>Tax ({{ 0 | percent }}):</span>
-      <span>{{ 0 | currency }}</span>
-    </div> -->
     <div class="totals-row total">
       <span>Total:</span>
       <span>{{ cartTotalPrice }} {{ cartItem()!.totals.currency_symbol }}</span>

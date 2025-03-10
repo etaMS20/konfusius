@@ -1,22 +1,23 @@
-import { Component, computed, Input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WcCart } from '../../../models/cart.model';
 import { formatPrice } from '../../../utils/price.utils';
+import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
 
 @Component({
   selector: 'app-cart-totals',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SafeHtmlPipe],
   templateUrl: './cart-totals.component.html',
   styleUrls: ['./cart-totals.component.scss'],
 })
 export class CartTotalsComponent {
-  @Input() cart: WcCart | null = null;
+  cart = input<WcCart | null>(null);
   cartTotals = computed(() => {
-    return this.cart?.totals ?? null;
+    return this.cart()?.totals ?? null;
   });
   cartItem = computed(() => {
-    return this.cart?.items[0] ?? null;
+    return this.cart()?.items[0] ?? null;
   });
 
   get cartTotalPrice(): string {
@@ -26,7 +27,7 @@ export class CartTotalsComponent {
         ct.total_price,
         ct.currency_thousand_separator,
         ct.currency_decimal_separator,
-        ct.currency_minor_unit
+        ct.currency_minor_unit,
       );
     else return '';
   }
@@ -38,7 +39,7 @@ export class CartTotalsComponent {
         ct.line_total,
         ct.currency_thousand_separator,
         ct.currency_decimal_separator,
-        ct.currency_minor_unit
+        ct.currency_minor_unit,
       );
     else return '';
   }
@@ -50,13 +51,13 @@ export class CartTotalsComponent {
         ct.line_subtotal,
         ct.currency_thousand_separator,
         ct.currency_decimal_separator,
-        ct.currency_minor_unit
+        ct.currency_minor_unit,
       );
     else return '';
   }
 
   get hasItem(): boolean {
-    if (this.cart) return this.cart.items_count > 0;
+    if (this.cart()) return this.cart()!.items_count > 0;
     else return false;
   }
 }
