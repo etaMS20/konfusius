@@ -1,0 +1,36 @@
+// Info Box - Top of Right Column
+.info-box ::ng-deep {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 3px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+
+  h3 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    padding: 15px;
+
+    li {
+      position: relative;
+
+      &:before {
+        content: '❧ ';
+        color: grey;
+        left: 0;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

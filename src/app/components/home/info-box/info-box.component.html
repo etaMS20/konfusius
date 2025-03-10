@@ -1,0 +1,6 @@
+<div class="info-box">
+  <h3>Eckdaten</h3>
+  @if (eckDaten(); as p) {
+    <div [innerHTML]="p.content.rendered | safeHtml"></div>
+  }
+</div>

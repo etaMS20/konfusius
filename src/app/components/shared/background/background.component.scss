@@ -10,7 +10,7 @@
   transition: background-position 0.1s;
 
   // Ground pattern applied as a separate pseudo-element
-  &::after {
+  /*   &::after {
     content: '';
     position: absolute;
     width: 100%;
@@ -19,7 +19,7 @@
       repeat;
     opacity: 0.8; // Adjust for better blending
     pointer-events: none;
-  }
+  } */
 }
 
 .overlay {

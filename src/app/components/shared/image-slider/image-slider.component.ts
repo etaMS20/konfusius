@@ -6,6 +6,7 @@ import {
   computed,
   OnInit,
   OnDestroy,
+  input,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -41,7 +42,8 @@ import { WPMappedImage } from '../../../models/media.model';
 export class ImageSliderComponent implements OnInit, OnDestroy {
   @Input() images: WPMappedImage[] = [];
   @Input() autoPlayInterval = 5000;
-  @Input() height: number = 300;
+  height = input<number>;
+  width = input<number>;
 
   private autoPlayTimer?: number;
   currentIndex = signal(0);

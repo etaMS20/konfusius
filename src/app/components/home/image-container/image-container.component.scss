@@ -1,7 +1,12 @@
 .image-show-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 10% 0;
-  height: 100%;
+  display: block;
+  height: 500px;
+  width: 1200px;
+}
+
+@media (max-width: 768px) {
+  .image-show-container {
+    height: 300px;
+    width: 90vw;
+  }
 }

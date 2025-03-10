@@ -66,23 +66,16 @@ $text-color: #2c1810;
   }
 }
 
-// Main Grid Layout
+// New Main Grid Layout - 2 columns
 .main-grid {
   display: grid;
-  grid-template-columns: 1.4fr 2.5fr 1.1fr;
+  grid-template-columns: 1.5fr 1fr;
   gap: 30px;
   margin-bottom: 40px;
-  min-height: 0;
-  overflow: hidden;
 }
 
-// Left Section - Image Sliders
-.left-section {
-  display: block;
-}
-
-// Middle Section - Scroll Design
-.middle-section {
+// Content Section (former middle section) - Left Column
+.content-section {
   ::ng-deep .wp-block-heading {
     text-align: center;
     position: relative;
@@ -99,16 +92,6 @@ $text-color: #2c1810;
       0 4px 15px rgba(0, 0, 0, 0.2),
       inset 0 0 50px rgba(0, 0, 0, 0.1);
 
-    // Scroll edges
-    &::before,
-    &::after {
-      content: '';
-      position: absolute;
-      width: 50px;
-      height: calc(100% + 40px);
-      border-radius: 25px;
-    }
-
     h2 {
       color: $text-color;
       font-size: 2rem;
@@ -120,16 +103,12 @@ $text-color: #2c1810;
     }
 
     ::ng-deep p {
-      // set deep because dynamically added to DOM
       color: $text-color;
       line-height: 1.8;
       margin-bottom: 20px;
       text-align: left;
       position: relative;
       padding: 5px 5px;
-
-      &:first-letter {
-      }
 
       &:last-child {
         margin-bottom: 0;
@@ -138,50 +117,19 @@ $text-color: #2c1810;
   }
 }
 
-// Right Section - Quick Info
-.right-section {
-  .info-box {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 3px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    position: relative;
-    overflow: hidden;
-
-    h3 {
-      color: $text-color;
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-      text-align: center;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-
-      li {
-        color: $text-color;
-        margin-bottom: 15px;
-        padding-left: 30px;
-        position: relative;
-        line-height: 1.6;
-
-        &:before {
-          content: '❧';
-          color: $primary-color;
-          left: 0;
-        }
-
-        &:last-child {
-          margin-bottom: 0;
-        }
-      }
-    }
-  }
+// Right Column
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
-// Bottom Section
+// Slider Container
+.slider-container {
+  margin: auto;
+}
+
+// Bottom Section - Unchanged
 .info-tabs-section {
   margin: 30px auto;
   padding: 10px 5px;
@@ -190,20 +138,10 @@ $text-color: #2c1810;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   position: relative;
   overflow: hidden;
-  width: 80vw;
 }
 
 // Responsive Design
 @media (max-width: 1200px) {
-  .info-tabs-section {
-    width: 95vw;
-  }
-
-  .main-grid {
-    grid-template-columns: 1fr 1.2fr 1fr;
-    gap: 20px;
-  }
-
   .title {
     font-size: 3rem;
 
@@ -219,25 +157,7 @@ $text-color: #2c1810;
 @media (max-width: 992px) {
   .main-grid {
     grid-template-columns: 1fr;
-    gap: 40px;
-    min-height: 0;
-    overflow: hidden;
-  }
-
-  .left-section {
-    display: none;
-  }
-
-  .middle-section .content-wrapper {
-    &::before,
-    &::after {
-      width: 30px;
-      height: calc(100% + 30px);
-    }
-  }
-
-  .bottom-section .info-grid {
-    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
   }
 
   .title {
@@ -262,26 +182,12 @@ $text-color: #2c1810;
     }
   }
 
-  .left-section {
-    display: none; // TODO: Improve to show only 1 slider on mobile
-    grid-template-columns: 1fr;
-  }
-
-  .middle-section .content-wrapper {
+  .content-section .content-wrapper {
     padding: 30px 20px;
-
-    &::before,
-    &::after {
-      display: none;
-    }
 
     p {
       font-size: 1.1rem;
     }
-  }
-
-  .bottom-section .info-grid {
-    grid-template-columns: 1fr;
   }
 
   .image-container {
@@ -298,8 +204,8 @@ $text-color: #2c1810;
     font-size: 1.8rem;
   }
 
-  .middle-section .content-wrapper,
-  .right-section .info-box {
+  .content-section .content-wrapper,
+  .info-box {
     padding: 5px;
   }
 
