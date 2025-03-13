@@ -58,10 +58,10 @@ Open a browser and head to [localhost:4200](http://localhost:4200/)
 1. Compile with production config and custom base-href
 
 ```
-ng build --configuration=production --base-href=/wp-content/angular-app/
+ ng build --configuration=production --base-href=/festival/
 ```
 
-2. Upload the local content of `dist/konfusius` to `wp-content/angular-app`
+2. Upload the local content of `dist/konfusius` to `/festival` which is located on the wordpress root
 
 ---
 

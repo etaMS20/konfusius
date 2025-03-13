@@ -42,7 +42,9 @@
               "url-parse",
               "oauth-1.0a",
               "create-hmac"
-            ]
+            ],
+            "serviceWorker": true,
+            "ngswConfigPath": "ngsw-config.json"
           },
           "configurations": {
             "staging": {
@@ -80,7 +82,7 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "none",
+              "outputHashing": "all",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
