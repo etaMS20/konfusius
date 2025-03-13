@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1741880393933,
+  "timestamp": 1741881642465,
   "index": "/konfusius/index.html",
   "assetGroups": [
     {
@@ -11,7 +11,7 @@
         "ignoreVary": true
       },
       "urls": [
-        "/konfusius/103.64603acf58e8c0a7.js",
+        "/konfusius/103.e54a19d0b151d9f2.js",
         "/konfusius/18.d9dc5c5b130b2b2a.js",
         "/konfusius/478.26545d0237a1765f.js",
         "/konfusius/509.bf162a815e1a46b5.js",
@@ -21,7 +21,7 @@
         "/konfusius/index.html",
         "/konfusius/main.f75408e0808054c3.js",
         "/konfusius/polyfills.99c75bc2f35682be.js",
-        "/konfusius/runtime.85070e63802d82dd.js",
+        "/konfusius/runtime.c6d6b3d6ef7d3471.js",
         "/konfusius/styles.7dfd3980fb28129a.css"
       ],
       "patterns": []
@@ -77,7 +77,7 @@
     }
   ],
   "hashTable": {
-    "/konfusius/103.64603acf58e8c0a7.js": "57d3cc286fba4a2f8402ffb4662da7665fe9c527",
+    "/konfusius/103.e54a19d0b151d9f2.js": "11f048d7537af19f8ecd3acc146ef0e04ed62cdf",
     "/konfusius/18.d9dc5c5b130b2b2a.js": "20ea7f381ac16042beb223fbf4c797946484a851",
     "/konfusius/478.26545d0237a1765f.js": "65bad49705aa6e2d21d2fbce24573c19b5c33eb1",
     "/konfusius/509.bf162a815e1a46b5.js": "534d7d7893b91eac728609e0042fc78a7c8b7de5",
@@ -105,10 +105,10 @@
     "/konfusius/assets/schichten/workshops.png": "e4d8b35f400ccb0128571bf6cfbb440da70aaf2e",
     "/konfusius/assets/schweini_1.png": "b41a07d8b1de7a8d67e27b201e21278bb75b843f",
     "/konfusius/backgound_blank.b11ad3c63e264837.jpg": "1da3d7bf4023fa10602797ce8e28c2e541783129",
-    "/konfusius/index.html": "24ee1e741b989e6cb916bfa1dfd152770f8d1b73",
+    "/konfusius/index.html": "d0f81213ef1146ec42f72b418244089f417d64f4",
     "/konfusius/main.f75408e0808054c3.js": "2ee88a2b07cc983c95f71ea8da8f30074ffe255e",
     "/konfusius/polyfills.99c75bc2f35682be.js": "aa4add6f119f043e8c685455b5f41f49ca23c227",
-    "/konfusius/runtime.85070e63802d82dd.js": "5ae1e0b339ed4037dcb828e3afa4ed564dc88b3f",
+    "/konfusius/runtime.c6d6b3d6ef7d3471.js": "4e1606f04eedf83581a68a9cb66c81a9a2069bcf",
     "/konfusius/styles.7dfd3980fb28129a.css": "2083939633734c6913b1f01c0da8210c27646e47"
   },
   "navigationUrls": [
