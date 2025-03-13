@@ -1,12 +1,12 @@
 <div class="billing-container">
   <h2>Rechnungsadresse</h2>
   <form [formGroup]="billingForm" (ngSubmit)="onSubmit()">
-    <mat-label for="first_name">First Name*:</mat-label>
     <input
       id="first_name"
       type="text"
       formControlName="first_name"
       autocomplete="given-name"
+      placeholder="First Name*"
     />
     <mat-error
       *ngIf="
@@ -17,12 +17,12 @@
       First Name is required (min 2 characters).
     </mat-error>
 
-    <mat-label for="last_name">Last Name*:</mat-label>
     <input
       id="last_name"
       type="text"
       formControlName="last_name"
       autocomplete="family-name"
+      placeholder="Last Name*"
     />
     <mat-error
       *ngIf="
@@ -33,44 +33,36 @@
       Last Name is required (min 2 characters).
     </mat-error>
 
-    <mat-label for="address_1">Address Line 1*:</mat-label>
     <input
       id="address_1"
       type="text"
       formControlName="address_1"
       autocomplete="address-line1"
+      placeholder="Street & Number*"
     />
 
-    <mat-label for="address_2">Address Line 2:</mat-label>
-    <input
-      id="address_2"
-      type="text"
-      formControlName="address_2"
-      autocomplete="address-line2"
-    />
-
-    <mat-label for="city">City*:</mat-label>
     <input
       id="city"
       type="text"
       formControlName="city"
       autocomplete="address-level2"
+      placeholder="City*"
     />
 
-    <mat-label for="state">State:</mat-label>
     <input
       id="state"
       type="text"
       formControlName="state"
       autocomplete="address-level1"
+      placeholder="State*"
     />
 
-    <mat-label for="postcode">ZIP Code*:</mat-label>
     <input
       id="postcode"
       type="text"
       formControlName="postcode"
       autocomplete="postal-code"
+      placeholder="ZIP Code*"
     />
     <mat-error
       *ngIf="
@@ -81,20 +73,20 @@
       Enter a valid 5-digit ZIP code.
     </mat-error>
 
-    <mat-label for="country">Country*:</mat-label>
     <input
       id="country"
       type="text"
       formControlName="country"
       autocomplete="country"
+      placeholder="Country*"
     />
 
-    <mat-label for="email">Email*:</mat-label>
     <input
       id="email"
       type="email"
       formControlName="email"
       autocomplete="email"
+      placeholder="Email*"
     />
     <mat-error
       *ngIf="
@@ -105,8 +97,13 @@
       Enter a valid email address.
     </mat-error>
 
-    <mat-label for="phone">Phone:</mat-label>
-    <input id="phone" type="tel" formControlName="phone" autocomplete="tel" />
+    <input
+      id="phone"
+      type="tel"
+      formControlName="phone"
+      autocomplete="tel"
+      placeholder="Phone"
+    />
     <mat-error
       *ngIf="
         billingForm.controls['phone'].invalid &&

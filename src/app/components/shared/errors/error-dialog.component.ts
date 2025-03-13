@@ -5,13 +5,14 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { WcStoreError } from './error-types';
+import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
 
 @Component({
   selector: 'error-dialog',
-  imports: [MatDialogModule],
+  imports: [MatDialogModule, SafeHtmlPipe],
   template: `
     <h2 mat-dialog-title>Error</h2>
-    <mat-dialog-content>{{ errData.message }}</mat-dialog-content>
+    <mat-dialog-content [innerHTML]="errData.message | safeHtml" />
     <mat-dialog-content
       >{{ errData.data.status }}: {{ errData.code }}</mat-dialog-content
     >
@@ -32,7 +33,7 @@ export class ErrorDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<ErrorDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public errData: WcStoreError
+    public errData: WcStoreError,
   ) {}
 
   close() {
