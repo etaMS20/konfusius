@@ -5,11 +5,7 @@
 >
   <!-- Main image container -->
   <div class="carousel-slide" [@slideAnimation]="currentIndex()">
-    <img
-      [src]="currentImage().url"
-      [alt]="currentImage().alt"
-      class="carousel-image"
-    />
+    <img [src]="currentImage()" [alt]="currentAlt()" class="carousel-image" />
   </div>
 
   <!-- Navigation arrows -->

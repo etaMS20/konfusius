@@ -1,7 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
 import { ImageSliderComponent } from '../../shared/image-slider/image-slider.component';
 import { WordPressApiService } from '../../../services/wp-api.service';
-import { WPCategory, WPMappedImage } from '../../../models/media.model';
+import {
+  WPImageSizeApiKey,
+  WPCategory,
+  WPMappedImage,
+} from '../../../models/media.model';
 import { map } from 'rxjs';
 import { MappingService } from '../../../services/mapping.service';
 import { NgIf } from '@angular/common';
@@ -15,6 +19,7 @@ import { NgIf } from '@angular/common';
 export class ImageContainerComponent {
   private readonly wpApi = inject(WordPressApiService);
   private readonly mappingService = inject(MappingService);
+  sliderSize = WPImageSizeApiKey.MEDIUM;
 
   gallery1 = signal<WPMappedImage[] | undefined>(undefined);
 

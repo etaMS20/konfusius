@@ -11,8 +11,8 @@ import {
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { trigger, transition, style, animate } from '@angular/animations';
-import { WPMappedImage } from '../../../models/media.model';
+import { trigger, transition, style } from '@angular/animations';
+import { WPImageSizeApiKey, WPMappedImage } from '../../../models/media.model';
 
 @Component({
   selector: 'app-image-slider',
@@ -24,17 +24,15 @@ import { WPMappedImage } from '../../../models/media.model';
     trigger('slideAnimation', [
       transition(':increment', [
         style({ transform: 'translateX(100%)', opacity: 0 }),
-        animate(
-          '500ms ease-out',
-          style({ transform: 'translateX(0)', opacity: 1 }),
-        ),
+        style({ transform: 'translateX(0)', opacity: 1 }),
       ]),
       transition(':decrement', [
         style({ transform: 'translateX(-100%)', opacity: 0 }),
-        animate(
-          '500ms ease-out',
-          style({ transform: 'translateX(0)', opacity: 1 }),
-        ),
+        style({ transform: 'translateX(0)', opacity: 1 }),
+      ]),
+      transition(':leave', [
+        style({ transform: 'translateX(0)', opacity: 1 }),
+        style({ transform: 'translateX(100%)', opacity: 0 }),
       ]),
     ]),
   ],
@@ -42,6 +40,8 @@ import { WPMappedImage } from '../../../models/media.model';
 export class ImageSliderComponent implements OnInit, OnDestroy {
   images = input<WPMappedImage[]>([]);
   @Input() autoPlayInterval = 5000;
+  @Input() size: WPImageSizeApiKey = WPImageSizeApiKey.MEDIUM;
+
   imagePaths = computed(() => this.images().map((image) => image.url));
 
   private autoPlayTimer?: number;
@@ -49,7 +49,10 @@ export class ImageSliderComponent implements OnInit, OnDestroy {
   isPaused = signal(false);
 
   totalSlides = computed(() => this.images().length);
-  currentImage = computed(() => this.images()[this.currentIndex()]);
+  currentImage = computed(
+    () => this.images()[this.currentIndex()].sizes[this.size],
+  );
+  currentAlt = computed(() => this.images()[this.currentIndex()].alt);
 
   constructor() {
     effect(() => {
