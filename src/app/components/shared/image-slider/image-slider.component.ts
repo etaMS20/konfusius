@@ -40,17 +40,16 @@ import { WPMappedImage } from '../../../models/media.model';
   ],
 })
 export class ImageSliderComponent implements OnInit, OnDestroy {
-  @Input() images: WPMappedImage[] = [];
+  images = input<WPMappedImage[]>([]);
   @Input() autoPlayInterval = 5000;
-  height = input<number>;
-  width = input<number>;
+  imagePaths = computed(() => this.images().map((image) => image.url));
 
   private autoPlayTimer?: number;
   currentIndex = signal(0);
   isPaused = signal(false);
 
-  totalSlides = computed(() => this.images?.length);
-  currentImage = computed(() => this.images[this.currentIndex()]);
+  totalSlides = computed(() => this.images().length);
+  currentImage = computed(() => this.images()[this.currentIndex()]);
 
   constructor() {
     effect(() => {

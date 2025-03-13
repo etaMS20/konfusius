@@ -1,7 +1,5 @@
 <div
   class="carousel-container"
-  [style.height.px]="height"
-  [style.width.px]="width"
   (mouseenter)="pauseAutoPlay()"
   (mouseleave)="resumeAutoPlay()"
 >
@@ -27,7 +25,7 @@
   <div class="carousel-dots">
     <button
       class="dot"
-      *ngFor="let _ of images; let i = index"
+      *ngFor="let _ of images(); let i = index"
       [class.active]="i === currentIndex()"
       (click)="goToSlide(i)"
     ></button>

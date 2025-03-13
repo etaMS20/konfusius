@@ -41,7 +41,8 @@ export class MappingService {
             item.media_details.sizes.medium?.source_url || '',
           [WPImageSizeApiKey.MEDIUM]:
             item.media_details.sizes.large?.source_url || '',
-          [WPImageSizeApiKey.FULL]: item.guid.rendered,
+          [WPImageSizeApiKey.FULL]:
+            item.media_details.sizes.full?.source_url || '',
         },
       };
       images.push(materialImage);
