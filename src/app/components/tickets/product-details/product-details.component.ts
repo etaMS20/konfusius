@@ -50,6 +50,7 @@ export class ProductDetailsComponent {
   private readonly fb = inject(FormBuilder);
   private readonly errorService = inject(ErrorDialogService);
   private readonly router = inject(Router);
+  listVariations = ['instock', 'outofstock'];
   selectForm: any;
 
   /** Signals */
@@ -79,12 +80,9 @@ export class ProductDetailsComponent {
 
   queryProductVariations(product: WcProduct) {
     this.wcStore
-      .listProductVariations(product.id, ['instock', 'outofstock'])
+      .listProductVariations(product.id, this.listVariations)
       .subscribe((response) => {
-        // only list variations that are in stock
         this.variations.set(response.length > 0 ? response : null);
-        console.log(this.variations());
-
         if (this.selectForm) {
           this.selectForm.controls.variationId.setValidators(
             this.variations() ? [Validators.required] : [],
@@ -128,9 +126,7 @@ export class ProductDetailsComponent {
         }),
       )
       .subscribe({
-        next: (response) => {
-          console.log('Item successfully added to cart:', response);
-        },
+        next: (response) => {},
         complete: () => {
           // waiting for the addItem request to return OK
           this.router.navigate(['/checkout']);

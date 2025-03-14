@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -11,7 +11,13 @@ import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
   selector: 'konfuse-gebote-dialog',
   templateUrl: './gebote-dialog.component.html',
   styleUrls: ['./gebote-dialog.component.scss'],
-  imports: [MatIconButton, MatIconModule, MatDividerModule, SafeHtmlPipe, NgIf],
+  imports: [
+    MatIconButton,
+    MatIconModule,
+    MatDividerModule,
+    SafeHtmlPipe,
+    CommonModule,
+  ],
   standalone: true,
 })
 export class KonfuseGeboteDialog {

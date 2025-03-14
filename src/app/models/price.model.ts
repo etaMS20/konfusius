@@ -52,6 +52,4 @@ export interface WcCartTotals {
   currency_suffix: string;
 }
 
-export type WcPaymentMethod = 'cod';
-
 export type WcPaymentRequirement = 'product';

@@ -1,0 +1,63 @@
+<div class="order-overview">
+  <div *ngIf="loading()" class="loading">Loading order details...</div>
+
+  <div *ngIf="error()" class="error">
+    {{ error() }}
+  </div>
+
+  <div *ngIf="order() && !loading()" class="order-container">
+    <header class="order-header">
+      <h1>Order #{{ _order.id }}</h1>
+      <span class="order-status" [class]="_order.status.toLowerCase()">
+        {{ _order.status }}
+      </span>
+    </header>
+
+    <div class="order-details">
+      <div class="order-info">
+        <p><strong>Order Date:</strong> {{ _order.date_created }}</p>
+      </div>
+
+      <div class="order-shipping">
+        <h2>Shipping Address</h2>
+        <address>
+          <p>{{ _order.billing.first_name }} {{ _order.billing.last_name }}</p>
+          <p>{{ _order.billing.address_1 }}</p>
+          <p>
+            {{ _order.billing.city }},
+            {{ _order.billing.postcode }}
+          </p>
+          <p>{{ _order.billing.country }}</p>
+        </address>
+      </div>
+    </div>
+
+    <div class="order-items">
+      <h2>Order Items</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of _order.line_items">
+            <td>{{ item.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>${{ item.price.toFixed(2) }}</td>
+            <td>${{ (item.quantity * item.price).toFixed(2) }}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3" class="total-label">Total</td>
+            <td class="total-value">${{ _order.total }}</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>

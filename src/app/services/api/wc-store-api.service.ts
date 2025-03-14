@@ -8,13 +8,10 @@ import {
 } from '../../models/customer.model';
 import { WcCheckOutData } from 'src/app/models/cart.model';
 
-// https://github.com/woocommerce/woocommerce/blob/trunk/plugins/woocommerce/src/StoreApi/docs
-
 @Injectable({
   providedIn: 'root',
 })
 export class WcStoreAPI {
-  private readonly customBackend = BACKEND + '/custom/v1';
   private readonly storeApiBackend = BACKEND + '/wc/store/v1';
   private readonly headers: HttpHeaders;
 

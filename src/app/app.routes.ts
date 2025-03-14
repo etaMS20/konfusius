@@ -7,7 +7,7 @@ export const routes: Routes = [
     pathMatch: 'full',
     loadComponent: () => {
       return import('./components/home/home.component').then(
-        (m) => m.HomeComponent
+        (m) => m.HomeComponent,
       );
     },
     canActivate: [AuthGuard],
@@ -16,7 +16,7 @@ export const routes: Routes = [
     path: 'tickets',
     loadComponent: () => {
       return import('./components/tickets/tickets.component').then(
-        (m) => m.TicketsComponent
+        (m) => m.TicketsComponent,
       );
     },
     canActivate: [AuthGuard],
@@ -25,7 +25,7 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () => {
       return import('./components/login/login.component').then(
-        (m) => m.LoginComponent
+        (m) => m.LoginComponent,
       );
     },
   },
@@ -35,6 +35,15 @@ export const routes: Routes = [
       return import(
         './components/checkout/checkout-container/checkout-container.component'
       ).then((m) => m.CheckoutContainerComponent);
+    },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'order/:id',
+    loadComponent: () => {
+      return import(
+        './components/order-overview/order-overview.component'
+      ).then((m) => m.OrderOverviewComponent);
     },
   },
 ];

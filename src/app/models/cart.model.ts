@@ -1,8 +1,8 @@
 import { WcBillingAddress, WcShippingAddress } from './customer.model';
+import { WcPaymentMethodId } from './order.model';
 import {
   WcCartTotals,
   WcItemTotals,
-  WcPaymentMethod,
   WcPaymentRequirement,
   WcPrice,
 } from './price.model';
@@ -19,7 +19,7 @@ export interface WcCart {
   items_weight: number;
   needs_payment: boolean;
   needs_shipping: false;
-  payment_methods: Array<WcPaymentMethod>;
+  payment_methods: Array<WcPaymentMethodId>;
   payment_requirements: Array<WcPaymentRequirement>;
   shipping_address: WcShippingAddress;
   shipping_rates: Array<any>;

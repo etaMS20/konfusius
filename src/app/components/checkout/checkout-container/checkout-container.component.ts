@@ -12,6 +12,7 @@ import { WcCart, WcCheckOutData } from '../../../models/cart.model';
 import { CustomEndpointsService } from 'src/app/services/api/custom-endpoints.service';
 import { BlogPost } from 'src/app/models/blog-post.model';
 import { WordPressApiService } from 'src/app/services/api/wp-api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-checkout-container',
@@ -25,6 +26,7 @@ export class CheckoutContainerComponent implements OnInit {
   wpApi = inject(WordPressApiService);
   errorService = inject(ErrorDialogService);
   customEpS = inject(CustomEndpointsService);
+  private readonly router = inject(Router);
 
   cart = signal<WcCart | null>(null);
   allowedOptions = signal<string[]>([]);
@@ -57,6 +59,7 @@ export class CheckoutContainerComponent implements OnInit {
   }
 
   onBillingFormSubmit(fromValues: FormOutput) {
+    let orderId: number;
     const checkoutData: WcCheckOutData = {
       invited_by: fromValues.invited_by,
       billing_address: fromValues.billingAddress,
@@ -71,6 +74,11 @@ export class CheckoutContainerComponent implements OnInit {
           return throwError(() => error);
         }),
       )
-      .subscribe((r) => console.log(r));
+      .subscribe({
+        next: (data) => {
+          orderId = data.order_id;
+          this.router.navigate([`/order/${orderId}`]);
+        },
+      });
   }
 }
