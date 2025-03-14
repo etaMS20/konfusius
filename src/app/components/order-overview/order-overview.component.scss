@@ -1,11 +1,26 @@
+@use 'src/styles/style-vars.scss' as *;
+@use 'sass:map';
+
 .order-overview {
   max-width: 800px;
-  margin: 0 auto;
+  margin: 2rem auto;
   padding: 20px;
+  border-radius: $default-border-radius;
   font-family:
-    system-ui,
+    $base-font,
     -apple-system,
     sans-serif;
+  box-shadow: $shadow-sm;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: $default-box-shadow;
+    transform: translateY(+5px);
+  }
+}
+
+.overview-loaded {
+  background-color: $background-color-form;
 }
 
 .loading,
@@ -15,7 +30,13 @@
 }
 
 .error {
-  color: #e53935;
+  color: $error-color;
+}
+
+.order-text {
+  border: 1px dashed #6bf7f7;
+  padding: 0.5rem;
+  border-radius: $default-border-radius;
 }
 
 .order-header {
@@ -35,31 +56,21 @@
   font-size: 14px;
   font-weight: 500;
 
-  &.processing {
-    background-color: #fff8e1;
-    color: #ff8f00;
+  @each $status, $styles in $order-status {
+    &.#{$status} {
+      background-color: map.get($styles, background-color);
+      color: map.get($styles, color);
+    }
   }
+}
 
-  &.shipped {
-    background-color: #e8f5e9;
-    color: #2e7d32;
-  }
-
-  &.delivered {
-    background-color: #e3f2fd;
-    color: #1565c0;
-  }
-
-  &.cancelled {
-    background-color: #ffebee;
-    color: #c62828;
-  }
+.order-container {
+  margin: 1rem 2rem;
 }
 
 .order-details {
   display: flex;
-  gap: 40px;
-  margin-bottom: 30px;
+  justify-content: space-between;
 
   @media (max-width: 600px) {
     flex-direction: column;
@@ -80,7 +91,7 @@
     td {
       padding: 12px;
       text-align: left;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid $white-grey-color;
     }
 
     th {

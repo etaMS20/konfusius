@@ -1,4 +1,5 @@
 @use '@angular/material' as mat;
+@use './style-vars.scss' as *;
 
 // https://material.angular.io/guide/theming
 // https://angular-material.dev/articles/customizing-angular-material-button
@@ -41,7 +42,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  min-height: 100vh;
+  min-height: 85vh;
   margin: 50px auto 0;
   width: 100%;
   max-width: 1400px;
@@ -71,12 +72,12 @@ h3 {
 
 p {
   font-size: 1.1rem;
-  color: #292929;
+  color: $text-color;
   margin: 10px 0;
 }
 
 li {
-  color: #292929;
+  color: $text-color;
   margin: 10px 0;
   font-size: 1.1rem;
 }

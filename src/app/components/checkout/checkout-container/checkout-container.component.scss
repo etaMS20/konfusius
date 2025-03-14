@@ -1,15 +1,4 @@
-// Variables for consistent theming
-$primary-color: #4f46e5;
-$primary-hover: #4338ca;
-$text-color: #1f2937;
-$border-color: #e5e7eb;
-$background-color: #f9fafbad;
-$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-$shadow-md:
-  0 4px 6px -1px rgba(0, 0, 0, 0.1),
-  0 2px 4px -1px rgba(0, 0, 0, 0.06);
-$border-radius: 8px;
-$spacing-unit: 8px;
+@use 'src/styles/style-vars.scss' as *;
 
 .checkout-container {
   max-width: 1200px;
@@ -17,7 +6,7 @@ $spacing-unit: 8px;
   margin: 1rem auto;
   padding: $spacing-unit * 3;
   color: $text-color;
-  background-color: $background-color;
+  background-color: $background-color-form;
 
   @media (min-width: 768px) {
     padding: $spacing-unit * 5;
@@ -47,7 +36,7 @@ h1 {
 }
 
 .billing-section {
-  background-color: white;
+  background-color: $background-color-form;
   border-radius: $border-radius;
   padding: $spacing-unit * 3;
   box-shadow: $shadow-sm;

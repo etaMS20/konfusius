@@ -1,6 +1,4 @@
-// Variables
-$primary-color: #9c27b0;
-$text-color: #2c1810;
+@use 'src/styles/style-vars.scss' as *;
 
 .content-wrapper {
   padding: 0 30px;

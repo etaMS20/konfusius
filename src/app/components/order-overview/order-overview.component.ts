@@ -1,13 +1,16 @@
-import { NgFor, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute } from '@angular/router';
+import { HumanReadableDatePipe } from '@pipes//datetime.pipe';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
 import { WcOrder } from 'src/app/models/order.model';
 import { WcV3Service } from 'src/app/services/api/wc-v3.service';
 
 @Component({
   selector: 'app-order-overview',
-  imports: [NgIf, NgFor],
+  imports: [CommonModule, HumanReadableDatePipe, MatIcon, MatTooltipModule],
   templateUrl: './order-overview.component.html',
   styleUrl: './order-overview.component.scss',
 })

@@ -1,4 +1,7 @@
-<div class="order-overview">
+<div
+  class="order-overview"
+  [ngClass]="{ 'overview-loading': loading(), 'overview-loaded': !loading() }"
+>
   <div *ngIf="loading()" class="loading">Loading order details...</div>
 
   <div *ngIf="error()" class="error">
@@ -7,7 +10,7 @@
 
   <div *ngIf="order() && !loading()" class="order-container">
     <header class="order-header">
-      <h1>Order #{{ _order.id }}</h1>
+      <h1>Anmeldung #{{ _order.id }}</h1>
       <span class="order-status" [class]="_order.status.toLowerCase()">
         {{ _order.status }}
       </span>
@@ -15,11 +18,13 @@
 
     <div class="order-details">
       <div class="order-info">
-        <p><strong>Order Date:</strong> {{ _order.date_created }}</p>
+        <p>
+          <strong>vom:</strong> {{ _order.date_created | humanReadableDate }}
+        </p>
       </div>
 
       <div class="order-shipping">
-        <h2>Shipping Address</h2>
+        <h2>Kontakt</h2>
         <address>
           <p>{{ _order.billing.first_name }} {{ _order.billing.last_name }}</p>
           <p>{{ _order.billing.address_1 }}</p>
@@ -33,13 +38,20 @@
     </div>
 
     <div class="order-items">
-      <h2>Order Items</h2>
+      <div class="order-text">
+        <p>
+          Ihr solltet jetzt eine email bekommen haben, mit einem Link zum
+          Bestellstatus. Ist der Umkostenbeitrag bei der Kontaktperson
+          angekommen, wechselt der Bestellstatus von 'pending' auf 'completed'
+          <mat-icon>favorite</mat-icon>
+        </p>
+      </div>
       <table>
         <thead>
           <tr>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Price</th>
+            <th>Schicht</th>
+            <th>#</th>
+            <th>Preis</th>
             <th>Total</th>
           </tr>
         </thead>
@@ -53,7 +65,7 @@
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="3" class="total-label">Total</td>
+            <td colspan="3" class="total-label">Umkostenbeitrag</td>
             <td class="total-value">${{ _order.total }}</td>
           </tr>
         </tfoot>

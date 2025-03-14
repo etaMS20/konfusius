@@ -1,3 +1,5 @@
+@use 'src/styles/style-vars.scss' as *;
+
 :host {
   display: block;
   width: 100%;
@@ -21,7 +23,7 @@
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: $default-box-shadow;
   }
 
   &.selected {
