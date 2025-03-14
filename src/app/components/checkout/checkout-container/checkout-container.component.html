@@ -6,6 +6,8 @@
       <app-billing
         (formSubmit)="onBillingFormSubmit($event)"
         [cart]="cart()"
+        [allowedInvitedByOptions]="allowedOptions()"
+        [rules]="rules()"
       ></app-billing>
     </div>
 
@@ -13,5 +15,4 @@
       <app-cart-totals [cart]="cart()"></app-cart-totals>
     </div>
   </div>
-  <button (click)="checkout()">Bestellen</button>
 </div>

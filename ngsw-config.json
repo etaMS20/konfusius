@@ -31,8 +31,7 @@
     {
       "name": "wordpress-api",
       "urls": [
-        "https://konfusius.org/wp-json/wp/v2/**",
-        "https://konfusius.org/wp-json/wc/store/v1**"
+        "https://konfusius.org/wp-json/wp/v2/**"
       ],
       "cacheConfig": {
         "strategy": "performance",

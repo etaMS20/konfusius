@@ -3,7 +3,7 @@ $primary-color: #4f46e5;
 $primary-hover: #4338ca;
 $text-color: #1f2937;
 $border-color: #e5e7eb;
-$background-color: #f9fafb;
+$background-color: #f9fafbad;
 $shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 $shadow-md:
   0 4px 6px -1px rgba(0, 0, 0, 0.1),
@@ -13,13 +13,9 @@ $spacing-unit: 8px;
 
 .checkout-container {
   max-width: 1200px;
-  margin: 0 auto;
+  border-radius: 1rem;
+  margin: 1rem auto;
   padding: $spacing-unit * 3;
-  font-family:
-    'Inter',
-    -apple-system,
-    BlinkMacSystemFont,
-    sans-serif;
   color: $text-color;
   background-color: $background-color;
 
@@ -45,7 +41,7 @@ h1 {
   gap: $spacing-unit * 4;
 
   @media (min-width: 768px) {
-    grid-template-columns: 3fr 2fr;
+    grid-template-columns: 1.2fr 1fr;
     align-items: start;
   }
 }
@@ -74,38 +70,6 @@ h1 {
 
   @media (max-width: 767px) {
     margin-bottom: $spacing-unit * 3;
-  }
-}
-
-button {
-  width: 100%;
-  background-color: $primary-color;
-  color: white;
-  font-weight: 600;
-  font-size: 1rem;
-  padding: $spacing-unit * 2 $spacing-unit * 3;
-  border: none;
-  border-radius: $border-radius;
-  cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    transform 0.1s ease;
-  margin-top: $spacing-unit * 3;
-  letter-spacing: 0.5px;
-  box-shadow: $shadow-sm;
-  text-transform: uppercase;
-
-  &:hover {
-    background-color: $primary-hover;
-    transform: translateY(-1px);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-
-  @media (min-width: 768px) {
-    grid-column: 2;
   }
 }
 

@@ -22,6 +22,6 @@
   </section>
   <mat-divider />
   <div class="product-content">
-    <p [innerHTML]="sanitizedDescription"></p>
+    <p [innerHTML]="this.product.description | safeHtml"></p>
   </div>
 </div>

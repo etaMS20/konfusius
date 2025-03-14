@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { ImageSliderComponent } from '../../shared/image-slider/image-slider.component';
-import { WordPressApiService } from '../../../services/wp-api.service';
+import { WordPressApiService } from '../../../services/api/wp-api.service';
 import {
   WPImageSizeApiKey,
   WPCategory,

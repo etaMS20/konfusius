@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { BACKEND } from '../../config/http.config';
-import { WPCategory } from '../models/media.model';
+import { BACKEND } from '../../../config/http.config';
+import { WPCategory } from '../../models/media.model';
 
 // TODO: Setup caching
 @Injectable({

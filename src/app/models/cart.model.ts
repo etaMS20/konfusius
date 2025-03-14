@@ -57,3 +57,12 @@ export interface WcCartItem {
   catalog_visibility: string;
   extensions: object;
 }
+
+export interface WcCheckOutData {
+  invited_by: string;
+  billing_address: WcBillingAddress;
+  payment_method: string;
+  customer_note?: string;
+  payment_data?: Array<any>;
+  shipping_address?: WcShippingAddress;
+}

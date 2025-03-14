@@ -1,8 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BACKEND } from '../../config/http.config';
-import { WcBillingAddress, WcShippingAddress } from '../models/customer.model';
+import { BACKEND } from '../../../config/http.config';
+import {
+  WcBillingAddress,
+  WcShippingAddress,
+} from '../../models/customer.model';
+import { WcCheckOutData } from 'src/app/models/cart.model';
 
 // https://github.com/woocommerce/woocommerce/blob/trunk/plugins/woocommerce/src/StoreApi/docs
 
@@ -24,7 +28,7 @@ export class WcStoreAPI {
     return this.http.get(
       this.storeApiBackend +
         `/products?per_page=${per_page}&category=${category}`,
-      { headers: this.headers }
+      { headers: this.headers },
     );
   }
 
@@ -34,12 +38,12 @@ export class WcStoreAPI {
 
   listProductVariations(
     parentId: number,
-    stockStatus = ['instock', 'outofstock']
+    stockStatus = ['instock', 'outofstock'],
   ): Observable<any> {
     return this.http.get(
       this.storeApiBackend +
         `/products?type=variation&parent=${parentId}&stock_status=${stockStatus}`,
-      { headers: this.headers }
+      { headers: this.headers },
     );
   }
 
@@ -59,7 +63,7 @@ export class WcStoreAPI {
         id,
         quantity,
       },
-      { headers: this.headers, withCredentials: true }
+      { headers: this.headers, withCredentials: true },
     );
   }
 
@@ -72,7 +76,7 @@ export class WcStoreAPI {
 
   updateCustomerData(
     billing_address: WcShippingAddress,
-    shipping_address?: WcShippingAddress
+    shipping_address?: WcShippingAddress,
   ): Observable<any> {
     return this.http.post(
       this.storeApiBackend + '/cart/update-customer',
@@ -80,29 +84,24 @@ export class WcStoreAPI {
         billing_address,
         shipping_address,
       },
-      { headers: this.headers, withCredentials: true }
+      { headers: this.headers, withCredentials: true },
     );
   }
 
   // checkout
 
-  checkout(
-    billingAddress?: WcBillingAddress,
-    paymentMethod?: string,
-    shippingAddress?: WcShippingAddress,
-    paymentData?: Array<any>,
-    customerNote?: string
-  ): Observable<any> {
+  checkout(data: WcCheckOutData): Observable<any> {
     return this.http.post(
       this.storeApiBackend + '/checkout',
       {
-        billing_address: billingAddress,
-        payment_method: paymentMethod,
-        payment_data: paymentData,
-        shipping_address: shippingAddress,
-        customerNote: customerNote,
+        invited_by: data.invited_by,
+        billing_address: data.billing_address,
+        payment_method: data.payment_method,
+        payment_data: data.payment_data,
+        shipping_address: data.shipping_address,
+        customerNote: data.customer_note,
       },
-      { headers: this.headers, withCredentials: true }
+      { headers: this.headers, withCredentials: true },
     );
   }
 
@@ -112,7 +111,7 @@ export class WcStoreAPI {
     shippingAddress: WcShippingAddress,
     paymentMethod: string,
     paymentData: Array<any>,
-    billingEmail?: string
+    billingEmail?: string,
   ): Observable<any> {
     return this.http.post(
       this.storeApiBackend + '/checkout',
@@ -124,7 +123,7 @@ export class WcStoreAPI {
         shipping_address: shippingAddress,
         billing_email: billingEmail,
       },
-      { headers: this.headers, withCredentials: true }
+      { headers: this.headers, withCredentials: true },
     );
   }
 }

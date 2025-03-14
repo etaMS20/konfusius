@@ -22,7 +22,7 @@ import { throwError } from 'rxjs';
 import { catchError, concatMap } from 'rxjs/operators';
 import { DisableControlDirective } from '../../../directives/disable-control.directive';
 import { ErrorDialogService } from '../../shared/errors/error-dialog.service';
-import { WcStoreAPI } from '../../../services/wc-store-api.service';
+import { WcStoreAPI } from '../../../services/api/wc-store-api.service';
 import { WcProduct, WcProductTypes } from '../../../models/product.model';
 import { Router } from '@angular/router';
 import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';

@@ -1,120 +1,180 @@
 <div class="billing-container">
-  <h2>Rechnungsadresse</h2>
-  <form [formGroup]="billingForm" (ngSubmit)="onSubmit()">
-    <input
-      id="first_name"
-      type="text"
-      formControlName="first_name"
-      autocomplete="given-name"
-      placeholder="First Name*"
-    />
-    <mat-error
-      *ngIf="
-        billingForm.controls['first_name'].invalid &&
-        billingForm.controls['first_name'].touched
-      "
-    >
-      First Name is required (min 2 characters).
-    </mat-error>
+  <h2>Kontaktdaten</h2>
+  <p>
+    Eure Daten werden natürlich streng vertraulich behandlet und alleinigst zum
+    Zwecke der internen Verarbeitung genutzt.
+  </p>
+  <mat-divider />
+  <form class="billing_address" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <!-- Billing Address Section -->
+    <div class="form-section" formGroupName="billingAddress">
+      <input
+        id="first_name"
+        type="text"
+        formControlName="first_name"
+        autocomplete="given-name"
+        placeholder="First Name*"
+      />
+      <mat-error
+        *ngIf="
+          hasError(firstName, 'required') || hasError(firstName, 'minlength')
+        "
+      >
+        First Name is required (min 2 characters).
+      </mat-error>
 
-    <input
-      id="last_name"
-      type="text"
-      formControlName="last_name"
-      autocomplete="family-name"
-      placeholder="Last Name*"
-    />
-    <mat-error
-      *ngIf="
-        billingForm.controls['last_name'].invalid &&
-        billingForm.controls['last_name'].touched
-      "
-    >
-      Last Name is required (min 2 characters).
-    </mat-error>
+      <input
+        id="last_name"
+        type="text"
+        formControlName="last_name"
+        autocomplete="family-name"
+        placeholder="Last Name*"
+      />
+      <mat-error
+        *ngIf="
+          hasError(lastName, 'required') || hasError(lastName, 'minlength')
+        "
+      >
+        Last Name is required (min 2 characters).
+      </mat-error>
 
-    <input
-      id="address_1"
-      type="text"
-      formControlName="address_1"
-      autocomplete="address-line1"
-      placeholder="Street & Number*"
-    />
+      <input
+        id="address_1"
+        type="text"
+        formControlName="address_1"
+        autocomplete="address-line1"
+        placeholder="Street & Number*"
+      />
+      <mat-error *ngIf="hasError(address1, 'required')">
+        Street address is required.
+      </mat-error>
 
-    <input
-      id="city"
-      type="text"
-      formControlName="city"
-      autocomplete="address-level2"
-      placeholder="City*"
-    />
+      <input
+        id="city"
+        type="text"
+        formControlName="city"
+        autocomplete="address-level2"
+        placeholder="City*"
+      />
+      <mat-error *ngIf="hasError(city, 'required')">
+        City is required.
+      </mat-error>
 
-    <input
-      id="state"
-      type="text"
-      formControlName="state"
-      autocomplete="address-level1"
-      placeholder="State*"
-    />
+      <input
+        id="state"
+        type="text"
+        formControlName="state"
+        autocomplete="address-level1"
+        placeholder="State*"
+      />
 
-    <input
-      id="postcode"
-      type="text"
-      formControlName="postcode"
-      autocomplete="postal-code"
-      placeholder="ZIP Code*"
-    />
-    <mat-error
-      *ngIf="
-        billingForm.controls['postcode'].invalid &&
-        billingForm.controls['postcode'].touched
-      "
-    >
-      Enter a valid 5-digit ZIP code.
-    </mat-error>
+      <input
+        id="postcode"
+        type="text"
+        formControlName="postcode"
+        autocomplete="postal-code"
+        placeholder="ZIP Code*"
+      />
+      <mat-error
+        *ngIf="hasError(postcode, 'required') || hasError(postcode, 'pattern')"
+      >
+        Enter a valid 5-digit ZIP code.
+      </mat-error>
 
-    <input
-      id="country"
-      type="text"
-      formControlName="country"
-      autocomplete="country"
-      placeholder="Country*"
-    />
+      <input
+        id="country"
+        type="text"
+        formControlName="country"
+        autocomplete="country"
+        placeholder="Country*"
+      />
+      <mat-error *ngIf="hasError(country, 'required')">
+        Country is required.
+      </mat-error>
 
-    <input
-      id="email"
-      type="email"
-      formControlName="email"
-      autocomplete="email"
-      placeholder="Email*"
-    />
-    <mat-error
-      *ngIf="
-        billingForm.controls['email'].invalid &&
-        billingForm.controls['email'].touched
-      "
-    >
-      Enter a valid email address.
-    </mat-error>
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+        autocomplete="email"
+        placeholder="Email*"
+      />
+      <mat-error
+        *ngIf="hasError(email, 'required') || hasError(email, 'email')"
+      >
+        Enter a valid email address.
+      </mat-error>
 
-    <input
-      id="phone"
-      type="tel"
-      formControlName="phone"
-      autocomplete="tel"
-      placeholder="Phone"
-    />
-    <mat-error
-      *ngIf="
-        billingForm.controls['phone'].invalid &&
-        billingForm.controls['phone'].touched
-      "
-    >
-      Enter a valid phone number.
-    </mat-error>
+      <input
+        id="phone"
+        type="tel"
+        formControlName="phone"
+        autocomplete="tel"
+        placeholder="Phone"
+      />
+      <mat-error *ngIf="hasError(phone, 'pattern')">
+        Enter a valid phone number.
+      </mat-error>
+    </div>
 
-    <button mat-raised-button="submit" [disabled]="billingForm.invalid">
-      Adressinformationen Bestätigen
-    </button>
+    <mat-divider />
+
+    <!-- Dropdown Select -->
+    <div class="form-section">
+      <mat-form-field class="invited-by">
+        <mat-label>Eingeladen von? (Kontaktperson)</mat-label>
+        <mat-select formControlName="invited_by">
+          <mat-option
+            *ngFor="let option of allowedInvitedByOptions()"
+            [value]="option"
+          >
+            {{ option }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-error *ngIf="hasError(invitedBy, 'required')">
+        Bitte wähle eine Kontaktperson aus.
+      </mat-error>
+    </div>
+
+    <!-- Checkbox for consent -->
+    <section class="form-section">
+      <p>
+        <mat-checkbox formControlName="consent"></mat-checkbox>
+        Hiermit bestätige ich die
+        <strong>
+          <a class="link" (click)="openRulesDialog($event)"
+            >Konfusen Gebote</a
+          ></strong
+        >
+        zu achten.
+      </p>
+      <mat-error *ngIf="hasError(consent, 'required')">
+        Die Bestätigung der Gebote ist erforderlich.
+      </mat-error>
+    </section>
+
+    <div class="form-section">
+      <textarea
+        id="comments"
+        formControlName="comments"
+        [placeholder]="commentPlaceholder"
+        rows="4"
+        cols="50"
+      ></textarea>
+    </div>
+
+    <mat-divider />
+
+    <section class="form-section">
+      <button
+        mat-raised-button
+        type="submit"
+        [disabled]="formGroup.invalid"
+        class="submit-button"
+      >
+        Anmeldung Bestätigen
+      </button>
+    </section>
   </form>
 </div>

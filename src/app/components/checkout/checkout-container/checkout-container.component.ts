@@ -1,12 +1,17 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartTotalsComponent } from '../cart-totals/cart-totals.component';
-import { BillingComponent } from '../billing/billing-input/billing-input.component';
-import { WcBillingAddress } from '../../../models/customer.model';
-import { WcStoreAPI } from '../../../services/wc-store-api.service';
+import {
+  BillingComponent,
+  FormOutput,
+} from '../billing/billing-input/billing-input.component';
+import { WcStoreAPI } from '../../../services/api/wc-store-api.service';
 import { catchError, throwError } from 'rxjs';
 import { ErrorDialogService } from '../../shared/errors/error-dialog.service';
-import { WcCart } from '../../../models/cart.model';
+import { WcCart, WcCheckOutData } from '../../../models/cart.model';
+import { CustomEndpointsService } from 'src/app/services/api/custom-endpoints.service';
+import { BlogPost } from 'src/app/models/blog-post.model';
+import { WordPressApiService } from 'src/app/services/api/wp-api.service';
 
 @Component({
   selector: 'app-checkout-container',
@@ -15,16 +20,25 @@ import { WcCart } from '../../../models/cart.model';
   templateUrl: './checkout-container.component.html',
   styleUrls: ['./checkout-container.component.scss'],
 })
-export class CheckoutContainerComponent {
+export class CheckoutContainerComponent implements OnInit {
   wcStoreApi = inject(WcStoreAPI);
+  wpApi = inject(WordPressApiService);
   errorService = inject(ErrorDialogService);
+  customEpS = inject(CustomEndpointsService);
+
   cart = signal<WcCart | null>(null);
+  allowedOptions = signal<string[]>([]);
+  rules = signal<BlogPost | undefined>(undefined);
 
   billingAddress = computed(() => {
     return this.cart()?.billing_address;
   });
 
-  constructor() {
+  ngOnInit(): void {
+    this.wpApi.getPostById(1741).subscribe((post) => {
+      this.rules.set(post);
+    });
+
     this.wcStoreApi
       .getCart()
       .pipe(
@@ -36,22 +50,27 @@ export class CheckoutContainerComponent {
       .subscribe((response: WcCart) => {
         this.cart.set(response);
       });
-  }
 
-  onBillingFormSubmit(billingAddress: WcBillingAddress) {
-    this.wcStoreApi.updateCustomerData(billingAddress).subscribe((r) => {
-      console.log(r);
+    this.customEpS.listAllowedInvites().subscribe((response: string[]) => {
+      this.allowedOptions.set(response);
     });
   }
 
-  checkout() {
+  onBillingFormSubmit(fromValues: FormOutput) {
+    const checkoutData: WcCheckOutData = {
+      invited_by: fromValues.invited_by,
+      billing_address: fromValues.billingAddress,
+      payment_method: 'cod',
+      customer_note: fromValues.comments,
+    };
     this.wcStoreApi
-      .checkout(this.billingAddress(), 'cod')
+      .checkout(checkoutData)
+      .pipe(
+        catchError((error) => {
+          this.errorService.handleError(error);
+          return throwError(() => error);
+        }),
+      )
       .subscribe((r) => console.log(r));
   }
-
-  // https://stackoverflow.com/questions/67411792/angular-parent-form-with-child-form-component-how-to-let-child-know-when-parent
-  // https://stackoverflow.com/questions/72070748/failed-to-load-module-script-expected-a-javascript-module-script-but-the-server
-
-  // TODO: https://dev.to/stephenwhitmore/take-your-wordpress-site-farther-with-angular-3o6p
 }

@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { WordPressApiService } from '../../services/wp-api.service';
+import { WordPressApiService } from '../../services/api/wp-api.service';
 import { InfoTabsComponent } from './info-tabs/info-tabs.component';
 import { ImageContainerComponent } from './image-container/image-container.component';
 import { BlogPost } from 'src/app/models/blog-post.model';

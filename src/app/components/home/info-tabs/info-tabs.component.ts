@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { WordPressApiService } from '../../../services/wp-api.service';
+import { WordPressApiService } from '../../../services/api/wp-api.service';
 import { BlogPost } from 'src/app/models/blog-post.model';
 import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
 import { PdfDownloadViewerComponent } from '@shared/pdf-download-viewer/pdf-download-viewer.component';

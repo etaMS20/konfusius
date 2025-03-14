@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { ProductSelectionService } from '../../../services/product-selection.service';
-import { WcStoreAPI } from '../../../services/wc-store-api.service';
+import { WcStoreAPI } from '../../../services/api/wc-store-api.service';
 import { ProductComponent } from '../product/product.component';
 import { WcProduct } from '../../../models/product.model';
 import { MappingService } from '../../../services/mapping.service';

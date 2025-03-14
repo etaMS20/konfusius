@@ -39,3 +39,7 @@ https://dev.to/stephenwhitmore/take-your-wordpress-site-farther-with-angular-3o6
 - implement caching (should have)
 - implement Ui for "Digitale Anmeldeliste" (can have)
 - extra login token for crew (must have)
+
+  // https://stackoverflow.com/questions/67411792/angular-parent-form-with-child-form-component-how-to-let-child-know-when-parent
+  // https://stackoverflow.com/questions/72070748/failed-to-load-module-script-expected-a-javascript-module-script-but-the-server
+  // TODO: https://dev.to/stephenwhitmore/take-your-wordpress-site-farther-with-angular-3o6p

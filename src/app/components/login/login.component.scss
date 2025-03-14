@@ -4,15 +4,21 @@
   justify-content: center;
   align-items: center;
   height: auto;
-  padding-top: 100px;
+  padding: 1rem;
+}
+
+.image-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem;
 }
 
 /* Image inside form field */
 .form-field-image {
   display: block;
-  margin: 0 auto 1rem auto;
-  max-width: 40vw;
   height: auto;
+  width: 100%;
   border-radius: 5%;
 }
 

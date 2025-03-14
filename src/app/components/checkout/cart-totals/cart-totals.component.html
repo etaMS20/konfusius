@@ -1,34 +1,44 @@
 <div class="cart-totals-container">
-  <h2>Bestellübersicht</h2>
+  <h2>Übersicht</h2>
 
   <div *ngIf="!hasItem" class="empty-cart">Your cart is empty</div>
 
-  <table *ngIf="hasItem" class="cart-table">
-    <thead>
-      <tr>
-        <th>Schicht</th>
-        <th>{{ cartItem()!.variation[0].attribute }}</th>
-        <th>Preis</th>
-        <th>Anz</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>{{ cartItem()?.name }}</td>
-        <td>
-          <span [innerHTML]="cartItem()!.variation[0].value | safeHtml"></span>
-        </td>
-        <td>
-          {{ cartItemSubTotalPrice }} {{ cartItem()!.totals.currency_symbol }}
-        </td>
-        <td>{{ cartItem()?.quantity }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div *ngIf="hasItem" class="cart-items">
+    <div class="cart-item">
+      <div class="cart-item-header">
+        {{ cartItem()?.name }}
+      </div>
+
+      <div class="cart-item-details">
+        <div class="cart-item-detail">
+          <span class="detail-label"
+            >{{ cartItem()!.variation[0].attribute }}:</span
+          >
+          <span
+            class="detail-value"
+            [innerHTML]="cartItem()!.variation[0].value | safeHtml"
+          ></span>
+        </div>
+
+        <div class="cart-item-detail">
+          <span class="detail-label">Preis:</span>
+          <span class="detail-value"
+            >{{ cartItemSubTotalPrice }}
+            {{ cartItem()!.totals.currency_symbol }}</span
+          >
+        </div>
+
+        <div class="cart-item-detail">
+          <span class="detail-label">Anz:</span>
+          <span class="detail-value">{{ cartItem()?.quantity }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div *ngIf="hasItem" class="totals-section">
     <div class="totals-row total">
-      <span>Total:</span>
+      <span>Umkostenbeitrag:</span>
       <span>{{ cartTotalPrice }} {{ cartItem()!.totals.currency_symbol }}</span>
     </div>
   </div>

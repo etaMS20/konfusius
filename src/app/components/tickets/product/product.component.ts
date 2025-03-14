@@ -54,9 +54,10 @@ export class ProductComponent {
     this.dialog.open(ProductDialogComponent, {
       data: this.product,
       width: '60vw',
-      height: '60vw',
+      height: '70vh',
       maxWidth: '800px',
       maxHeight: '800px',
+      minWidth: '350px',
     });
   }
 }

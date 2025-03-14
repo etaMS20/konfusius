@@ -20,20 +20,20 @@
   }
 
   @media (max-width: 900px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 0.9fr);
   }
 
   @media (max-width: 600px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 0.8fr);
     gap: 20px;
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 380px) {
     grid-template-columns: 1fr; // 1 column only on very small devices
   }
 
   &-item {
     width: 100%;
-    min-height: 350px;
+    min-height: 300px;
   }
 }

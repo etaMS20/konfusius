@@ -2,46 +2,149 @@ import {
   Component,
   EventEmitter,
   input,
-  Input,
-  OnChanges,
-  output,
+  type OnChanges,
   Output,
 } from '@angular/core';
 import {
   FormBuilder,
-  FormGroup,
+  type FormControl,
+  type FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { WcBillingAddress } from '../../../../models/customer.model';
-import { NgIf } from '@angular/common';
+import type { WcBillingAddress } from '../../../../models/customer.model';
+import { NgFor, NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { MatError, MatLabel } from '@angular/material/form-field';
-import { WcCart } from 'src/app/models/cart.model';
+import { MatError, MatFormFieldModule } from '@angular/material/form-field';
+import type { WcCart } from 'src/app/models/cart.model';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDivider } from '@angular/material/divider';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialog } from '@angular/material/dialog';
+import { KonfuseGeboteDialog } from '@components/checkout/dialog/gebote-dialog.component';
+import type { BlogPost } from 'src/app/models/blog-post.model';
+
+export interface FormOutput {
+  billingAddress: WcBillingAddress;
+  invited_by: string;
+  consent: boolean;
+  comments: string;
+}
 
 @Component({
   selector: 'app-billing',
-  imports: [ReactiveFormsModule, NgIf, MatButtonModule, MatError, MatLabel],
+  imports: [
+    ReactiveFormsModule,
+    NgIf,
+    NgFor,
+    MatButtonModule,
+    MatError,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatIconModule,
+    MatDivider,
+    MatCheckboxModule,
+  ],
   templateUrl: './billing-input.component.html',
   styleUrl: './billing-input.component.scss',
+  standalone: true,
 })
 export class BillingComponent implements OnChanges {
   cart = input<WcCart | null>(null);
-  @Output() formSubmit = new EventEmitter<WcBillingAddress>();
-  billingForm: FormGroup;
+  rules = input<BlogPost | undefined>(undefined);
+  allowedInvitedByOptions = input<string[]>([]);
+  commentPlaceholder =
+    'Du hast eine verrückte Idee, die du uns mitteilen möchtest? Dann lass es uns wissen! <3';
 
-  constructor(private readonly fb: FormBuilder) {
-    this.billingForm = this.fb.group({
-      first_name: [null, [Validators.required, Validators.minLength(2)]],
-      last_name: [null, [Validators.required, Validators.minLength(2)]],
-      address_1: [null, Validators.required],
-      address_2: [null],
-      city: [null, Validators.required],
-      state: [null],
-      postcode: [null, [Validators.required, Validators.pattern('^[0-9]{5}$')]],
-      country: [null, Validators.required],
-      email: [null, [Validators.required, Validators.email]],
-      phone: [null, [Validators.pattern('^[0-9]+$')]],
+  @Output() formSubmit = new EventEmitter<FormOutput>();
+  formGroup: FormGroup;
+
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly dialog: MatDialog,
+  ) {
+    this.formGroup = this.createFormGroup();
+  }
+
+  // Getters for easier form control access
+  get billingAddress(): FormGroup {
+    return this.formGroup.get('billingAddress') as FormGroup;
+  }
+
+  get firstName(): FormControl {
+    return this.billingAddress.get('first_name') as FormControl;
+  }
+
+  get lastName(): FormControl {
+    return this.billingAddress.get('last_name') as FormControl;
+  }
+
+  get address1(): FormControl {
+    return this.billingAddress.get('address_1') as FormControl;
+  }
+
+  get city(): FormControl {
+    return this.billingAddress.get('city') as FormControl;
+  }
+
+  get state(): FormControl {
+    return this.billingAddress.get('state') as FormControl;
+  }
+
+  get postcode(): FormControl {
+    return this.billingAddress.get('postcode') as FormControl;
+  }
+
+  get country(): FormControl {
+    return this.billingAddress.get('country') as FormControl;
+  }
+
+  get email(): FormControl {
+    return this.billingAddress.get('email') as FormControl;
+  }
+
+  get phone(): FormControl {
+    return this.billingAddress.get('phone') as FormControl;
+  }
+
+  get invitedBy(): FormControl {
+    return this.formGroup.get('invited_by') as FormControl;
+  }
+
+  get consent(): FormControl {
+    return this.formGroup.get('consent') as FormControl;
+  }
+
+  get comments(): FormControl {
+    return this.formGroup.get('comments') as FormControl;
+  }
+
+  // Form validation helpers
+  hasError(control: FormControl, errorType: string): boolean {
+    return control.hasError(errorType) && control.touched;
+  }
+
+  private createFormGroup(): FormGroup {
+    return this.fb.group({
+      billingAddress: this.fb.group({
+        first_name: [null, [Validators.required, Validators.minLength(2)]],
+        last_name: [null, [Validators.required, Validators.minLength(2)]],
+        address_1: [null, Validators.required],
+        address_2: [null],
+        city: [null, Validators.required],
+        state: [null],
+        postcode: [
+          null,
+          [Validators.required, Validators.pattern('^[0-9]{5}$')],
+        ],
+        country: [null, Validators.required],
+        email: [null, [Validators.required, Validators.email]],
+        phone: [null, [Validators.pattern('^[0-9]+$')]],
+      }),
+      invited_by: [null, Validators.required],
+      consent: [false, Validators.requiredTrue], // Must be true to submit
+      comments: [null],
     });
   }
 
@@ -53,26 +156,49 @@ export class BillingComponent implements OnChanges {
   }
 
   setFormValues(billingAddress: WcBillingAddress) {
-    this.billingForm.setValue({
-      first_name: billingAddress.first_name,
-      last_name: billingAddress.last_name,
-      address_1: billingAddress.address_1,
-      address_2: billingAddress.address_2,
-      city: billingAddress.city,
-      state: billingAddress.state,
-      postcode: billingAddress.postcode,
-      country: billingAddress.country,
-      email: billingAddress.email,
-      phone: billingAddress.phone,
+    this.formGroup.patchValue({
+      billingAddress: {
+        first_name: billingAddress.first_name,
+        last_name: billingAddress.last_name,
+        address_1: billingAddress.address_1,
+        address_2: billingAddress.address_2,
+        city: billingAddress.city,
+        state: billingAddress.state,
+        postcode: billingAddress.postcode,
+        country: billingAddress.country,
+        email: billingAddress.email,
+        phone: billingAddress.phone,
+      },
+      invited_by: null,
+      consent: false,
+      comments: null,
     });
   }
 
   onSubmit() {
-    if (this.billingForm.valid) {
-      this.formSubmit.emit(this.billingForm.value);
+    if (this.formGroup.valid) {
+      // Combine the billing address with other form values
+      const formData = {
+        billingAddress: this.billingAddress.value,
+        invited_by: this.invitedBy.value,
+        consent: this.consent.value,
+        comments: this.comments.value,
+      };
+      this.formSubmit.emit(formData);
     } else {
-      this.markFormGroupTouched(this.billingForm);
+      this.markFormGroupTouched(this.formGroup);
     }
+  }
+
+  openRulesDialog(event: Event) {
+    event.stopPropagation();
+    const rules = this.rules();
+    this.dialog.open(KonfuseGeboteDialog, {
+      data: rules,
+      width: '60vw',
+      height: '80vh',
+      minWidth: '370px',
+    });
   }
 
   private markFormGroupTouched(formGroup: FormGroup) {

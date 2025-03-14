@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { BlogPost } from 'src/app/models/blog-post.model';
-import { WordPressApiService } from 'src/app/services/wp-api.service';
+import { WordPressApiService } from 'src/app/services/api/wp-api.service';
 import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
 
 @Component({

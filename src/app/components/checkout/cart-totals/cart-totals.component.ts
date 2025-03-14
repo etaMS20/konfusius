@@ -1,5 +1,5 @@
 import { Component, computed, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { WcCart } from '../../../models/cart.model';
 import { formatPrice } from '../../../utils/price.utils';
 import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
@@ -7,7 +7,7 @@ import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
 @Component({
   selector: 'app-cart-totals',
   standalone: true,
-  imports: [CommonModule, SafeHtmlPipe],
+  imports: [CommonModule, SafeHtmlPipe, NgIf],
   templateUrl: './cart-totals.component.html',
   styleUrls: ['./cart-totals.component.scss'],
 })
