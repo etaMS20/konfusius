@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './auth.guard';
+import { PrivacyPolicyComponent } from '@shared/privacy-policy/privacy-policy.component';
 
 export const routes: Routes = [
   {
@@ -44,6 +45,14 @@ export const routes: Routes = [
       return import(
         './components/order-overview/order-overview.component'
       ).then((m) => m.OrderOverviewComponent);
+    },
+  },
+  {
+    path: 'privacy',
+    loadComponent: () => {
+      return import(
+        './components/shared/privacy-policy/privacy-policy.component'
+      ).then((m) => m.PrivacyPolicyComponent);
     },
   },
 ];

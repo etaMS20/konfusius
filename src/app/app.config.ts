@@ -4,12 +4,13 @@ import {
   isDevMode,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
-
+import { provideNgcCookieConsent } from 'ngx-cookieconsent';
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { provideServiceWorker } from '@angular/service-worker';
+import { cookieConfig } from '@config/cookie-consent.config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,5 +23,6 @@ export const appConfig: ApplicationConfig = {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000',
     }),
+    provideNgcCookieConsent(cookieConfig),
   ],
 };

@@ -1,0 +1,34 @@
+@use 'src/styles/style-vars.scss' as *;
+
+.cookie-privacy-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 2rem auto;
+  font-family: Arial, sans-serif;
+  background-color: $background-color-form;
+}
+
+h1 {
+  color: #333;
+  font-size: 2.5em;
+}
+
+h2 {
+  color: #555;
+  font-size: 1.5em;
+}
+
+p {
+  color: #666;
+  font-size: 1em;
+  line-height: 1.6;
+}
+
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
