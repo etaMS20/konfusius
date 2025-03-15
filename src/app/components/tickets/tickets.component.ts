@@ -10,9 +10,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { NgFor, NgIf } from '@angular/common';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { LoadingIndicatorComponent } from '../loading-indicator/loading-indicator.component';
-import { WcProduct } from '../../models/product.model';
-import { LoadingService } from '../../services/loading.service';
-import { ProductSelectionService } from '../../services/product-selection.service';
+import { WcProduct } from '@models/product.model';
+import { LoadingService } from '@services/loading.service';
 import { MappingService } from '@services/mapping.service';
 import { WcStoreAPI } from '@services/api/wc-store-api.service';
 import { Subject } from 'rxjs';
@@ -36,30 +35,47 @@ export class TicketsComponent implements OnInit, OnDestroy {
   private readonly loadingService = inject(LoadingService);
   private readonly destroy$ = new Subject<void>();
   mappingService = inject(MappingService);
-  productSelectionService = inject(ProductSelectionService);
+
   wcStore = inject(WcStoreAPI);
 
   /** signals */
   products = signal<Array<WcProduct>>([]);
-  productsLoaded = computed<boolean>(() => {
-    return this.products().length > 0;
+  selectedProduct = signal<WcProduct | undefined>(undefined);
+  selectedProductId = computed(() => {
+    return this.selectedProduct()?.id;
   });
-  selectedProduct = signal<WcProduct | null>(null);
   productCat = signal<number>(22);
 
   constructor() {}
 
   ngOnInit(): void {
     this.loadingService.loadingOn();
-    this.productSelectionService.selectedProduct$.subscribe({
-      next: (product) => {
-        this.selectedProduct.set(product);
-        this.loadingService.loadingOff();
-      },
-      error: () => {},
-    });
-    this.productCat.set(parseInt(localStorage.getItem('productCat') ?? '22'));
     this.initProducts();
+
+    const storedSelect = this.getStoredSelect();
+    // query the product and set it as selected
+    if (storedSelect) this.querySelectedProduct(storedSelect);
+
+    this.productCat.set(this.getProductCat());
+    this.loadingService.loadingOff();
+  }
+
+  querySelectedProduct(id: number) {
+    this.wcStore
+      .getProductById(id)
+      .subscribe((r) => this.selectedProduct.set(r));
+  }
+
+  private getStoredSelect(): number | undefined {
+    const storedItem = localStorage.getItem('selectedProductId');
+    let storedId = undefined;
+    if (storedItem) storedId = parseInt(storedItem, 10);
+    return storedId;
+  }
+
+  private getProductCat(): number {
+    const storedCat = localStorage.getItem('productCat');
+    return storedCat ? parseInt(storedCat) : 22;
   }
 
   ngOnDestroy() {
@@ -67,19 +83,15 @@ export class TicketsComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  onProductSelected(product: WcProduct): void {
-    this.selectedProduct.set(product);
-  }
-
-  selectProduct(product: WcProduct) {
-    const isSelected = this.isSelected(product);
-    this.productSelectionService.setSelectedProduct(
-      isSelected ? null : product,
-    );
-  }
-
-  isSelected(product: WcProduct): boolean {
-    return this.productSelectionService.getSelectedProduct() === product;
+  /** Listens for the event, implements unselect logic */
+  onProductSelected(id: number | null): void {
+    if (id === null) {
+      this.selectedProduct.set(undefined);
+      localStorage.removeItem('selectedProductId');
+    } else {
+      id ? this.querySelectedProduct(id) : new Error();
+      localStorage.setItem('selectedProductId', id.toString());
+    }
   }
 
   initProducts() {
