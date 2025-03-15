@@ -6,6 +6,7 @@ import {
   signal,
   SimpleChanges,
   computed,
+  input,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
@@ -30,7 +31,8 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class ProductComponent {
   @Input() product!: WcProduct;
-  @Input() isSelected: boolean = false;
+  isSelected = input<boolean>();
+  // @Input() isSelected: boolean = false;
   @Output() productSelected = new EventEmitter<any>();
 
   isSelectedSignal = signal(this.isSelected);
