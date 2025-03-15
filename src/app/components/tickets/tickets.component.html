@@ -2,10 +2,10 @@
   <h2>Schichten</h2>
   <div class="ticket-container__content">
     <loading-indicator></loading-indicator>
-    <product-list [productCat]="userProductCat()"></product-list>
+    <product-list></product-list>
     <app-product-details
       *ngIf="selectedProduct()"
-      [product]="selectedProduct"
+      [product]="selectedProduct()"
     ></app-product-details>
   </div>
 

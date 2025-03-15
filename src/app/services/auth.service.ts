@@ -36,11 +36,19 @@ export class AuthService {
     if (inputHash === this.guestPwHash) {
       localStorage.setItem('konfusiusAuth', inputHash);
       localStorage.removeItem('konfusiusCrewAuth');
+      localStorage.setItem(
+        'productCat',
+        authProductCatMap[AuthType.GUEST].toString(),
+      );
       this.userAuthType.set(AuthType.GUEST);
       return true;
     } else if (inputHash === this.crewPwHash) {
       localStorage.setItem('konfusiusCrewAuth', inputHash);
       localStorage.removeItem('konfusiusAuth');
+      localStorage.setItem(
+        'productCat',
+        authProductCatMap[AuthType.CREW].toString(),
+      );
       this.userAuthType.set(AuthType.CREW);
       return true;
     }

@@ -23,14 +23,8 @@ import { authProductCatMap } from '@models/auth.model';
   styleUrl: './tickets.component.scss',
 })
 export class TicketsComponent {
-  authService = inject(AuthService);
   selectedProduct = signal<WcProduct | null>(null);
   private readonly loadingService = inject(LoadingService);
-
-  userProductCat = computed(() => {
-    const type = this.authService.userAuthType();
-    return type !== undefined ? authProductCatMap[type] : undefined;
-  });
 
   constructor(
     private readonly productSelectionService: ProductSelectionService,

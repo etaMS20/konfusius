@@ -10,15 +10,17 @@
       </div>
 
       <div class="cart-item-details">
-        <div class="cart-item-detail">
-          <span class="detail-label"
-            >{{ cartItem()!.variation[0].attribute }}:</span
-          >
-          <span
-            class="detail-value"
-            [innerHTML]="cartItem()!.variation[0].value | safeHtml"
-          ></span>
-        </div>
+        @if (cartItemIsVariable()) {
+          <div class="cart-item-detail">
+            <span class="detail-label"
+              >{{ cartItem()!.variation[0].attribute }}:</span
+            >
+            <span
+              class="detail-value"
+              [innerHTML]="cartItem()!.variation[0].value | safeHtml"
+            ></span>
+          </div>
+        }
 
         <div class="cart-item-detail">
           <span class="detail-label">Preis:</span>

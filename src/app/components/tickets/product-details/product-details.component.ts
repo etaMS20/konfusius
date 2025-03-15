@@ -1,16 +1,20 @@
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectorRef,
   Component,
   computed,
   effect,
   inject,
+  input,
   Input,
   signal,
 } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
+  FormGroup,
   ReactiveFormsModule,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -45,7 +49,7 @@ import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
   ],
 })
 export class ProductDetailsComponent {
-  @Input() product = signal<WcProduct | null>(null);
+  product = input<WcProduct | null>(null);
   private readonly wcStore = inject(WcStoreAPI);
   private readonly fb = inject(FormBuilder);
   private readonly errorService = inject(ErrorDialogService);
@@ -64,32 +68,33 @@ export class ProductDetailsComponent {
       : `Es sind leider keine Zeiten mehr für diese Schicht verfügbar`;
   });
 
-  constructor() {
+  constructor(private readonly cdr: ChangeDetectorRef) {
     this.selectForm = this.fb.group({
       variationId: new FormControl<number | null>(null, [Validators.required]),
     });
 
     effect(() => {
-      const currentProduct = this.product();
-      if (currentProduct) {
-        this.queryProductVariations(currentProduct);
+      if (this.isProductVariable()) {
+        this.queryProductVariations();
       }
       this.selectForm.reset();
+      this.cdr.detectChanges();
     });
   }
 
-  queryProductVariations(product: WcProduct) {
-    this.wcStore
-      .listProductVariations(product.id, this.listVariations)
-      .subscribe((response) => {
-        this.variations.set(response.length > 0 ? response : null);
-        if (this.selectForm) {
-          this.selectForm.controls.variationId.setValidators(
-            this.variations() ? [Validators.required] : [],
-          );
-          this.selectForm.controls.variationId.updateValueAndValidity();
-        }
-      });
+  queryProductVariations() {
+    if (this.product())
+      this.wcStore
+        .listProductVariations(this.product()!.id, this.listVariations)
+        .subscribe((response) => {
+          this.variations.set(response.length > 0 ? response : null);
+          if (this.selectForm) {
+            this.selectForm.controls.variationId.setValidators(
+              this.variations() ? [Validators.required] : [],
+            );
+            this.selectForm.controls.variationId.updateValueAndValidity();
+          }
+        });
   }
 
   formatPrice(
@@ -110,11 +115,17 @@ export class ProductDetailsComponent {
   }
 
   get isFormValid(): boolean {
-    return this.selectForm.valid;
+    if (this.isProductVariable()) {
+      return this.selectForm.valid;
+    } else {
+      return this.product()!.is_in_stock;
+    }
   }
 
   checkout() {
-    const checkoutId = this.selectForm.get('variationId').value;
+    const checkoutId = this.isProductVariable()
+      ? this.selectForm.get('variationId').value
+      : this.product()?.id;
 
     this.wcStore
       .deleteAllCartItems()

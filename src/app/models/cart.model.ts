@@ -30,7 +30,7 @@ export interface WcCartItem {
   key: string;
   id: number;
   name: string;
-  type: string;
+  type: WcCartType;
   quantity: number;
   quantity_limits: {
     minimum: number;
@@ -65,4 +65,9 @@ export interface WcCheckOutData {
   customer_note?: string;
   payment_data?: Array<any>;
   shipping_address?: WcShippingAddress;
+}
+
+export enum WcCartType {
+  VARIATION = 'variation',
+  SIMPLE = 'simple',
 }

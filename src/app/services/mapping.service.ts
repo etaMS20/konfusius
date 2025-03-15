@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IMAGE_MAP, WcProduct } from '../models/product.model';
+import { WcProduct } from '../models/product.model';
 import { WPImageSizeApiKey, WPMappedImage } from '../models/media.model';
 
 /**
@@ -20,10 +20,10 @@ export class MappingService {
       description: data.description,
       is_in_stock: data.is_in_stock,
       is_purchasable: data.is_purchasable,
-      imagePath: data.id in IMAGE_MAP ? IMAGE_MAP[data.id] : undefined,
       attributes: data.attributes,
       variations: data.variations,
       prices: data.prices,
+      images: data.images,
     };
   }
 

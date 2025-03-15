@@ -25,9 +25,9 @@ import { Subject } from 'rxjs';
   styleUrl: './product-list.component.scss',
 })
 export class ProductListComponent implements OnInit, OnDestroy {
-  productCat = input<number | undefined>(undefined);
   @Output() productSelected = new EventEmitter<WcProduct | null>();
   @Output() productsLoading = new EventEmitter<boolean>(true);
+  productCat = signal<number>(22);
 
   mappingService = inject(MappingService);
   productSelectionService = inject(ProductSelectionService);
@@ -43,6 +43,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   constructor() {}
 
   ngOnInit(): void {
+    this.productCat.set(parseInt(localStorage.getItem('productCat') ?? '22'));
     this.initProducts();
     this.productSelected.emit(null);
   }
@@ -73,4 +74,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       this.productsLoading.emit(false);
     });
   }
+}
+function signalEffect(arg0: () => void) {
+  throw new Error('Function not implemented.');
 }

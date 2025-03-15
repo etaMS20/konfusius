@@ -10,8 +10,10 @@
     tabindex="0"
   >
     <img
-      [src]="product.imagePath"
-      alt="{{ product.name }}"
+      [src]="product.images[0].thumbnail"
+      [srcset]="product.images[0].srcset"
+      sizes="(max-width: 600px) 100vw, (max-width: 1024px) 80vw, 1728px"
+      [alt]="product.images[0].alt"
       class="product-image"
     />
     <h3 class="product-title">{{ product.name }}</h3>

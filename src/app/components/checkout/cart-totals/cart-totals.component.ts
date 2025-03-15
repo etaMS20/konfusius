@@ -1,6 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 import { CommonModule, NgIf } from '@angular/common';
-import { WcCart } from '../../../models/cart.model';
+import { WcCart, WcCartType } from '@models/cart.model';
 import { formatPrice } from '../../../utils/price.utils';
 import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
 
@@ -18,6 +18,9 @@ export class CartTotalsComponent {
   });
   cartItem = computed(() => {
     return this.cart()?.items[0] ?? null;
+  });
+  cartItemIsVariable = computed(() => {
+    return this.cartItem()?.type === WcCartType.VARIATION;
   });
 
   get cartTotalPrice(): string {
