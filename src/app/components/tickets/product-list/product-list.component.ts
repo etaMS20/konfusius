@@ -74,6 +74,3 @@ export class ProductListComponent implements OnInit, OnDestroy {
     });
   }
 }
-function signalEffect(arg0: () => void) {
-  throw new Error('Function not implemented.');
-}
