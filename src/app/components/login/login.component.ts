@@ -79,7 +79,7 @@ export class LoginComponent implements OnInit {
   onSubmit(): void {
     const passwordInput = this.loginForm.get('password')?.value;
 
-    if (this.authService.loginGuestWithPw(passwordInput)) {
+    if (this.authService.login(passwordInput)) {
       const targetRoute = this.redirectUrl ? this.redirectUrl : '/';
       this.router.navigate([targetRoute]);
     } else {

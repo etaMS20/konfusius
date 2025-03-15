@@ -4,6 +4,7 @@ import {
   computed,
   EventEmitter,
   inject,
+  input,
   OnDestroy,
   OnInit,
   Output,
@@ -24,6 +25,7 @@ import { Subject } from 'rxjs';
   styleUrl: './product-list.component.scss',
 })
 export class ProductListComponent implements OnInit, OnDestroy {
+  productCat = input<number | undefined>(undefined);
   @Output() productSelected = new EventEmitter<WcProduct | null>();
   @Output() productsLoading = new EventEmitter<boolean>(true);
 
@@ -63,7 +65,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   initProducts() {
-    this.wcStore.listProducts().subscribe((response) => {
+    this.wcStore.listProducts(this.productCat()).subscribe((response) => {
       const products = response.map((product: any) =>
         this.mappingService.mapProduct(product),
       );

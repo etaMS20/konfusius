@@ -1,5 +1,5 @@
 <div class="login-form">
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="on">
     <div class="image-container">
       <img src="assets/schweini_1.png" alt="Logo" class="form-field-image" />
     </div>
@@ -9,6 +9,7 @@
         matInput
         type="password"
         formControlName="password"
+        autocomplete="current-password"
         (input)="onInput()"
         (blur)="updateErrorMessage()"
         required

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { NgIf } from '@angular/common';
 import { ProductListComponent } from './product-list/product-list.component';
@@ -7,6 +7,8 @@ import { LoadingIndicatorComponent } from '../loading-indicator/loading-indicato
 import { WcProduct } from '../../models/product.model';
 import { LoadingService } from '../../services/loading.service';
 import { ProductSelectionService } from '../../services/product-selection.service';
+import { AuthService } from '@services/auth.service';
+import { authProductCatMap } from '@models/auth.model';
 
 @Component({
   selector: 'app-tickets',
@@ -21,11 +23,17 @@ import { ProductSelectionService } from '../../services/product-selection.servic
   styleUrl: './tickets.component.scss',
 })
 export class TicketsComponent {
+  authService = inject(AuthService);
   selectedProduct = signal<WcProduct | null>(null);
   private readonly loadingService = inject(LoadingService);
 
+  userProductCat = computed(() => {
+    const type = this.authService.userAuthType();
+    return type !== undefined ? authProductCatMap[type] : undefined;
+  });
+
   constructor(
-    private readonly productSelectionService: ProductSelectionService
+    private readonly productSelectionService: ProductSelectionService,
   ) {}
 
   ngOnInit(): void {

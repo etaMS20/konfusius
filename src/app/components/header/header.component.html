@@ -31,13 +31,19 @@
           </button>
         </span>
 
-        <button
-          mat-button
-          routerLink="/dashboard"
-          routerLinkActive="active-link"
-        >
+        <button mat-button routerLink="/faq" routerLinkActive="active-link">
           <mat-icon>help_outline</mat-icon>
           FAQ
+        </button>
+
+        <button
+          mat-button
+          routerLink="/login"
+          routerLinkActive="active-link"
+          (click)="logout()"
+        >
+          <mat-icon>logout</mat-icon>
+          logout
         </button>
       </div>
 
@@ -71,12 +77,22 @@
 
       <a
         mat-button
-        routerLink="/dashboard"
+        routerLink="/faq"
         routerLinkActive="active-link"
         (click)="toggleMenu()"
       >
         <mat-icon>help_outline</mat-icon>
         FAQ
+      </a>
+
+      <a
+        mat-button
+        routerLink="/login"
+        routerLinkActive="active-link"
+        (click)="toggleMenu(); logout()"
+      >
+        <mat-icon>logout</mat-icon>
+        logout
       </a>
     </div>
   </div>

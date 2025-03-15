@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { BACKEND, CREW_PW, GUEST_PW, SALT } from '../../config/http.config';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, Observable, of } from 'rxjs';
 import { GuestAuth } from './auth.model';
 import shajs from 'sha.js';
+import { authProductCatMap, AuthType } from '@models/auth.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,8 @@ export class AuthService {
   private readonly salt: string;
   private readonly guestPwHash: string;
   private readonly crewPwHash: string;
+
+  userAuthType = signal<AuthType | undefined>(undefined);
 
   constructor(private readonly http: HttpClient) {
     this.salt = SALT!;
@@ -28,24 +31,36 @@ export class AuthService {
       .digest('hex');
   }
 
-  /*   login(passwordInput: string) {
-  } */
-
-  loginGuestWithPw(passwordInput: string): boolean {
+  login(passwordInput: string) {
     const inputHash = this.hashPassword(passwordInput);
     if (inputHash === this.guestPwHash) {
       localStorage.setItem('konfusiusAuth', inputHash);
+      localStorage.removeItem('konfusiusCrewAuth');
+      this.userAuthType.set(AuthType.GUEST);
+      return true;
+    } else if (inputHash === this.crewPwHash) {
+      localStorage.setItem('konfusiusCrewAuth', inputHash);
+      localStorage.removeItem('konfusiusAuth');
+      this.userAuthType.set(AuthType.CREW);
       return true;
     }
     return false;
   }
 
-  isAuthenticated(): boolean {
-    return localStorage.getItem('konfusiusAuth') === this.guestPwHash;
+  isAuthenticatedBase(): boolean {
+    return (
+      localStorage.getItem('konfusiusAuth') === this.guestPwHash ||
+      this.isAuthenticatedCrew()
+    );
+  }
+
+  isAuthenticatedCrew(): boolean {
+    return localStorage.getItem('konfusiusCrewAuth') === this.crewPwHash;
   }
 
   logout(): void {
     localStorage.removeItem('konfusiusAuth');
+    localStorage.removeItem('konfusiusCrewAuth');
   }
 
   // TODO: Maybe useful later
