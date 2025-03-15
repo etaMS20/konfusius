@@ -23,6 +23,7 @@ yarn-error.log*
 
 # Environment variables
 *.env
+environment.prod.ts
 
 # Miscellaneous
 .DS_Store

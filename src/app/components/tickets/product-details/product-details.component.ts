@@ -50,7 +50,7 @@ export class ProductDetailsComponent {
   private readonly fb = inject(FormBuilder);
   private readonly errorService = inject(ErrorDialogService);
   private readonly router = inject(Router);
-  listVariations = ['instock', 'outofstock'];
+  listVariations = ['instock']; // add 'outofstock' to show out-of-stock stuff
   selectForm: any;
 
   /** Signals */

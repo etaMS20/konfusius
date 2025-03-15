@@ -6,7 +6,8 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- developing v0
+- add caching/service_workers
+- wp plugin to backend with endpoints to validate invited_by field
 
 ### Changed
 
@@ -33,10 +34,8 @@ https://dev.to/stephenwhitmore/take-your-wordpress-site-farther-with-angular-3o6
 ### TODO
 
 - custom payment method (can have)
-- custom endpoints to retrieve billing custom fields (must have)
 - implement [fullscreen directive](https://medium.com/@milan.barac/angular-fullscreen-cd8b788c348f) (can have)
 - fix product selection init (must have)
-- implement caching (should have)
 - implement Ui for "Digitale Anmeldeliste" (can have)
 - extra login token for crew (must have)
 
