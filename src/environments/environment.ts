@@ -6,4 +6,5 @@ export const environment = {
   consumerSecret: process.env['CONSUMER_SECRET'],
   password: process.env['GUEST_PW'],
   salt: process.env['SALT'],
+  crewPw: 'miaucrew',
 };

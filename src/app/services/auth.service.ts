@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BACKEND, GUEST_PW, SALT } from '../../config/http.config';
+import { BACKEND, CREW_PW, GUEST_PW, SALT } from '../../config/http.config';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, Observable, of } from 'rxjs';
 import { GuestAuth } from './auth.model';
@@ -13,15 +13,13 @@ export class AuthService {
   private readonly jwtAuthBackend = BACKEND + '/jwt-auth/v1';
 
   private readonly salt: string;
-  private readonly storedPasswordHash: string;
+  private readonly guestPwHash: string;
+  private readonly crewPwHash: string;
 
   constructor(private readonly http: HttpClient) {
     this.salt = SALT!;
-    this.storedPasswordHash = this.hashPassword(GUEST_PW!);
-  }
-
-  get getStoredPwHash() {
-    return this.storedPasswordHash;
+    this.guestPwHash = this.hashPassword(GUEST_PW!);
+    this.crewPwHash = this.hashPassword(CREW_PW);
   }
 
   private hashPassword(password: string): string {
@@ -30,9 +28,12 @@ export class AuthService {
       .digest('hex');
   }
 
+  /*   login(passwordInput: string) {
+  } */
+
   loginGuestWithPw(passwordInput: string): boolean {
     const inputHash = this.hashPassword(passwordInput);
-    if (inputHash === this.storedPasswordHash) {
+    if (inputHash === this.guestPwHash) {
       localStorage.setItem('konfusiusAuth', inputHash);
       return true;
     }
@@ -40,7 +41,7 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return localStorage.getItem('konfusiusAuth') === this.storedPasswordHash;
+    return localStorage.getItem('konfusiusAuth') === this.guestPwHash;
   }
 
   logout(): void {
@@ -68,7 +69,7 @@ export class AuthService {
       { password: pw },
       {
         headers,
-      }
+      },
     );
   }
 
@@ -84,7 +85,7 @@ export class AuthService {
       })
       .pipe(
         map((result) => result?.code === 'jwt_auth_valid_token'),
-        catchError(() => of(false))
+        catchError(() => of(false)),
       );
   }
 }
