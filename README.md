@@ -25,7 +25,7 @@ The app is still in early development.
 
 4. Env Variables
 
-   The application required certain env variables to function (like guest password, backend url , etc.)
+   The application requires certain env variables to function (like guest password, backend url , etc.)
 
    In development config, the Application reads the `.env` file on runtime using a custom `webpack.config.ts` setup. Devs must request the required Secrets from WP admins.
 
@@ -36,8 +36,6 @@ The app is still in early development.
       "proxyConfig": "proxy.conf.json"
    },
    ```
-
-   In production config, the variables are set by ci configuration
 
 ---
 
@@ -53,7 +51,7 @@ Open a browser and head to [localhost:4200](http://localhost:4200/)
 
 ---
 
-## Current Setup to build the app for wordpress
+## Current Setup to host the app on wordpress
 
 1. Compile with production config and custom base-href
 
@@ -61,7 +59,7 @@ Open a browser and head to [localhost:4200](http://localhost:4200/)
  ng build --configuration=production --base-href=/festival/
 ```
 
-2. Upload the local content of `dist/konfusius` to `/festival` which is located on the wordpress root
+2. Upload the local content of `dist/konfusius` to `/festival` which is located at the wordpress root
 
 ---
 

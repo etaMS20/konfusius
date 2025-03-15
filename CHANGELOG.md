@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file.
 - implement Ui for "Digitale Anmeldeliste" (can have)
 - extra login token for crew (must have)
 - activate/implement Nonces (should have)
+- give order url hashes instead of numbers
 
 ### Useful Links
 
