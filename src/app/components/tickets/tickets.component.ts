@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { NgIf } from '@angular/common';
 import { ProductListComponent } from './product-list/product-list.component';
@@ -7,8 +7,6 @@ import { LoadingIndicatorComponent } from '../loading-indicator/loading-indicato
 import { WcProduct } from '../../models/product.model';
 import { LoadingService } from '../../services/loading.service';
 import { ProductSelectionService } from '../../services/product-selection.service';
-import { AuthService } from '@services/auth.service';
-import { authProductCatMap } from '@models/auth.model';
 
 @Component({
   selector: 'app-tickets',

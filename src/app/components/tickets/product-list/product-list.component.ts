@@ -4,7 +4,6 @@ import {
   computed,
   EventEmitter,
   inject,
-  input,
   OnDestroy,
   OnInit,
   Output,
