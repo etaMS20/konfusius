@@ -1,20 +1,22 @@
-<mat-card
-  class="product-card"
-  (click)="onProductSelect($event)"
-  [ngClass]="{ selected: isSelectedSignal() }"
-  matTooltip="{{ productTooltip() }}"
-  [matTooltipPosition]="'above'"
-  matTooltipHideDelay="200"
-  matTooltipShowDelay="100"
-  tabindex="0"
->
-  <img
-    [src]="product.imagePath"
-    alt="{{ product.name }}"
-    class="product-image"
-  />
-  <h3 class="product-title">{{ product.name }}</h3>
-  <button mat-raised-button (click)="openDetailsDialog($event)">
-    Beschreibung
-  </button>
-</mat-card>
+<div class="card-container">
+  <mat-card
+    class="product-card"
+    (click)="onProductSelect($event)"
+    [ngClass]="{ selected: isSelectedSignal() }"
+    matTooltip="{{ productTooltip() }}"
+    [matTooltipPosition]="'above'"
+    matTooltipHideDelay="200"
+    matTooltipShowDelay="100"
+    tabindex="0"
+  >
+    <img
+      [src]="product.imagePath"
+      alt="{{ product.name }}"
+      class="product-image"
+    />
+    <h3 class="product-title">{{ product.name }}</h3>
+    <button mat-raised-button (click)="openDetailsDialog($event)">
+      Beschreibung
+    </button>
+  </mat-card>
+</div>

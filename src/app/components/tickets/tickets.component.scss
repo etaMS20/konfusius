@@ -1,9 +1,6 @@
 :host {
-  display: block;
   width: 100%;
   max-width: 1400px;
-  margin: 0 auto;
-  padding: 5px;
   margin-bottom: 30px;
 }
 
@@ -12,7 +9,7 @@
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
-  touch-action: pan-y;
+  touch-action: auto;
 
   padding-bottom: var(--footer-height-desktop, 90px);
 
@@ -38,7 +35,6 @@ h2 {
   border-bottom: 2px solid rgba(#2c1810, 0.3);
   padding-bottom: 15px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-  display: block; // Ensure it's displayed as a block
   width: 100%; // Take full width
   position: relative; // Ensure proper stacking context
   z-index: 1; // Make sure it's above other elements

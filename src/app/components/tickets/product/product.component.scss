@@ -1,25 +1,26 @@
 @use 'src/styles/style-vars.scss' as *;
 
 :host {
-  display: block;
   width: 100%;
   height: 100%;
-  // Enable proper touch behavior
-  touch-action: pan-y pinch-zoom;
 }
 
-.product-card {
+.card-container {
+  width: 100%;
+}
+
+::ng-deep .product-card {
+  flex: 1 1 auto; // Allows it to shrink when needed
+  min-height: 0; // Prevents flexbox from forcing extra height
+  min-width: 0; // Prevents unwanted horizontal overflow
+  display: block;
+  flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 16px;
   transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
   justify-content: space-between;
-  box-sizing: border-box;
-  // Enable proper touch behavior
-  touch-action: pan-y pinch-zoom;
+  touch-action: auto;
 
   &:hover {
     transform: translateY(-5px);
@@ -30,6 +31,10 @@
     background: linear-gradient(135deg, #6bf7f7, #0056b3);
     color: white;
   }
+
+  @media (min-width: 600px) {
+    padding: 1.5rem;
+  }
 }
 
 .product-image {
@@ -39,6 +44,10 @@
   object-fit: contain;
   display: block;
   margin-bottom: 12px;
+
+  @media (max-width: 600px) {
+    padding: 1.5rem;
+  }
 }
 
 .product-title {
