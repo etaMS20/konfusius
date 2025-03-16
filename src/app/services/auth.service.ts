@@ -1,4 +1,4 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { BACKEND, CREW_PW, GUEST_PW, SALT } from '../../config/http.config';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, Observable, of } from 'rxjs';
@@ -14,18 +14,19 @@ export class AuthService {
   private readonly jwtAuthBackend = BACKEND + '/jwt-auth/v1';
 
   private readonly salt: string;
-  private readonly guestPwHash: string;
-  private readonly crewPwHash: string;
+  private readonly guestPwHash?: string;
+  private readonly crewPwHash?: string;
 
   userAuthType = signal<AuthType | undefined>(undefined);
 
   constructor(private readonly http: HttpClient) {
     this.salt = SALT!;
-    this.guestPwHash = this.hashPassword(GUEST_PW!);
+    this.guestPwHash = this.hashPassword(GUEST_PW);
     this.crewPwHash = this.hashPassword(CREW_PW);
   }
 
-  private hashPassword(password: string): string {
+  private hashPassword(password: string | undefined): string | undefined {
+    if (!password) return;
     return shajs('sha256')
       .update(password + this.salt)
       .digest('hex');
@@ -33,7 +34,7 @@ export class AuthService {
 
   login(passwordInput: string) {
     const inputHash = this.hashPassword(passwordInput);
-    if (inputHash === this.guestPwHash) {
+    if (inputHash && inputHash === this.guestPwHash) {
       localStorage.setItem('konfusiusAuth', inputHash);
       localStorage.removeItem('konfusiusCrewAuth');
       localStorage.setItem(
@@ -42,7 +43,7 @@ export class AuthService {
       );
       this.userAuthType.set(AuthType.GUEST);
       return true;
-    } else if (inputHash === this.crewPwHash) {
+    } else if (inputHash && inputHash === this.crewPwHash) {
       localStorage.setItem('konfusiusCrewAuth', inputHash);
       localStorage.removeItem('konfusiusAuth');
       localStorage.setItem(
