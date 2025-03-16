@@ -57,7 +57,6 @@ export class ProductDetailsComponent implements OnChanges, OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly errorService = inject(ErrorDialogService);
   private readonly router = inject(Router);
-  listVariations = ['instock']; // add 'outofstock' to show out-of-stock stuff
   selectForm = this.fb.group({
     variationId: new FormControl<number | null>(null, [Validators.required]),
   });
@@ -113,7 +112,7 @@ export class ProductDetailsComponent implements OnChanges, OnInit {
         ? this.selectForm.get('variationId')!.value
         : this.product?.id;
 
-      console.log(checkoutId);
+      // TODO: Move this call to parent component
 
       this.wcStore
         .deleteAllCartItems()

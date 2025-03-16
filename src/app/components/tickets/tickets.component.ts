@@ -41,7 +41,7 @@ export class TicketsComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
   mappingService = inject(MappingService);
   wcStore = inject(WcStoreAPI);
-  listVariations = ['instock'];
+  listVariations = ['instock']; // add 'outofstock' to show out-of-stock stuff
 
   /** signals */
   products = signal<Array<WcProduct>>([]);
