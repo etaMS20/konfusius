@@ -53,7 +53,6 @@ export class TicketsComponent implements OnInit, OnDestroy {
   selectedProductId = computed(() => {
     return this.selectedProduct()?.id;
   });
-  productCat = signal<number>(22);
 
   constructor() {}
 
@@ -65,7 +64,6 @@ export class TicketsComponent implements OnInit, OnDestroy {
     // query the product and set it as selected
     if (storedSelect) this.querySelectedProduct(storedSelect);
 
-    this.productCat.set(this.getProductCat());
     this.loadingService.loadingOff();
   }
 
@@ -89,7 +87,7 @@ export class TicketsComponent implements OnInit, OnDestroy {
     return storedId;
   }
 
-  private getProductCat(): number {
+  get getProductCat(): number {
     const storedCat = localStorage.getItem('productCat');
     return storedCat ? parseInt(storedCat) : 22;
   }
@@ -111,7 +109,7 @@ export class TicketsComponent implements OnInit, OnDestroy {
   }
 
   initProducts() {
-    this.wcStore.listProducts(this.productCat()).subscribe((response) => {
+    this.wcStore.listProducts(this.getProductCat).subscribe((response) => {
       const products = response.map((product: any) =>
         this.mappingService.mapProduct(product),
       );
