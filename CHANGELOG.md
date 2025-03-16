@@ -6,27 +6,31 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- add caching/service_workers
+- caching/service-workers
 - wp plugin to backend with endpoints to validate invited_by field
+- extra login token for crew
 
 ### Changed
 
 - moved DOM sanitizer to Pipe
 - moved DateTime human readable to Pipe
 
+### Fixed
+
+- refactored tickets page
+
 ---
 
 ## Dev Notes
 
-### TODO
+### Planned Features
 
 - custom payment method (can have)
 - implement [fullscreen directive](https://medium.com/@milan.barac/angular-fullscreen-cd8b788c348f) (can have)
-- fix product selection init (must have)
 - implement Ui for "Digitale Anmeldeliste" (can have)
-- extra login token for crew (must have)
 - activate/implement Nonces (should have)
-- give order url hashes instead of numbers
+- give order url hashes instead of numbers (should have)
+- smooth scrolling navigation (can have)
 
 ### Useful Links
 

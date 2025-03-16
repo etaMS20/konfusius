@@ -7,24 +7,31 @@ export const cookieConfig: NgcCookieConsentConfig = {
   position: 'bottom-right',
   palette: {
     popup: {
-      background: '#000000',
-      text: '#ffffff',
-      link: '#ffffff',
+      background: '#fff',
     },
     button: {
-      background: '#f9ae05',
-      text: '#000000',
-      border: '#f9ae05',
+      background: '#f1d600',
     },
   },
   theme: 'edgeless',
   type: 'info',
+  layout: 'custom-layout',
+  layouts: {
+    'custom-layout': '{{messagelink}}{{compliance}}',
+  },
+  elements: {
+    messagelink: `
+    <span id="cookieconsent:desc" class="cc-message">{{message}} 
+      <a aria-label="learn more about cookies" tabindex="0" class="cc-link" href="{{cookiePolicyHref}}" target="_blank" rel="noopener">{{cookiePolicyLink}}</a>. 
+    </span>
+    `,
+  },
   content: {
-    message:
-      'Diese Webseite nutzt Cookies um die Kern-Funktion von WooCommerce (unserem Ticketing-Backend) zu ermöglichen.',
     dismiss: 'Geht klar!',
-    deny: 'Alle Cookies verbieten',
-    link: 'Mehr dazu hier',
-    href: 'https://cookiesandyou.com',
+    message:
+      'Diese Webseite nutzt Cookies um die Kern-Funktion von WooCommerce (unserem Ticketing-Backend) zu ermöglichen. Mehr dazu ',
+
+    cookiePolicyLink: 'hier',
+    cookiePolicyHref: 'https://cookie.com',
   },
 };

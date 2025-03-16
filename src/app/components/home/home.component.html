@@ -2,7 +2,9 @@
   <!-- Top Image -->
   <div class="image-container">
     <img
-      src="assets/konfusius_cropped.jpg"
+      ngSrc="assets/konfusius_cropped.jpg"
+      fill
+      priority
       alt="konfusius"
       class="header-image"
     />
@@ -23,6 +25,18 @@
         @if (introText2(); as p) {
           <div [innerHTML]="p.content.rendered | safeHtml"></div>
         }
+        <div class="letter-button-container">
+          <span>Ein schönes Gedicht</span>
+          <img
+            width="150"
+            height="130"
+            class="letter-button"
+            ngSrc="assets/scroll.png"
+            alt="scroll"
+            (click)="openLetterDialog($event)"
+            (keydown)="openLetterDialog($event)"
+          />
+        </div>
       </div>
     </section>
 
@@ -34,7 +48,6 @@
   </div>
 
   <!-- Bottom Section -->
-  <!-- Image Slider -->
   <div class="slider-container">
     <app-image-container />
   </div>

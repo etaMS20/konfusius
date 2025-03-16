@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './auth.guard';
-import { PrivacyPolicyComponent } from '@shared/privacy-policy/privacy-policy.component';
 
 export const routes: Routes = [
   {

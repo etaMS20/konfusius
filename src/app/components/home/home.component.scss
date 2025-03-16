@@ -138,6 +138,25 @@
   overflow: hidden;
 }
 
+.letter-button-container {
+  display: flex;
+  justify-content: center; /* Horizontal centering */
+  align-items: center; /* Vertical centering */
+  height: 100%; /* Ensure the container has some height */
+}
+
+.letter-button {
+  cursor: pointer;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
 // Responsive Design
 @media (max-width: 1200px) {
   .title {

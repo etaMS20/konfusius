@@ -1,0 +1,30 @@
+<div class="dialog">
+  <button
+    mat-icon-button
+    aria-label="close dialog"
+    (click)="closeDialog()"
+    class="close-button"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+  <section>
+    <h2>{{ data.title }}</h2>
+  </section>
+  <mat-divider />
+  <section>
+    <div class="image-container" *ngIf="data.imageMeta">
+      <img
+        [src]="data.imageMeta.src"
+        [sizes]="data.imageMeta.sizes"
+        [alt]="data.imageMeta.alt"
+        class="dialog-image"
+      />
+    </div>
+  </section>
+  <mat-divider />
+  @if (data.content; as c) {
+    <div class="content">
+      <p class="safe-html" [innerHTML]="c.content.rendered | safeHtml"></p>
+    </div>
+  }
+</div>
