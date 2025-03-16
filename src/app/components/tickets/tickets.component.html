@@ -14,8 +14,10 @@
       </div>
     </div>
     <app-product-details
-      *ngIf="selectedProduct()"
+      [hidden]="!selectedProduct"
       [product]="selectedProduct()"
+      [isProductVariable]="isSelectedProductVariable()"
+      [productVariations]="selectedProductVariations()"
     ></app-product-details>
   </div>
 

@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
@@ -7,10 +8,14 @@ import {
   signal,
 } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor } from '@angular/common';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { LoadingIndicatorComponent } from '../loading-indicator/loading-indicator.component';
-import { WcProduct } from '@models/product.model';
+import {
+  WcProduct,
+  WcProductTypes,
+  WcProductVariationDetails,
+} from '@models/product.model';
 import { LoadingService } from '@services/loading.service';
 import { MappingService } from '@services/mapping.service';
 import { WcStoreAPI } from '@services/api/wc-store-api.service';
@@ -23,24 +28,28 @@ import { ProductComponent } from './product/product.component';
     MatGridListModule,
     ProductDetailsComponent,
     LoadingIndicatorComponent,
-    NgIf,
     MatGridListModule,
     ProductComponent,
     NgFor,
   ],
   templateUrl: './tickets.component.html',
   styleUrl: './tickets.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TicketsComponent implements OnInit, OnDestroy {
   private readonly loadingService = inject(LoadingService);
   private readonly destroy$ = new Subject<void>();
   mappingService = inject(MappingService);
-
   wcStore = inject(WcStoreAPI);
+  listVariations = ['instock'];
 
   /** signals */
   products = signal<Array<WcProduct>>([]);
   selectedProduct = signal<WcProduct | undefined>(undefined);
+  isSelectedProductVariable = computed(() => {
+    return this.selectedProduct()?.type === WcProductTypes.VARIABLE;
+  });
+  selectedProductVariations = signal<Array<WcProductVariationDetails> | []>([]);
   selectedProductId = computed(() => {
     return this.selectedProduct()?.id;
   });
@@ -61,9 +70,16 @@ export class TicketsComponent implements OnInit, OnDestroy {
   }
 
   querySelectedProduct(id: number) {
+    this.loadingService.loadingOn();
     this.wcStore
       .getProductById(id)
       .subscribe((r) => this.selectedProduct.set(r));
+    this.wcStore
+      .listProductVariations(id, this.listVariations)
+      .subscribe((response) => {
+        this.selectedProductVariations.set(response.length > 0 ? response : []);
+        this.loadingService.loadingOff();
+      });
   }
 
   private getStoredSelect(): number | undefined {

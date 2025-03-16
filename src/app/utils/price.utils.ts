@@ -1,10 +1,8 @@
-import { WcCartTotals, WcItemTotals } from '../models/price.model';
-
 export function formatPrice(
   price: string,
   thSep: string,
   decSep: string,
-  cmu: number
+  cmu: number,
 ) {
   let numericTotalPrice = parseFloat(price ?? 'NaN');
 

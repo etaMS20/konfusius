@@ -1,3 +1,4 @@
+import { WcCartType } from './cart.model';
 import { WcPrice } from './price.model';
 
 export enum WcProductTypes {
@@ -50,6 +51,16 @@ export type WcProductVariation = {
   id: number;
   attributes: Array<WcProductVariationAttributes>;
 };
+
+export interface WcProductVariationDetails {
+  name: string;
+  id: number;
+  is_in_stock: boolean;
+  is_purchaseable: boolean;
+  prices: WcPrice;
+  type: WcCartType;
+  variation: string;
+}
 
 export type WcProductVariationAttributes = {
   name: string;
