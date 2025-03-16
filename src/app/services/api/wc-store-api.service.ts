@@ -7,6 +7,7 @@ import {
   WcShippingAddress,
 } from '../../models/customer.model';
 import { WcCheckOutData } from 'src/app/models/cart.model';
+import { WcProduct } from '@models/product.model';
 
 @Injectable({
   providedIn: 'root',
@@ -29,8 +30,8 @@ export class WcStoreAPI {
     );
   }
 
-  getProductById(id: number): Observable<any> {
-    return this.http.get(this.storeApiBackend + `/products/${id}`);
+  getProductById(id: number): Observable<WcProduct> {
+    return this.http.get<WcProduct>(this.storeApiBackend + `/products/${id}`);
   }
 
   listProductVariations(

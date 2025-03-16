@@ -6,6 +6,7 @@ import {
   signal,
   SimpleChanges,
   computed,
+  OnInit,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
@@ -28,25 +29,41 @@ import { MatButtonModule } from '@angular/material/button';
     MatButtonModule,
   ],
 })
-export class ProductComponent {
-  @Input() product!: WcProduct;
-  @Input() isSelected: boolean = false;
-  @Output() productSelected = new EventEmitter<any>();
+export class ProductComponent implements OnInit {
+  @Input() product?: WcProduct;
+  @Input() selectedProductId?: number; // communicated by parent
+  @Output() productSelected = new EventEmitter<number | null>();
 
-  isSelectedSignal = signal(this.isSelected);
-  productTooltip = computed(() => ProductTypeLabels[this.product.type]);
+  isSelectedSignal = signal(this.isProductSelected());
+  productTooltip = computed(() =>
+    this.product?.type ? ProductTypeLabels[this.product.type] : '',
+  );
 
   constructor(private readonly dialog: MatDialog) {}
 
+  /** Check if the product is selected */
+  isProductSelected(): boolean {
+    return this.selectedProductId === this.product?.id;
+  }
+
+  ngOnInit(): void {
+    this.isSelectedSignal.set(this.isProductSelected());
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['isSelected']) {
-      this.isSelectedSignal.set(this.isSelected);
+    if (changes['selectedProductId']) {
+      this.isSelectedSignal.set(this.isProductSelected());
     }
   }
 
   onProductSelect(event: Event): void {
     event.stopPropagation();
-    this.productSelected.emit();
+
+    if (this.isProductSelected()) {
+      this.productSelected.emit(null); // Emitting null means "deselect"
+    } else {
+      this.productSelected.emit(this.product?.id); // Otherwise, select the product
+    }
   }
 
   openDetailsDialog(event: Event) {

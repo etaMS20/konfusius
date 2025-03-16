@@ -1,7 +1,7 @@
 import { Component, computed, input } from '@angular/core';
 import { CommonModule, NgIf } from '@angular/common';
 import { WcCart, WcCartType } from '@models/cart.model';
-import { formatPrice } from '../../../utils/price.utils';
+import { formatPrice } from '@utils/price.utils';
 import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
 
 @Component({

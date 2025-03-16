@@ -1,32 +1,28 @@
-<div class="footer" *ngIf="product()">
+<div class="footer" *ngIf="product">
   <div class="footer-content">
     <div class="left-container">
-      <h4>Schicht: {{ product()?.name }}</h4>
+      <h4>Schicht: {{ product.name }}</h4>
       <p>
         Ticket Preis:
-        {{
-          formatPrice(
-            product()?.prices?.price,
-            product()?.prices?.currency_decimal_separator,
-            product()?.prices?.currency_minor_unit,
-            product()?.prices?.currency_thousand_separator
-          )
-        }}
-        {{ product()?.prices?.currency_symbol }}
+        {{ formattedPrice }}
+        {{ product.prices.currency_symbol }}
       </p>
     </div>
 
     <div class="middle-container">
-      <div *ngIf="isProductVariable()">
+      <div *ngIf="isProductVariable">
         <mat-form-field appearance="fill" [matTooltip]="tooltipMessage()">
           <mat-label>Wähle eine Zeit</mat-label>
           <mat-select
             [formControl]="selectForm.controls['variationId']"
             panelWidth="auto"
-            [required]="variations() ? true : false"
-            [disableControl]="!variations()"
+            [required]="isProductVariable"
+            [disableControl]="productVariations.length === 0"
           >
-            <mat-option *ngFor="let option of variations()" [value]="option.id">
+            <mat-option
+              *ngFor="let option of productVariations"
+              [value]="option.id"
+            >
               <span [innerHTML]="option.variation | safeHtml"></span>
             </mat-option>
           </mat-select>

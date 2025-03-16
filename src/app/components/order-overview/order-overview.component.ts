@@ -4,7 +4,6 @@ import { MatIcon } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute } from '@angular/router';
 import { HumanReadableDatePipe } from '@pipes//datetime.pipe';
-import { ErrorDialogService } from '@shared/errors/error-dialog.service';
 import { WcOrder } from 'src/app/models/order.model';
 import { WcV3Service } from 'src/app/services/api/wc-v3.service';
 
@@ -17,7 +16,6 @@ import { WcV3Service } from 'src/app/services/api/wc-v3.service';
 export class OrderOverviewComponent implements OnInit {
   private readonly wcApi = inject(WcV3Service);
   private readonly route = inject(ActivatedRoute);
-  private readonly errorService = inject(ErrorDialogService);
 
   order = signal<WcOrder | null>(null);
   error = signal<string | null>(null);

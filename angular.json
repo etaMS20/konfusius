@@ -20,9 +20,7 @@
             "outputPath": "dist/konfusius",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -34,9 +32,12 @@
             ],
             "styles": [
               "src/styles/styles.scss",
-              "src/styles/style-vars.scss"
+              "src/styles/style-vars.scss",
+              "node_modules/cookieconsent/build/cookieconsent.min.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/cookieconsent/build/cookieconsent.min.js"
+            ],
             "allowedCommonJsDependencies": [
               "lodash",
               "sha.js",
@@ -110,7 +111,7 @@
           "configurations": {
             "staging": {
               "buildTarget": "konfusius:build:staging"
-            },            
+            },
             "production": {
               "buildTarget": "konfusius:build:production"
             },
@@ -130,10 +131,7 @@
             "customWebpackConfig": {
               "path": "webpack.config.ts"
             },
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -142,9 +140,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles/styles.scss"
-            ],
+            "styles": ["src/styles/styles.scss"],
             "scripts": []
           }
         }

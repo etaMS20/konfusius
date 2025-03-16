@@ -4,7 +4,7 @@ export const cookieConfig: NgcCookieConsentConfig = {
   cookie: {
     domain: window.location.hostname, // it is mandatory to set a domain, for cookies to work properly
   },
-  position: 'bottom-left',
+  position: 'bottom-right',
   palette: {
     popup: {
       background: '#000000',
@@ -17,14 +17,14 @@ export const cookieConfig: NgcCookieConsentConfig = {
       border: '#f9ae05',
     },
   },
-  theme: 'classic',
-  type: 'opt-out',
+  theme: 'edgeless',
+  type: 'info',
   content: {
     message:
-      'This website uses cookies to ensure you get the best experience on our website.',
-    dismiss: 'Got it!',
-    deny: 'Refuse cookies',
-    link: 'Learn more',
+      'Diese Webseite nutzt Cookies um die Kern-Funktion von WooCommerce (unserem Ticketing-Backend) zu ermöglichen.',
+    dismiss: 'Geht klar!',
+    deny: 'Alle Cookies verbieten',
+    link: 'Mehr dazu hier',
     href: 'https://cookiesandyou.com',
   },
 };

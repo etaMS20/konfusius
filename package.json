@@ -23,6 +23,7 @@
     "@angular/service-worker": "^19.1.6",
     "@ionic/angular": "^8.4.3",
     "@ngx-translate/core": "^16.0.4",
+    "cookieconsent": "^3.1.1",
     "dotenv": "^16.4.7",
     "material-icons": "^1.13.14",
     "ng-image-slider": "^10.0.0",
