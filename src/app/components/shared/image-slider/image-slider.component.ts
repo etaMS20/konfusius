@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { trigger, transition, style } from '@angular/animations';
-import { WPImageSizeApiKey, WPMappedImage } from '../../../models/media.model';
+import { WPImageSizeApiKey, WPMappedImage } from '@models/media.model';
 
 @Component({
   selector: 'app-image-slider',
