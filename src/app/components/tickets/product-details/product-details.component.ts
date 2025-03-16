@@ -82,7 +82,11 @@ export class ProductDetailsComponent implements OnChanges, OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.selectForm.controls['variationId'].setValidators(
+      this.isProductVariable ? [Validators.required] : [],
+    );
+  }
 
   get formattedPrice(): string {
     if (this.product)
@@ -108,6 +112,8 @@ export class ProductDetailsComponent implements OnChanges, OnInit {
       const checkoutId = this.isProductVariable
         ? this.selectForm.get('variationId')!.value
         : this.product?.id;
+
+      console.log(checkoutId);
 
       this.wcStore
         .deleteAllCartItems()
