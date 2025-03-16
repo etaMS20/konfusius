@@ -6,7 +6,6 @@ import {
   signal,
   SimpleChanges,
   computed,
-  input,
   OnInit,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
