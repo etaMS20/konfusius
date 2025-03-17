@@ -24,7 +24,7 @@
   <mat-divider />
   @if (data.content; as c) {
     <div class="content">
-      <p class="safe-html" [innerHTML]="c.content.rendered | safeHtml"></p>
+      <p class="safe-html" [innerHTML]="c | safeHtml"></p>
     </div>
   }
 </div>

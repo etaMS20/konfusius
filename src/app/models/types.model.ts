@@ -1,7 +1,8 @@
 import { BlogPost } from './blog-post.model';
+import { WcProduct } from './product.model';
 
 export interface BaseDialogData {
-  content?: BlogPost;
+  content?: string;
   title?: string;
   imageMeta?: ImageMeta;
 }

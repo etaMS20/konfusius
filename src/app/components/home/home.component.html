@@ -42,8 +42,15 @@
 
     <!-- Right Column - Info Box -->
     <section class="right-column">
-      <!-- Info Box -->
-      <app-info-box />
+      <!-- Info Boxes -->
+      <app-info-box
+        [content]="eckDaten()?.content?.rendered"
+        title="Eckdaten"
+      />
+      <app-info-box
+        [content]="programShort()?.content?.rendered"
+        title="Programm"
+      />
     </section>
   </div>
 

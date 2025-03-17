@@ -1,6 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { BlogPost } from 'src/app/models/blog-post.model';
-import { WordPressApiService } from 'src/app/services/api/wp-api.service';
+import { Component, Input } from '@angular/core';
 import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
 
 @Component({
@@ -9,14 +7,7 @@ import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
   templateUrl: './info-box.component.html',
   styleUrl: './info-box.component.scss',
 })
-export class InfoBoxComponent implements OnInit {
-  private readonly wpApi = inject(WordPressApiService);
-
-  eckDaten = signal<BlogPost | undefined>(undefined);
-
-  ngOnInit(): void {
-    this.wpApi.getPostById(1735).subscribe((post) => {
-      this.eckDaten.set(post);
-    });
-  }
+export class InfoBoxComponent {
+  @Input() content? = '';
+  @Input() title? = '';
 }

@@ -31,6 +31,7 @@ export class HomeComponent implements OnInit {
   introText = signal<BlogPost | undefined>(undefined);
   introText2 = signal<BlogPost | undefined>(undefined);
   eckDaten = signal<BlogPost | undefined>(undefined);
+  programShort = signal<BlogPost | undefined>(undefined);
 
   constructor(private readonly dialog: MatDialog) {}
 
@@ -50,12 +51,16 @@ export class HomeComponent implements OnInit {
     this.wpApi.getPostById(1713).subscribe((post) => {
       this.letterText.set(post);
     });
+
+    this.wpApi.getPostById(1858).subscribe((post) => {
+      this.programShort.set(post);
+    });
   }
 
   openLetterDialog(event: Event) {
     const data: BaseDialogData = {
       title: 'Programm 25',
-      content: this.letterText(),
+      content: this.letterText()?.content.rendered,
       imageMeta: {
         src: 'assets/scroll_image.png',
       },

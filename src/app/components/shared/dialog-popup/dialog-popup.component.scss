@@ -34,12 +34,15 @@
   border-radius: 12px;
   border: 2px solid #ddd;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  margin: 0;
+  margin: 2rem auto;
 }
 
 .dialog-image {
-  max-width: 400px;
-  max-height: 350px;
+  max-height: 300px;
   height: auto;
   width: auto;
+
+  @media (max-width: 450px) {
+    max-height: 150px;
+  }
 }

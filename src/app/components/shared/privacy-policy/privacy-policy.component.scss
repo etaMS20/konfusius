@@ -1,20 +1,18 @@
 @use 'src/styles/style-vars.scss' as *;
 
 .cookie-privacy-container {
-  max-width: 900px;
   font-family: Arial, sans-serif;
   background-color: $background-color-form;
-  width: 100%; // Ensures it scales on mobile
+  width: 95vw;
+  max-width: 900px;
+  height: 100%;
   box-sizing: border-box;
 }
 
 .privacy-content {
-  max-width: 95vw;
   padding: 1rem;
-  overflow-wrap: break-word; /* Ensures long words break */
   word-wrap: break-word; /* Compatibility for older browsers */
   white-space: normal; /* Allows text to wrap */
-  box-sizing: border-box;
 }
 
 h1 {
