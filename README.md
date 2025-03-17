@@ -63,14 +63,26 @@ Open a browser and head to [localhost:4200](http://localhost:4200/)
 
 ---
 
-## Current backend/devOps TODOS
+## Dev Notes
 
-- set WP server to allow cross-origin requests (CORS) as we currently have to proxy local HTTP requests to the WC backend
-- configure server to allow unauthenticated requests against `/wc/store/v1` endpoint
-- add appropriate image meta-data in WP backend, so we don't have to map the image paths
+### Known Issues
 
-## Current frontend Ideas
+- Image Slider image index can overflow
+- privacy page renders without content on brave browser
 
-- disable ticket route when store not available
-- change login form error detection
-- move loading indicator to component
+### Planned Features
+
+- custom payment method in backend (can have)
+- implement [fullscreen directive](https://medium.com/@milan.barac/angular-fullscreen-cd8b788c348f) (can have)
+- implement Ui for crew members with website settings (can have)
+- activate/implement wp-nonces (should have)
+- give order url hashes instead of numbers (should have)
+- smooth scrolling navigation (can have)
+- use JWT token for all requests (can have)
+- ci deployment to hosting (should have)
+
+### Useful Links
+
+- https://stackoverflow.com/questions/67411792/angular-parent-form-with-child-form-component-how-to-let-child-know-when-parent
+- https://stackoverflow.com/questions/72070748/failed-to-load-module-script-expected-a-javascript-module-script-but-the-server
+- https://dev.to/stephenwhitmore/take-your-wordpress-site-farther-with-angular-3o6p
