@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { BACKEND } from '../../../config/http.config';
 import { WPCategory } from '../../models/media.model';
 
-// TODO: Setup caching
 @Injectable({
   providedIn: 'root',
 })

@@ -28,7 +28,7 @@ export class ImageContainerComponent {
       .getMediaImages(WPCategory.GALLERY_2024)
       .pipe(
         map((data: any) => {
-          return this.mappingService.mapImageUrls(data);
+          return this.mappingService.mapImageArray(data);
         }),
       )
       .subscribe((mappedImages) => {

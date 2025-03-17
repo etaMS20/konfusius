@@ -2,17 +2,19 @@
 
 .cookie-privacy-container {
   max-width: 900px;
-  margin: 1rem auto;
   font-family: Arial, sans-serif;
   background-color: $background-color-form;
+  width: 100%; // Ensures it scales on mobile
+  box-sizing: border-box;
 }
 
 .privacy-content {
   max-width: 95vw;
-  padding: 10px;
+  padding: 1rem;
   overflow-wrap: break-word; /* Ensures long words break */
   word-wrap: break-word; /* Compatibility for older browsers */
   white-space: normal; /* Allows text to wrap */
+  box-sizing: border-box;
 }
 
 h1 {
@@ -34,8 +36,8 @@ p {
 a {
   color: #007bff;
   text-decoration: none;
-}
 
-a:hover {
-  text-decoration: underline;
+  &:hover {
+    text-decoration: underline;
+  }
 }
