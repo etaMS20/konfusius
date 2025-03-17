@@ -1,32 +1,32 @@
 @use 'src/styles/style-vars.scss' as *;
 
-.cookie-privacy-container {
-  font-family: Arial, sans-serif;
+::ng-deep .cookie-privacy-container {
   background-color: $background-color-form;
   width: 95vw;
   max-width: 900px;
   height: 100%;
   box-sizing: border-box;
+  display: block;
 }
 
 .privacy-content {
   padding: 1rem;
-  word-wrap: break-word; /* Compatibility for older browsers */
-  white-space: normal; /* Allows text to wrap */
+  word-wrap: break-word;
+  box-sizing: border-box;
 }
 
 h1 {
-  color: #333;
+  color: $text-color-black;
   font-size: 2.5rem;
 }
 
 h2 {
-  color: #555;
+  color: $text-color-black;
   font-size: 1.5rem;
 }
 
 p {
-  color: #666;
+  color: $text-color;
   font-size: 1em;
   line-height: 1.6;
 }

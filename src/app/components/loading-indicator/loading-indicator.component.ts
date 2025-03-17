@@ -25,7 +25,7 @@ export class LoadingIndicatorComponent implements OnInit {
   loading$: Observable<boolean>;
 
   @Input() detectRouteTransitions = false;
-  @Input() baseIndicator = true;
+  @Input() baseIndicator = false;
 
   @ContentChild('loading')
   customLoadingIndicator: TemplateRef<any> | null = null;

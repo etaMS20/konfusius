@@ -59,7 +59,7 @@ export class HomeComponent implements OnInit {
 
   openLetterDialog(event: Event) {
     const data: BaseDialogData = {
-      title: 'Programm 25',
+      title: 'Kleine Anekdote zum Programm',
       content: this.letterText()?.content.rendered,
       imageMeta: {
         src: 'assets/scroll_image.png',

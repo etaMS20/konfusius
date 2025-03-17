@@ -2,13 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.2.0]
+## [1.0.0]
 
 ### Added
 
 - caching/service-workers
 - wp plugin to backend with endpoints to validate invited_by field
 - extra login token for crew
+- versioning
 
 ### Changed
 
@@ -23,6 +24,10 @@ All notable changes to this project will be documented in this file.
 
 ## Dev Notes
 
+### Known Issues
+
+- Image Slider image index can overflow
+
 ### Planned Features
 
 - custom payment method (can have)
@@ -31,6 +36,8 @@ All notable changes to this project will be documented in this file.
 - activate/implement Nonces (should have)
 - give order url hashes instead of numbers (should have)
 - smooth scrolling navigation (can have)
+- use JWT token for all requests (can have)
+- ci deployment to hosting (should have)
 
 ### Useful Links
 

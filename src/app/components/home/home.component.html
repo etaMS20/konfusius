@@ -18,7 +18,9 @@
     <!-- Left Column - Main Content-->
     <section class="content-section">
       <div class="content-wrapper">
-        <h2>Liebe Freunde der Sonne & der guten Laune</h2>
+        <h2>
+          Ihr Tanzbegierdigen, Wiedermalabschaltenden und Frischluftgenießenden
+        </h2>
         @if (introText(); as p) {
           <div [innerHTML]="p.content.rendered | safeHtml"></div>
         }

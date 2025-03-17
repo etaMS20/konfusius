@@ -1,13 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
-import { ImageSliderComponent } from '../../shared/image-slider/image-slider.component';
-import { WordPressApiService } from '../../../services/api/wp-api.service';
+import { ImageSliderComponent } from '@shared/image-slider/image-slider.component';
+import { WordPressApiService } from '@services/api/wp-api.service';
 import {
   WPImageSizeApiKey,
-  WPCategory,
   WPMappedImage,
-} from '../../../models/media.model';
+  WPMediaCategory,
+} from '@models/media.model';
 import { map } from 'rxjs';
-import { MappingService } from '../../../services/mapping.service';
+import { MappingService } from '@services/mapping.service';
 import { NgIf } from '@angular/common';
 
 @Component({
@@ -25,7 +25,10 @@ export class ImageContainerComponent {
 
   constructor() {
     this.wpApi
-      .getMediaImages(WPCategory.GALLERY_2024)
+      .getMediaImages([
+        WPMediaCategory.GALLERY_2024,
+        WPMediaCategory.GALLERY_2025,
+      ])
       .pipe(
         map((data: any) => {
           return this.mappingService.mapImageArray(data);
