@@ -2,7 +2,7 @@
 
 .info-box ::ng-deep {
   background: rgba(255, 255, 255, 0.9);
-  padding: 3px;
+  padding: 0 1rem;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   position: relative;
@@ -21,8 +21,6 @@
 
   ul {
     list-style: none;
-    padding: 0;
-    padding: 15px;
 
     li {
       position: relative;

@@ -74,7 +74,10 @@
               ]
             },
             "production": {
-              "baseHref": "/wp-content/angular-app/",
+              "customWebpackConfig": {
+                "path": "webpack.config.ts"
+              },
+              "baseHref": "/festival/",
               "budgets": [
                 {
                   "type": "initial",

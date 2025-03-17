@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { APP_VERSION, EMAIL } from '@config/http.config';
 
 @Component({
   selector: 'app-footer',
@@ -7,4 +8,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss',
 })
-export class FooterComponent {}
+export class FooterComponent {
+  appVersion = APP_VERSION;
+  email = EMAIL;
+}

@@ -1,6 +1,7 @@
 <div
   class="background"
   [ngStyle]="{ 'background-position': backgroundPosition }"
+  [style.background-image]="'url(' + backgroundUrl() + ')'"
 >
   <div class="overlay"></div>
 </div>

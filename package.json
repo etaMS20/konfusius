@@ -1,8 +1,9 @@
 {
   "name": "konfusius",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "start": "ng serve",
+    "prebuild": "npm --no-git-tag-version version patch",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

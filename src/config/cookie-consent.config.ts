@@ -32,6 +32,6 @@ export const cookieConfig: NgcCookieConsentConfig = {
       'Diese Webseite nutzt Cookies um die Kern-Funktion von WooCommerce (unserem Ticketing-Backend) zu ermöglichen. Mehr dazu ',
 
     cookiePolicyLink: 'hier',
-    cookiePolicyHref: 'https://cookie.com',
+    cookiePolicyHref: 'https://konfusius.org/festival/#/privacy',
   },
 };

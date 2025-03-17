@@ -1,5 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, inject, OnInit, signal } from '@angular/core';
+import { WordPressApiService } from '@services/api/wp-api.service';
+import { MappingService } from '@services/mapping.service';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-background',
@@ -7,8 +10,24 @@ import { Component, HostListener } from '@angular/core';
   styleUrls: ['./background.component.scss'],
   imports: [CommonModule],
 })
-export class BackgroundComponent {
+export class BackgroundComponent implements OnInit {
+  wpApi = inject(WordPressApiService);
+  mappingService = inject(MappingService);
+  backgroundUrl = signal<string>('');
   backgroundPosition = 'center 0px';
+
+  ngOnInit(): void {
+    this.wpApi
+      .getMediaImageById(1850)
+      .pipe(
+        map((data: any) => {
+          return this.mappingService.mapImage(data);
+        }),
+      )
+      .subscribe((r) => {
+        this.backgroundUrl.set(r.url);
+      });
+  }
 
   @HostListener('window:scroll', ['$event'])
   onScroll() {

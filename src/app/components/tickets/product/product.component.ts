@@ -11,11 +11,12 @@ import {
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { ProductDialogComponent } from '../product-dialog/product-dialog.component';
 import { CommonModule } from '@angular/common';
 import { ProductTypeLabels, WcProduct } from '../../../models/product.model';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
+import { DialogPopupComponent } from '@shared/dialog-popup/dialog-popup.component';
+import { BaseDialogData } from '@models/types.model';
 
 @Component({
   selector: 'product',
@@ -68,8 +69,15 @@ export class ProductComponent implements OnInit {
 
   openDetailsDialog(event: Event) {
     event.stopPropagation();
-    this.dialog.open(ProductDialogComponent, {
-      data: this.product,
+    const data: BaseDialogData = {
+      title: this.product?.name,
+      content: this.product?.description,
+      imageMeta: {
+        src: this.product?.images[0].src as string,
+      },
+    };
+    this.dialog.open(DialogPopupComponent, {
+      data: data,
       width: '60vw',
       height: '70vh',
       maxWidth: '800px',
