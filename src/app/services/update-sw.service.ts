@@ -17,6 +17,8 @@ export class PromptUpdateService {
   }
 
   private promptUser(evt: VersionReadyEvent): boolean {
-    return confirm('A new version is available. Do you want to reload?');
+    return confirm(
+      'A new website version is available. Do you want to reload?',
+    );
   }
 }

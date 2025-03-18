@@ -4,9 +4,13 @@
   background-color: $background-color-form;
   width: 95vw;
   max-width: 900px;
+  margin: auto;
   height: 100%;
   box-sizing: border-box;
   display: block;
+  font-family:
+    system-ui,
+    -apple-system;
 }
 
 .privacy-content {
