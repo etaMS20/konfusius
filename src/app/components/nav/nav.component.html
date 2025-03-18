@@ -51,6 +51,7 @@
       <button
         mat-icon-button
         class="menu-toggle"
+        [class.active]="isMenuOpen()"
         (click)="toggleMenu()"
         aria-label="Toggle navigation menu"
       >
