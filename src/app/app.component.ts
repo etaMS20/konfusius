@@ -6,7 +6,7 @@ import { NgcCookieConsentService } from 'ngx-cookieconsent';
 import { Subscription } from 'rxjs';
 import { FooterComponent } from '@components/footer/footer.component';
 import { BackgroundComponent } from './components/shared/background/background.component';
-import { PromptUpdateService } from '@services/update-sw.service';
+import { SwUpdate } from '@angular/service-worker';
 
 @Component({
   selector: 'app-root',
@@ -22,14 +22,14 @@ import { PromptUpdateService } from '@services/update-sw.service';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit, OnDestroy {
-  promptUpdateService = inject(PromptUpdateService);
   ccService = inject(NgcCookieConsentService);
+  private isUpdatePrompted = false;
 
   // keep refs to subscriptions to be able to unsubscribe later
   private popupOpenSubscription?: Subscription;
   private popupCloseSubscription?: Subscription;
 
-  constructor() {}
+  constructor(private readonly swUpdate: SwUpdate) {}
 
   ngOnInit() {
     this.popupOpenSubscription = this.ccService.popupOpen$.subscribe(() => {
@@ -39,6 +39,21 @@ export class AppComponent implements OnInit, OnDestroy {
     this.popupCloseSubscription = this.ccService.popupClose$.subscribe(() => {
       // use this.ccService.getConfig() to do stuff...
     });
+
+    // TODO
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.versionUpdates.subscribe((evt) => {
+        if (evt.type === 'VERSION_READY' && !this.isUpdatePrompted) {
+          if (
+            confirm(
+              `New version available. Load New Version? (current: ${evt.currentVersion.hash}, new: ${evt.latestVersion.hash})`,
+            )
+          ) {
+            window.location.reload();
+          }
+        }
+      });
+    }
   }
 
   ngOnDestroy() {

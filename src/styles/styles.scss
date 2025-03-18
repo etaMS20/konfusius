@@ -13,11 +13,11 @@ html {
         theme-type: light,
       ),
       typography: (
-        plain-family: Roboto,
-        brand-family: Open Sans,
+        plain-family: system-ui,
+        brand-family: -apple-system,
         bold-weight: 900,
-        medium-weight: 600,
-        regular-weight: 500,
+        medium-weight: 500,
+        regular-weight: 300,
       ),
       density: 0,
     )
@@ -26,6 +26,9 @@ html {
 
 body,
 html {
+  font-family:
+    system-ui,
+    -apple-system;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -70,7 +73,7 @@ p {
   font-size: 1.1rem;
   color: $text-color;
   margin: 10px 0;
-  line-height: 1.8;
+  line-height: 1.2;
 }
 
 li {
