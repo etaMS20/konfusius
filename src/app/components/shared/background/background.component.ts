@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  inject,
+  OnInit,
+  Output,
+  signal,
+} from '@angular/core';
 import { WordPressApiService } from '@services/api/wp-api.service';
 import { MappingService } from '@services/mapping.service';
 import { map } from 'rxjs';
@@ -13,6 +21,8 @@ import { map } from 'rxjs';
 export class BackgroundComponent implements OnInit {
   wpApi = inject(WordPressApiService);
   mappingService = inject(MappingService);
+  @Output() url = new EventEmitter<string>();
+  @Output() position = new EventEmitter<string>();
   backgroundUrl = signal<string>('');
   backgroundPosition = 'center 0px';
 
@@ -26,6 +36,7 @@ export class BackgroundComponent implements OnInit {
       )
       .subscribe((r) => {
         this.backgroundUrl.set(r.url);
+        this.url.emit(r.url);
       });
   }
 
@@ -33,5 +44,6 @@ export class BackgroundComponent implements OnInit {
   onScroll() {
     const scrollPosition = window.scrollY;
     this.backgroundPosition = `center ${scrollPosition * 0.1}px`;
+    this.position.emit(this.backgroundPosition);
   }
 }
