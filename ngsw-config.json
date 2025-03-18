@@ -3,12 +3,12 @@
   "index": "/index.html",
   "assetGroups": [
     {
-      "name": "konfusius-frontend",
+      "name": "konfusius",
       "installMode": "prefetch",
+      "updateMode": "prefetch",
       "resources": {
         "files": [
           "/favicon.ico",
-          "/index.csr.html",
           "/index.html",
           "/manifest.webmanifest",
           "/*.css",
@@ -36,7 +36,7 @@
       "cacheConfig": {
         "strategy": "performance",
         "maxSize": 50,
-        "maxAge": "1d",
+        "maxAge": "1h",
         "timeout": "10s"
       }
     }

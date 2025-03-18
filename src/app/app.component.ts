@@ -1,16 +1,16 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HeaderComponent } from './components/header/header.component';
+import { NavComponent } from './components/nav/nav.component';
 import { CommonModule } from '@angular/common';
-import { BackgroundComponent } from '@shared/background/background.component';
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
 import { Subscription } from 'rxjs';
 import { FooterComponent } from '@components/footer/footer.component';
+import { SwUpdate } from '@angular/service-worker';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, CommonModule, FooterComponent],
+  imports: [RouterOutlet, NavComponent, CommonModule, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -21,8 +21,20 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly ccService: NgcCookieConsentService,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
+    private readonly swUpdate: SwUpdate,
+  ) {
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.versionUpdates.subscribe((event) => {
+        if (event.type === 'VERSION_READY') {
+          if (
+            confirm('A new website version is available. Load new version?')
+          ) {
+            window.location.reload();
+          }
+        }
+      });
+    }
+  }
 
   ngOnInit() {
     this.popupOpenSubscription = this.ccService.popupOpen$.subscribe(() => {

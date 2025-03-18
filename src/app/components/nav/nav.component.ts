@@ -9,7 +9,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthService } from '@services/auth.service';
 
 @Component({
-  selector: 'app-header',
+  selector: 'app-nav',
   standalone: true,
   imports: [
     CommonModule,
@@ -20,10 +20,10 @@ import { AuthService } from '@services/auth.service';
     MatIconModule,
     MatTooltipModule,
   ],
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+  templateUrl: './nav.component.html',
+  styleUrls: ['./nav.component.scss'],
 })
-export class HeaderComponent {
+export class NavComponent {
   authService = inject(AuthService);
   title = signal('Your App Title');
   isMenuOpen = signal(false);

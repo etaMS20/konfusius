@@ -1,21 +1,6 @@
 @use '@angular/material' as mat;
 @use './style-vars.scss' as *;
 
-#app-background {
-  display: block;
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  object-fit: cover;
-  @media print {
-    display: none;
-  }
-}
-
 // https://material.angular.io/guide/theming
 // https://angular-material.dev/articles/customizing-angular-material-button
 
@@ -53,22 +38,7 @@ html {
   -webkit-user-drag: auto !important;
 }
 
-html,
-body {
-  height: 100%;
-  width: 100%;
-  display: flex;
-}
-
-body {
-  justify-content: center;
-  margin: 50px auto 0;
-  width: 100%;
-  max-width: 1400px;
-  flex: 1;
-  // overflow-x: hidden; /* Prevents horizontal scrolling */
-}
-
+// init all elements
 * {
   outline: none;
   margin: 0;
