@@ -35,7 +35,7 @@ jobs:
           pnpm install
 
       - name: Compile app
-        run: pnpm ng build --configuration=production --base-href /festival/
+        run: pnpm ng build --configuration=production --base-href ./festival/
 
       - name: Deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
