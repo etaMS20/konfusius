@@ -1,0 +1,11 @@
+@use 'src/styles/style-vars.scss' as *;
+
+main {
+  box-sizing: border-box;
+  justify-content: center;
+  margin: auto;
+  margin-top: calc($nav-height + 5px);
+  width: 100%;
+  max-width: 1400px;
+  flex-grow: 1;
+}

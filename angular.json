@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
-            "outputPath": "dist/konfusius",
+            "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -25,9 +25,9 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               {
-                "input": "src/assets",
                 "glob": "**/*",
-                "output": "/assets"
+                "input": "public",
+                "output": "public"
               }
             ],
             "styles": [
@@ -48,7 +48,7 @@
             "serviceWorker": true,
             "ngswConfigPath": "ngsw-config.json",
             "stylePreprocessorOptions": {
-              "includePaths": ["src"]
+              "includePaths": ["src", "public"]
             }
           },
           "configurations": {
@@ -77,7 +77,7 @@
               "customWebpackConfig": {
                 "path": "webpack.config.ts"
               },
-              "baseHref": "/festival/",
+              "baseHref": "./",
               "budgets": [
                 {
                   "type": "initial",

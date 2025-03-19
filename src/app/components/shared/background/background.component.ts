@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  inject,
+  OnInit,
+  Output,
+  signal,
+} from '@angular/core';
 import { WordPressApiService } from '@services/api/wp-api.service';
 import { MappingService } from '@services/mapping.service';
 import { map } from 'rxjs';

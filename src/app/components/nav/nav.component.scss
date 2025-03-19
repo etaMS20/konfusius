@@ -1,15 +1,18 @@
-// Enhanced header styling with more interesting background
+@use 'src/styles/style-vars.scss' as *;
+
+$scrolled-height: calc(min($nav-max-height, $nav-height) - 20px);
+
 .header-toolbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  background: linear-gradient(-45deg, #009fa573, #7b1fa2, #673ab7, #3f51b5);
+  background: $nav-linear-gradient;
   background-size: 400% 400%;
   animation: gradientBG 15s ease infinite;
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.3);
-  height: 95px;
+  height: min($nav-max-height, $nav-height);
   padding: 0;
   transition: all 0.3s ease;
 
@@ -27,7 +30,7 @@
   }
 
   &.scrolled {
-    height: 69px;
+    height: $scrolled-height;
     &::after {
       content: '';
       position: absolute;
@@ -176,6 +179,9 @@
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  &.active {
     transform: rotate(90deg);
   }
 }
@@ -184,26 +190,29 @@
 .mobile-nav {
   visibility: hidden; // Hide by default
   position: fixed;
-  top: 95px; // Match initial header height
+  top: min($nav-max-height, $nav-height); // Match initial header height
   left: 0;
   right: 0;
   background: linear-gradient(180deg, #9c27b0 0%, #7b1fa2 100%);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 999;
   transform: translateY(-100%);
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-    visibility 0s linear 0.4s, top 0.3s ease;
+  transition:
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0s linear 0.4s,
+    top 0.3s ease;
 
   &.open {
     visibility: visible; // Show when open
     transform: translateY(0);
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s;
+    transition:
+      transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      visibility 0s;
   }
 }
 
 .header-toolbar.scrolled + .mobile-nav {
-  top: 69px; // Match the new header height
-  transition: top 0.3s ease; // <== Ensure transition applies
+  top: $scrolled-height;
 }
 
 .mobile-nav-links {
@@ -234,7 +243,7 @@
 }
 
 // Media Queries for Responsive Design
-@media (max-width: 768px) {
+@media (max-width: 750px) {
   .desktop-nav {
     display: none;
   }
@@ -248,7 +257,7 @@
   }
 
   .logo-image {
-    height: 59px;
+    height: calc(min($nav-max-height, $nav-height) - 1.5rem);
   }
 
   .logo-text {

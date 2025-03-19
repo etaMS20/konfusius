@@ -21,6 +21,7 @@ import { MappingService } from '@services/mapping.service';
 import { WcStoreAPI } from '@services/api/wc-store-api.service';
 import { Subject } from 'rxjs';
 import { ProductComponent } from './product/product.component';
+import { LocalStorageKeys } from '@models/storage.model';
 
 @Component({
   selector: 'app-tickets',
@@ -81,14 +82,16 @@ export class TicketsComponent implements OnInit, OnDestroy {
   }
 
   private getStoredSelect(): number | undefined {
-    const storedItem = localStorage.getItem('selectedProductId');
+    const storedItem = localStorage.getItem(
+      LocalStorageKeys.PRODUCT_SELECTED_ID,
+    );
     let storedId = undefined;
     if (storedItem) storedId = parseInt(storedItem, 10);
     return storedId;
   }
 
   get getProductCat(): number {
-    const storedCat = localStorage.getItem('productCat');
+    const storedCat = localStorage.getItem(LocalStorageKeys.USER_PRODUCT_CAT);
     return storedCat ? parseInt(storedCat) : 22;
   }
 
@@ -101,10 +104,10 @@ export class TicketsComponent implements OnInit, OnDestroy {
   onProductSelected(id: number | null): void {
     if (id === null) {
       this.selectedProduct.set(undefined);
-      localStorage.removeItem('selectedProductId');
+      localStorage.removeItem(LocalStorageKeys.PRODUCT_SELECTED_ID);
     } else {
       id ? this.querySelectedProduct(id) : new Error();
-      localStorage.setItem('selectedProductId', id.toString());
+      localStorage.setItem(LocalStorageKeys.PRODUCT_SELECTED_ID, id.toString());
     }
   }
 

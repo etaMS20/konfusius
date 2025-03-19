@@ -12,35 +12,44 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
+      CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
+      CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
+      WP_SECRET: ${{ secrets.WP_SECRET }}
+      CREW_PW: ${{ secrets.CREW_PW }}
       GUEST_PW: ${{ secrets.GUEST_PW }}
       SALT: ${{ secrets.SALT }}
 
     steps:
-      - name: checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - name: setup Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20.18.3
 
-      - name: install pnpm and deps
+      - name: Install pnpm and Dependencies
         run: |
           npm install -g pnpm@10.4.1
           pnpm config set store-dir .pnpm-store
           pnpm install
 
-      - name: set environment file
+      - name: Create .env
         run: |
-          sed -i 's/REPLACE_PASSWORD/${{ secrets.GUEST_PW }}/g' src/environments/environment.prod.ts
-          sed -i 's/REPLACE_SALT/${{ secrets.SALT }}/g' src/environments/environment.prod.ts
+          touch .env
+          echo "CONSUMER_KEY=${{ secrets.CONSUMER_KEY }}" >> .env
+          echo "CONSUMER_SECRET=${{ secrets.CONSUMER_SECRET }}" >> .env
+          echo "WP_SECRET=${{ secrets.WP_SECRET }}" >> .env
+          echo "CREW_PW=${{ secrets.CREW_PW }}" >> .env
+          echo "GUEST_PW=${{ secrets.GUEST_PW }}" >> .env
+          echo "SALT=${{ secrets.SALT }}" >> .env
 
-      - name: compile application
-        run: pnpm ng build --configuration=staging --base-href /konfusius/
+      - name: Compile app
+        run: pnpm ng build --configuration=production --base-href ./ --output-path=dist
 
-      - name: deploy to gh-pages
+      - name: Deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: dist/konfusius
+          folder: dist
           token: ${{ secrets.GH_PAGES_TOKEN }}

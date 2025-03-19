@@ -1,12 +1,9 @@
 .image-show-container {
-  display: block;
   height: 500px;
-  width: 1200px;
-}
+  margin: auto 2rem;
 
-@media (max-width: 768px) {
-  .image-show-container {
+  @media (max-width: 768px) {
     height: 300px;
-    width: 90vw;
+    margin: auto;
   }
 }

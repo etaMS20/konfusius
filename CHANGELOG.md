@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.0]
+## [1.0.2]
 
 ### Added
 
@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - wp plugin to backend with endpoints to validate invited_by field
 - extra login token for crew
 - versioning
+- ng service-worker
 
 ### Changed
 
@@ -19,5 +20,6 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - refactored tickets page
+- styling on mobile (v1)
 
 ---
