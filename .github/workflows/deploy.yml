@@ -9,50 +9,36 @@ on:
       - main
 
 jobs:
-  compile:
+  build:
     runs-on: ubuntu-latest
+    env:
+      GUEST_PW: ${{ secrets.GUEST_PW }}
+      SALT: ${{ secrets.SALT }}
 
     steps:
-      - name: Checkout Repository
+      - name: checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20.18.3
 
-      - name: Install Dependencies
+      - name: install pnpm and deps
         run: |
           npm install -g pnpm@10.4.1
           pnpm config set store-dir .pnpm-store
           pnpm install
 
-      - name: Create .env file
+      - name: set environment file
         run: |
-          echo "GUEST_PW=${{ secrets.GUEST_PW }}" >> .env
-          echo "SALT=${{ secrets.SALT }}" >> .env
+          sed -i 's/REPLACE_PASSWORD/${{ secrets.GUEST_PW }}/g' src/environments/environment.prod.ts
+          sed -i 's/REPLACE_SALT/${{ secrets.SALT }}/g' src/environments/environment.prod.ts
 
-      - name: Compile Application
+      - name: compile application
         run: pnpm ng build --configuration=production --base-href /festival/
 
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifact
-          path: dist/festival
-
-  deploy-gh-pages:
-    runs-on: ubuntu-latest
-    needs: compile
-
-    steps:
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifact
-          path: dist/festival
-
-      - name: Deploy to GitHub Pages
+      - name: deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
