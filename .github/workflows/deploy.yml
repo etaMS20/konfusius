@@ -34,8 +34,18 @@ jobs:
           pnpm config set store-dir .pnpm-store
           pnpm install
 
+      - name: Create .env
+        run: |
+          touch .env
+          echo "CONSUMER_KEY=${{ secrets.CONSUMER_KEY }}" >> .env
+          echo "CONSUMER_SECRET=${{ secrets.CONSUMER_SECRET }}" >> .env
+          echo "WP_SECRET=${{ secrets.WP_SECRET }}" >> .env
+          echo "CREW_PW=${{ secrets.CREW_PW }}" >> .env
+          echo "GUEST_PW=${{ secrets.GUEST_PW }}" >> .env
+          echo "SALT=${{ secrets.SALT }}" >> .env
+
       - name: Compile app
-        run: pnpm ng build --configuration=production
+        run: pnpm ng build --configuration=production --base-href ./ --output-path=dist
 
       - name: Deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
