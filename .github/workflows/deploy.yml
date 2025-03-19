@@ -1,4 +1,4 @@
-name: deploy to gh-pages
+name: build and deploy 🚀
 
 on:
   push:
@@ -37,10 +37,10 @@ jobs:
           echo "GUEST_PW=${{ secrets.GUEST_PW }}" >> .env
           echo "SALT=${{ secrets.SALT }}" >> .env
 
-      - name: Compile app
+      - name: 🔨 Compile app
         run: pnpm ng build --configuration=production --base-href ./ --output-path=dist
 
-      - name: Deploy to gh-pages
+      - name: 🚀 Deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
@@ -66,14 +66,14 @@ jobs:
         with:
           name: node-app
 
-      - name: Deploy via FTP to WordPress
+      - name: 📂 Sync to WordPress ftp
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: konfusius.org
           port: 21
           username: ${{ secrets.FTP_USERNAME }} # FTP username
           password: ${{ secrets.FTP_PASSWORD }} # FTP password
-          local-dir: ./dist
-          server-dir: /public_html/test-deploy
+          local-dir: ./dist/
+          server-dir: public_html/test-deploy/
           sync: true
           dry-run: true
