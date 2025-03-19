@@ -31,7 +31,7 @@ interface InfoTab {
 export class InfoTabsComponent implements OnInit {
   private readonly wpApi = inject(WordPressApiService);
 
-  pdfUrl = signal<string>('./assets/Grundriss_Konfusi24_A2.pdf');
+  pdfUrl = signal<string>('./Grundriss_Konfusi24_A2.pdf');
 
   campingText = signal<BlogPost | undefined>(undefined);
   anmeldungText = signal<BlogPost | undefined>(undefined);
