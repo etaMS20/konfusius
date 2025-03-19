@@ -1,7 +1,6 @@
 export const environment = {
   app_version: require('../../package.json').version + '-dev',
   production: false,
-  domain: 'localhost',
   backendUrl: '/wp-json',
   consumerKey: process.env['CONSUMER_KEY'],
   consumerSecret: process.env['CONSUMER_SECRET'],
