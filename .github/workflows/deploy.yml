@@ -67,11 +67,13 @@ jobs:
           name: node-app
 
       - name: Deploy via FTP to WordPress
-        uses: SamKirkland/FTP-Deploy-Action@v4
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: konfusius.org
+          port: 21
           username: ${{ secrets.FTP_USERNAME }} # FTP username
           password: ${{ secrets.FTP_PASSWORD }} # FTP password
           local-dir: ./dist
           server-dir: /public_html/test-deploy
           sync: true
+          dry-run: true
