@@ -1,7 +1,6 @@
 export const environment = {
   app_version: require('../../package.json').version,
   production: true,
-  domain: 'konfusius.org',
   backendUrl: 'https://konfusius.org/wp-json',
   consumerKey: process.env['CONSUMER_KEY'],
   consumerSecret: process.env['CONSUMER_SECRET'],

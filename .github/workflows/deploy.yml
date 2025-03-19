@@ -11,13 +11,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
-      CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
-      WP_SECRET: ${{ secrets.WP_SECRET }}
-      CREW_PW: ${{ secrets.CREW_PW }}
-      GUEST_PW: ${{ secrets.GUEST_PW }}
-      SALT: ${{ secrets.SALT }}
 
     steps:
       - name: Checkout Repository
@@ -34,7 +27,7 @@ jobs:
           pnpm config set store-dir .pnpm-store
           pnpm install
 
-      - name: Create .env
+      - name: Create .env # create required env variables for the application
         run: |
           touch .env
           echo "CONSUMER_KEY=${{ secrets.CONSUMER_KEY }}" >> .env
