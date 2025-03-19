@@ -5,6 +5,7 @@ import { catchError, map, Observable, of } from 'rxjs';
 import { GuestAuth } from './auth.model';
 import shajs from 'sha.js';
 import { authProductCatMap, AuthType } from '@models/auth.model';
+import { LocalStorageKeys } from '@models/storage.model';
 
 @Injectable({
   providedIn: 'root',
@@ -35,19 +36,19 @@ export class AuthService {
   login(passwordInput: string) {
     const inputHash = this.hashPassword(passwordInput);
     if (inputHash && inputHash === this.guestPwHash) {
-      localStorage.setItem('konfusiusAuth', inputHash);
-      localStorage.removeItem('konfusiusCrewAuth');
+      localStorage.setItem(LocalStorageKeys.GUEST_AUTH, inputHash);
+      localStorage.removeItem(LocalStorageKeys.CREW_AUTH);
       localStorage.setItem(
-        'productCat',
+        LocalStorageKeys.USER_PRODUCT_CAT,
         authProductCatMap[AuthType.GUEST].toString(),
       );
       this.userAuthType.set(AuthType.GUEST);
       return true;
     } else if (inputHash && inputHash === this.crewPwHash) {
-      localStorage.setItem('konfusiusCrewAuth', inputHash);
-      localStorage.removeItem('konfusiusAuth');
+      localStorage.setItem(LocalStorageKeys.CREW_AUTH, inputHash);
+      localStorage.removeItem(LocalStorageKeys.GUEST_AUTH);
       localStorage.setItem(
-        'productCat',
+        LocalStorageKeys.USER_PRODUCT_CAT,
         authProductCatMap[AuthType.CREW].toString(),
       );
       this.userAuthType.set(AuthType.CREW);
@@ -58,18 +59,22 @@ export class AuthService {
 
   isAuthenticatedBase(): boolean {
     return (
-      localStorage.getItem('konfusiusAuth') === this.guestPwHash ||
+      localStorage.getItem(LocalStorageKeys.GUEST_AUTH) === this.guestPwHash ||
       this.isAuthenticatedCrew()
     );
   }
 
   isAuthenticatedCrew(): boolean {
-    return localStorage.getItem('konfusiusCrewAuth') === this.crewPwHash;
+    return localStorage.getItem(LocalStorageKeys.CREW_AUTH) === this.crewPwHash;
   }
 
+  // on logout remove all storage items
   logout(): void {
-    localStorage.removeItem('konfusiusAuth');
-    localStorage.removeItem('konfusiusCrewAuth');
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith('konfusius')) {
+        localStorage.removeItem(key);
+      }
+    });
   }
 
   // TODO: Maybe useful later

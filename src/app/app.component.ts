@@ -23,7 +23,6 @@ import { SwUpdate } from '@angular/service-worker';
 })
 export class AppComponent implements OnInit, OnDestroy {
   ccService = inject(NgcCookieConsentService);
-  private isUpdatePrompted = false;
 
   // keep refs to subscriptions to be able to unsubscribe later
   private popupOpenSubscription?: Subscription;
@@ -42,13 +41,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // TODO
     if (this.swUpdate.isEnabled) {
-      this.swUpdate.versionUpdates.subscribe((evt) => {
-        if (evt.type === 'VERSION_READY' && !this.isUpdatePrompted) {
-          if (
-            confirm(
-              `New version available. Load New Version? (current: ${evt.currentVersion.hash}, new: ${evt.latestVersion.hash})`,
-            )
-          ) {
+      this.swUpdate.versionUpdates.subscribe((event) => {
+        if (event.type === 'VERSION_READY') {
+          console.log(
+            `sw new version: current: ${event.currentVersion.hash}, new: ${event.latestVersion.hash}`,
+            event,
+          );
+          if (confirm(`New version available. Load New Version?`)) {
             window.location.reload();
           }
         }

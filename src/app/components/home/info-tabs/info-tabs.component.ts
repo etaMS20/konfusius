@@ -31,7 +31,7 @@ interface InfoTab {
 export class InfoTabsComponent implements OnInit {
   private readonly wpApi = inject(WordPressApiService);
 
-  pdfUrl = signal<string>('./Grundriss_Konfusi24_A2.pdf');
+  pdfUrl = signal<string>('./public/Grundriss_Konfusi24_A2.pdf');
 
   campingText = signal<BlogPost | undefined>(undefined);
   anmeldungText = signal<BlogPost | undefined>(undefined);
@@ -40,17 +40,17 @@ export class InfoTabsComponent implements OnInit {
   tabs = computed<InfoTab[]>(() => {
     return [
       {
-        icon: '',
+        icon: 'icecream',
         label: 'Verpflegung & Camping',
         content: this.campingText()?.content.rendered,
       },
       {
-        icon: '',
+        icon: 'people',
         label: 'Partizipation & Anmeldung',
         content: this.anmeldungText()?.content.rendered,
       },
       {
-        icon: '',
+        icon: 'balance',
         label: 'Verhaltenskodex & Klauseregeln',
         content: this.regelnText()?.content.rendered,
       },

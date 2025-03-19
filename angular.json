@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
-            "outputPath": "dist/konfusius",
+            "outputPath": "dist/festival",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -26,7 +26,8 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "public",
+                "output": "public"
               }
             ],
             "styles": [
@@ -47,7 +48,7 @@
             "serviceWorker": true,
             "ngswConfigPath": "ngsw-config.json",
             "stylePreprocessorOptions": {
-              "includePaths": ["src"]
+              "includePaths": ["src", "public"]
             }
           },
           "configurations": {

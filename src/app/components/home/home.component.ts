@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit {
       title: 'Kleine Anekdote zum Programm',
       content: this.letterText()?.content.rendered,
       imageMeta: {
-        src: './scroll_image.png',
+        src: './public/scroll_image.png',
       },
     };
     event.stopPropagation();
