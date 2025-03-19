@@ -35,11 +35,11 @@ jobs:
           pnpm install
 
       - name: Compile app
-        run: pnpm ng build --configuration=production --base-href ./konfusius/ --output-path=dist/konfusius/
+        run: pnpm ng build --configuration=production --base-href ./konfusius/ --output-path=dist
 
       - name: Deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: dist/festival
+          folder: dist
           token: ${{ secrets.GH_PAGES_TOKEN }}
