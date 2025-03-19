@@ -69,7 +69,7 @@ jobs:
       - name: 📂 Sync to WordPress FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: konfusius.org
+          server: ftp://konfusius.org
           username: ${{ secrets.FTP_USERNAME }} # FTP username
           password: ${{ secrets.FTP_PASSWORD }} # FTP password
           local-dir: ./dist/
