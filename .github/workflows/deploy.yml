@@ -39,7 +39,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-artifact
-          path: ./dist/festival
+          path: dist/festival
 
   deploy-gh-pages:
     runs-on: ubuntu-latest
@@ -50,11 +50,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-artifact
-          path: ./dist/festival
+          path: dist/festival
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: ./dist/festival
+          folder: dist/festival
           token: ${{ secrets.GH_PAGES_TOKEN }}
