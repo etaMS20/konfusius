@@ -70,7 +70,8 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: konfusius.org
-          username: ${{ secrets.FTP_USERNAME }} # FTP username
+          username: f01748f2
           password: ${{ secrets.FTP_PASSWORD }} # FTP password
           local-dir: ./dist/
           server-dir: public_html/test-deploy/
+          sync: false
