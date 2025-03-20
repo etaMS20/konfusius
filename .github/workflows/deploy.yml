@@ -3,13 +3,14 @@ name: build and deploy 🚀
 on:
   push:
     branches:
-      - main
+      - main # Run on pushes to main
   pull_request:
-    branches:
-      - main
+    types:
+      - closed # Run when PRs are merged
 
 jobs:
   build:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
 
     steps:
@@ -58,7 +59,7 @@ jobs:
     needs: build
     environment:
       name: 'production'
-      url: ${{ steps.deploy-to-wordpress.outputs.webapp-url }}
+      url: ${{ steps.ftp-deploy.with.server }}
     env:
       WORDPRESS_HREF: '/festival/'
 
@@ -73,6 +74,7 @@ jobs:
           sed -i "s|<base href=['\"].*['\"]>|<base href='${WORDPRESS_HREF}'>|" dist/index.html
 
       - name: 📂 Sync to WordPress FTP
+        id: ftp-deploy
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: konfusius.org
