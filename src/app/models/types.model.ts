@@ -1,6 +1,3 @@
-import { BlogPost } from './blog-post.model';
-import { WcProduct } from './product.model';
-
 export interface BaseDialogData {
   content?: string;
   title?: string;
@@ -13,4 +10,9 @@ export interface ImageMeta {
   alt?: string;
   sizes?: string;
   descriptions?: string;
+}
+
+export interface FaqSection {
+  question: string;
+  answer: string;
 }
