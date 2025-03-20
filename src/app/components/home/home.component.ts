@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit {
     BlogPostId.ECKDATEN,
     BlogPostId.LETTER,
     BlogPostId.PROGRAMM_SHORT,
+    BlogPostId.SUGGESTIONS,
   ];
 
   wpPosts = signal<Array<BlogPost>>([]);
@@ -62,6 +63,10 @@ export class HomeComponent implements OnInit {
 
   get programm_short() {
     return this.wpPosts().find((p) => p.id === BlogPostId.PROGRAMM_SHORT);
+  }
+
+  get suggestions() {
+    return this.wpPosts().find((p) => p.id === BlogPostId.SUGGESTIONS);
   }
 
   openLetterDialog(event: Event) {

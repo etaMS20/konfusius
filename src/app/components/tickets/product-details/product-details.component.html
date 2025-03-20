@@ -1,5 +1,5 @@
-<div class="footer" *ngIf="product">
-  <div class="footer-content">
+<div class="checkout" *ngIf="product">
+  <div class="checkout-content">
     <div class="left-container">
       <h4>Schicht: {{ product.name }}</h4>
       <p>
@@ -11,7 +11,11 @@
 
     <div class="middle-container">
       <div *ngIf="isProductVariable">
-        <mat-form-field appearance="fill" [matTooltip]="tooltipMessage()">
+        <mat-form-field
+          appearance="fill"
+          matTooltip="Es sind leider keine Zeiten mehr für diese Schicht verfügbar"
+          [matTooltipDisabled]="productVariations.length !== 0"
+        >
           <mat-label>Wähle eine Zeit</mat-label>
           <mat-select
             [formControl]="selectForm.controls['variationId']"
@@ -31,9 +35,17 @@
     </div>
 
     <div class="right-container">
-      <div class="checkout-button-row">
+      <div
+        class="checkout-button-row"
+        [matTooltip]="
+          isProductVariable
+            ? 'Keine Schicht ausgewählt'
+            : 'Schicht nicht mehr verfügbar'
+        "
+        [matTooltipDisabled]="isCheckoutValid"
+      >
         <button
-          [disabled]="!isFormValid"
+          [disabled]="!isCheckoutValid"
           mat-raised-button
           color="primary"
           (click)="checkout()"

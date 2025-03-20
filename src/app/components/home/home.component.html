@@ -19,7 +19,7 @@
     <section class="content-section">
       <div class="content-wrapper">
         <h2>
-          Ihr Tanzbegierdigen, Wiedermalabschaltenden und Frischluftgenießenden
+          Ihr Tanzbegierdigen, Wiedermalabschaltenden & Frischluftgenießenden
         </h2>
         @if (intro; as p) {
           <div [innerHTML]="p.content.rendered | safeHtml"></div>
@@ -50,6 +50,9 @@
       }
       @if (programm_short; as p) {
         <app-info-box [content]="p.content.rendered" title="Programm" />
+      }
+      @if (suggestions; as p) {
+        <app-info-box [content]="p.content.rendered" title="" />
       }
     </section>
   </div>

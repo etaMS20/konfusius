@@ -4,7 +4,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { WordPressApiService } from '../../../services/api/wp-api.service';
-import { BlogPost } from 'src/app/models/blog-post.model';
+import { BlogPost, BlogPostId } from 'src/app/models/blog-post.model';
 import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
 import { PdfDownloadViewerComponent } from '@shared/pdf-download-viewer/pdf-download-viewer.component';
 
@@ -30,44 +30,49 @@ interface InfoTab {
 })
 export class InfoTabsComponent implements OnInit {
   private readonly wpApi = inject(WordPressApiService);
-
+  wpInfoPosts = signal<Array<BlogPost>>([]);
   pdfUrl = signal<string>('./public/Grundriss_Konfusi24_A2.pdf');
-
-  campingText = signal<BlogPost | undefined>(undefined);
-  anmeldungText = signal<BlogPost | undefined>(undefined);
-  regelnText = signal<BlogPost | undefined>(undefined);
+  private readonly includePosts = [
+    BlogPostId.KODEX_INFO,
+    BlogPostId.CAMPING_INFO,
+    BlogPostId.ANMELDUNG_INFO,
+  ];
 
   tabs = computed<InfoTab[]>(() => {
     return [
       {
         icon: 'icecream',
         label: 'Verpflegung & Camping',
-        content: this.campingText()?.content.rendered,
+        content: this.camping?.content.rendered,
       },
       {
         icon: 'people',
         label: 'Partizipation & Anmeldung',
-        content: this.anmeldungText()?.content.rendered,
+        content: this.anmeldung?.content.rendered,
       },
       {
         icon: 'balance',
         label: 'Verhaltenskodex & Klauseregeln',
-        content: this.regelnText()?.content.rendered,
+        content: this.kodex?.content.rendered,
       },
     ];
   });
 
   ngOnInit(): void {
-    this.wpApi.getPostById(1737).subscribe((post) => {
-      this.campingText.set(post);
+    this.wpApi.getPosts(this.includePosts).subscribe((r) => {
+      this.wpInfoPosts.set(r);
     });
+  }
 
-    this.wpApi.getPostById(1739).subscribe((post) => {
-      this.anmeldungText.set(post);
-    });
+  get anmeldung() {
+    return this.wpInfoPosts().find((p) => p.id === BlogPostId.ANMELDUNG_INFO);
+  }
 
-    this.wpApi.getPostById(1741).subscribe((post) => {
-      this.regelnText.set(post);
-    });
+  get camping() {
+    return this.wpInfoPosts().find((p) => p.id === BlogPostId.CAMPING_INFO);
+  }
+
+  get kodex() {
+    return this.wpInfoPosts().find((p) => p.id === BlogPostId.KODEX_INFO);
   }
 }

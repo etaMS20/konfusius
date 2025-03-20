@@ -61,13 +61,6 @@ export class ProductDetailsComponent implements OnChanges, OnInit {
     variationId: new FormControl<number | null>(null, [Validators.required]),
   });
 
-  /** Signals */
-  tooltipMessage = computed<string>(() => {
-    return this.isProductVariable
-      ? ''
-      : `Es sind leider keine Zeiten mehr für diese Schicht verfügbar`;
-  });
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['product']) {
       if (this.selectForm) {
@@ -98,7 +91,7 @@ export class ProductDetailsComponent implements OnChanges, OnInit {
     else return '';
   }
 
-  get isFormValid(): boolean {
+  get isCheckoutValid(): boolean {
     if (this.isProductVariable) {
       return this.selectForm.valid;
     } else {

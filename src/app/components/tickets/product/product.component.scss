@@ -21,6 +21,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   justify-content: space-between;
   touch-action: auto;
+  cursor: pointer;
 
   &:hover {
     transform: translateY(-5px);
@@ -32,7 +33,7 @@
     color: white;
   }
 
-  @media (min-width: 600px) {
+  @media (min-width: $breakpoint-mobile) {
     padding: 1.5rem;
   }
 }
@@ -44,9 +45,11 @@
   object-fit: contain;
   display: block;
   margin-bottom: 12px;
+  border-radius: 0.5rem;
+  box-shadow: $shadow-sm;
 
-  @media (max-width: 600px) {
-    padding: 1.5rem;
+  @media (max-width: $breakpoint-mobile) {
+    padding: 0.5rem 1rem;
   }
 }
 
@@ -57,10 +60,16 @@
   font-weight: bold;
   width: 100%;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  word-wrap: break-word;
+  box-sizing: border-box;
+  @media (max-width: $breakpoint-mobile) {
+    font-size: 1rem;
+    margin: 0;
+  }
 }
 
-button {
-  margin-top: auto;
+.select-button {
+  @media (max-width: $breakpoint-mobile) {
+    min-width: unset !important;
+  }
 }

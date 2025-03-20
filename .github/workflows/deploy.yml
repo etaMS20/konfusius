@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main # Run on pushes to main
+  pull_request:
+    branches:
+      - main # Run on pull requests targeting main
 
 jobs:
   build:
