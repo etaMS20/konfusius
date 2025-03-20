@@ -60,7 +60,7 @@ jobs:
       name: 'production'
       url: ${{ steps.deploy-to-wordpress.outputs.webapp-url }}
     env:
-      WORDPRESS_HREF: './festival/'
+      WORDPRESS_HREF: '/festival/'
 
     steps:
       - name: Download artifact from build job
@@ -79,4 +79,4 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
-          server-dir: public_html/test-deploy/
+          server-dir: festival/
