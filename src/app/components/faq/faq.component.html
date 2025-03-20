@@ -1,0 +1,14 @@
+<div class="faq-container">
+  @if (faqQuestions()) {
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let question of faqQuestions()">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <div [innerHTML]="question.question | safeHtml"></div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p [innerHTML]="question.answer | safeHtml"></p>
+      </mat-expansion-panel>
+    </mat-accordion>
+  }
+</div>

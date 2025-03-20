@@ -54,4 +54,12 @@ export const routes: Routes = [
       ).then((m) => m.PrivacyPolicyComponent);
     },
   },
+  {
+    path: 'faq',
+    loadComponent: () => {
+      return import('./components/faq/faq.component').then(
+        (m) => m.FaqComponent,
+      );
+    },
+  },
 ];
