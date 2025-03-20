@@ -59,6 +59,8 @@ jobs:
     environment:
       name: 'production'
       url: ${{ steps.deploy-to-wordpress.outputs.webapp-url }}
+    env:
+      WORDPRESS_HREF: './festival/'
 
     steps:
       - name: Download artifact from build job
@@ -66,11 +68,15 @@ jobs:
         with:
           name: node-app
 
+      - name: Modify href in index.html
+        run: |
+          sed -i "s|<base href=['\"].*['\"]>|<base href='${WORDPRESS_HREF}'>|" dist/index.html
+
       - name: 📂 Sync to WordPress FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: konfusius.org
-          username: f01748f2
-          password: ${{ secrets.FTP_PASSWORD }} # FTP password
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
           server-dir: public_html/test-deploy/
