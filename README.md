@@ -76,10 +76,8 @@ Open a browser and head to [localhost:4200](http://localhost:4200/)
 - implement [fullscreen directive](https://medium.com/@milan.barac/angular-fullscreen-cd8b788c348f) (can have)
 - implement Ui for crew members with website settings (can have)
 - activate/implement wp-nonces (should have)
-- give order url hashes instead of numbers (should have)
 - smooth scrolling navigation (can have)
 - use JWT token for all requests (can have)
-- ci deployment to hosting (should have)
 
 ### Useful Links
 

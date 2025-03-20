@@ -24,7 +24,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 export class LoadingIndicatorComponent implements OnInit {
   loading$: Observable<boolean>;
 
-  @Input() detectRouteTransitions = false;
+  @Input() detectRouteTransitions = true;
   @Input() baseIndicator = false;
 
   @ContentChild('loading')

@@ -21,10 +21,10 @@
         <h2>
           Ihr Tanzbegierdigen, Wiedermalabschaltenden und Frischluftgenießenden
         </h2>
-        @if (introText(); as p) {
+        @if (intro; as p) {
           <div [innerHTML]="p.content.rendered | safeHtml"></div>
         }
-        @if (introText2(); as p) {
+        @if (konfusius; as p) {
           <div [innerHTML]="p.content.rendered | safeHtml"></div>
         }
         <div class="letter-button-container">
@@ -45,14 +45,12 @@
     <!-- Right Column - Info Box -->
     <section class="right-column">
       <!-- Info Boxes -->
-      <app-info-box
-        [content]="eckDaten()?.content?.rendered"
-        title="Eckdaten"
-      />
-      <app-info-box
-        [content]="programShort()?.content?.rendered"
-        title="Programm"
-      />
+      @if (eckdaten; as p) {
+        <app-info-box [content]="p.content.rendered" title="Eckdaten" />
+      }
+      @if (programm_short; as p) {
+        <app-info-box [content]="p.content.rendered" title="Programm" />
+      }
     </section>
   </div>
 
