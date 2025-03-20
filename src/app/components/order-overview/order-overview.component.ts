@@ -4,6 +4,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute } from '@angular/router';
 import { HumanReadableDatePipe } from '@pipes//datetime.pipe';
+import { EncryptionService } from '@services/encryption.service';
 import { WcOrder } from 'src/app/models/order.model';
 import { WcV3Service } from 'src/app/services/api/wc-v3.service';
 
@@ -16,6 +17,7 @@ import { WcV3Service } from 'src/app/services/api/wc-v3.service';
 export class OrderOverviewComponent implements OnInit {
   private readonly wcApi = inject(WcV3Service);
   private readonly route = inject(ActivatedRoute);
+  private readonly cryptoService = inject(EncryptionService);
 
   order = signal<WcOrder | null>(null);
   error = signal<string | null>(null);
@@ -24,9 +26,9 @@ export class OrderOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      const id = params.get('id');
-      if (id) {
-        const orderId = parseInt(id, 10);
+      const cypherId = params.get('id');
+      if (cypherId) {
+        const orderId = parseInt(this.cryptoService.decrypt(cypherId), 10);
         this.orderId.set(orderId);
         this.fetchOrderDetails(orderId);
       } else {

@@ -4,7 +4,6 @@
 .order-overview {
   max-width: 800px;
   margin: 2rem auto;
-  padding: 20px;
   border-radius: $default-border-radius;
   font-family:
     $base-font,
@@ -16,6 +15,18 @@
   &:hover {
     box-shadow: $default-box-shadow;
     transform: translateY(+5px);
+  }
+
+  p {
+    @media (max-width: 600px) {
+      font-size: 1rem;
+    }
+  }
+
+  h1 {
+    @media (max-width: 600px) {
+      font-size: 2rem;
+    }
   }
 }
 
@@ -65,7 +76,7 @@
 }
 
 .order-container {
-  margin: 1rem 2rem;
+  padding: 1rem;
 }
 
 .order-details {
