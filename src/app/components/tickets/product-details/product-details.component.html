@@ -1,4 +1,9 @@
 <div class="checkout" *ngIf="product">
+  <!-- loading progress for checkout -->
+  <div *ngIf="loadingCheckout$ | async">
+    <mat-progress-bar mode="query"></mat-progress-bar>
+  </div>
+
   <div class="checkout-content">
     <div class="left-container">
       <h4>Schicht: {{ product.name }}</h4>
@@ -10,7 +15,12 @@
     </div>
 
     <div class="middle-container">
-      <div *ngIf="isProductVariable">
+      <!-- loading spinner for variations -->
+      <div *ngIf="variationsLoading()">
+        <mat-spinner [diameter]="30" />
+      </div>
+
+      <div *ngIf="isProductVariable && !variationsLoading()">
         <mat-form-field
           appearance="fill"
           matTooltip="Es sind leider keine Zeiten mehr für diese Schicht verfügbar"

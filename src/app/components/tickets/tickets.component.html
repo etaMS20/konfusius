@@ -1,7 +1,6 @@
 <div class="ticket-container">
   <h2>Schichten</h2>
   <div class="ticket-container__content">
-    <loading-indicator></loading-indicator>
     <div class="product-container">
       <div class="product-grid">
         <div class="product-grid-item" *ngFor="let product of products()">
@@ -14,10 +13,11 @@
       </div>
     </div>
     <app-product-details
-      [hidden]="!selectedProduct"
+      [hidden]="!selectedProduct()"
       [product]="selectedProduct()"
       [isProductVariable]="isSelectedProductVariable()"
       [productVariations]="selectedProductVariations()"
+      [variationsLoading]="variationsAreLoading()"
     ></app-product-details>
   </div>
 

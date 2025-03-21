@@ -8,48 +8,49 @@ import {
   signal,
 } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { NgFor } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ProductDetailsComponent } from './product-details/product-details.component';
-import { LoadingIndicatorComponent } from '../loading-indicator/loading-indicator.component';
 import {
   WcProduct,
   WcProductTypes,
   WcProductVariationDetails,
 } from '@models/product.model';
-import { LoadingService } from '@services/loading.service';
 import { MappingService } from '@services/mapping.service';
 import { WcStoreAPI } from '@services/api/wc-store-api.service';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { ProductComponent } from './product/product.component';
 import { LocalStorageKeys } from '@models/storage.model';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { indicate } from '@utils/reactive-loading.utils';
 
 @Component({
   selector: 'app-tickets',
   imports: [
     MatGridListModule,
     ProductDetailsComponent,
-    LoadingIndicatorComponent,
     MatGridListModule,
     ProductComponent,
-    NgFor,
+    MatProgressSpinnerModule,
+    CommonModule,
   ],
   templateUrl: './tickets.component.html',
   styleUrl: './tickets.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TicketsComponent implements OnInit, OnDestroy {
-  private readonly loadingService = inject(LoadingService);
   private readonly destroy$ = new Subject<void>();
   mappingService = inject(MappingService);
   wcStore = inject(WcStoreAPI);
   listVariations = ['instock']; // add 'outofstock' to show out-of-stock stuff
 
+  /** loading */
+  loading$ = new Subject<boolean>();
+  variationsAreLoading = signal<boolean>(false);
+
   /** signals */
   products = signal<Array<WcProduct>>([]);
   selectedProduct = signal<WcProduct | undefined>(undefined);
-  isSelectedProductVariable = computed(() => {
-    return this.selectedProduct()?.type === WcProductTypes.VARIABLE;
-  });
+  isSelectedProductVariable = signal<boolean>(false);
   selectedProductVariations = signal<Array<WcProductVariationDetails> | []>([]);
   selectedProductId = computed(() => {
     return this.selectedProduct()?.id;
@@ -58,26 +59,29 @@ export class TicketsComponent implements OnInit, OnDestroy {
   constructor() {}
 
   ngOnInit(): void {
-    this.loadingService.loadingOn();
     this.initProducts();
 
     const storedSelect = this.getStoredSelect();
     // query the product and set it as selected
     if (storedSelect) this.querySelectedProduct(storedSelect);
-
-    this.loadingService.loadingOff();
   }
 
   querySelectedProduct(id: number) {
-    this.loadingService.loadingOn();
+    this.variationsAreLoading.set(true);
     this.wcStore
       .getProductById(id)
-      .subscribe((r) => this.selectedProduct.set(r));
+      .pipe(indicate(this.loading$), takeUntil(this.destroy$))
+      .subscribe((r) => {
+        this.selectedProduct.set(r);
+        this.isSelectedProductVariable.set(r.type === WcProductTypes.VARIABLE);
+      });
+
     this.wcStore
       .listProductVariations(id, this.listVariations)
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response) => {
         this.selectedProductVariations.set(response.length > 0 ? response : []);
-        this.loadingService.loadingOff();
+        this.variationsAreLoading.set(false);
       });
   }
 
@@ -112,11 +116,14 @@ export class TicketsComponent implements OnInit, OnDestroy {
   }
 
   initProducts() {
-    this.wcStore.listProducts(this.getProductCat).subscribe((response) => {
-      const products = response.map((product: any) =>
-        this.mappingService.mapProduct(product),
-      );
-      this.products.set(products);
-    });
+    this.wcStore
+      .listProducts(this.getProductCat)
+      .pipe(indicate(this.loading$), takeUntil(this.destroy$))
+      .subscribe((response) => {
+        const products = response.map((product: any) =>
+          this.mappingService.mapProduct(product),
+        );
+        this.products.set(products);
+      });
   }
 }

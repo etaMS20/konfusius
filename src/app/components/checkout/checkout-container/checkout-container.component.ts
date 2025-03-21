@@ -6,19 +6,26 @@ import {
   FormOutput,
 } from '../billing/billing-input/billing-input.component';
 import { WcStoreAPI } from '../../../services/api/wc-store-api.service';
-import { catchError, throwError } from 'rxjs';
+import { catchError, Subject, throwError } from 'rxjs';
 import { ErrorDialogService } from '../../shared/errors/error-dialog.service';
 import { WcCart, WcCheckOutData } from '../../../models/cart.model';
 import { CustomEndpointsService } from 'src/app/services/api/custom-endpoints.service';
-import { BlogPost } from 'src/app/models/blog-post.model';
+import { BlogPost, BlogPostId } from 'src/app/models/blog-post.model';
 import { WordPressApiService } from 'src/app/services/api/wp-api.service';
 import { Router } from '@angular/router';
 import { EncryptionService } from '@services/encryption.service';
+import { indicate } from '@utils/reactive-loading.utils';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-checkout-container',
   standalone: true,
-  imports: [CommonModule, CartTotalsComponent, BillingComponent],
+  imports: [
+    CommonModule,
+    CartTotalsComponent,
+    BillingComponent,
+    MatProgressSpinnerModule,
+  ],
   templateUrl: './checkout-container.component.html',
   styleUrls: ['./checkout-container.component.scss'],
 })
@@ -30,6 +37,7 @@ export class CheckoutContainerComponent implements OnInit {
   private readonly cryptoService = inject(EncryptionService);
   private readonly router = inject(Router);
 
+  loading$ = new Subject<boolean>();
   cart = signal<WcCart | null>(null);
   allowedOptions = signal<string[]>([]);
   rules = signal<BlogPost | undefined>(undefined);
@@ -39,13 +47,14 @@ export class CheckoutContainerComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.wpApi.getPostById(1741).subscribe((post) => {
+    this.wpApi.getPostById(BlogPostId.KODEX_INFO).subscribe((post) => {
       this.rules.set(post);
     });
 
     this.wcStoreApi
       .getCart()
       .pipe(
+        indicate(this.loading$),
         catchError((error) => {
           this.errorService.handleError(error);
           return throwError(() => error);
