@@ -70,7 +70,11 @@
   margin-bottom: 40px;
   align-items: center; /* Center items vertically */
   justify-content: center; /* Center items horizontally */
-  padding: inherit;
+  padding: 0 2rem;
+
+  @media (max-width: 750px) {
+    padding: 0;
+  }
 }
 
 // Content Section (former middle section) - Left Column

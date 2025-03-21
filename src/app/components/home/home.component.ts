@@ -3,7 +3,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { WordPressApiService } from '../../services/api/wp-api.service';
 import { InfoTabsComponent } from './info-tabs/info-tabs.component';
 import { ImageContainerComponent } from './image-container/image-container.component';
-import { BlogPost } from 'src/app/models/blog-post.model';
+import { BlogPost, BlogPostId } from 'src/app/models/blog-post.model';
 import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
 import { InfoBoxComponent } from './info-box/info-box.component';
 import { NgOptimizedImage } from '@angular/common';
@@ -26,41 +26,53 @@ import { BaseDialogData } from '@models/types.model';
 })
 export class HomeComponent implements OnInit {
   private readonly wpApi = inject(WordPressApiService);
+  private readonly includePosts = [
+    BlogPostId.INTRO,
+    BlogPostId.KONFUSIUS,
+    BlogPostId.ECKDATEN,
+    BlogPostId.LETTER,
+    BlogPostId.PROGRAMM_SHORT,
+    BlogPostId.SUGGESTIONS,
+  ];
 
-  letterText = signal<BlogPost | undefined>(undefined);
-  introText = signal<BlogPost | undefined>(undefined);
-  introText2 = signal<BlogPost | undefined>(undefined);
-  eckDaten = signal<BlogPost | undefined>(undefined);
-  programShort = signal<BlogPost | undefined>(undefined);
+  wpPosts = signal<Array<BlogPost>>([]);
 
   constructor(private readonly dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.wpApi.getPostById(1706).subscribe((post) => {
-      this.introText.set(post);
+    this.wpApi.getPosts(this.includePosts).subscribe((r) => {
+      this.wpPosts.set(r);
     });
+  }
 
-    this.wpApi.getPostById(1733).subscribe((post) => {
-      this.introText2.set(post);
-    });
+  get intro() {
+    return this.wpPosts().find((p) => p.id === BlogPostId.INTRO);
+  }
 
-    this.wpApi.getPostById(1735).subscribe((post) => {
-      this.eckDaten.set(post);
-    });
+  get konfusius() {
+    return this.wpPosts().find((p) => p.id === BlogPostId.KONFUSIUS);
+  }
 
-    this.wpApi.getPostById(1713).subscribe((post) => {
-      this.letterText.set(post);
-    });
+  get eckdaten() {
+    return this.wpPosts().find((p) => p.id === BlogPostId.ECKDATEN);
+  }
 
-    this.wpApi.getPostById(1858).subscribe((post) => {
-      this.programShort.set(post);
-    });
+  get letter() {
+    return this.wpPosts().find((p) => p.id === BlogPostId.LETTER);
+  }
+
+  get programm_short() {
+    return this.wpPosts().find((p) => p.id === BlogPostId.PROGRAMM_SHORT);
+  }
+
+  get suggestions() {
+    return this.wpPosts().find((p) => p.id === BlogPostId.SUGGESTIONS);
   }
 
   openLetterDialog(event: Event) {
     const data: BaseDialogData = {
       title: 'Kleine Anekdote zum Programm',
-      content: this.letterText()?.content.rendered,
+      content: this.letter?.content.rendered,
       imageMeta: {
         src: './public/scroll_image.png',
       },

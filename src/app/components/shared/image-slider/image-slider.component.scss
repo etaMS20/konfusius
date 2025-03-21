@@ -1,3 +1,5 @@
+@use './styles/style-vars.scss' as *;
+
 .carousel-container {
   position: relative;
   width: 100%;
@@ -19,6 +21,7 @@
   object-fit: contain;
   display: block;
   will-change: transform, opacity;
+  box-shadow: $shadow-sm;
 }
 
 // Navigation buttons

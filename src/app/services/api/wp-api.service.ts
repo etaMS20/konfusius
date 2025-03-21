@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { BACKEND, WP_SECRET, WP_USER } from '@config/http.config';
 import { WPMediaCategory, WPMediaTag } from '@models/media.model';
@@ -23,9 +23,15 @@ export class WordPressApiService {
     });
   }
 
-  getPosts(): Observable<any> {
+  getPosts(ids?: Array<number>): Observable<any> {
+    let params = new HttpParams();
+
+    if (ids && ids.length > 0) {
+      params = params.set('include', ids.join(','));
+    }
+
     return this.http
-      .get(`${this.apiUrl}/posts`, { headers: this.headers })
+      .get(`${this.apiUrl}/posts`, { headers: this.headers, params })
       .pipe(
         catchError((error) => {
           this.errorService.handleError(error);

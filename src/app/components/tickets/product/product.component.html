@@ -3,6 +3,7 @@
     <mat-card
       class="product-card"
       (click)="onProductSelect($event)"
+      (keydown)="onProductSelect($event)"
       [ngClass]="{ selected: isSelectedSignal() }"
       matTooltip="{{ productTooltip() }}"
       [matTooltipPosition]="'above'"
@@ -18,7 +19,11 @@
         class="product-image"
       />
       <h3 class="product-title">{{ product.name }}</h3>
-      <button mat-raised-button (click)="openDetailsDialog($event)">
+      <button
+        class="select-button"
+        mat-raised-button
+        (click)="openDetailsDialog($event)"
+      >
         Beschreibung
       </button>
     </mat-card>

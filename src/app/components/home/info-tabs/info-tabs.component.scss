@@ -63,46 +63,6 @@
   }
 }
 
-.festival-tabs {
-  ::ng-deep {
-    // Tab headers styling
-    .mat-mdc-tab-header {
-      border-bottom: 2px solid rgba($text-color, 0.1);
-      margin-bottom: 20px;
-    }
-
-    .mat-mdc-tab {
-      padding: 0 24px;
-      min-width: 160px;
-
-      &.mdc-tab--active {
-        background-color: rgba($primary-color, 0.1);
-      }
-
-      .mdc-tab__content {
-        flex-direction: row;
-        gap: 8px;
-      }
-
-      .mat-icon {
-        margin-right: 8px;
-      }
-    }
-
-    // Ink bar styling (the line under the active tab)
-    .mdc-tab-indicator__content--underline {
-      border-color: $primary-color;
-    }
-
-    // Tab labels
-    .mdc-tab__text-label {
-      color: $text-color;
-      font-size: 1.1rem;
-      letter-spacing: 0.5px;
-    }
-  }
-}
-
 // Tab content styling
 .tab-content {
   padding: 24px;
@@ -110,6 +70,10 @@
   border-radius: 8px;
   border: 1px solid rgba($text-color, 0.1);
   margin: 0 auto;
+
+  @media (max-width: 750px) {
+    padding: 0.5rem;
+  }
 
   h3 {
     color: $text-color;
@@ -130,41 +94,9 @@
       background: $primary-color;
     }
   }
-
-  p {
-    color: $text-color;
-    font-size: 1.1rem;
-    line-height: 1.6;
-    text-align: center;
-    margin-bottom: 24px;
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-    gap: 16px;
-
-    li {
-      color: $text-color;
-      padding-left: 24px;
-      position: relative;
-      font-size: 1.1rem;
-      line-height: 1.4;
-
-      &::before {
-        content: '>';
-        position: absolute;
-        left: 0;
-        color: $primary-color;
-      }
-    }
-  }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 750px) {
   ::ng-deep {
     .mat-expansion-panel-body {
       padding: 0 5px 5px !important;
@@ -173,23 +105,8 @@
 }
 
 // Responsive adjustments
-@media (max-width: 768px) {
+@media (max-width: 750px) {
   .content-wrapper {
     padding: 0 5px; // Reduced from 30px but not too tight
-  }
-
-  .info-tabs-section {
-    .festival-tabs {
-      ::ng-deep {
-        .mat-mdc-tab {
-          min-width: 120px;
-          padding: 3px;
-        }
-      }
-    }
-
-    .tab-content {
-      padding: 3px;
-    }
   }
 }

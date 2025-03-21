@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.2]
+## [1.0.x]
 
 ### Added
 
@@ -11,6 +11,9 @@ All notable changes to this project will be documented in this file.
 - extra login token for crew
 - versioning
 - ng service-worker
+- encryption to order redirect page
+- ci deployment to wp ftp
+- loading indication for tickets page
 
 ### Changed
 

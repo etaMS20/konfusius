@@ -1,23 +1,21 @@
+@use './styles/style-vars.scss' as *;
+
 $footer-bg: #f8f9fa;
 $footer-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 $animation-duration: 0.3s;
-$breakpoint-mobile: 500px;
-$footer-height-desktop: 90px;
-$footer-height-mobile: 200px;
 
 :host {
-  // TODO: set vars globally
   --footer-height-desktop: #{$footer-height-desktop};
   --footer-height-mobile: #{$footer-height-mobile};
 }
 
-.footer {
+.checkout {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
   background-color: $footer-bg;
-  padding: 20px;
+  padding: 0.5rem 1rem;
   box-shadow: $footer-shadow;
   z-index: 999;
   box-sizing: border-box;
@@ -27,7 +25,6 @@ $footer-height-mobile: 200px;
   &-content {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
-    gap: 20px;
     align-items: center;
     max-width: 1400px;
     margin: 0 auto;
@@ -36,7 +33,6 @@ $footer-height-mobile: 200px;
     @media (max-width: $breakpoint-mobile) {
       grid-template-columns: 1fr;
       grid-template-rows: auto auto;
-      gap: 16px;
     }
 
     // Left container with product info

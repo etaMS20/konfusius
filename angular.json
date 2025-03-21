@@ -41,9 +41,7 @@
             "allowedCommonJsDependencies": [
               "lodash",
               "sha.js",
-              "url-parse",
-              "oauth-1.0a",
-              "create-hmac"
+              "crypto-js"
             ],
             "serviceWorker": true,
             "ngswConfigPath": "ngsw-config.json",
