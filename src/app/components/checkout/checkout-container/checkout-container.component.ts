@@ -1,4 +1,12 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  computed,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartTotalsComponent } from '../cart-totals/cart-totals.component';
 import {
@@ -16,6 +24,7 @@ import { Router } from '@angular/router';
 import { EncryptionService } from '@services/encryption.service';
 import { indicate } from '@utils/reactive-loading.utils';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-checkout-container',
@@ -25,11 +34,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     CartTotalsComponent,
     BillingComponent,
     MatProgressSpinnerModule,
+    MatProgressBarModule,
   ],
   templateUrl: './checkout-container.component.html',
   styleUrls: ['./checkout-container.component.scss'],
 })
-export class CheckoutContainerComponent implements OnInit {
+export class CheckoutContainerComponent
+  implements OnInit, OnDestroy, AfterViewInit
+{
   wcStoreApi = inject(WcStoreAPI);
   wpApi = inject(WordPressApiService);
   errorService = inject(ErrorDialogService);
@@ -37,6 +49,7 @@ export class CheckoutContainerComponent implements OnInit {
   private readonly cryptoService = inject(EncryptionService);
   private readonly router = inject(Router);
 
+  private readonly destroy$ = new Subject<void>();
   loading$ = new Subject<boolean>();
   cart = signal<WcCart | null>(null);
   allowedOptions = signal<string[]>([]);
@@ -67,6 +80,15 @@ export class CheckoutContainerComponent implements OnInit {
     this.customEpS.listAllowedInvites().subscribe((response: string[]) => {
       this.allowedOptions.set(response);
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.loading$.next(true);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onBillingFormSubmit(fromValues: FormOutput) {

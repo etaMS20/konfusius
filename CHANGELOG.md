@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 - ng service-worker
 - encryption to order redirect page
 - ci deployment to wp ftp
+- loading indication for tickets page
 
 ### Changed
 

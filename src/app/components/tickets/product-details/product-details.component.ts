@@ -31,7 +31,6 @@ import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
 import { formatPrice } from '@utils/price.utils';
 import { indicate } from '@utils/reactive-loading.utils';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-product-details',
@@ -49,7 +48,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     DisableControlDirective,
     SafeHtmlPipe,
     MatProgressBarModule,
-    MatProgressSpinnerModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
