@@ -3,10 +3,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  input,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
+  signal,
   SimpleChanges,
 } from '@angular/core';
 import {
@@ -31,6 +33,8 @@ import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
 import { formatPrice } from '@utils/price.utils';
 import { indicate } from '@utils/reactive-loading.utils';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CrossSaleOptionsComponent } from './cross-sale-options/cross-sale-options.component';
+import { CrossSaleProduct } from '@models/cross-sale.model';
 
 @Component({
   selector: 'app-product-details',
@@ -48,6 +52,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     DisableControlDirective,
     SafeHtmlPipe,
     MatProgressBarModule,
+    CrossSaleOptionsComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -65,6 +70,8 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
   selectForm = this.fb.group({
     variationId: new FormControl<number | null>(null, [Validators.required]),
   });
+  crossSaleItems = input<Array<WcProduct>>([]); // modern approach with new input API
+  selectedCossSaleItemId = signal<CrossSaleProduct>(CrossSaleProduct.KONFUSIUS);
 
   constructor() {}
 
@@ -108,6 +115,11 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
     } else {
       return this.product?.is_in_stock ?? false;
     }
+  }
+
+  /** Listens for the event */
+  onCrossSaleSelected(id: CrossSaleProduct): void {
+    this.selectedCossSaleItemId.set(id);
   }
 
   checkout() {

@@ -18,11 +18,13 @@ import {
 } from '@models/product.model';
 import { MappingService } from '@services/mapping.service';
 import { WcStoreAPI } from '@services/api/wc-store-api.service';
-import { Subject, switchMap, takeUntil } from 'rxjs';
+import { catchError, Subject, switchMap, takeUntil, throwError } from 'rxjs';
 import { ProductComponent } from './product/product.component';
 import { LocalStorageKeys } from '@models/storage.model';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { crossSaleProductCat } from '@models/cross-sale.model';
+import { ErrorDialogService } from '@shared/errors/error-dialog.service';
 
 @Component({
   selector: 'app-tickets',
@@ -41,7 +43,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 })
 export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   private readonly destroy$ = new Subject<void>();
-  mappingService = inject(MappingService);
+  private readonly mappingService = inject(MappingService);
+  private readonly errorService = inject(ErrorDialogService);
   wcStore = inject(WcStoreAPI);
   listVariations = ['instock']; // add 'outofstock' to show out-of-stock stuff
 
@@ -51,6 +54,7 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /** signals */
   products = signal<Array<WcProduct>>([]);
+  crossSaleProducts = signal<Array<WcProduct>>([]);
   selectedProduct = signal<WcProduct | undefined>(undefined);
   isSelectedProductVariable = signal<boolean>(false);
   selectedProductVariations = signal<Array<WcProductVariationDetails> | []>([]);
@@ -66,18 +70,38 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.initProducts();
+    this.queryCrossSaleOptions();
 
     const storedSelect = this.getStoredSelect();
     // query the product and set it as selected
     if (storedSelect) this.querySelectedProduct(storedSelect);
   }
 
-  querySelectedProduct(id: number) {
+  private queryCrossSaleOptions() {
+    this.productsLoading.set(true);
+    this.wcStore
+      .listProducts(crossSaleProductCat)
+      .pipe(
+        catchError((error) => {
+          this.errorService.handleError(error);
+          return throwError(() => error);
+        }),
+        takeUntil(this.destroy$),
+      )
+      .subscribe((r) => this.crossSaleProducts.set(r));
+  }
+
+  private querySelectedProduct(id: number) {
     this.productsLoading.set(true);
     this.wcStore
       .getProductById(id)
       .pipe(
         takeUntil(this.destroy$),
+        catchError((error) => {
+          this.productsLoading.set(false);
+          this.errorService.handleError(error);
+          return throwError(() => error);
+        }),
         switchMap((product) => {
           this.selectedProduct.set(product);
           this.productsLoading.set(false);
@@ -93,6 +117,13 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         }),
         takeUntil(this.destroy$),
+      )
+      .pipe(
+        catchError((error) => {
+          this.productsLoading.set(false);
+          this.errorService.handleError(error);
+          return throwError(() => error);
+        }),
       )
       .subscribe((response) => {
         this.selectedProductVariations.set(response.length > 0 ? response : []);

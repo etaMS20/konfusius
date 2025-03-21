@@ -39,9 +39,23 @@ html {
   );
 
   .slimline {
-    @include mat.form-field-density(-3);
+    .radio-label {
+      p {
+        font-size: 1rem;
+        margin: 0.2rem;
+        @media (max-width: $breakpoint-mobile-tilt) {
+          font-size: 0.9rem;
+        }
+      }
+    }
+    // @include mat.form-field-density(-3);
+    @include mat.all-component-densities(-3);
     @media (max-width: $breakpoint-mobile) {
       margin-bottom: 0.25rem;
+    }
+    @media (max-width: $breakpoint-mobile-tilt) {
+      font-size: 0.8rem;
+      margin: 0.1rem;
     }
   }
 }
