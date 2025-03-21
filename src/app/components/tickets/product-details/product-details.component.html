@@ -15,12 +15,7 @@
     </div>
 
     <div class="middle-container">
-      <!-- loading spinner for variations -->
-      <div *ngIf="variationsLoading()">
-        <mat-spinner [diameter]="30" />
-      </div>
-
-      <div *ngIf="isProductVariable && !variationsLoading()">
+      <div *ngIf="isProductVariable">
         <mat-form-field
           appearance="fill"
           matTooltip="Es sind leider keine Zeiten mehr für diese Schicht verfügbar"

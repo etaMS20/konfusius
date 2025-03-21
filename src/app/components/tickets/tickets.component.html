@@ -1,5 +1,9 @@
 <div class="ticket-container">
   <h2>Schichten</h2>
+  <!-- loading progress for checkout -->
+  <div *ngIf="viewLoading">
+    <mat-progress-bar mode="query"></mat-progress-bar>
+  </div>
   <div class="ticket-container__content">
     <div class="product-container">
       <div class="product-grid">
@@ -17,11 +21,15 @@
       [product]="selectedProduct()"
       [isProductVariable]="isSelectedProductVariable()"
       [productVariations]="selectedProductVariations()"
-      [variationsLoading]="variationsAreLoading()"
     ></app-product-details>
   </div>
 
   <footer class="ticket-container__footer">
     <!-- Footer content here -->
   </footer>
+</div>
+
+<!-- loading spinner for products and variations -->
+<div class="fixed-spinner" *ngIf="productsLoading()">
+  <mat-spinner [diameter]="35" />
 </div>

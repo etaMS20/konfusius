@@ -2,9 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   inject,
-  input,
   Input,
   OnChanges,
   OnDestroy,
@@ -59,7 +57,6 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
   @Input() product?: WcProduct;
   @Input() isProductVariable?: boolean;
   @Input() productVariations: Array<WcProductVariationDetails> = [];
-  variationsLoading = input<boolean>();
 
   loadingCheckout$ = new Subject<boolean>(); // used for progress bar
   private readonly destroy$ = new Subject<void>();

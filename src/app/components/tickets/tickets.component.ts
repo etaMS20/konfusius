@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   computed,
@@ -17,11 +18,11 @@ import {
 } from '@models/product.model';
 import { MappingService } from '@services/mapping.service';
 import { WcStoreAPI } from '@services/api/wc-store-api.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, switchMap, takeUntil } from 'rxjs';
 import { ProductComponent } from './product/product.component';
 import { LocalStorageKeys } from '@models/storage.model';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { indicate } from '@utils/reactive-loading.utils';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-tickets',
@@ -31,21 +32,22 @@ import { indicate } from '@utils/reactive-loading.utils';
     MatGridListModule,
     ProductComponent,
     MatProgressSpinnerModule,
+    MatProgressBarModule,
     CommonModule,
   ],
   templateUrl: './tickets.component.html',
   styleUrl: './tickets.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TicketsComponent implements OnInit, OnDestroy {
+export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   private readonly destroy$ = new Subject<void>();
   mappingService = inject(MappingService);
   wcStore = inject(WcStoreAPI);
   listVariations = ['instock']; // add 'outofstock' to show out-of-stock stuff
 
   /** loading */
-  loading$ = new Subject<boolean>();
-  variationsAreLoading = signal<boolean>(false);
+  viewLoading = true;
+  productsLoading = signal<boolean>(false);
 
   /** signals */
   products = signal<Array<WcProduct>>([]);
@@ -58,6 +60,10 @@ export class TicketsComponent implements OnInit, OnDestroy {
 
   constructor() {}
 
+  ngAfterViewInit(): void {
+    this.viewLoading = false;
+  }
+
   ngOnInit(): void {
     this.initProducts();
 
@@ -67,21 +73,30 @@ export class TicketsComponent implements OnInit, OnDestroy {
   }
 
   querySelectedProduct(id: number) {
-    this.variationsAreLoading.set(true);
+    this.productsLoading.set(true);
     this.wcStore
       .getProductById(id)
-      .pipe(indicate(this.loading$), takeUntil(this.destroy$))
-      .subscribe((r) => {
-        this.selectedProduct.set(r);
-        this.isSelectedProductVariable.set(r.type === WcProductTypes.VARIABLE);
-      });
+      .pipe(
+        takeUntil(this.destroy$),
+        switchMap((product) => {
+          this.selectedProduct.set(product);
+          this.productsLoading.set(false);
+          this.isSelectedProductVariable.set(
+            product.type === WcProductTypes.VARIABLE,
+          );
 
-    this.wcStore
-      .listProductVariations(id, this.listVariations)
-      .pipe(takeUntil(this.destroy$))
+          if (product.type === WcProductTypes.VARIABLE) {
+            this.productsLoading.set(true);
+            return this.wcStore.listProductVariations(id, this.listVariations);
+          } else {
+            return []; // Return an empty array if it's not a variable product
+          }
+        }),
+        takeUntil(this.destroy$),
+      )
       .subscribe((response) => {
         this.selectedProductVariations.set(response.length > 0 ? response : []);
-        this.variationsAreLoading.set(false);
+        this.productsLoading.set(false);
       });
   }
 
@@ -118,7 +133,7 @@ export class TicketsComponent implements OnInit, OnDestroy {
   initProducts() {
     this.wcStore
       .listProducts(this.getProductCat)
-      .pipe(indicate(this.loading$), takeUntil(this.destroy$))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response) => {
         const products = response.map((product: any) =>
           this.mappingService.mapProduct(product),

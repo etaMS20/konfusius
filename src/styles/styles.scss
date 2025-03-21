@@ -113,3 +113,16 @@ mat-error {
   display: block; // Ensures the error message is on its own line
   margin-top: 4px; // Adds some spacing between the input and the error message
 }
+
+.fixed-spinner {
+  position: fixed;
+  top: calc($nav-height + 20px);
+  right: 1rem;
+  width: auto;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  z-index: 2000;
+}
