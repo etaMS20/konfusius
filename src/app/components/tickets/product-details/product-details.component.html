@@ -17,11 +17,16 @@
     <div class="middle-container">
       <div *ngIf="isProductVariable">
         <mat-form-field
-          appearance="fill"
+          class="slimline"
+          appearance="outline"
           matTooltip="Es sind leider keine Zeiten mehr für diese Schicht verfügbar"
           [matTooltipDisabled]="productVariations.length !== 0"
+          subscriptSizing="dynamic"
         >
           <mat-label>Wähle eine Zeit</mat-label>
+          <mat-error *ngIf="selectForm.invalid"
+            >Zeit ist für diese Schicht notwendig</mat-error
+          >
           <mat-select
             [formControl]="selectForm.controls['variationId']"
             panelWidth="auto"

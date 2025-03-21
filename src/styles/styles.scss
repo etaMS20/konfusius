@@ -23,12 +23,27 @@ html {
     )
   );
 
+  @media (max-width: $breakpoint-mobile-tilt) {
+    @include mat.theme(
+      (
+        density: -1,
+      )
+    );
+  }
+
   @include mat.select-overrides(
     (
       enabled-trigger-text-color: rgb(0, 0, 0),
       container-elevation-shadow: 0 0 0 0 rgba(0, 0, 0, 0.5),
     )
   );
+
+  .slimline {
+    @include mat.form-field-density(-3);
+    @media (max-width: $breakpoint-mobile) {
+      margin-bottom: 0.25rem;
+    }
+  }
 }
 
 body,
@@ -66,21 +81,21 @@ html {
 
 h1 {
   font-size: 2.5rem;
-  @media (max-width: 750px) {
+  @media (max-width: $breakpoint-mobile-tilt) {
     font-size: 2rem;
   }
 }
 
 h2 {
   font-size: 1.8rem;
-  @media (max-width: 750px) {
+  @media (max-width: $breakpoint-mobile-tilt) {
     font-size: 1.4rem;
   }
 }
 
 h3 {
   font-size: 1.5rem;
-  @media (max-width: 750px) {
+  @media (max-width: $breakpoint-mobile-tilt) {
     font-size: 1.3rem;
   }
 }
@@ -91,7 +106,7 @@ p {
   margin: 10px 0;
   line-height: 1.2;
 
-  @media (max-width: 750px) {
+  @media (max-width: $breakpoint-mobile-tilt) {
     font-size: 1rem;
   }
 }
@@ -101,7 +116,7 @@ li {
   margin: 0.5rem 2rem;
   font-size: 1.1rem;
 
-  @media (max-width: 750px) {
+  @media (max-width: $breakpoint-mobile-tilt) {
     font-size: 1rem;
   }
 }
