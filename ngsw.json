@@ -1,12 +1,12 @@
 {
   "configVersion": 1,
-  "timestamp": 1742645214350,
+  "timestamp": 1742646934768,
   "index": "./index.html",
   "assetGroups": [
     {
       "name": "konfusius",
       "installMode": "prefetch",
-      "updateMode": "lazy",
+      "updateMode": "prefetch",
       "cacheQueryOptions": {
         "ignoreVary": true
       },
@@ -35,8 +35,8 @@
     },
     {
       "name": "assets",
-      "installMode": "lazy",
-      "updateMode": "lazy",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
       "cacheQueryOptions": {
         "ignoreVary": true
       },
@@ -61,11 +61,14 @@
   ],
   "dataGroups": [
     {
-      "name": "wordpress-api",
+      "name": "api",
       "patterns": [
-        "https:\\/\\/konfusius\\.org\\/wp-json\\/wp\\/v2\\/.*"
+        "\\/(?:.+\\/)?wc\\/v3\\/.*",
+        "\\/(?:.+\\/)?wc\\/store\\/v1\\/.*",
+        "\\/(?:.+\\/)?custom\\/v1\\/.*",
+        "\\/(?:.+\\/)?wp\\/v2\\/.*"
       ],
-      "strategy": "performance",
+      "strategy": "freshness",
       "maxSize": 50,
       "maxAge": 3600000,
       "timeoutMs": 10000,
