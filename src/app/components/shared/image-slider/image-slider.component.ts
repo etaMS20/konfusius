@@ -7,6 +7,7 @@ import {
   OnInit,
   OnDestroy,
   input,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -36,6 +37,7 @@ import { WPImageSizeApiKey, WPMappedImage } from '@models/media.model';
       ]),
     ]),
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageSliderComponent implements OnInit, OnDestroy {
   @Input() autoPlayInterval = 5000;
