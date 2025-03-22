@@ -8,9 +8,8 @@
       "updateMode": "prefetch",
       "resources": {
         "files": [
-          "/favicon.ico",
+          "/public/manifest.webmanifest",
           "/index.html",
-          "/manifest.webmanifest",
           "/*.css",
           "/*.js"
         ]
@@ -21,14 +20,14 @@
       "installMode": "prefetch",
       "resources": {
         "files": [
-          "/**/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)"
+          "/**/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2|pdf)"
         ]
       }
     }
   ],
   "dataGroups": [
     {
-      "name": "api",
+      "name": "api--requests",
       "urls": [
         "**/wc/v3/**",
         "**/wc/store/v1/**",

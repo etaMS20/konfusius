@@ -19,10 +19,10 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimations(),
     { provide: LocationStrategy, useClass: HashLocationStrategy },
+    provideNgcCookieConsent(cookieConfig),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000',
     }),
-    provideNgcCookieConsent(cookieConfig),
   ],
 };
