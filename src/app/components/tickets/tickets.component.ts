@@ -62,6 +62,8 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
     return this.selectedProduct()?.id;
   });
 
+  // TODO: The cleanest approach here would probably be to define a parent FC and having the mat-cards as Form
+
   constructor() {}
 
   ngAfterViewInit(): void {
@@ -108,14 +110,13 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
         switchMap((product) => {
           this.selectedProduct.set(product);
           this.productsLoading.set(false);
-          this.isSelectedProductVariable.set(
-            product.type === WcProductTypes.VARIABLE,
-          );
 
           if (product.type === WcProductTypes.VARIABLE) {
+            this.isSelectedProductVariable.set(true);
             this.productsLoading.set(true);
             return this.wcStore.listProductVariations(id, this.listVariations);
           } else {
+            this.isSelectedProductVariable.set(false);
             return []; // Return an empty array if it's not a variable product
           }
         }),

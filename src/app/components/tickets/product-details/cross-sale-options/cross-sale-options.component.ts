@@ -4,6 +4,7 @@ import {
   Component,
   EventEmitter,
   inject,
+  input,
   Input,
   OnDestroy,
   OnInit,
@@ -16,7 +17,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
-import { CrossSaleProduct } from '@models/cross-sale.model';
+import { CrossSaleProductId } from '@models/cross-sale.model';
 import { WcProduct } from '@models/product.model';
 import { SafeHtmlPipe } from '@pipes//safe-html.pipe';
 import { Subject } from 'rxjs';
@@ -30,15 +31,17 @@ import { Subject } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CrossSaleOptionsComponent implements OnInit, OnDestroy {
-  @Output() crossSaleProductSelected = new EventEmitter<CrossSaleProduct>();
+  @Output() crossSaleProductSelected = new EventEmitter<CrossSaleProductId>();
   @Input() crossSaleItems: Array<WcProduct> = [];
+  varContext = input.required<boolean>();
   destroy$ = new Subject<void>();
 
   private readonly fb = inject(FormBuilder);
   optionsForm = this.fb.group({
-    variationId: new FormControl<CrossSaleProduct>(CrossSaleProduct.KONFUSIUS, [
-      Validators.required,
-    ]),
+    variationId: new FormControl<CrossSaleProductId>(
+      CrossSaleProductId.KONFUSIUS,
+      [Validators.required],
+    ),
   });
 
   ngOnInit() {
@@ -52,7 +55,7 @@ export class CrossSaleOptionsComponent implements OnInit, OnDestroy {
 
   onSelectionChange() {
     this.crossSaleProductSelected.emit(
-      this.optionsForm.value.variationId as CrossSaleProduct,
+      this.optionsForm.value.variationId as CrossSaleProductId,
     );
   }
 }

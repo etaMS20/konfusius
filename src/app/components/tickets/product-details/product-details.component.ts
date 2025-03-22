@@ -34,7 +34,7 @@ import { formatPrice } from '@utils/price.utils';
 import { indicate } from '@utils/reactive-loading.utils';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CrossSaleOptionsComponent } from './cross-sale-options/cross-sale-options.component';
-import { CrossSaleProduct } from '@models/cross-sale.model';
+import { CrossSaleProductId } from '@models/cross-sale.model';
 
 @Component({
   selector: 'app-product-details',
@@ -71,7 +71,9 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
     variationId: new FormControl<number | null>(null, [Validators.required]),
   });
   crossSaleItems = input<Array<WcProduct>>([]); // modern approach with new input API
-  selectedCossSaleItemId = signal<CrossSaleProduct>(CrossSaleProduct.KONFUSIUS);
+  selectedCossSaleItemId = signal<CrossSaleProductId>(
+    CrossSaleProductId.KONFUSIUS,
+  );
 
   constructor() {}
 
@@ -87,8 +89,7 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
         this.selectForm.controls['variationId'].setValidators(
           this.isProductVariable ? [Validators.required] : [],
         );
-        this.selectForm.controls['variationId'].updateValueAndValidity();
-        this.destroy$.next();
+        this.selectForm.controls['variationId'].reset();
       }
     }
   }
@@ -119,7 +120,7 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   /** Listens for the event */
-  onCrossSaleSelected(id: CrossSaleProduct): void {
+  onCrossSaleSelected(id: CrossSaleProductId): void {
     this.selectedCossSaleItemId.set(id);
   }
 

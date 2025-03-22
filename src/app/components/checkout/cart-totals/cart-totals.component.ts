@@ -3,7 +3,7 @@ import { CommonModule, NgIf } from '@angular/common';
 import { WcCart, WcCartItem, WcCartType } from '@models/cart.model';
 import { formatPrice } from '@utils/price.utils';
 import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
-import { CrossSaleProduct } from '@models/cross-sale.model';
+import { CrossSaleProductId } from '@models/cross-sale.model';
 
 @Component({
   selector: 'app-cart-totals',
@@ -50,9 +50,9 @@ export class CartTotalsComponent {
 
   getItems(): { main: WcCartItem | undefined; sub: WcCartItem | undefined } {
     const excludedIds = new Set([
-      CrossSaleProduct.SOLI,
-      CrossSaleProduct.KONFUSIUS,
-      CrossSaleProduct.GOENNER,
+      CrossSaleProductId.SOLI,
+      CrossSaleProductId.KONFUSIUS,
+      CrossSaleProductId.GOENNER,
     ]);
 
     return {
