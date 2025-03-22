@@ -88,7 +88,10 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
         }),
         takeUntil(this.destroy$),
       )
-      .subscribe((r) => this.crossSaleProducts.set(r));
+      .subscribe((r) => {
+        this.crossSaleProducts.set(r);
+        this.productsLoading.set(false);
+      });
   }
 
   private querySelectedProduct(id: number) {

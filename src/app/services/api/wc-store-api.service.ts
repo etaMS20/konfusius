@@ -47,6 +47,23 @@ export class WcStoreAPI {
 
   // cart
 
+  batchItemsToCart(ids: Array<number>): Observable<any> {
+    const batchPayload = {
+      requests: ids.map((id) => ({
+        path: '/wc/store/v1/cart/add-item',
+        method: 'POST',
+        cache: 'no-store',
+        body: { id, quantity: 1 },
+        // headers: { Nonce: '1db1d13784' },
+      })),
+    };
+
+    return this.http.post(this.storeApiBackend + '/batch', batchPayload, {
+      headers: this.headers,
+      withCredentials: true,
+    });
+  }
+
   getCart(): Observable<any> {
     return this.http.get(this.storeApiBackend + '/cart', {
       headers: this.headers,

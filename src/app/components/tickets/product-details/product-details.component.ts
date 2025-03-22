@@ -105,6 +105,7 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
         this.product.prices.currency_thousand_separator,
         this.product.prices.currency_decimal_separator,
         this.product.prices.currency_minor_unit,
+        this.product.prices.currency_symbol,
       );
     else return '';
   }
@@ -123,16 +124,18 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   checkout() {
-    if (this.selectForm.valid) {
-      const checkoutId = this.isProductVariable
-        ? this.selectForm.get('variationId')!.value
-        : this.product?.id;
+    const checkoutId = this.isProductVariable
+      ? this.selectForm.get('variationId')!.value
+      : this.product?.id;
+
+    if (checkoutId) {
+      const batchIds = [checkoutId, this.selectedCossSaleItemId()];
 
       this.wcStore
         .deleteAllCartItems()
         .pipe(
           indicate(this.loadingCheckout$),
-          concatMap(() => this.wcStore.addItemToCart(checkoutId!)),
+          concatMap(() => this.wcStore.batchItemsToCart(batchIds)),
           catchError((error) => {
             this.errorService.handleError(error);
             return throwError(() => error);
@@ -140,7 +143,6 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
           takeUntil(this.destroy$),
         )
         .subscribe({
-          next: (response) => {},
           complete: () => {
             // waiting for the addItem request to return OK
             this.router.navigate(['/checkout']);
