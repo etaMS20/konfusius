@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1742646934768,
+  "timestamp": 1742677391086,
   "index": "./index.html",
   "assetGroups": [
     {
@@ -25,8 +25,9 @@
         "./985.f879d809a798d44e.js",
         "./common.a69d2af8826128a3.js",
         "./index.html",
-        "./main.7946e9c172732758.js",
+        "./main.f0f1b67997271236.js",
         "./polyfills.99c75bc2f35682be.js",
+        "./public/manifest.webmanifest",
         "./runtime.291447ad76d4695e.js",
         "./scripts.94f011fb13606557.js",
         "./styles.10ac84227aa7ba08.css"
@@ -41,6 +42,7 @@
         "ignoreVary": true
       },
       "urls": [
+        "./public/Grundriss_Konfusi24_A2.pdf",
         "./public/backgound_v1.jpg",
         "./public/icons/icon-128x128.png",
         "./public/icons/icon-144x144.png",
@@ -61,7 +63,7 @@
   ],
   "dataGroups": [
     {
-      "name": "api",
+      "name": "api--requests",
       "patterns": [
         "\\/(?:.+\\/)?wc\\/v3\\/.*",
         "\\/(?:.+\\/)?wc\\/store\\/v1\\/.*",
@@ -92,9 +94,10 @@
     "./90.6a421f84d4efec1f.js": "80be9db28ca8710c41c04ae8f4da1abea9b9b9f9",
     "./985.f879d809a798d44e.js": "6c1637a0fe44c3754d310eb86bb3f5b36845e71c",
     "./common.a69d2af8826128a3.js": "aeb2c2dd3ef47b3408359029758ddcd706eaa831",
-    "./index.html": "30248ebe38e240260db5fa178b87eb28a7648e48",
-    "./main.7946e9c172732758.js": "95c8a6d5867a803815b7beca46ded6320fb29919",
+    "./index.html": "0deb32ec6cf69d2cb7c403a8556712777fde4d95",
+    "./main.f0f1b67997271236.js": "db4eed794a22fb57d89afde99843c49877cd8332",
     "./polyfills.99c75bc2f35682be.js": "aa4add6f119f043e8c685455b5f41f49ca23c227",
+    "./public/Grundriss_Konfusi24_A2.pdf": "c6c5802699d826dcaee4ca31201e180713d9b031",
     "./public/backgound_v1.jpg": "1da3d7bf4023fa10602797ce8e28c2e541783129",
     "./public/icons/icon-128x128.png": "f912963bdc6d5a38d8f1dd0afbaab2ce8d657acb",
     "./public/icons/icon-144x144.png": "b155fd5f2fd5d2ea7760721063003c4cd95fd783",
@@ -106,6 +109,7 @@
     "./public/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
     "./public/konfusius_cropped.jpg": "f2291c8f4c50cc2a854c9806263568f4307896b9",
     "./public/logo_stretched_nav.png": "184cc84131b4e4bb692ab606030455dbf58a7b54",
+    "./public/manifest.webmanifest": "1cc94efc7c3f1caf37562aa0621123d5816352eb",
     "./public/schweini_1.png": "b41a07d8b1de7a8d67e27b201e21278bb75b843f",
     "./public/scroll.png": "30dd95061eaf39ac8a92fc350b63d30afe68afa0",
     "./public/scroll_image.png": "a1dac9c959a1618244eba1e7c2f7549a86ba93d8",
