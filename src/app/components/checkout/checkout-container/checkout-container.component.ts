@@ -39,9 +39,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   templateUrl: './checkout-container.component.html',
   styleUrls: ['./checkout-container.component.scss'],
 })
-export class CheckoutContainerComponent
-  implements OnInit, OnDestroy, AfterViewInit
-{
+export class CheckoutContainerComponent implements OnInit, OnDestroy {
   wcStoreApi = inject(WcStoreAPI);
   wpApi = inject(WordPressApiService);
   errorService = inject(ErrorDialogService);
@@ -60,6 +58,7 @@ export class CheckoutContainerComponent
   });
 
   ngOnInit(): void {
+    this.loading$.next(true);
     this.wpApi.getPostById(BlogPostId.KODEX_INFO).subscribe((post) => {
       this.rules.set(post);
     });
@@ -80,10 +79,6 @@ export class CheckoutContainerComponent
     this.customEpS.listAllowedInvites().subscribe((response: string[]) => {
       this.allowedOptions.set(response);
     });
-  }
-
-  ngAfterViewInit(): void {
-    this.loading$.next(true);
   }
 
   ngOnDestroy(): void {

@@ -1,0 +1,14 @@
+@use './styles/style-vars.scss' as *;
+
+.options-wrapper {
+  margin: auto;
+
+  @media (max-width: $breakpoint-mobile) {
+    margin: 0.25rem auto;
+  }
+}
+
+.options-group {
+  display: flex;
+  justify-content: space-evenly;
+}

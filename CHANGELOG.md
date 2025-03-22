@@ -2,7 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.x]
+## [1.0.4]
+
+### Added
+
+- cross-sale products mat-radio
+
+### Changed
+
+### Fixed
+
+- loading indicator for products
+- lifecycle binding in checkout component
+
+---
+
+## [1.0.3]
 
 ### Added
 

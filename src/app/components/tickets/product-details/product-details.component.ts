@@ -3,10 +3,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  input,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
+  signal,
   SimpleChanges,
 } from '@angular/core';
 import {
@@ -31,6 +33,8 @@ import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
 import { formatPrice } from '@utils/price.utils';
 import { indicate } from '@utils/reactive-loading.utils';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CrossSaleOptionsComponent } from './cross-sale-options/cross-sale-options.component';
+import { CrossSaleProduct } from '@models/cross-sale.model';
 
 @Component({
   selector: 'app-product-details',
@@ -48,6 +52,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     DisableControlDirective,
     SafeHtmlPipe,
     MatProgressBarModule,
+    CrossSaleOptionsComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -65,6 +70,8 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
   selectForm = this.fb.group({
     variationId: new FormControl<number | null>(null, [Validators.required]),
   });
+  crossSaleItems = input<Array<WcProduct>>([]); // modern approach with new input API
+  selectedCossSaleItemId = signal<CrossSaleProduct>(CrossSaleProduct.KONFUSIUS);
 
   constructor() {}
 
@@ -98,6 +105,7 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
         this.product.prices.currency_thousand_separator,
         this.product.prices.currency_decimal_separator,
         this.product.prices.currency_minor_unit,
+        this.product.prices.currency_symbol,
       );
     else return '';
   }
@@ -110,17 +118,24 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
+  /** Listens for the event */
+  onCrossSaleSelected(id: CrossSaleProduct): void {
+    this.selectedCossSaleItemId.set(id);
+  }
+
   checkout() {
-    if (this.selectForm.valid) {
-      const checkoutId = this.isProductVariable
-        ? this.selectForm.get('variationId')!.value
-        : this.product?.id;
+    const checkoutId = this.isProductVariable
+      ? this.selectForm.get('variationId')!.value
+      : this.product?.id;
+
+    if (checkoutId) {
+      const batchIds = [checkoutId, this.selectedCossSaleItemId()];
 
       this.wcStore
         .deleteAllCartItems()
         .pipe(
           indicate(this.loadingCheckout$),
-          concatMap(() => this.wcStore.addItemToCart(checkoutId!)),
+          concatMap(() => this.wcStore.batchItemsToCart(batchIds)),
           catchError((error) => {
             this.errorService.handleError(error);
             return throwError(() => error);
@@ -128,7 +143,6 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
           takeUntil(this.destroy$),
         )
         .subscribe({
-          next: (response) => {},
           complete: () => {
             // waiting for the addItem request to return OK
             this.router.navigate(['/checkout']);

@@ -4,24 +4,24 @@
   max-width: 1200px;
   border-radius: 1rem;
   margin: 1rem auto;
-  padding: $spacing-unit * 3;
+  padding: $spacing-unit * 1;
   color: $text-color;
   background-color: $background-color-form;
 
-  @media (min-width: 768px) {
+  @media (min-width: $breakpoint-mobile) {
     padding: $spacing-unit * 5;
   }
 }
 
 h1 {
-  font-size: 1.875rem;
+  font-size: 1.85rem;
   font-weight: 700;
   margin-bottom: $spacing-unit * 4;
   color: $text-color;
   text-align: left;
 
-  @media (min-width: 768px) {
-    font-size: 2.25rem;
+  @media (min-width: $breakpoint-mobile) {
+    font-size: 2rem;
   }
 }
 
@@ -51,22 +51,13 @@ h1 {
 .cart-section {
   background-color: white;
   border-radius: $border-radius;
-  padding: $spacing-unit * 3;
+  padding: $spacing-unit;
   box-shadow: $shadow-sm;
   position: sticky;
   top: $spacing-unit * 3;
   border: 1px solid $border-color;
 
-  @media (max-width: 767px) {
+  @media (max-width: $breakpoint-mobile) {
     margin-bottom: $spacing-unit * 3;
-  }
-}
-
-// Add this to your global styles or component styles
-:host ::ng-deep {
-  app-billing,
-  app-cart-totals {
-    display: block;
-    width: 100%;
   }
 }

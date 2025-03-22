@@ -3,6 +3,7 @@ export function formatPrice(
   thSep: string,
   decSep: string,
   cmu: number,
+  currency?: string,
 ) {
   let numericTotalPrice = parseFloat(price ?? 'NaN');
 
@@ -13,7 +14,7 @@ export function formatPrice(
 
     let [intP, decP] = fPrice.split('.');
     intP = intP.replace(/\B(?=(\d{3})+(?!\d))/g, thSep);
-    return `${intP}${decSep}${decP}`;
+    return `${intP}${decSep}${decP} ${currency}`;
   };
 
   return format(numericTotalPrice);

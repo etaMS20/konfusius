@@ -1,0 +1,14 @@
+<div class="options-wrapper">
+  <mat-radio-group
+    class="options-group slimline"
+    (change)="onSelectionChange()"
+    [formControl]="optionsForm.controls['variationId']"
+  >
+    <mat-radio-button *ngFor="let option of crossSaleItems" [value]="option.id"
+      ><span
+        class="radio-label"
+        [innerHTML]="option.description | safeHtml"
+      ></span
+    ></mat-radio-button>
+  </mat-radio-group>
+</div>

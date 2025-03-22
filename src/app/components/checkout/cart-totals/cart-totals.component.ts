@@ -1,8 +1,9 @@
 import { Component, computed, input } from '@angular/core';
 import { CommonModule, NgIf } from '@angular/common';
-import { WcCart, WcCartType } from '@models/cart.model';
+import { WcCart, WcCartItem, WcCartType } from '@models/cart.model';
 import { formatPrice } from '@utils/price.utils';
 import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
+import { CrossSaleProduct } from '@models/cross-sale.model';
 
 @Component({
   selector: 'app-cart-totals',
@@ -16,11 +17,14 @@ export class CartTotalsComponent {
   cartTotals = computed(() => {
     return this.cart()?.totals ?? null;
   });
-  cartItem = computed(() => {
-    return this.cart()?.items[0] ?? null;
+  cartItems = computed(() => {
+    return this.cart()?.items?.length ? this.cart()?.items : null;
   });
-  cartItemIsVariable = computed(() => {
-    return this.cartItem()?.type === WcCartType.VARIATION;
+  cartContainsVariableItem = computed(() => {
+    return (
+      this.cartItems()?.some((item) => item.type === WcCartType.VARIATION) ??
+      false
+    );
   });
 
   get cartTotalPrice(): string {
@@ -31,30 +35,41 @@ export class CartTotalsComponent {
         ct.currency_thousand_separator,
         ct.currency_decimal_separator,
         ct.currency_minor_unit,
+        ct.currency_code,
       );
     else return '';
   }
 
-  get cartItemTotalPrice(): string {
-    const ct = this.cartItem()?.totals;
+  get variation() {
+    return this.getItems().main?.variation[0];
+  }
+
+  get ticketCategory() {
+    return this.getItems().sub?.name;
+  }
+
+  getItems(): { main: WcCartItem | undefined; sub: WcCartItem | undefined } {
+    const excludedIds = new Set([
+      CrossSaleProduct.SOLI,
+      CrossSaleProduct.KONFUSIUS,
+      CrossSaleProduct.GOENNER,
+    ]);
+
+    return {
+      main: this.cartItems()?.find((item) => !excludedIds.has(item.id)),
+      sub: this.cartItems()?.find((item) => excludedIds.has(item.id)),
+    };
+  }
+
+  getCartItemTotalPrice(cartItem?: WcCartItem): string {
+    const ct = cartItem?.totals;
     if (ct)
       return formatPrice(
         ct.line_total,
         ct.currency_thousand_separator,
         ct.currency_decimal_separator,
         ct.currency_minor_unit,
-      );
-    else return '';
-  }
-
-  get cartItemSubTotalPrice(): string {
-    const ct = this.cartItem()?.totals;
-    if (ct)
-      return formatPrice(
-        ct.line_subtotal,
-        ct.currency_thousand_separator,
-        ct.currency_decimal_separator,
-        ct.currency_minor_unit,
+        ct.currency_code,
       );
     else return '';
   }

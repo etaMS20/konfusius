@@ -1,3 +1,5 @@
+@use './styles/style-vars.scss' as *;
+
 .billing-container {
   margin: auto;
 }
@@ -23,6 +25,10 @@ button[mat-raised-button] {
   width: 100%;
   height: 3rem;
   font-size: 1.5rem;
+
+  @media (max-width: $breakpoint-mobile) {
+    font-size: 1rem;
+  }
 }
 
 mat-divider {
@@ -33,7 +39,7 @@ mat-divider {
   width: 60%;
   margin-top: 1rem;
 
-  @media (max-width: 768px) {
+  @media (max-width: $breakpoint-mobile) {
     width: 100%;
   }
 }

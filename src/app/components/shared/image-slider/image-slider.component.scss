@@ -29,8 +29,9 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: rgba(255, 255, 255, 0.8) !important;
   z-index: 2;
+  width: 5rem; // Increased button size
+  height: 3rem; // Increased button size
 
   &.prev-button {
     left: 16px;
@@ -40,15 +41,28 @@
     right: 16px;
   }
 
+  &.prev-button-fs {
+    left: 5vw;
+    background-color: $transparent-white;
+  }
+
+  &.next-button-fs {
+    right: 5vw;
+    background-color: $transparent-white;
+  }
+
   &:hover {
     background-color: rgba(255, 255, 255, 0.9) !important;
   }
 
   mat-icon {
     color: #333;
-    font-size: 24px;
-    height: 24px;
-    width: 24px;
+    font-size: 4rem; // Much larger icon size
+    height: 4rem; // Match the font-size
+    width: 4rem; // Match the font-size
+    line-height: 4rem; // Better vertical alignment
+    top: 50%;
+    transform: translateY(-50%);
   }
 }
 
@@ -59,7 +73,7 @@
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 8px;
+  gap: 0.3rem;
   z-index: 2;
 }
 
@@ -75,7 +89,7 @@
 
   &.active {
     background-color: white;
-    transform: scale(1.2);
+    transform: scale(1.5);
   }
 
   &:hover {
@@ -84,25 +98,26 @@
 }
 
 // Responsive adjustments
-@media (max-width: 768px) {
+@media (max-width: $breakpoint-mobile) {
   .nav-button {
-    transform: translateY(-50%) scale(0.8);
+    transform: translateY(-50%) scale(0.5);
 
     &.prev-button {
-      left: 8px;
+      left: 0;
     }
 
     &.next-button {
-      right: 8px;
+      right: 0;
     }
   }
 
   .carousel-dots {
-    bottom: 8px;
+    bottom: 3px;
+    gap: 0.15rem;
 
     .dot {
-      width: 8px;
-      height: 8px;
+      width: 4px;
+      height: 4px;
     }
   }
 }
@@ -115,5 +130,50 @@
     &:active {
       opacity: 1;
     }
+  }
+}
+
+// Fullscreen
+
+.fullscreen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.fullscreen-image {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+/* Fullscreen Button on Image */
+.fullscreen-button {
+  position: absolute;
+  top: 1rem;
+  right: 3rem;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+
+  mat-icon {
+    transition: transform 0.1s ease-in-out;
+  }
+
+  &:hover mat-icon {
+    transform: scale(1.5);
+  }
+
+  &:active mat-icon {
+    animation: pulse 0.1s ease-in-out;
   }
 }
