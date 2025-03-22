@@ -5,7 +5,7 @@
     {
       "name": "konfusius",
       "installMode": "prefetch",
-      "updateMode": "lazy",
+      "updateMode": "prefetch",
       "resources": {
         "files": [
           "/favicon.ico",
@@ -18,7 +18,7 @@
     },
     {
       "name": "assets",
-      "installMode": "lazy",
+      "installMode": "prefetch",
       "resources": {
         "files": [
           "/**/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)"
@@ -28,12 +28,15 @@
   ],
   "dataGroups": [
     {
-      "name": "wordpress-api",
+      "name": "api",
       "urls": [
-        "https://konfusius.org/wp-json/wp/v2/**"
+        "**/wc/v3/**",
+        "**/wc/store/v1/**",
+        "**/custom/v1/**",
+        "**/wp/v2/**"
       ],
       "cacheConfig": {
-        "strategy": "performance",
+        "strategy": "freshness",
         "maxSize": 50,
         "maxAge": "1h",
         "timeout": "10s"

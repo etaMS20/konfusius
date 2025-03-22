@@ -50,28 +50,9 @@
             }
           },
           "configurations": {
-            "staging": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "800kB",
-                  "maximumError": "1MB"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kB",
-                  "maximumError": "8kB"
-                }
-              ],
-              "outputHashing": "all",
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.staging.ts"
-                }
-              ]
-            },
             "production": {
+              "buildOptimizer": true,
+              "serviceWorker": true,
               "customWebpackConfig": {
                 "path": "webpack.config.ts"
               },
@@ -110,9 +91,6 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "configurations": {
-            "staging": {
-              "buildTarget": "konfusius:build:staging"
-            },
             "production": {
               "buildTarget": "konfusius:build:production"
             },
