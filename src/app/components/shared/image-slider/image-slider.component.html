@@ -6,6 +6,15 @@
   <!-- Main image container -->
   <div class="carousel-slide" [@slideAnimation]="currentIndex()">
     <img [src]="currentImage()" [alt]="currentAlt()" class="carousel-image" />
+
+    <!-- Fullscreen button -->
+    <button
+      mat-icon-button
+      class="fullscreen-button"
+      (click)="openFullscreen()"
+    >
+      <mat-icon>fullscreen</mat-icon>
+    </button>
   </div>
 
   <!-- Navigation arrows -->
@@ -25,5 +34,35 @@
       [class.active]="i === currentIndex()"
       (click)="goToSlide(i)"
     ></button>
+  </div>
+
+  <!-- Fullscreen Image Overlay -->
+  <div *ngIf="isFullscreen()" class="fullscreen-overlay">
+    <img
+      [src]="currentFullImage()"
+      [alt]="currentAlt()"
+      class="fullscreen-image"
+    />
+
+    <!-- Fullscreen Navigation -->
+    <button
+      mat-icon-button
+      class="nav-button prev-button-fs"
+      (click)="previous()"
+    >
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <button mat-icon-button class="nav-button next-button-fs" (click)="next()">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+
+    <button
+      mat-icon-button
+      class="fullscreen-button"
+      (click)="closeFullscreen()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
   </div>
 </div>
