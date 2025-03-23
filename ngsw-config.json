@@ -8,10 +8,10 @@
       "updateMode": "prefetch",
       "resources": {
         "files": [
-          "/public/manifest.webmanifest",
-          "/index.html",
-          "/*.css",
-          "/*.js"
+          "/festival/public/manifest.webmanifest", 
+          "/festival/index.html", 
+          "/festival/*.css", 
+          "/festival/*.js"
         ]
       }
     },
@@ -20,7 +20,7 @@
       "installMode": "prefetch",
       "resources": {
         "files": [
-          "/**/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2|pdf)"
+          "/festival/**/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2|pdf)"
         ]
       }
     }

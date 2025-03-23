@@ -81,3 +81,4 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
           server-dir: festival/
+          dangerous-clean-slate: true
