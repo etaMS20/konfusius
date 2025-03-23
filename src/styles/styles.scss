@@ -125,6 +125,16 @@ p {
   }
 }
 
+.disclaimer-content {
+  p {
+    font-size: 1rem;
+  }
+
+  @media (max-width: $breakpoint-mobile-tilt) {
+    font-size: 0.8rem;
+  }
+}
+
 li {
   color: $text-color;
   margin: 0.5rem 2rem;

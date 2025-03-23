@@ -18,6 +18,7 @@ export class MappingService {
       slug: data.slug,
       name: data.name,
       description: data.description,
+      short_description: data.description,
       is_in_stock: data.is_in_stock,
       is_purchasable: data.is_purchasable,
       attributes: data.attributes,

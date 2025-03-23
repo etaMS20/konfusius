@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   computed,
   inject,
@@ -12,6 +13,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { CommonModule } from '@angular/common';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import {
+  hasProductDisclaimer,
   WcProduct,
   WcProductTypes,
   WcProductVariationDetails,
@@ -25,6 +27,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { crossSaleProductCat } from '@models/cross-sale.model';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
+import { DisclaimerComponent } from './disclaimer/disclaimer.component';
+import { DisclaimerForm, DisclaimerFormStore } from '@models/disclaimer.model';
 
 @Component({
   selector: 'app-tickets',
@@ -36,6 +40,7 @@ import { ErrorDialogService } from '@shared/errors/error-dialog.service';
     MatProgressSpinnerModule,
     MatProgressBarModule,
     CommonModule,
+    DisclaimerComponent,
   ],
   templateUrl: './tickets.component.html',
   styleUrl: './tickets.component.scss',
@@ -61,6 +66,16 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedProductId = computed(() => {
     return this.selectedProduct()?.id;
   });
+  /** returns true, if the selectedProduct is marked with having a disclaimer and is stored to have a valid disclaimer */
+  selectedProductValidDisclaimer = computed(() => {
+    const selected = this.selectedProduct()?.id;
+    const hasDisclaimer = hasProductDisclaimer(selected);
+    return selected
+      ? !hasDisclaimer ||
+          (hasDisclaimer && this.store[selected]?.understood === true)
+      : false;
+  });
+  private readonly store: DisclaimerFormStore = {};
 
   // TODO: The cleanest approach here would probably be to define a parent FC and having the mat-cards as Form
   // TODO: Since we query the product on select anyways, we should destroy the productDetails on select
@@ -163,6 +178,20 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       id ? this.querySelectedProduct(id) : new Error();
       localStorage.setItem(LocalStorageKeys.PRODUCT_SELECTED_ID, id.toString());
+    }
+  }
+
+  onCloseDisclaimer(event: boolean) {
+    // unselect the product
+    this.selectedProduct.set(undefined);
+  }
+
+  onDisclaimerSubmitted(event: DisclaimerForm) {
+    this.productsLoading.set(true);
+    const currentSelected = this.selectedProductId();
+    if (currentSelected) {
+      this.store[currentSelected] = event;
+      this.onProductSelected(currentSelected);
     }
   }
 

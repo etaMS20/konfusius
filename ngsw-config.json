@@ -27,16 +27,16 @@
   ],
   "dataGroups": [
     {
-      "name": "api--requests",
+      "name": "api-requests",
       "urls": [
-        "**/wc/v3/**",
-        "**/wc/store/v1/**",
-        "**/custom/v1/**",
-        "**/wp/v2/**"
+        "https://konfusius.org/wp-json/wc/v3/**",
+        "https://konfusius.org/wp-json/wc/store/v1/**",
+        "https://konfusius.org/wp-json/custom/v1/**",
+        "https://konfusius.org/wp-json/wp/v2/**"
       ],
       "cacheConfig": {
         "strategy": "freshness",
-        "maxSize": 50,
+        "maxSize": 100,
         "maxAge": "1h",
         "timeout": "10s"
       }
