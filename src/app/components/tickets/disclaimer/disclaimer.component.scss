@@ -41,7 +41,7 @@ $disclaimer-height-mobile: 300px;
   border: 1px solid #e0e0e0;
   border-radius: 5px;
   background-color: rgb(255, 247, 247);
-  animation: slideUp 0.2s ease-out;
+  animation: slideUp 0.3s ease-out;
 }
 
 .disclaimer-text {
@@ -51,15 +51,18 @@ $disclaimer-height-mobile: 300px;
 
 .disclaimer-checkbox {
   display: flex;
-  align-items: center; // Ensures the checkbox and text align properly
-  gap: 0.5rem; // Adds spacing between the checkbox and text
-  margin-bottom: 1rem; // Space before textarea
+  justify-content: left;
+  align-items: center;
+  width: 100%;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .button-section {
   display: flex;
   justify-content: space-between;
   width: 100%;
+  margin-top: 0.5rem;
 }
 
 textarea {

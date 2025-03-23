@@ -1,25 +1,26 @@
 <div class="disclaimer-container" tabindex="-2">
   <form class="billing_address" [formGroup]="formG" (ngSubmit)="onSubmit()">
     <div class="disclaimer-content">
-      <h4>Disclaimer</h4>
-      @if (content(); as c) {
+      <h4>Disclaimer: {{ disclaimerStateS.contextName }}</h4>
+      @if (disclaimer()?.content; as c) {
         <div class="disclaimer-text" [innerHTML]="c | safeHtml"></div>
       }
-      <div class="diclaimer-checkbox">
+      <div class="disclaimer-checkbox">
         <mat-checkbox
           formControlName="understood"
           labelPosition="after"
         ></mat-checkbox>
         Ich habe den Hinweis verstanden
         <mat-error *ngIf="hasError(understood, 'required')">
-          Die Bestätigung der Gebote ist erforderlich.
+          Die Bestätigung ist erforderlich.
         </mat-error>
       </div>
 
       <textarea
+        *ngIf="disclaimer()"
         id="experience"
         formControlName="experience"
-        placeholder="Hast du bereits Erfahrung im Awareness-Bereich oder bist du mit dem medizinischen und/ oder sozialen Bereich vertraut? Teile deine Erfahrung gerne kurz mit! (max 300 Zeichen)"
+        [placeholder]="disclaimer()?.textbox_content"
         rows="4"
         maxlength="300"
       ></textarea>

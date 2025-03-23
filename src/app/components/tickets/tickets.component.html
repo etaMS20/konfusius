@@ -16,9 +16,9 @@
     </div>
 
     <app-disclaimer
-      *ngIf="!selectedProductValidDisclaimer() && selectedProduct() as p"
-      [disclaimerId]="this.selectedProductId()"
-      [product]="p"
+      *ngIf="
+        !selectedProductValidDisclaimer() && selectedProductHasDisclaimer()
+      "
       (abortDisclaimer)="onCloseDisclaimer($event)"
       (formValuesSubmit)="onDisclaimerSubmitted($event)"
     ></app-disclaimer>

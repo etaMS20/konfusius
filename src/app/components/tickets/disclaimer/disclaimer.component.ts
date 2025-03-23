@@ -25,6 +25,7 @@ import { DisclaimerForm } from '@models/disclaimer.model';
 import { WcProduct, WcProductAttribute } from '@models/product.model';
 import { SafeHtmlPipe } from '@pipes//safe-html.pipe';
 import { ClientDeviceService } from '@services/client-device.service';
+import { DisclaimerStateService } from '@services/disclaimer-state.service';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
@@ -45,25 +46,15 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DisclaimerComponent implements OnInit, OnDestroy, OnInit {
+  fb = inject(FormBuilder);
+  formG: FormGroup;
+  disclaimerStateS = inject(DisclaimerStateService);
+  deviceService = inject(ClientDeviceService);
+
   /** inputs and outputs */
-  product = input<WcProduct>();
-  content = computed(() => {
-    const p = this.product();
-    if (p) {
-      return p.attributes?.find(
-        (attr: WcProductAttribute) => attr.name === 'disclaimer',
-      )?.terms[0].name;
-    } else return undefined;
-  });
-  textBoxContent = computed(() => {
-    const p = this.product();
-    if (p) {
-      return p.attributes?.find(
-        (attr: WcProductAttribute) => attr.name === 'disclaimer_textbox',
-      )?.terms[0].name;
-    } else return undefined;
-  });
-  disclaimerId = input<number>();
+  disclaimer = computed(() =>
+    this.disclaimerStateS.getDisclaimer(this.disclaimerStateS.context),
+  );
   @Output() abortDisclaimer: EventEmitter<boolean> =
     new EventEmitter<boolean>();
   @Output() formValuesSubmit: EventEmitter<DisclaimerForm> =
@@ -72,10 +63,6 @@ export class DisclaimerComponent implements OnInit, OnDestroy, OnInit {
   private readonly destroy$ = new Subject<void>();
   showDisclaimer: boolean = false;
   isDestroyed: boolean = false;
-  deviceService = inject(ClientDeviceService);
-
-  fb = inject(FormBuilder);
-  formG: FormGroup;
 
   constructor() {
     this.formG = this.fb.group({

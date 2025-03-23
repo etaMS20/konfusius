@@ -1,9 +1,9 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   computed,
+  effect,
   inject,
   OnDestroy,
   OnInit,
@@ -13,7 +13,6 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { CommonModule } from '@angular/common';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import {
-  hasProductDisclaimer,
   WcProduct,
   WcProductTypes,
   WcProductVariationDetails,
@@ -28,7 +27,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { crossSaleProductCat } from '@models/cross-sale.model';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
 import { DisclaimerComponent } from './disclaimer/disclaimer.component';
-import { DisclaimerForm, DisclaimerFormStore } from '@models/disclaimer.model';
+import { DisclaimerForm } from '@models/disclaimer.model';
+import { DisclaimerStateService } from '@services/disclaimer-state.service';
 
 @Component({
   selector: 'app-tickets',
@@ -50,8 +50,9 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   private readonly destroy$ = new Subject<void>();
   private readonly mappingService = inject(MappingService);
   private readonly errorService = inject(ErrorDialogService);
-  wcStore = inject(WcStoreAPI);
-  listVariations = ['instock']; // add 'outofstock' to show out-of-stock stuff
+  private readonly disclaimerStateS = inject(DisclaimerStateService);
+  private readonly wcStore = inject(WcStoreAPI);
+  listVariations = ['instock']; // add 'outofstock' here, to show out-of-stock variations
 
   /** loading */
   viewLoading = true;
@@ -66,19 +67,33 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedProductId = computed(() => {
     return this.selectedProduct()?.id;
   });
-  /** returns true, if the selectedProduct is marked with having a disclaimer and is stored to have a valid disclaimer */
-  selectedProductValidDisclaimer = computed(() => {
-    const selected = this.selectedProduct()?.id;
-    const hasDisclaimer = hasProductDisclaimer(selected);
-    return selected
-      ? !hasDisclaimer ||
-          (hasDisclaimer && this.store[selected]?.understood === true)
-      : false;
+  selectedProductHasDisclaimer = computed(() => {
+    return this.disclaimerStateS.hasProductDisclaimer(
+      this.selectedProduct()?.id,
+    );
   });
-  private readonly store: DisclaimerFormStore = {};
+  /** returns true, if the selectedProduct is marked as having a disclaimer and its valid */
+  selectedProductValidDisclaimer = computed(() => {
+    if (this.selectedProductHasDisclaimer()) {
+      return this.disclaimerStateS.validateDisclaimerState(
+        this.selectedProduct()!.id,
+      );
+    } else return false;
+  });
+  /** on signal change, will set the disclaimer for the product */
+  setDisclaimer = effect(() => {
+    const product = this.selectedProduct();
+    if (this.selectedProductHasDisclaimer()) {
+      this.disclaimerStateS.setDisclaimer(product!);
+    }
+  });
 
-  // TODO: The cleanest approach here would probably be to define a parent FC and having the mat-cards as Form
-  // TODO: Since we query the product on select anyways, we should destroy the productDetails on select
+  // TODO
+  /**
+   * The cleanest approach here would probably be to define a parent FC and having the mat-cards as main-controls.
+   * Otherwise, since we query the product on select anyways (which could also be avoided probably),
+   * we might want to destroy the productDetails on select
+   */
 
   constructor() {}
 
@@ -182,7 +197,7 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onCloseDisclaimer(event: boolean) {
-    // unselect the product
+    // unselect the product on close because disclaimer invalid
     this.selectedProduct.set(undefined);
   }
 
@@ -190,7 +205,8 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.productsLoading.set(true);
     const currentSelected = this.selectedProductId();
     if (currentSelected) {
-      this.store[currentSelected] = event;
+      this.disclaimerStateS.pushDisclaimerState(currentSelected, event);
+      // trigger signal chain to destroy disclaimer if valid disclaimer state, should also kill the loading animation
       this.onProductSelected(currentSelected);
     }
   }

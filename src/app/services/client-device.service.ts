@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ClientDeviceService {
+export class ClientDeviceService implements OnDestroy {
   private readonly isTouchDevice$ = new BehaviorSubject<boolean>(false);
   private readonly touchMediaQuery: MediaQueryList;
 
