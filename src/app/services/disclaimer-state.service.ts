@@ -11,6 +11,7 @@ import {
   WcProduct,
   WcProductAttribute,
 } from '@models/product.model';
+import { LocalStorageKeys } from '@models/storage.model';
 
 /**
  * Service to communicate the Disclaimer state to the checkout page
@@ -24,9 +25,11 @@ export class DisclaimerStateService {
   public context?: number;
   public contextName?: string;
 
-  constructor() {}
+  constructor() {
+    console.log(localStorage.getItem(LocalStorageKeys.PRODUCT_SELECTED_ID));
+  }
 
-  // TODO: Use localstorage
+  // TODO: Use localstorage, use the product selected store from storage
 
   validateDisclaimerState(id: number): boolean {
     const state = this.stateStore[id];
