@@ -63,6 +63,7 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   });
 
   // TODO: The cleanest approach here would probably be to define a parent FC and having the mat-cards as Form
+  // TODO: Since we query the product on select anyways, we should destroy the productDetails on select
 
   constructor() {}
 
@@ -156,7 +157,6 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /** Listens for the event, implements unselect logic */
   onProductSelected(id: number | null): void {
-    this.selectedProductVariations.set([]);
     if (id === null) {
       this.selectedProduct.set(undefined);
       localStorage.removeItem(LocalStorageKeys.PRODUCT_SELECTED_ID);

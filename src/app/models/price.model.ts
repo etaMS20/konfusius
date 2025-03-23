@@ -2,6 +2,7 @@ export interface WcPrice {
   price: string;
   regular_price: string;
   sale_price: string;
+  price_range?: WcPriceRange;
   currency_code: string;
   currency_symbol: string;
   currency_minor_unit: number;
@@ -15,6 +16,11 @@ export interface WcPrice {
     regular_price: string;
     sale_price: string;
   };
+}
+
+export interface WcPriceRange {
+  min_amount: string;
+  max_amount: string;
 }
 
 export interface WcItemTotals {

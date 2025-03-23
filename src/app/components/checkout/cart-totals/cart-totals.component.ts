@@ -35,7 +35,7 @@ export class CartTotalsComponent {
         ct.currency_thousand_separator,
         ct.currency_decimal_separator,
         ct.currency_minor_unit,
-        ct.currency_code,
+        ct.currency_symbol,
       );
     else return '';
   }
@@ -69,7 +69,7 @@ export class CartTotalsComponent {
         ct.currency_thousand_separator,
         ct.currency_decimal_separator,
         ct.currency_minor_unit,
-        ct.currency_code,
+        ct.currency_symbol,
       );
     else return '';
   }

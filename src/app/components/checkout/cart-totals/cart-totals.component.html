@@ -22,7 +22,7 @@
           }
 
           <div class="cart-item-detail">
-            <span class="detail-label">Ticket-Preis:</span>
+            <span class="detail-label">Kostenbeitrag:</span>
             <span class="detail-value">{{
               getCartItemTotalPrice(items.main)
             }}</span>
@@ -41,7 +41,7 @@
 
   <div *ngIf="hasItem" class="totals-section">
     <div class="totals-row total">
-      <span>Umkostenbeitrag:</span>
+      <span>Gesamt:</span>
       <span>{{ cartTotalPrice }}</span>
     </div>
   </div>

@@ -31,7 +31,7 @@ import { WcStoreAPI } from '@services/api/wc-store-api.service';
 import { WcProduct, WcProductVariationDetails } from '@models/product.model';
 import { Router } from '@angular/router';
 import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
-import { formatPrice } from '@utils/price.utils';
+import { formatPrice, formatPriceRange } from '@utils/price.utils';
 import { indicate } from '@utils/reactive-loading.utils';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CrossSaleOptionsComponent } from './cross-sale-options/cross-sale-options.component';
@@ -113,15 +113,24 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   get formattedPrice(): string {
-    if (this.product)
-      return formatPrice(
-        this.product.prices.price,
-        this.product.prices.currency_thousand_separator,
-        this.product.prices.currency_decimal_separator,
-        this.product.prices.currency_minor_unit,
-        this.product.prices.currency_symbol,
-      );
-    else return '';
+    if (this.product) {
+      if (this.product.prices.price_range) {
+        return formatPriceRange(
+          this.product.prices.price_range,
+          this.product.prices.currency_thousand_separator,
+          this.product.prices.currency_decimal_separator,
+          this.product.prices.currency_minor_unit,
+          this.product.prices.currency_symbol,
+        );
+      } else
+        return formatPrice(
+          this.product.prices.price,
+          this.product.prices.currency_thousand_separator,
+          this.product.prices.currency_decimal_separator,
+          this.product.prices.currency_minor_unit,
+          this.product.prices.currency_symbol,
+        );
+    } else return '';
   }
 
   get isCheckoutValid(): boolean {

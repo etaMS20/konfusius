@@ -53,11 +53,7 @@
     <div class="right-container">
       <div
         class="checkout-button-row"
-        [matTooltip]="
-          isProductVariable
-            ? 'Keine Schicht ausgewählt'
-            : 'Schicht nicht mehr verfügbar'
-        "
+        matTooltip="Schicht / Zeit nicht mehr verfügbar"
         [matTooltipDisabled]="isCheckoutValid"
       >
         <button
