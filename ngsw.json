@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1742697159038,
+  "timestamp": 1742742724635,
   "index": "./festival/index.html",
   "assetGroups": [
     {
@@ -26,15 +26,15 @@
   ],
   "dataGroups": [
     {
-      "name": "api--requests",
+      "name": "api-requests",
       "patterns": [
-        "\\/(?:.+\\/)?wc\\/v3\\/.*",
-        "\\/(?:.+\\/)?wc\\/store\\/v1\\/.*",
-        "\\/(?:.+\\/)?custom\\/v1\\/.*",
-        "\\/(?:.+\\/)?wp\\/v2\\/.*"
+        "https:\\/\\/konfusius\\.org\\/wp-json\\/wc\\/v3\\/.*",
+        "https:\\/\\/konfusius\\.org\\/wp-json\\/wc\\/store\\/v1\\/.*",
+        "https:\\/\\/konfusius\\.org\\/wp-json\\/custom\\/v1\\/.*",
+        "https:\\/\\/konfusius\\.org\\/wp-json\\/wp\\/v2\\/.*"
       ],
       "strategy": "freshness",
-      "maxSize": 50,
+      "maxSize": 100,
       "maxAge": 3600000,
       "timeoutMs": 10000,
       "cacheQueryOptions": {
