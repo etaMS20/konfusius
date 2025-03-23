@@ -26,11 +26,18 @@ export class DisclaimerStateService {
 
   constructor() {}
 
+  // TODO: Use localstorage
+
   validateDisclaimerState(id: number): boolean {
     const state = this.stateStore[id];
     if (state) {
       return state.understood === true;
     } else return false;
+  }
+
+  validateContext(): boolean {
+    if (this.context) return this.validateDisclaimerState(this.context);
+    else return false;
   }
 
   hasProductDisclaimer(productId?: number) {
@@ -40,6 +47,7 @@ export class DisclaimerStateService {
   }
 
   pushDisclaimerState(pKey: number, pushEvent: DisclaimerForm) {
+    this.purgeDisclaimerState(); // remove other states before
     this.stateStore[pKey] = pushEvent;
   }
 
@@ -70,7 +78,15 @@ export class DisclaimerStateService {
     return pKey ? this.contentStore[pKey] : undefined;
   }
 
+  purgeStateById(id: number) {
+    delete this.stateStore[id];
+  }
+
   purgeDisclaimerState() {
     this.stateStore = {};
+  }
+
+  get getState() {
+    return this.stateStore[this.context!];
   }
 }

@@ -17,7 +17,7 @@
       </div>
 
       <textarea
-        *ngIf="disclaimer()"
+        *ngIf="disclaimer()?.textbox_content"
         id="experience"
         formControlName="experience"
         [placeholder]="disclaimer()?.textbox_content"
