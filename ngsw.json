@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1742695583154,
+  "timestamp": 1742697159038,
   "index": "./festival/index.html",
   "assetGroups": [
     {
@@ -10,28 +10,7 @@
       "cacheQueryOptions": {
         "ignoreVary": true
       },
-      "urls": [
-        "./135.bfe8b2e8893ff9ea.js",
-        "./212.f0b3aa4a43f9ff01.js",
-        "./251.1128232c7b56ca01.js",
-        "./314.3be406570295eec0.js",
-        "./401.9335a1f3d9b0c360.js",
-        "./478.87e701986ac48825.js",
-        "./603.2aef971cbc750722.js",
-        "./631.4d1f6d7878a269dc.js",
-        "./728.acffebefbebfd0c8.js",
-        "./845.4853ee80087f3641.js",
-        "./90.6a421f84d4efec1f.js",
-        "./985.f879d809a798d44e.js",
-        "./common.a69d2af8826128a3.js",
-        "./index.html",
-        "./main.f0f1b67997271236.js",
-        "./polyfills.99c75bc2f35682be.js",
-        "./public/manifest.webmanifest",
-        "./runtime.4775affedd8b5dce.js",
-        "./scripts.94f011fb13606557.js",
-        "./styles.10ac84227aa7ba08.css"
-      ],
+      "urls": [],
       "patterns": []
     },
     {
@@ -41,23 +20,7 @@
       "cacheQueryOptions": {
         "ignoreVary": true
       },
-      "urls": [
-        "./public/Grundriss_Konfusi24_A2.pdf",
-        "./public/backgound_v1.jpg",
-        "./public/icons/icon-128x128.png",
-        "./public/icons/icon-144x144.png",
-        "./public/icons/icon-152x152.png",
-        "./public/icons/icon-192x192.png",
-        "./public/icons/icon-384x384.png",
-        "./public/icons/icon-512x512.png",
-        "./public/icons/icon-72x72.png",
-        "./public/icons/icon-96x96.png",
-        "./public/konfusius_cropped.jpg",
-        "./public/logo_stretched_nav.png",
-        "./public/schweini_1.png",
-        "./public/scroll.png",
-        "./public/scroll_image.png"
-      ],
+      "urls": [],
       "patterns": []
     }
   ],
@@ -80,43 +43,7 @@
       "version": 1
     }
   ],
-  "hashTable": {
-    "./135.bfe8b2e8893ff9ea.js": "507c274ed1b05689beb247b2dc1e94bddb5cddad",
-    "./212.f0b3aa4a43f9ff01.js": "bcaa3951753643f9c2eef467fc8b56c5a2d841ed",
-    "./251.1128232c7b56ca01.js": "c6a07a097221e98102786a9b9a75a3e86bcb2ba5",
-    "./314.3be406570295eec0.js": "320fe22eedf886a9172a59294003373ad1d8c3a2",
-    "./401.9335a1f3d9b0c360.js": "5a1d47eaca8fba1337981fb01bbf308e9145fc97",
-    "./478.87e701986ac48825.js": "63cb7cb9c5b40ade78fe83c37288ff96ab4c2de0",
-    "./603.2aef971cbc750722.js": "b4ab4f8e7eac4768678a7560f234ad3d3f7b10bf",
-    "./631.4d1f6d7878a269dc.js": "cf3a7332ca80ca8cae343bc094f7038690e8af3d",
-    "./728.acffebefbebfd0c8.js": "1a9a3f63fd75b8654440a910fcf272e7f894131e",
-    "./845.4853ee80087f3641.js": "3efb839bbb2dadd7f30e75a4a2deffc9423e76ed",
-    "./90.6a421f84d4efec1f.js": "80be9db28ca8710c41c04ae8f4da1abea9b9b9f9",
-    "./985.f879d809a798d44e.js": "6c1637a0fe44c3754d310eb86bb3f5b36845e71c",
-    "./common.a69d2af8826128a3.js": "aeb2c2dd3ef47b3408359029758ddcd706eaa831",
-    "./index.html": "3e874e85bb39a4b79ccf05182c0417f008b05e8c",
-    "./main.f0f1b67997271236.js": "db4eed794a22fb57d89afde99843c49877cd8332",
-    "./polyfills.99c75bc2f35682be.js": "aa4add6f119f043e8c685455b5f41f49ca23c227",
-    "./public/Grundriss_Konfusi24_A2.pdf": "c6c5802699d826dcaee4ca31201e180713d9b031",
-    "./public/backgound_v1.jpg": "1da3d7bf4023fa10602797ce8e28c2e541783129",
-    "./public/icons/icon-128x128.png": "f912963bdc6d5a38d8f1dd0afbaab2ce8d657acb",
-    "./public/icons/icon-144x144.png": "b155fd5f2fd5d2ea7760721063003c4cd95fd783",
-    "./public/icons/icon-152x152.png": "eae6e0f0c8afb8aaae339e2a569b43e9238e5e6c",
-    "./public/icons/icon-192x192.png": "15c4180454633880d98674aa7394656196c91584",
-    "./public/icons/icon-384x384.png": "94a915751ef6c9282df9aea405ad679230631814",
-    "./public/icons/icon-512x512.png": "1de182f76f7329dfa8f9fcdd1fdcdd695bea6a99",
-    "./public/icons/icon-72x72.png": "aa88a6096bd973be7f6d7a5489bfa6bc2463f8c4",
-    "./public/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
-    "./public/konfusius_cropped.jpg": "f2291c8f4c50cc2a854c9806263568f4307896b9",
-    "./public/logo_stretched_nav.png": "184cc84131b4e4bb692ab606030455dbf58a7b54",
-    "./public/manifest.webmanifest": "1cc94efc7c3f1caf37562aa0621123d5816352eb",
-    "./public/schweini_1.png": "b41a07d8b1de7a8d67e27b201e21278bb75b843f",
-    "./public/scroll.png": "30dd95061eaf39ac8a92fc350b63d30afe68afa0",
-    "./public/scroll_image.png": "a1dac9c959a1618244eba1e7c2f7549a86ba93d8",
-    "./runtime.4775affedd8b5dce.js": "6de5e8f8a3eaa5dd04c35dded04f6193fde15293",
-    "./scripts.94f011fb13606557.js": "a970cb008d6db006d1f0040a7cda5c5ea80e2f4a",
-    "./styles.10ac84227aa7ba08.css": "6ab9b0f5c551c46c4ad109397f9604d33a2c6c07"
-  },
+  "hashTable": {},
   "navigationUrls": [
     {
       "positive": true,
