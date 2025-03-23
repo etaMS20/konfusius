@@ -121,3 +121,8 @@ $animation-duration: 0.3s;
     }
   }
 }
+
+.slimline {
+  --mdc-outlined-text-field-outline-color: rgba(0, 0, 255, 0.575);
+  --mdc-outlined-text-field-outline-width: 2px;
+}

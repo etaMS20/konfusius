@@ -14,13 +14,14 @@ import {
 import {
   FormBuilder,
   FormControl,
+  FormControlStatus,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Subject, throwError } from 'rxjs';
 import { catchError, concatMap, takeUntil } from 'rxjs/operators';
@@ -74,13 +75,17 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
   selectedCossSaleItemId = signal<CrossSaleProductId>(
     CrossSaleProductId.KONFUSIUS,
   );
+  disableCrossSale = signal<boolean>(true);
 
   constructor() {}
 
   ngOnInit(): void {
-    this.selectForm.controls['variationId'].setValidators(
-      this.isProductVariable ? [Validators.required] : [],
-    );
+    /** Listen to Status changes of the selectForm */
+    this.selectForm.controls['variationId'].statusChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((status: FormControlStatus) => {
+        this.disableCrossSale.set(status !== 'VALID');
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -89,7 +94,11 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
         this.selectForm.controls['variationId'].setValidators(
           this.isProductVariable ? [Validators.required] : [],
         );
-        this.selectForm.controls['variationId'].reset();
+        this.selectForm.controls['variationId'].markAsPending();
+        this.selectForm.controls['variationId'].reset(null, {
+          emitEvent: true,
+        });
+        this.disableCrossSale.set(!this.isCheckoutValid);
       }
     }
   }
@@ -97,6 +106,10 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  onVariationSelected(change: MatSelectChange) {
+    this.disableCrossSale.set(change.value === null);
   }
 
   get formattedPrice(): string {

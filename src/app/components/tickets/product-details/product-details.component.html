@@ -45,7 +45,7 @@
         <app-cross-sale-options
           [crossSaleItems]="crossSaleItems()"
           (crossSaleProductSelected)="onCrossSaleSelected($event)"
-          [varContext]="isProductVariable ?? false"
+          [disableOptionsForm]="disableCrossSale()"
         ></app-cross-sale-options>
       }
     </div>

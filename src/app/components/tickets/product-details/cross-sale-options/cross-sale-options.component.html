@@ -4,7 +4,10 @@
     (change)="onSelectionChange()"
     [formControl]="optionsForm.controls['variationId']"
   >
-    <mat-radio-button *ngFor="let option of crossSaleItems" [value]="option.id"
+    <mat-radio-button
+      *ngFor="let option of crossSaleItems"
+      [value]="option.id"
+      [disableControl]="disableOptionsForm()"
       ><span
         class="radio-label"
         [innerHTML]="option.description | safeHtml"

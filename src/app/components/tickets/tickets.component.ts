@@ -156,6 +156,7 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /** Listens for the event, implements unselect logic */
   onProductSelected(id: number | null): void {
+    this.selectedProductVariations.set([]);
     if (id === null) {
       this.selectedProduct.set(undefined);
       localStorage.removeItem(LocalStorageKeys.PRODUCT_SELECTED_ID);
