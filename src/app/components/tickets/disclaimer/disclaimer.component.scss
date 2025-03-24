@@ -1,0 +1,87 @@
+@use './styles/style-vars.scss' as *;
+
+$disclaimer-height-desktop: 150px;
+$disclaimer-height-mobile: 300px;
+
+.disclaimer-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  min-height: min(20vh, $disclaimer-height-desktop);
+  max-height: 80vh;
+  background-color: rgba(245, 245, 245);
+  padding: 0.5rem 10vw;
+  box-shadow: $card-hover-shadow;
+  z-index: 999;
+  box-sizing: border-box;
+  display: block;
+  overflow-y: scroll;
+  touch-action: auto;
+
+  @media (max-width: $breakpoint-mobile) {
+    min-height: min(40vh, $disclaimer-height-mobile);
+    padding: 0.2rem;
+  }
+
+  @media (max-width: $breakpoint-mobile-tilt) {
+    padding: 0.5rem;
+  }
+}
+
+.disclaimer-content {
+  display: flex;
+  flex-direction: column; // Stack items vertically
+  align-items: flex-start; // Align items to the left
+  justify-content: center; // Center content vertically
+  width: 100%;
+  height: auto;
+  margin: auto;
+  padding: 0.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  background-color: rgb(255, 247, 247);
+  animation: slideUp 0.3s ease-out;
+}
+
+.disclaimer-text {
+  display: block;
+  width: 100%;
+}
+
+.disclaimer-checkbox {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  width: 100%;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.button-section {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+textarea {
+  width: 100%; // Ensures textarea fills available space
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 0.8rem;
+  resize: none;
+  margin: 0.5rem auto;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

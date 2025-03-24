@@ -1,3 +1,5 @@
+@use 'src/styles/style-vars.scss' as *;
+
 .cart-totals-container {
   margin: 0 auto;
   padding: 20px;
@@ -82,8 +84,12 @@ h2 {
   border-top: 1px solid #eee;
 }
 
-@media (max-width: 480px) {
+@media (max-width: $breakpoint-mobile) {
   .cart-totals-container {
-    padding: 15px;
+    padding: 0.5rem;
+  }
+
+  span {
+    font-size: 0.9rem;
   }
 }

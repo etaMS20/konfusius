@@ -4,29 +4,33 @@
   <div *ngIf="viewLoading">
     <mat-progress-bar mode="query"></mat-progress-bar>
   </div>
-  <div class="ticket-container__content">
-    <div class="product-container">
-      <div class="product-grid">
-        <div class="product-grid-item" *ngFor="let product of products()">
-          <product
-            [product]="product"
-            [selectedProductId]="this.selectedProductId()"
-            (productSelected)="onProductSelected($event)"
-          ></product>
-        </div>
+  <div class="product-container">
+    <div class="product-grid">
+      <div class="product-grid-item" *ngFor="let product of products()">
+        <product
+          [product]="product"
+          [selectedProductId]="this.selectedProductId()"
+          (productSelected)="onProductSelected($event)"
+        ></product>
       </div>
     </div>
+
+    <app-disclaimer
+      *ngIf="
+        !selectedProductValidDisclaimer() && selectedProductHasDisclaimer()
+      "
+      (abortDisclaimer)="onCloseDisclaimer($event)"
+      (formValuesSubmit)="onDisclaimerSubmitted($event)"
+    ></app-disclaimer>
+
     <app-product-details
       [hidden]="!selectedProduct()"
       [product]="selectedProduct()"
       [isProductVariable]="isSelectedProductVariable()"
       [productVariations]="selectedProductVariations()"
+      [crossSaleItems]="crossSaleProducts()"
     ></app-product-details>
   </div>
-
-  <footer class="ticket-container__footer">
-    <!-- Footer content here -->
-  </footer>
 </div>
 
 <!-- loading spinner for an individual product and their variations -->

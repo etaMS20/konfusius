@@ -11,12 +11,21 @@ export const ProductTypeLabels = {
   [WcProductTypes.SIMPLE]: 'Einfache Schicht',
 };
 
+export const productsWithDisclaimer = new Set([962, 13]);
+
+export const hasProductDisclaimer = (productId?: number) => {
+  if (productId) {
+    return productsWithDisclaimer.has(productId);
+  } else return false;
+};
+
 export interface WcProduct {
   id: number;
   type: WcProductTypes;
   slug?: string;
   name?: string;
   description?: string;
+  short_description?: string;
   is_in_stock: boolean;
   is_purchasable: boolean;
   attributes?: Array<WcProductAttribute>;

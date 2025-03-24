@@ -2,7 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.x]
+## [1.0.4]
+
+### Added
+
+- cross-sale products mat-radio
+- disclaimer component
+
+### Changed
+
+### Fixed
+
+- loading indicator for products
+- lifecycle binding in checkout component
+- ngsw hash mismatch errors in production
+
+---
+
+## [1.0.3]
 
 ### Added
 

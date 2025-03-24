@@ -243,7 +243,7 @@ $scrolled-height: calc(min($nav-max-height, $nav-height) - 20px);
 }
 
 // Media Queries for Responsive Design
-@media (max-width: 750px) {
+@media (max-width: $breakpoint-mobile-tilt) {
   .desktop-nav {
     display: none;
   }
@@ -257,11 +257,17 @@ $scrolled-height: calc(min($nav-max-height, $nav-height) - 20px);
   }
 
   .logo-image {
-    height: calc(min($nav-max-height, $nav-height) - 1.5rem);
+    height: calc(min($nav-max-height, $nav-height) - 0.5rem);
   }
 
   .logo-text {
     font-size: 1.5rem;
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .logo-image {
+    height: calc(min($nav-max-height, $nav-height) - 1.5rem);
   }
 }
 

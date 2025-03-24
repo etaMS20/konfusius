@@ -3,45 +3,46 @@
 
   <div *ngIf="!hasItem" class="empty-cart">Your cart is empty</div>
 
-  <div *ngIf="hasItem" class="cart-items">
-    <div class="cart-item">
-      <div class="cart-item-header">
-        {{ cartItem()?.name }}
-      </div>
-
-      <div class="cart-item-details">
-        @if (cartItemIsVariable()) {
-          <div class="cart-item-detail">
-            <span class="detail-label"
-              >{{ cartItem()!.variation[0].attribute }}:</span
-            >
-            <span
-              class="detail-value"
-              [innerHTML]="cartItem()!.variation[0].value | safeHtml"
-            ></span>
-          </div>
-        }
-
-        <div class="cart-item-detail">
-          <span class="detail-label">Preis:</span>
-          <span class="detail-value"
-            >{{ cartItemSubTotalPrice }}
-            {{ cartItem()!.totals.currency_symbol }}</span
-          >
+  @if (getItems(); as items) {
+    <div *ngIf="hasItem" class="cart-items">
+      <div class="cart-item">
+        <div class="cart-item-header">
+          {{ items.main?.name }}
         </div>
 
-        <div class="cart-item-detail">
-          <span class="detail-label">Anz:</span>
-          <span class="detail-value">{{ cartItem()?.quantity }}</span>
+        <div class="cart-item-details">
+          @if (cartContainsVariableItem()) {
+            <div class="cart-item-detail">
+              <span class="detail-label">{{ variation?.attribute }}:</span>
+              <span
+                class="detail-value"
+                [innerHTML]="variation?.value | safeHtml"
+              ></span>
+            </div>
+          }
+
+          <div class="cart-item-detail">
+            <span class="detail-label">Kostenbeitrag:</span>
+            <span class="detail-value">{{
+              getCartItemTotalPrice(items.main)
+            }}</span>
+          </div>
+
+          <div class="cart-item-detail">
+            <span class="detail-label">{{ ticketCategory }}</span>
+            <span class="detail-value"
+              >+{{ getCartItemTotalPrice(items.sub) }}</span
+            >
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  }
 
   <div *ngIf="hasItem" class="totals-section">
     <div class="totals-row total">
-      <span>Umkostenbeitrag:</span>
-      <span>{{ cartTotalPrice }} {{ cartItem()!.totals.currency_symbol }}</span>
+      <span>Gesamt:</span>
+      <span>{{ cartTotalPrice }}</span>
     </div>
   </div>
 </div>

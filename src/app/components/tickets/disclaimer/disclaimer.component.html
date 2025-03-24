@@ -1,0 +1,49 @@
+<div class="disclaimer-container" tabindex="-2">
+  <form class="billing_address" [formGroup]="formG" (ngSubmit)="onSubmit()">
+    <div class="disclaimer-content">
+      <h4>Disclaimer: {{ disclaimerStateS.contextName }}</h4>
+      @if (disclaimer()?.content; as c) {
+        <div class="disclaimer-text" [innerHTML]="c | safeHtml"></div>
+      }
+      <div class="disclaimer-checkbox">
+        <mat-checkbox
+          formControlName="understood"
+          labelPosition="after"
+        ></mat-checkbox>
+        Ich habe den Hinweis verstanden
+        <mat-error *ngIf="hasError(understood, 'required')">
+          Die Bestätigung ist erforderlich.
+        </mat-error>
+      </div>
+
+      <textarea
+        *ngIf="disclaimer()?.textbox_content"
+        id="experience"
+        formControlName="experience"
+        [placeholder]="disclaimer()?.textbox_content"
+        rows="4"
+        maxlength="300"
+      ></textarea>
+
+      <div class="button-section">
+        <button
+          class="slimline submit-button"
+          mat-raised-button
+          type="submit"
+          [disabled]="formG.invalid"
+        >
+          <mat-icon>check</mat-icon> OK
+        </button>
+
+        <button
+          mat-raised-button
+          (click)="onClose($event)"
+          class="slimline"
+          type="button"
+        >
+          <mat-icon>close</mat-icon> Lieber nicht
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

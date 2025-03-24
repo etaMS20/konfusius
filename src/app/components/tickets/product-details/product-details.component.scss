@@ -17,7 +17,7 @@ $animation-duration: 0.3s;
   background-color: $footer-bg;
   padding: 0.5rem 1rem;
   box-shadow: $footer-shadow;
-  z-index: 999;
+  z-index: 50;
   box-sizing: border-box;
   animation: slideUp $animation-duration ease-out;
 
@@ -45,7 +45,7 @@ $animation-duration: 0.3s;
 
       p {
         margin: 0;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         color: #555;
       }
 
@@ -55,7 +55,8 @@ $animation-duration: 0.3s;
         margin-bottom: 8px;
 
         h4 {
-          font-size: 1.2rem;
+          margin: 0;
+          font-size: 1rem;
         }
       }
     }
@@ -119,4 +120,9 @@ $animation-duration: 0.3s;
       opacity: 0.7;
     }
   }
+}
+
+.slimline {
+  --mdc-outlined-text-field-outline-color: rgba(0, 0, 255, 0.575);
+  --mdc-outlined-text-field-outline-width: 2px;
 }

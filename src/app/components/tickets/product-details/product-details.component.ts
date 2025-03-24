@@ -3,22 +3,25 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  input,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
+  signal,
   SimpleChanges,
 } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
+  FormControlStatus,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Subject, throwError } from 'rxjs';
 import { catchError, concatMap, takeUntil } from 'rxjs/operators';
@@ -28,9 +31,11 @@ import { WcStoreAPI } from '@services/api/wc-store-api.service';
 import { WcProduct, WcProductVariationDetails } from '@models/product.model';
 import { Router } from '@angular/router';
 import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
-import { formatPrice } from '@utils/price.utils';
+import { formatPrice, formatPriceRange } from '@utils/price.utils';
 import { indicate } from '@utils/reactive-loading.utils';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CrossSaleOptionsComponent } from './cross-sale-options/cross-sale-options.component';
+import { CrossSaleProductId } from '@models/cross-sale.model';
 
 @Component({
   selector: 'app-product-details',
@@ -48,6 +53,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     DisableControlDirective,
     SafeHtmlPipe,
     MatProgressBarModule,
+    CrossSaleOptionsComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -65,13 +71,21 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
   selectForm = this.fb.group({
     variationId: new FormControl<number | null>(null, [Validators.required]),
   });
+  crossSaleItems = input<Array<WcProduct>>([]); // modern approach with new input API
+  selectedCossSaleItemId = signal<CrossSaleProductId>(
+    CrossSaleProductId.KONFUSIUS,
+  );
+  disableCrossSale = signal<boolean>(true);
 
   constructor() {}
 
   ngOnInit(): void {
-    this.selectForm.controls['variationId'].setValidators(
-      this.isProductVariable ? [Validators.required] : [],
-    );
+    /** Listen to Status changes of the selectForm */
+    this.selectForm.controls['variationId'].statusChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((status: FormControlStatus) => {
+        this.disableCrossSale.set(status !== 'VALID');
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -80,8 +94,11 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
         this.selectForm.controls['variationId'].setValidators(
           this.isProductVariable ? [Validators.required] : [],
         );
-        this.selectForm.controls['variationId'].updateValueAndValidity();
-        this.destroy$.next();
+        this.selectForm.controls['variationId'].markAsPending();
+        this.selectForm.controls['variationId'].reset(null, {
+          emitEvent: true,
+        });
+        this.disableCrossSale.set(!this.isCheckoutValid);
       }
     }
   }
@@ -91,15 +108,29 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  onVariationSelected(change: MatSelectChange) {
+    this.disableCrossSale.set(change.value === null);
+  }
+
   get formattedPrice(): string {
-    if (this.product)
-      return formatPrice(
-        this.product.prices.price,
-        this.product.prices.currency_thousand_separator,
-        this.product.prices.currency_decimal_separator,
-        this.product.prices.currency_minor_unit,
-      );
-    else return '';
+    if (this.product) {
+      if (this.product.prices.price_range) {
+        return formatPriceRange(
+          this.product.prices.price_range,
+          this.product.prices.currency_thousand_separator,
+          this.product.prices.currency_decimal_separator,
+          this.product.prices.currency_minor_unit,
+          this.product.prices.currency_symbol,
+        );
+      } else
+        return formatPrice(
+          this.product.prices.price,
+          this.product.prices.currency_thousand_separator,
+          this.product.prices.currency_decimal_separator,
+          this.product.prices.currency_minor_unit,
+          this.product.prices.currency_symbol,
+        );
+    } else return '';
   }
 
   get isCheckoutValid(): boolean {
@@ -110,17 +141,24 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
+  /** Listens for the event */
+  onCrossSaleSelected(id: CrossSaleProductId): void {
+    this.selectedCossSaleItemId.set(id);
+  }
+
   checkout() {
-    if (this.selectForm.valid) {
-      const checkoutId = this.isProductVariable
-        ? this.selectForm.get('variationId')!.value
-        : this.product?.id;
+    const checkoutId = this.isProductVariable
+      ? this.selectForm.get('variationId')!.value
+      : this.product?.id;
+
+    if (checkoutId) {
+      const batchIds = [checkoutId, this.selectedCossSaleItemId()];
 
       this.wcStore
         .deleteAllCartItems()
         .pipe(
           indicate(this.loadingCheckout$),
-          concatMap(() => this.wcStore.addItemToCart(checkoutId!)),
+          concatMap(() => this.wcStore.batchItemsToCart(batchIds)),
           catchError((error) => {
             this.errorService.handleError(error);
             return throwError(() => error);
@@ -128,7 +166,6 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
           takeUntil(this.destroy$),
         )
         .subscribe({
-          next: (response) => {},
           complete: () => {
             // waiting for the addItem request to return OK
             this.router.navigate(['/checkout']);

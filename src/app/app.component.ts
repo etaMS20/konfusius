@@ -1,12 +1,11 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavComponent } from './components/nav/nav.component';
 import { CommonModule } from '@angular/common';
-import { NgcCookieConsentService } from 'ngx-cookieconsent';
-import { Subscription } from 'rxjs';
+import { filter, map, Observable, Subscription } from 'rxjs';
 import { FooterComponent } from '@components/footer/footer.component';
 import { BackgroundComponent } from './components/shared/background/background.component';
-import { SwUpdate } from '@angular/service-worker';
+import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
 
 @Component({
   selector: 'app-root',
@@ -22,41 +21,36 @@ import { SwUpdate } from '@angular/service-worker';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit, OnDestroy {
-  ccService = inject(NgcCookieConsentService);
+  swUpdate = inject(SwUpdate);
+  private updatesAvailable$?: Observable<any>;
+  private updatesAvailable?: Subscription;
 
-  // keep refs to subscriptions to be able to unsubscribe later
-  private popupOpenSubscription?: Subscription;
-  private popupCloseSubscription?: Subscription;
-
-  constructor(private readonly swUpdate: SwUpdate) {}
+  constructor() {}
 
   ngOnInit() {
-    this.popupOpenSubscription = this.ccService.popupOpen$.subscribe(() => {
-      // use this.ccService.getConfig() to do stuff...
+    this.updatesAvailable$ = this.swUpdate.versionUpdates.pipe(
+      filter((evt): evt is VersionReadyEvent => evt.type === 'VERSION_READY'),
+      map((evt) => ({
+        type: 'UPDATE_AVAILABLE',
+        current: evt.currentVersion,
+        available: evt.latestVersion,
+      })),
+    );
+
+    this.updatesAvailable = this.updatesAvailable$?.subscribe((update) => {
+      console.log('Update available:', update);
+      this.promptUser(); // Optionally prompt the user when an update is available
     });
 
-    this.popupCloseSubscription = this.ccService.popupClose$.subscribe(() => {
-      // use this.ccService.getConfig() to do stuff...
-    });
-
-    // TODO
-    if (this.swUpdate.isEnabled) {
-      this.swUpdate.versionUpdates.subscribe((event) => {
-        if (event.type === 'VERSION_READY') {
-          console.log(
-            `sw new version: current: ${event.currentVersion.hash}, new: ${event.latestVersion.hash}`,
-            event,
-          );
-          if (confirm(`New version available. Load New Version?`)) {
-            window.location.reload();
-          }
-        }
-      });
-    }
+    console.log('devMode: ', isDevMode());
   }
 
   ngOnDestroy() {
-    this.popupOpenSubscription?.unsubscribe();
-    this.popupCloseSubscription?.unsubscribe();
+    this.updatesAvailable?.unsubscribe();
+  }
+
+  private promptUser(): void {
+    console.log('updating to new version');
+    this.swUpdate.activateUpdate().then(() => document.location.reload());
   }
 }

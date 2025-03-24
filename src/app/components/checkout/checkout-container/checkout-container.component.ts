@@ -25,6 +25,9 @@ import { EncryptionService } from '@services/encryption.service';
 import { indicate } from '@utils/reactive-loading.utils';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { DisclaimerStateService } from '@services/disclaimer-state.service';
+import { ConditionsComponent } from '../conditions/conditions.component';
+import { DisclaimerForm, DisclaimerFormStore } from '@models/disclaimer.model';
 
 @Component({
   selector: 'app-checkout-container',
@@ -35,17 +38,17 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     BillingComponent,
     MatProgressSpinnerModule,
     MatProgressBarModule,
+    ConditionsComponent,
   ],
   templateUrl: './checkout-container.component.html',
   styleUrls: ['./checkout-container.component.scss'],
 })
-export class CheckoutContainerComponent
-  implements OnInit, OnDestroy, AfterViewInit
-{
+export class CheckoutContainerComponent implements OnInit, OnDestroy {
   wcStoreApi = inject(WcStoreAPI);
   wpApi = inject(WordPressApiService);
   errorService = inject(ErrorDialogService);
   customEpS = inject(CustomEndpointsService);
+  private readonly disclaimerStateS = inject(DisclaimerStateService);
   private readonly cryptoService = inject(EncryptionService);
   private readonly router = inject(Router);
 
@@ -54,12 +57,14 @@ export class CheckoutContainerComponent
   cart = signal<WcCart | null>(null);
   allowedOptions = signal<string[]>([]);
   rules = signal<BlogPost | undefined>(undefined);
+  disclaimerState?: DisclaimerForm;
 
   billingAddress = computed(() => {
     return this.cart()?.billing_address;
   });
 
   ngOnInit(): void {
+    this.loading$.next(true);
     this.wpApi.getPostById(BlogPostId.KODEX_INFO).subscribe((post) => {
       this.rules.set(post);
     });
@@ -80,10 +85,8 @@ export class CheckoutContainerComponent
     this.customEpS.listAllowedInvites().subscribe((response: string[]) => {
       this.allowedOptions.set(response);
     });
-  }
 
-  ngAfterViewInit(): void {
-    this.loading$.next(true);
+    this.disclaimerState = this.disclaimerStateS.getState;
   }
 
   ngOnDestroy(): void {
@@ -93,6 +96,7 @@ export class CheckoutContainerComponent
 
   onBillingFormSubmit(fromValues: FormOutput) {
     const checkoutData: WcCheckOutData = {
+      disclaimer_valid: this.disclaimerStateS.validateContext(),
       invited_by: fromValues.invited_by,
       billing_address: fromValues.billingAddress,
       payment_method: 'cod',
