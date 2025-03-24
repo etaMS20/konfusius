@@ -58,7 +58,7 @@ import { CrossSaleProductId } from '@models/cross-sale.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
-  @Input() product?: WcProduct;
+  product = input.required<WcProduct>();
   @Input() isProductVariable?: boolean;
   @Input() productVariations: Array<WcProductVariationDetails> = [];
 
@@ -113,22 +113,23 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   get formattedPrice(): string {
-    if (this.product) {
-      if (this.product.prices.price_range) {
+    const p = this.product();
+    if (p) {
+      if (p.prices.price_range) {
         return formatPriceRange(
-          this.product.prices.price_range,
-          this.product.prices.currency_thousand_separator,
-          this.product.prices.currency_decimal_separator,
-          this.product.prices.currency_minor_unit,
-          this.product.prices.currency_symbol,
+          p.prices.price_range,
+          p.prices.currency_thousand_separator,
+          p.prices.currency_decimal_separator,
+          p.prices.currency_minor_unit,
+          p.prices.currency_symbol,
         );
       } else
         return formatPrice(
-          this.product.prices.price,
-          this.product.prices.currency_thousand_separator,
-          this.product.prices.currency_decimal_separator,
-          this.product.prices.currency_minor_unit,
-          this.product.prices.currency_symbol,
+          p.prices.price,
+          p.prices.currency_thousand_separator,
+          p.prices.currency_decimal_separator,
+          p.prices.currency_minor_unit,
+          p.prices.currency_symbol,
         );
     } else return '';
   }
@@ -137,7 +138,7 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
     if (this.isProductVariable) {
       return this.selectForm.valid;
     } else {
-      return this.product?.is_in_stock ?? false;
+      return this.product()?.is_in_stock ?? false;
     }
   }
 
@@ -149,7 +150,7 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
   checkout() {
     const checkoutId = this.isProductVariable
       ? this.selectForm.get('variationId')!.value
-      : this.product?.id;
+      : this.product()?.id;
 
     if (checkoutId) {
       const batchIds = [checkoutId, this.selectedCossSaleItemId()];

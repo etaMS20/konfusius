@@ -9,7 +9,7 @@
       <div class="product-grid-item" *ngFor="let product of products()">
         <product
           [product]="product"
-          [selectedProductId]="this.selectedProductId()"
+          [selectedProductId]="currentSelectedId"
           (productSelected)="onProductSelected($event)"
         ></product>
       </div>
@@ -23,13 +23,14 @@
       (formValuesSubmit)="onDisclaimerSubmitted($event)"
     ></app-disclaimer>
 
-    <app-product-details
-      [hidden]="!selectedProduct()"
-      [product]="selectedProduct()"
-      [isProductVariable]="isSelectedProductVariable()"
-      [productVariations]="selectedProductVariations()"
-      [crossSaleItems]="crossSaleProducts()"
-    ></app-product-details>
+    @if (selectedProduct(); as p) {
+      <app-product-details
+        [product]="p"
+        [isProductVariable]="!currentSelectedSingle"
+        [productVariations]="selectedProductVariations()"
+        [crossSaleItems]="crossSaleProducts()"
+      ></app-product-details>
+    }
   </div>
 </div>
 

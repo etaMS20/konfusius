@@ -3,4 +3,5 @@ export enum LocalStorageKeys {
   GUEST_AUTH = 'konfusius-guest-auth',
   PRODUCT_SELECTED_ID = 'konfusius-product-selected-id',
   USER_PRODUCT_CAT = 'konfusius-user-product-category',
+  DISCLAIMER_STATE = 'konfusius-product-disclaimer-state',
 }

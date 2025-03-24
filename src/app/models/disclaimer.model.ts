@@ -20,3 +20,9 @@ export enum DisclaimerAttributeKey {
   CONTENT = 'disclaimer',
   TEXTBOX = 'disclaimer_textbox',
 }
+
+export type DisclaimerState<_id> = {
+  id: _id;
+  disclaimer_understood?: boolean;
+  disclaimer_experience?: string;
+};

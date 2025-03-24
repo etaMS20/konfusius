@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   Disclaimer,
   DisclaimerAttributeKey,
@@ -12,6 +12,7 @@ import {
   WcProductAttribute,
 } from '@models/product.model';
 import { LocalStorageKeys } from '@models/storage.model';
+import { LocalStorageService } from '../storage/local-storage.service';
 
 /**
  * Service to communicate the Disclaimer state to the checkout page
@@ -20,14 +21,13 @@ import { LocalStorageKeys } from '@models/storage.model';
   providedIn: 'root',
 })
 export class DisclaimerStateService {
+  private readonly storageService = inject(LocalStorageService);
   private stateStore: DisclaimerFormStore = {};
   private contentStore: DisclaimerStore = {};
   public context?: number;
   public contextName?: string;
 
-  constructor() {
-    console.log(localStorage.getItem(LocalStorageKeys.PRODUCT_SELECTED_ID));
-  }
+  constructor() {}
 
   // TODO: Use localstorage, use the product selected store from storage
 
