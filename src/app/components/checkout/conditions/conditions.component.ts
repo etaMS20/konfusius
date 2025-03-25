@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { DisclaimerForm } from '@models/disclaimer.model';
+import { DisclaimerState } from '@models/disclaimer.model';
 import { WcPaymentGateway } from '@models/order.model';
 
 @Component({
@@ -9,6 +9,6 @@ import { WcPaymentGateway } from '@models/order.model';
   styleUrl: './conditions.component.scss',
 })
 export class ConditionsComponent {
-  disclaimerState = input<DisclaimerForm>();
+  disclaimerState = input<DisclaimerState>();
   paymentMethod = input<WcPaymentGateway>();
 }

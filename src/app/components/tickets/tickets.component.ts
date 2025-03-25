@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   inject,
   OnDestroy,
   OnInit,
@@ -21,16 +20,15 @@ import { MappingService } from '@services/mapping.service';
 import { WcStoreAPI } from '@services/api/wc-store-api.service';
 import { catchError, Subject, takeUntil, throwError } from 'rxjs';
 import { ProductComponent } from './product/product.component';
-import { LocalStorageKeys } from '@models/storage.model';
+import { LsKeys } from '@models/storage.model';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { crossSaleProductCat } from '@models/cross-sale.model';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
 import { DisclaimerComponent } from './disclaimer/disclaimer.component';
-import { DisclaimerForm } from '@models/disclaimer.model';
-import { DisclaimerStateService } from '@services/disclaimer-state.service';
+import { Disclaimer, DisclaimerState } from '@models/disclaimer.model';
 import { LocalStorageService } from 'src/app/storage/local-storage.service';
-import { createUrlTreeFromSnapshot } from '@angular/router';
+import { getDisclaimer } from '@utils/disclaimer.utils';
 
 @Component({
   selector: 'app-tickets',
@@ -54,7 +52,6 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   private readonly errorService = inject(ErrorDialogService);
   private readonly wcStore = inject(WcStoreAPI);
   private readonly lsService = inject(LocalStorageService);
-  private readonly disclaimerStateS = inject(DisclaimerStateService);
 
   /** basic variables */
   listVariations = ['instock']; // add 'outofstock' here, to show out-of-stock variations
@@ -67,12 +64,7 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /** observables and subjects */
   private readonly destroy$ = new Subject<void>();
-  disclaimerState$ = this.lsService.getItem$<any>(
-    LocalStorageKeys.DISCLAIMER_STATE,
-  );
-  selectedProductId$ = this.lsService.getItem$<number>(
-    LocalStorageKeys.PRODUCT_SELECTED_ID,
-  );
+  selectedProductId$ = this.lsService.getItem$<number>(LsKeys.PRD_SEL_ID);
 
   /** signals */
   products = signal<Array<WcProduct>>([]);
@@ -80,29 +72,12 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedProduct = signal<WcProduct | undefined>(undefined);
   selectedProductVariations = signal<Array<WcProductVariationDetails> | []>([]);
 
-  selectedProductHasDisclaimer = computed(() => {
-    return this.disclaimerStateS.hasProductDisclaimer(
-      this.selectedProduct()?.id,
-    );
-  });
-  /** returns true, if the selectedProduct is marked as having a disclaimer and its valid */
-  selectedProductValidDisclaimer = computed(() => {
-    if (this.selectedProductHasDisclaimer()) {
-      return this.disclaimerStateS.validateDisclaimerState(
-        this.selectedProduct()!.id,
-      );
-    } else return false;
-  });
-
-  /** on signal change, will set the disclaimer for the product */
-  setDisclaimer = effect(() => {
+  selectedProdDisclaimer = computed<Disclaimer | undefined>(() => {
     const product = this.selectedProduct();
-    if (this.selectedProductHasDisclaimer()) {
-      this.disclaimerStateS.setDisclaimer(product!);
-    }
+    return product ? getDisclaimer(product) : undefined;
   });
 
-  // set of products that are not variable
+  // set of products that are not variable as signal
   singleProductSet = computed<Set<number>>(() => {
     return new Set(
       this.products()
@@ -136,10 +111,7 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
         this.currentSelectedId = id;
         this.currentSelectedSingle =
           id !== undefined && this.singleProductSet().has(id);
-        if (id) {
-          this.selectedProduct.set(this.getSelectedProduct(id));
-          this.selectProduct(id);
-        }
+        this.selectProduct(id);
       });
     });
   }
@@ -167,13 +139,12 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
    * we don't need to explicitly query the product again.
    * We just need to query the variations
    */
-  getSelectedProduct(id: number): WcProduct | undefined {
-    console.log(id);
-    console.log(this.products());
+  getSelectedProduct(id?: number): WcProduct | undefined {
     return this.products().find((p) => p.id === id);
   }
 
   private selectProduct(id?: number) {
+    this.selectedProduct.set(this.getSelectedProduct(id));
     if (id) {
       this.productsLoading.set(true);
 
@@ -201,7 +172,7 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   get getProductCat(): number {
-    const storedCat = localStorage.getItem(LocalStorageKeys.USER_PRODUCT_CAT);
+    const storedCat = localStorage.getItem(LsKeys.USER_PRODUCT_CAT);
     return storedCat ? parseInt(storedCat) : 22;
   }
 
@@ -214,31 +185,25 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   onProductSelected(id: number | null): void {
     if (id === null) {
       this.selectedProduct.set(undefined);
-      this.lsService.removeItem(LocalStorageKeys.PRODUCT_SELECTED_ID);
+      this.lsService.removeItem(LsKeys.PRD_SEL_ID);
     } else {
-      this.lsService.setItem(LocalStorageKeys.PRODUCT_SELECTED_ID, id);
+      this.lsService.setItem(LsKeys.PRD_SEL_ID, id); // this triggers the subscription
     }
   }
 
-  onCloseDisclaimer(event: boolean) {
-    // unselect the product on close because disclaimer invalid
-    this.selectedProduct.set(undefined);
-    this.lsService.setItem(LocalStorageKeys.PRODUCT_SELECTED_ID, undefined);
-  }
-
-  onDisclaimerSubmitted(event: DisclaimerForm) {
-    this.productsLoading.set(true);
-    const currentSelected = this.currentSelectedId;
-    if (currentSelected) {
-      this.disclaimerStateS.pushDisclaimerState(currentSelected, event);
-      // trigger signal chain to destroy disclaimer if valid disclaimer state, should also kill the loading animation
-      this.onProductSelected(currentSelected);
-    }
+  onCloseDisclaimer() {
+    // unselect the product on close because disclaimer aborted
+    this.lsService.removeItem(LsKeys.PRD_SEL_ID);
   }
 
   initProducts() {
-    return this.wcStore
-      .listProducts(this.getProductCat)
-      .pipe(takeUntil(this.destroy$));
+    return this.wcStore.listProducts(this.getProductCat).pipe(
+      takeUntil(this.destroy$),
+      catchError((error) => {
+        this.productsLoading.set(false);
+        this.errorService.handleError(error);
+        return throwError(() => error);
+      }),
+    );
   }
 }

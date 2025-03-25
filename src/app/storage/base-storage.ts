@@ -101,7 +101,6 @@ export abstract class BaseStorage {
         key,
         new BehaviorSubject<T | undefined>(this.getItem<T>(key, defaultValue)),
       );
-      console.log('get');
     }
     return this.storageSubjects.get(key)!;
   }

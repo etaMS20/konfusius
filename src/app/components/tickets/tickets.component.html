@@ -15,14 +15,16 @@
       </div>
     </div>
 
-    <app-disclaimer
-      *ngIf="
-        !selectedProductValidDisclaimer() && selectedProductHasDisclaimer()
-      "
-      (abortDisclaimer)="onCloseDisclaimer($event)"
-      (formValuesSubmit)="onDisclaimerSubmitted($event)"
-    ></app-disclaimer>
-
+    <!-- Product Disclaimer -->
+    @if (currentSelectedId && selectedProdDisclaimer(); as disc) {
+      <app-disclaimer
+        *ngIf="disc.content"
+        (abortDisclaimer)="onCloseDisclaimer()"
+        [disclaimer]="disc"
+        [productId]="currentSelectedId"
+      ></app-disclaimer>
+    }
+    <!-- Product Details -->
     @if (selectedProduct(); as p) {
       <app-product-details
         [product]="p"
