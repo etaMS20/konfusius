@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1742855885034,
+  "timestamp": 1742904113569,
   "index": "./festival/index.html",
   "assetGroups": [
     {
@@ -36,7 +36,7 @@
       "strategy": "freshness",
       "maxSize": 100,
       "maxAge": 3600000,
-      "timeoutMs": 0,
+      "timeoutMs": 10000,
       "cacheQueryOptions": {
         "ignoreVary": true
       },
