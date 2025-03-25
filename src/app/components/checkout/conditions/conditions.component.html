@@ -1,15 +1,14 @@
 <div class="conditions-container">
-  <div class="condition-disclaimer">
-    <h4>Disclaimer</h4>
-    <div class="disclaimer-state">
-      <span>Akzeptiert: </span>
-      <mat-icon>{{
-        disclaimerState()?.understood ? 'check' : 'close'
-      }}</mat-icon>
-    </div>
-    <div class="disclaimer-state">
-      <span>Erfahrung: </span>
-      <span>{{ disclaimerState()?.experience }}</span>
-    </div>
+  <div class="payment-method">
+    <h4>Zahlung:</h4>
+    <span> {{ paymentMethod }}</span>
+  </div>
+  <div class="disclaimer-confirm">
+    <h4>Disclaimer Akzeptiert:</h4>
+    <mat-icon>{{ disclaimerState()?.understood ? 'check' : 'close' }}</mat-icon>
+  </div>
+  <div class="disclaimer-experience">
+    <h4>Disclaimer Erfahrung:</h4>
+    <span>{{ disclaimerState()?.experience }}</span>
   </div>
 </div>

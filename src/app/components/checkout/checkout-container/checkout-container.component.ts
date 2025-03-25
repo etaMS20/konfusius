@@ -12,9 +12,9 @@ import { CartTotalsComponent } from '../cart-totals/cart-totals.component';
 import {
   BillingComponent,
   FormOutput,
-} from '../billing/billing-input/billing-input.component';
+} from '../billing-input/billing-input.component';
 import { WcStoreAPI } from '../../../services/api/wc-store-api.service';
-import { catchError, Subject, takeUntil, throwError } from 'rxjs';
+import { catchError, Subject, throwError } from 'rxjs';
 import { ErrorDialogService } from '../../shared/errors/error-dialog.service';
 import { WcCart, WcCartItem, WcCheckOutData } from '../../../models/cart.model';
 import { CustomEndpointsService } from 'src/app/services/api/custom-endpoints.service';
@@ -34,7 +34,6 @@ import { LocalStorageService } from 'src/app/storage/local-storage.service';
 import { getCurrentStateBySKU } from '@utils/disclaimer.utils';
 import { LsKeys } from '@models/storage.model';
 import { CrossSaleProductId } from '@models/cross-sale.model';
-import { WcPaymentGateway } from '@models/order.model';
 
 @Component({
   selector: 'app-checkout-container',
@@ -74,7 +73,6 @@ export class CheckoutContainerComponent implements OnInit, OnDestroy {
   ]);
 
   cart = signal<WcCart | null>(null);
-  gateway = signal<WcPaymentGateway | undefined>(undefined);
   cartTotals = computed(() => {
     return this.cart()?.totals ?? undefined;
   });
@@ -134,7 +132,7 @@ export class CheckoutContainerComponent implements OnInit, OnDestroy {
 
   onBillingFormSubmit(fromValues: FormOutput) {
     const checkoutData: WcCheckOutData = {
-      // isclaimer_valid: "",
+      // disclaimer_valid: "",
       invited_by: fromValues.invited_by,
       billing_address: fromValues.billingAddress,
       payment_method: 'cod',

@@ -10,7 +10,7 @@
 
   <div *ngIf="order() && !loading()" class="order-container">
     <header class="order-header">
-      <h1>Anmeldung #{{ _order.id }}</h1>
+      <h2>Anmeldung #{{ _order.id }}</h2>
       <span class="order-status" [class]="_order.status.toLowerCase()">
         {{ _order.status }}
       </span>
@@ -24,7 +24,7 @@
       </div>
 
       <div class="order-shipping">
-        <h2>Kontakt</h2>
+        <h3>Kontakt</h3>
         <address>
           <p>{{ _order.billing.first_name }} {{ _order.billing.last_name }}</p>
           <p>{{ _order.billing.address_1 }}</p>
@@ -55,24 +55,31 @@
       <table>
         <thead>
           <tr>
-            <th>Schicht</th>
+            <th></th>
             <th>#</th>
-            <th>Preis</th>
-            <th>Total</th>
+            <th class="price">Preis</th>
+            <th class="price">Total</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of _order.line_items">
             <td>{{ item.name }}</td>
             <td>{{ item.quantity }}</td>
-            <td>${{ item.price.toFixed(2) }}</td>
-            <td>${{ (item.quantity * item.price).toFixed(2) }}</td>
+            <td class="price">
+              {{ item.price.toFixed(2) }}{{ _order.currency_symbol }}
+            </td>
+            <td class="price">
+              {{ (item.quantity * item.price).toFixed(2)
+              }}{{ _order.currency_symbol }}
+            </td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="3" class="total-label">Umkostenbeitrag</td>
-            <td class="total-value">${{ _order.total }}</td>
+            <td colspan="3" class="total-label">Kostenbeitrag</td>
+            <td class="total-value">
+              {{ _order.total }}{{ _order.currency_symbol }}
+            </td>
           </tr>
         </tfoot>
       </table>

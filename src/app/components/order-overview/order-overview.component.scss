@@ -5,7 +5,6 @@
   max-width: 800px;
   margin: 2rem auto;
   border-radius: $default-border-radius;
-  font-family: $base-font-family;
   box-shadow: $shadow-sm;
   transition: all 0.3s ease;
 
@@ -45,6 +44,11 @@
   border: 1px dashed #6bf7f7;
   padding: 0.5rem;
   border-radius: $default-border-radius;
+}
+
+.order-shipping {
+  text-align: right;
+  padding-right: 1rem;
 }
 
 .order-header {
@@ -107,15 +111,17 @@
       color: #666;
     }
 
+    .price,
+    .total {
+      text-align: right;
+    }
+
     tfoot {
       font-weight: 600;
 
-      .total-label {
-        text-align: right;
-      }
-
       .total-value {
         font-size: 1.1em;
+        text-align: right;
       }
     }
   }

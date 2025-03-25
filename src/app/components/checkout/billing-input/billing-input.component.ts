@@ -12,7 +12,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import type { WcBillingAddress } from '../../../../models/customer.model';
+import type { WcBillingAddress } from '@models/customer.model';
 import { NgFor, NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatError, MatFormFieldModule } from '@angular/material/form-field';
@@ -22,8 +22,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
-import { KonfuseGeboteDialog } from '@components/checkout/dialog/gebote-dialog.component';
 import type { BlogPost } from 'src/app/models/blog-post.model';
+import { BaseDialogData } from '@models/types.model';
+import { DialogPopupComponent } from '@shared/dialog-popup/dialog-popup.component';
 
 export interface FormOutput {
   billingAddress: WcBillingAddress;
@@ -191,13 +192,18 @@ export class BillingComponent implements OnChanges {
   }
 
   openRulesDialog(event: Event) {
+    const data: BaseDialogData = {
+      title: 'Konfuse Gebote',
+      content: this.rules()?.content.rendered,
+    };
     event.stopPropagation();
-    const rules = this.rules();
-    this.dialog.open(KonfuseGeboteDialog, {
-      data: rules,
+    this.dialog.open(DialogPopupComponent, {
+      data: data,
       width: '60vw',
-      height: '80vh',
-      minWidth: '370px',
+      height: '70vh',
+      maxWidth: '800px',
+      maxHeight: '800px',
+      minWidth: '350px',
     });
   }
 
