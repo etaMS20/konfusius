@@ -37,9 +37,8 @@ export class AppComponent implements OnInit, OnDestroy {
       })),
     );
 
-    this.updatesAvailable = this.updatesAvailable$?.subscribe((update) => {
-      console.log('Update available:', update);
-      this.promptUser(); // Optionally prompt the user when an update is available
+    this.updatesAvailable = this.updatesAvailable$?.subscribe(() => {
+      this.promptUser();
     });
 
     console.log('devMode: ', isDevMode());
@@ -50,7 +49,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private promptUser(): void {
-    console.log('updating to new version');
+    alert('A new website-version is available. The site will now update.');
     this.swUpdate.activateUpdate().then(() => document.location.reload());
   }
 }

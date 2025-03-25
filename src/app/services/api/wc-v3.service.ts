@@ -33,15 +33,12 @@ export class WcV3Service {
   }
 
   getPaymentGateway(gateway: string): Observable<WcPaymentGateway> {
-    return this.http
-      .get<WcPaymentGateway>(this.wcBackend + `/payment_gateways/${gateway}`, {
+    return this.http.get<WcPaymentGateway>(
+      this.wcBackend + `/payment_gateways/${gateway}`,
+      {
         headers: this.headers,
-      })
-      .pipe(
-        catchError((error) => {
-          this.errorService.handleError(error);
-          return throwError(() => error);
-        }),
-      );
+        withCredentials: true,
+      },
+    );
   }
 }

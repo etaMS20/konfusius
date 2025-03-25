@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   computed,
   effect,
@@ -15,7 +14,7 @@ import {
   FormOutput,
 } from '../billing/billing-input/billing-input.component';
 import { WcStoreAPI } from '../../../services/api/wc-store-api.service';
-import { catchError, Subject, throwError } from 'rxjs';
+import { catchError, Subject, takeUntil, throwError } from 'rxjs';
 import { ErrorDialogService } from '../../shared/errors/error-dialog.service';
 import { WcCart, WcCartItem, WcCheckOutData } from '../../../models/cart.model';
 import { CustomEndpointsService } from 'src/app/services/api/custom-endpoints.service';
@@ -35,7 +34,7 @@ import { LocalStorageService } from 'src/app/storage/local-storage.service';
 import { getCurrentStateBySKU } from '@utils/disclaimer.utils';
 import { LsKeys } from '@models/storage.model';
 import { CrossSaleProductId } from '@models/cross-sale.model';
-import { WcProduct } from '@models/product.model';
+import { WcPaymentGateway } from '@models/order.model';
 
 @Component({
   selector: 'app-checkout-container',
@@ -75,6 +74,7 @@ export class CheckoutContainerComponent implements OnInit, OnDestroy {
   ]);
 
   cart = signal<WcCart | null>(null);
+  gateway = signal<WcPaymentGateway | undefined>(undefined);
   cartTotals = computed(() => {
     return this.cart()?.totals ?? undefined;
   });
