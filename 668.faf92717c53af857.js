@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkkonfusius=self.webpackChunkkonfusius||[]).push([[668],{668:(f,p,d)=>{d.d(p,{Fe:()=>u});var g=d(8867),l=d(8074);let u=(()=>{class r{static \u0275fac=function(i){return new(i||r)};static \u0275mod=g.$C({type:r});static \u0275inj=g.G2t({imports:[l.Np,l.yE,l.Np,l.yE]})}return r})()}}]);
