@@ -3,15 +3,15 @@
 
   <div *ngIf="!hasItem" class="empty-cart">Your cart is empty</div>
 
-  @if (getItems(); as items) {
+  @if (mainCartItem(); as mainItem) {
     <div *ngIf="hasItem" class="cart-items">
       <div class="cart-item">
         <div class="cart-item-header">
-          {{ items.main?.name }}
+          {{ mainItem.name }}
         </div>
 
         <div class="cart-item-details">
-          @if (cartContainsVariableItem()) {
+          @if (mainItemIsVariable()) {
             <div class="cart-item-detail">
               <span class="detail-label">{{ variation?.attribute }}:</span>
               <span
@@ -24,14 +24,14 @@
           <div class="cart-item-detail">
             <span class="detail-label">Kostenbeitrag:</span>
             <span class="detail-value">{{
-              getCartItemTotalPrice(items.main)
+              getCartItemTotalPrice(mainItem)
             }}</span>
           </div>
 
           <div class="cart-item-detail">
             <span class="detail-label">{{ ticketCategory }}</span>
             <span class="detail-value"
-              >+{{ getCartItemTotalPrice(items.sub) }}</span
+              >+{{ getCartItemTotalPrice(crossSaleCartItem()) }}</span
             >
           </div>
         </div>

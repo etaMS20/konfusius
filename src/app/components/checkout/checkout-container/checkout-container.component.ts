@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   computed,
+  effect,
   inject,
   OnDestroy,
   OnInit,
@@ -16,7 +17,7 @@ import {
 import { WcStoreAPI } from '../../../services/api/wc-store-api.service';
 import { catchError, Subject, throwError } from 'rxjs';
 import { ErrorDialogService } from '../../shared/errors/error-dialog.service';
-import { WcCart, WcCheckOutData } from '../../../models/cart.model';
+import { WcCart, WcCartItem, WcCheckOutData } from '../../../models/cart.model';
 import { CustomEndpointsService } from 'src/app/services/api/custom-endpoints.service';
 import { BlogPost, BlogPostId } from 'src/app/models/blog-post.model';
 import { WordPressApiService } from 'src/app/services/api/wp-api.service';
@@ -26,7 +27,15 @@ import { indicate } from '@utils/reactive-loading.utils';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ConditionsComponent } from '../conditions/conditions.component';
-import { DisclaimerState } from '@models/disclaimer.model';
+import {
+  DisclaimerState,
+  DisclaimerStateStore,
+} from '@models/disclaimer.model';
+import { LocalStorageService } from 'src/app/storage/local-storage.service';
+import { getCurrentStateBySKU } from '@utils/disclaimer.utils';
+import { LsKeys } from '@models/storage.model';
+import { CrossSaleProductId } from '@models/cross-sale.model';
+import { WcProduct } from '@models/product.model';
 
 @Component({
   selector: 'app-checkout-container',
@@ -47,19 +56,52 @@ export class CheckoutContainerComponent implements OnInit, OnDestroy {
   wpApi = inject(WordPressApiService);
   errorService = inject(ErrorDialogService);
   customEpS = inject(CustomEndpointsService);
+  lsService = inject(LocalStorageService);
   private readonly cryptoService = inject(EncryptionService);
   private readonly router = inject(Router);
 
+  mainItem?: WcCartItem;
+  crossSaleItem?: WcCartItem;
+
   private readonly destroy$ = new Subject<void>();
   loading$ = new Subject<boolean>();
-  cart = signal<WcCart | null>(null);
   allowedOptions = signal<string[]>([]);
   rules = signal<BlogPost | undefined>(undefined);
   disclaimerState?: DisclaimerState;
+  excludedIds = new Set([
+    CrossSaleProductId.SOLI,
+    CrossSaleProductId.KONFUSIUS,
+    CrossSaleProductId.GOENNER,
+  ]);
 
+  cart = signal<WcCart | null>(null);
+  cartTotals = computed(() => {
+    return this.cart()?.totals ?? undefined;
+  });
+  cartItems = computed(() => {
+    return this.cart()?.items?.length ? this.cart()?.items : undefined;
+  });
   billingAddress = computed(() => {
     return this.cart()?.billing_address;
   });
+
+  constructor() {
+    effect(() => {
+      this.mainItem = this.cartItems()?.find(
+        (item) => !this.excludedIds.has(item.id),
+      );
+      this.crossSaleItem = this.cartItems()?.find((item) =>
+        this.excludedIds.has(item.id),
+      );
+
+      if (this.mainItem) {
+        this.disclaimerState = getCurrentStateBySKU(
+          this.lsService.getItem<DisclaimerStateStore>(LsKeys.DISC_STATE) ?? {},
+          this.mainItem.sku,
+        );
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.loading$.next(true);

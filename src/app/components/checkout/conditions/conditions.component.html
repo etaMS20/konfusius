@@ -1,9 +1,15 @@
 <div class="conditions-container">
-  <div class="conditions-items">
-    <div class="disclaimer-condition">
-      <div class="cart-item-details">
-        <span>Disclaimer Akzeptiert: {{ disclaimerState()?.understood }}</span>
-      </div>
+  <div class="condition-disclaimer">
+    <h4>Disclaimer</h4>
+    <div class="disclaimer-state">
+      <span>Akzeptiert: </span>
+      <mat-icon>{{
+        disclaimerState()?.understood ? 'check' : 'close'
+      }}</mat-icon>
+    </div>
+    <div class="disclaimer-state">
+      <span>Erfahrung: </span>
+      <span>{{ disclaimerState()?.experience }}</span>
     </div>
   </div>
 </div>

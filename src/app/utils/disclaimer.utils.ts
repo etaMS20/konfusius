@@ -1,4 +1,9 @@
-import { Disclaimer, DisclaimerAttributeKey } from '@models/disclaimer.model';
+import {
+  Disclaimer,
+  DisclaimerAttributeKey,
+  DisclaimerState,
+  DisclaimerStateStore,
+} from '@models/disclaimer.model';
 import { WcProduct, WcProductAttribute } from '@models/product.model';
 
 export function getDisclaimer(p: WcProduct): Disclaimer {
@@ -14,4 +19,11 @@ export function getDisclaimer(p: WcProduct): Disclaimer {
         attr.name === DisclaimerAttributeKey.TEXTBOX,
     )?.terms[0].name,
   };
+}
+
+export function getCurrentStateBySKU(
+  store: DisclaimerStateStore,
+  sku?: string,
+): DisclaimerState | undefined {
+  return sku ? store[sku] : undefined;
 }

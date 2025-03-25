@@ -152,7 +152,6 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
       ? this.selectForm.get('variationId')!.value
       : this.product()?.id;
 
-    console.log(this.selectedCossSaleItemId());
     if (checkoutId) {
       const batchIds = [checkoutId, this.selectedCossSaleItemId()];
 

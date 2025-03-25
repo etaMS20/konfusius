@@ -18,7 +18,7 @@ export interface DisclaimerState {
   experience?: string;
 }
 
-export type DisclaimerStateStore = Record<number, DisclaimerState>;
+export type DisclaimerStateStore = Record<string, DisclaimerState>;
 
 export type Disclaimer = {
   content?: string;

@@ -16,12 +16,13 @@
     </div>
 
     <!-- Product Disclaimer -->
-    @if (currentSelectedId && selectedProdDisclaimer(); as disc) {
+    @if (selectedProdDisclaimer(); as disc) {
       <app-disclaimer
-        *ngIf="disc.content"
+        *ngIf="disc.content && showDisclaimer && selectedProduct() as p"
         (abortDisclaimer)="onCloseDisclaimer()"
+        (submitDisclaimer)="onDisclaimerSubmit()"
         [disclaimer]="disc"
-        [productId]="currentSelectedId"
+        [product]="p"
       ></app-disclaimer>
     }
     <!-- Product Details -->

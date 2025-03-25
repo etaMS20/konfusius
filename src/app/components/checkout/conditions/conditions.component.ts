@@ -1,10 +1,11 @@
 import { Component, input } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { DisclaimerState } from '@models/disclaimer.model';
 import { WcPaymentGateway } from '@models/order.model';
 
 @Component({
   selector: 'app-conditions',
-  imports: [],
+  imports: [MatIconModule],
   templateUrl: './conditions.component.html',
   styleUrl: './conditions.component.scss',
 })

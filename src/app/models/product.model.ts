@@ -32,6 +32,7 @@ export interface WcProduct {
   variations?: Array<WcProductVariation>;
   prices: WcPrice;
   images: Array<WcProductImage>;
+  sku: string;
 }
 
 export interface WcProductImage {

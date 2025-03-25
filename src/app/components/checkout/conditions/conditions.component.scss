@@ -1,7 +1,36 @@
+@use 'src/styles/style-vars.scss' as *;
+
 .conditions-container {
-  margin: 0 auto;
+  margin: 0.5rem auto;
   padding: 20px;
   border: 1px solid #e0e0e0;
   border-radius: 5px;
   background-color: #fff;
+
+  h4 {
+    justify-self: center;
+  }
+
+  @media (max-width: $breakpoint-mobile) {
+    padding: 0.5rem;
+
+    span {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.condition-disclaimer {
+  padding: 0;
+}
+
+.disclaimer-state {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 15px;
+  border-bottom: 1px solid #f5f5f5;
+
+  &:last-child {
+    border-bottom: none;
+  }
 }

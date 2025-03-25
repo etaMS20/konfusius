@@ -7,8 +7,8 @@ import {
   inject,
   input,
   OnDestroy,
-  OnInit,
   Output,
+  signal,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -27,9 +27,11 @@ import {
   DisclaimerState,
   DisclaimerStateStore,
 } from '@models/disclaimer.model';
+import { WcProduct } from '@models/product.model';
 import { LsKeys } from '@models/storage.model';
 import { SafeHtmlPipe } from '@pipes//safe-html.pipe';
 import { ClientDeviceService } from '@services/client-device.service';
+import { getCurrentStateBySKU } from '@utils/disclaimer.utils';
 import { Subject, takeUntil } from 'rxjs';
 import { LocalStorageService } from 'src/app/storage/local-storage.service';
 
@@ -51,27 +53,30 @@ import { LocalStorageService } from 'src/app/storage/local-storage.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DisclaimerComponent implements OnDestroy {
-  formG: FormGroup;
+  formG!: FormGroup;
   deviceService = inject(ClientDeviceService);
   lsService = inject(LocalStorageService);
   disclaimer = input.required<Disclaimer>();
-  productId = input.required<number>();
+  currentStore = signal<DisclaimerStateStore>(
+    this.lsService.getItem(LsKeys.DISC_STATE) ?? {},
+  );
+  product = input.required<WcProduct>();
 
   /** inputs and outputs */
-  disclaimerState$ = this.lsService.getItem$<DisclaimerState>(
-    LsKeys.DISC_STATE,
-  );
   @Output() abortDisclaimer: EventEmitter<boolean> =
+    new EventEmitter<boolean>();
+  @Output() submitDisclaimer: EventEmitter<boolean> =
     new EventEmitter<boolean>();
 
   private readonly destroy$ = new Subject<void>();
-  showDisclaimer: boolean = false;
 
   constructor(private readonly fb: FormBuilder) {
-    effect(() => {
-      this.productId();
-      this.lsService.removeItem(LsKeys.DISC_STATE);
-    });
+    /** Disable background scroll for touch devices */
+    this.deviceService.isTouchDevice
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isTouchDevice) => {
+        document.body.style.overflow = isTouchDevice ? 'hidden' : '';
+      });
 
     this.formG = this.fb.group<DisclaimerFormControl>({
       understood: new FormControl(false, {
@@ -84,21 +89,20 @@ export class DisclaimerComponent implements OnDestroy {
       }),
     });
 
-    /** Disable background scroll for touch devices */
-    this.deviceService.isTouchDevice
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((isTouchDevice) => {
-        document.body.style.overflow = isTouchDevice ? 'hidden' : '';
-      });
-
-    this.disclaimerState$.pipe(takeUntil(this.destroy$)).subscribe((state) => {
-      this.showDisclaimer = !state?.understood;
-      console.log(this.lsService.getItem(LsKeys.DISC_STATE));
+    // on productId change -> also change the current form values
+    effect(() => {
+      this.formG.controls['understood'].setValue(
+        getCurrentStateBySKU(this.currentStore(), this.product().sku)
+          ?.understood,
+      );
+      this.formG.controls['experience'].setValue(
+        getCurrentStateBySKU(this.currentStore(), this.product().sku)
+          ?.experience,
+      );
     });
   }
 
   ngOnDestroy() {
-    // trigger the slide-out animation
     document.body.style.overflow = '';
     this.destroy$.next();
     this.destroy$.complete();
@@ -106,10 +110,12 @@ export class DisclaimerComponent implements OnDestroy {
 
   onSubmit() {
     if (this.formG.valid) {
-      this.lsService.setItem<DisclaimerState>(
+      const currentStore = this.currentStore() || {};
+      this.lsService.setItem<DisclaimerStateStore>(
         LsKeys.DISC_STATE,
-        this.formG.value,
+        Object.assign(currentStore, { [this.product().sku]: this.formG.value }),
       );
+      this.submitDisclaimer.emit(true); // tell parent that disclaimer got submitted
     } else {
       this.formG.controls['understood'].markAllAsTouched();
     }
@@ -117,10 +123,11 @@ export class DisclaimerComponent implements OnDestroy {
 
   onClose(event: Event) {
     event.stopPropagation();
+    const currentStore = this.currentStore() || {};
     this.formG.reset();
     this.lsService.setItem<DisclaimerStateStore>(
       LsKeys.DISC_STATE,
-      this.formG.value,
+      Object.assign(currentStore, { [this.product().sku]: this.formG.value }),
     );
     this.abortDisclaimer.emit();
   }

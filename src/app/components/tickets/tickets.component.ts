@@ -26,7 +26,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { crossSaleProductCat } from '@models/cross-sale.model';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
 import { DisclaimerComponent } from './disclaimer/disclaimer.component';
-import { Disclaimer, DisclaimerState } from '@models/disclaimer.model';
+import { Disclaimer } from '@models/disclaimer.model';
 import { LocalStorageService } from 'src/app/storage/local-storage.service';
 import { getDisclaimer } from '@utils/disclaimer.utils';
 
@@ -57,6 +57,8 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   listVariations = ['instock']; // add 'outofstock' here, to show out-of-stock variations
   currentSelectedId?: number;
   currentSelectedSingle?: boolean;
+  currentSelectedSKU?: string;
+  showDisclaimer: boolean = true; // in the base case: show the disclaimer
 
   /** loading */
   viewLoading = true;
@@ -108,6 +110,7 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.products.set(products);
 
       this.selectedProductId$.pipe(takeUntil(this.destroy$)).subscribe((id) => {
+        this.showDisclaimer = true;
         this.currentSelectedId = id;
         this.currentSelectedSingle =
           id !== undefined && this.singleProductSet().has(id);
@@ -133,12 +136,6 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  /**
-   * Since we get the whole collection response on init,
-   * in case the user selects a product thats variable,
-   * we don't need to explicitly query the product again.
-   * We just need to query the variations
-   */
   getSelectedProduct(id?: number): WcProduct | undefined {
     return this.products().find((p) => p.id === id);
   }
@@ -192,8 +189,13 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onCloseDisclaimer() {
-    // unselect the product on close because disclaimer aborted
+    // unselect the product which will also destroy the disclaimer
     this.lsService.removeItem(LsKeys.PRD_SEL_ID);
+  }
+
+  onDisclaimerSubmit() {
+    // destroy disclaimer on submit
+    this.showDisclaimer = false;
   }
 
   initProducts() {
