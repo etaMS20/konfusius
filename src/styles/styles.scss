@@ -39,23 +39,30 @@ html {
   );
 
   .slimline {
-    .radio-label {
-      p {
-        font-size: 1rem;
-        margin: 0.2rem;
-        @media (max-width: $breakpoint-mobile-tilt) {
-          font-size: 0.9rem;
-        }
-      }
-    }
-    // @include mat.form-field-density(-3);
     @include mat.all-component-densities(-3);
+    @include mat.form-field-density(-4);
     @media (max-width: $breakpoint-mobile) {
       margin-bottom: 0.25rem;
     }
     @media (max-width: $breakpoint-mobile-tilt) {
       font-size: 0.8rem;
       margin: 0.1rem;
+    }
+
+    .radio-label {
+      p {
+        font-size: 0.8rem;
+        margin: 0.2rem;
+        @media (max-width: $breakpoint-mobile-tilt) {
+          font-size: 0.7rem;
+        }
+      }
+    }
+  }
+
+  .slimline-mobile {
+    @media (max-width: $breakpoint-mobile-tilt) {
+      @include mat.all-component-densities(-3);
     }
   }
 }
@@ -151,6 +158,23 @@ mat-error {
   font-size: 0.875rem;
   display: block; // Ensures the error message is on its own line
   margin-top: 4px; // Adds some spacing between the input and the error message
+}
+
+@media (max-width: $breakpoint-mobile-tilt) {
+  mat-expansion-panel-header {
+    font-size: 0.8rem;
+    line-height: 1rem;
+  }
+
+  mat-panel-title {
+    font-size: 0.8rem;
+    line-height: 1rem;
+  }
+
+  .mat-expansion-panel-body {
+    padding: 0 5px 5px !important;
+    font-size: 0.8rem;
+  }
 }
 
 .fixed-spinner {
