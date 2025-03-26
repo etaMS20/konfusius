@@ -131,8 +131,11 @@ export class CheckoutContainerComponent implements OnInit, OnDestroy {
   }
 
   onBillingFormSubmit(fromValues: FormOutput) {
+    console.log(fromValues, this.disclaimerState);
     const checkoutData: WcCheckOutData = {
-      // disclaimer_valid: "",
+      disclaimer_confirm: this.disclaimerState?.understood,
+      disclaimer_experience: this.disclaimerState?.experience,
+      gebote_confirm: fromValues.consent,
       invited_by: fromValues.invited_by,
       billing_address: fromValues.billingAddress,
       payment_method: 'cod',

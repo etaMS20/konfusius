@@ -59,8 +59,10 @@ export interface WcCartItem {
 }
 
 export interface WcCheckOutData {
-  disclaimer_valid?: boolean;
   invited_by: string;
+  gebote_confirm: boolean;
+  disclaimer_confirm?: boolean;
+  disclaimer_experience?: string;
   billing_address: WcBillingAddress;
   payment_method: string;
   customer_note?: string;

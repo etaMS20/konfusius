@@ -1,10 +1,11 @@
+import { NgIf } from '@angular/common';
 import { Component, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { DisclaimerState } from '@models/disclaimer.model';
 
 @Component({
   selector: 'app-conditions',
-  imports: [MatIconModule],
+  imports: [MatIconModule, NgIf],
   templateUrl: './conditions.component.html',
   styleUrl: './conditions.component.scss',
 })

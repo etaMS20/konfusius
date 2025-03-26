@@ -7,8 +7,11 @@
     <h4>Disclaimer Akzeptiert:</h4>
     <mat-icon>{{ disclaimerState()?.understood ? 'check' : 'close' }}</mat-icon>
   </div>
-  <div class="disclaimer-experience">
+  <div
+    class="disclaimer-experience"
+    *ngIf="disclaimerState()?.experience as xp"
+  >
     <h4>Disclaimer Erfahrung:</h4>
-    <span>{{ disclaimerState()?.experience }}</span>
+    <span>{{ xp }}</span>
   </div>
 </div>
