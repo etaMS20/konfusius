@@ -1,0 +1,38 @@
+.image-gallery {
+  display: columns;
+  column-count: 3;
+  column-gap: 16px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.image-container {
+  break-inside: avoid;
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.image-container:hover {
+  transform: scale(1.02);
+}
+
+.image-container img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+@media (max-width: 1024px) {
+  .image-gallery {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .image-gallery {
+    column-count: 1;
+  }
+}

@@ -1,1 +1,14 @@
-<p>gallery works!</p>
+<div class="image-gallery">
+  <div
+    *ngFor="let image of images()"
+    class="image-container"
+    (click)="openImageModal(image)"
+  >
+    <img
+      [src]="image.url"
+      [alt]="image.alt || 'Gallery image'"
+      [title]="image.title"
+      loading="lazy"
+    />
+  </div>
+</div>
