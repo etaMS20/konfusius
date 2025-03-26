@@ -21,6 +21,8 @@
         <p>
           <strong>vom:</strong> {{ _order.date_created | humanReadableDate }}
         </p>
+        <p><strong>Zahlungsmethode:</strong> {{ gateway()?.title }}</p>
+        <p class="gw-description">{{ gateway()?.description }}</p>
       </div>
 
       <div class="order-shipping">
@@ -39,9 +41,8 @@
 
     <div class="order-text">
       <p>
-        Du solltest jetzt eine email bekommen haben, mit einem Link zum
-        Bestellstatus. Ist der Umkostenbeitrag bei der Kontaktperson angekommen,
-        setzten wir den Status von 'processing' auf 'completed'
+        Du solltest jetzt eine vorläufige Bestätigungs-mail bekommen haben. Hat
+        die Kontaktperson den Abschluss bestätigt, folgt eine separate mail.
         <mat-icon>favorite</mat-icon>
       </p>
       <p>

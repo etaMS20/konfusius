@@ -169,8 +169,8 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   get getProductCat(): number {
-    const storedCat = localStorage.getItem(LsKeys.USER_PRODUCT_CAT);
-    return storedCat ? parseInt(storedCat) : 22;
+    const storedCat = this.lsService.getItem<number>(LsKeys.USER_PRODUCT_CAT);
+    return storedCat ?? 22;
   }
 
   ngOnDestroy() {
