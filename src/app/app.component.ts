@@ -6,6 +6,7 @@ import { filter, map, Observable, Subscription } from 'rxjs';
 import { FooterComponent } from '@components/footer/footer.component';
 import { BackgroundComponent } from './components/shared/background/background.component';
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
+import { APP_VERSION } from '@config/http.config';
 
 @Component({
   selector: 'app-root',
@@ -49,7 +50,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private promptUser(): void {
-    alert('A new website-version is available. The site will now update.');
+    alert(
+      `A new website-version (v${APP_VERSION}) is available. The site will now update.`,
+    );
     this.swUpdate.activateUpdate().then(() => document.location.reload());
   }
 }

@@ -91,14 +91,12 @@ export class DisclaimerComponent implements OnDestroy {
 
     // on productId change -> also change the current form values
     effect(() => {
-      this.formG.controls['understood'].setValue(
-        getCurrentStateBySKU(this.currentStore(), this.product().sku)
-          ?.understood,
-      );
+      this.formG.controls['understood'].setValue(false); // reset to false
       this.formG.controls['experience'].setValue(
         getCurrentStateBySKU(this.currentStore(), this.product().sku)
           ?.experience,
       );
+      this.formG.controls['understood'].markAllAsTouched(); // mark touched
     });
   }
 
@@ -116,8 +114,6 @@ export class DisclaimerComponent implements OnDestroy {
         Object.assign(currentStore, { [this.product().sku]: this.formG.value }),
       );
       this.submitDisclaimer.emit(true); // tell parent that disclaimer got submitted
-    } else {
-      this.formG.controls['understood'].markAllAsTouched();
     }
   }
 

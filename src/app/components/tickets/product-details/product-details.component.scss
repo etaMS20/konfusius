@@ -35,7 +35,7 @@ $animation-duration: 0.3s;
       grid-template-rows: auto auto;
     }
 
-    // Left container with product info
+    // left container with product info
     .left-container {
       h4 {
         margin: 0 0 8px 0;
@@ -45,7 +45,7 @@ $animation-duration: 0.3s;
 
       p {
         margin: 0;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         color: #555;
       }
 
@@ -53,10 +53,15 @@ $animation-duration: 0.3s;
         grid-row: 1;
         text-align: center;
         margin-bottom: 8px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
 
         h4 {
           margin: 0;
-          font-size: 1rem;
+          font-size: 0.9rem;
         }
       }
     }
