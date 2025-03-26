@@ -106,18 +106,10 @@ export class WcStoreAPI {
   // checkout
 
   checkout(data: WcCheckOutData): Observable<any> {
-    return this.http.post(
-      this.storeApiBackend + '/checkout',
-      {
-        invited_by: data.invited_by,
-        billing_address: data.billing_address,
-        payment_method: data.payment_method,
-        payment_data: data.payment_data,
-        shipping_address: data.shipping_address,
-        customerNote: data.customer_note,
-      },
-      { headers: this.headers, withCredentials: true },
-    );
+    return this.http.post(this.storeApiBackend + '/checkout', data, {
+      headers: this.headers,
+      withCredentials: true,
+    });
   }
 
   checkoutOrder(

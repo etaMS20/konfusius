@@ -5,7 +5,7 @@ import { catchError, map, Observable, of } from 'rxjs';
 import { GuestAuth } from './auth.model';
 import shajs from 'sha.js';
 import { authProductCatMap, AuthType } from '@models/auth.model';
-import { LocalStorageKeys } from '@models/storage.model';
+import { LsKeys } from '@models/storage.model';
 
 @Injectable({
   providedIn: 'root',
@@ -36,19 +36,19 @@ export class AuthService {
   login(passwordInput: string) {
     const inputHash = this.hashPassword(passwordInput);
     if (inputHash && inputHash === this.guestPwHash) {
-      localStorage.setItem(LocalStorageKeys.GUEST_AUTH, inputHash);
-      localStorage.removeItem(LocalStorageKeys.CREW_AUTH);
+      localStorage.setItem(LsKeys.GUEST_AUTH, inputHash);
+      localStorage.removeItem(LsKeys.CREW_AUTH);
       localStorage.setItem(
-        LocalStorageKeys.USER_PRODUCT_CAT,
+        LsKeys.USER_PRODUCT_CAT,
         authProductCatMap[AuthType.GUEST].toString(),
       );
       this.userAuthType.set(AuthType.GUEST);
       return true;
     } else if (inputHash && inputHash === this.crewPwHash) {
-      localStorage.setItem(LocalStorageKeys.CREW_AUTH, inputHash);
-      localStorage.removeItem(LocalStorageKeys.GUEST_AUTH);
+      localStorage.setItem(LsKeys.CREW_AUTH, inputHash);
+      localStorage.removeItem(LsKeys.GUEST_AUTH);
       localStorage.setItem(
-        LocalStorageKeys.USER_PRODUCT_CAT,
+        LsKeys.USER_PRODUCT_CAT,
         authProductCatMap[AuthType.CREW].toString(),
       );
       this.userAuthType.set(AuthType.CREW);
@@ -59,13 +59,13 @@ export class AuthService {
 
   isAuthenticatedBase(): boolean {
     return (
-      localStorage.getItem(LocalStorageKeys.GUEST_AUTH) === this.guestPwHash ||
+      localStorage.getItem(LsKeys.GUEST_AUTH) === this.guestPwHash ||
       this.isAuthenticatedCrew()
     );
   }
 
   isAuthenticatedCrew(): boolean {
-    return localStorage.getItem(LocalStorageKeys.CREW_AUTH) === this.crewPwHash;
+    return localStorage.getItem(LsKeys.CREW_AUTH) === this.crewPwHash;
   }
 
   // on logout remove all storage items

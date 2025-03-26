@@ -1,7 +1,7 @@
 import {
-  AfterViewInit,
   Component,
   computed,
+  effect,
   inject,
   OnDestroy,
   OnInit,
@@ -12,11 +12,11 @@ import { CartTotalsComponent } from '../cart-totals/cart-totals.component';
 import {
   BillingComponent,
   FormOutput,
-} from '../billing/billing-input/billing-input.component';
+} from '../billing-input/billing-input.component';
 import { WcStoreAPI } from '../../../services/api/wc-store-api.service';
 import { catchError, Subject, throwError } from 'rxjs';
 import { ErrorDialogService } from '../../shared/errors/error-dialog.service';
-import { WcCart, WcCheckOutData } from '../../../models/cart.model';
+import { WcCart, WcCartItem, WcCheckOutData } from '../../../models/cart.model';
 import { CustomEndpointsService } from 'src/app/services/api/custom-endpoints.service';
 import { BlogPost, BlogPostId } from 'src/app/models/blog-post.model';
 import { WordPressApiService } from 'src/app/services/api/wp-api.service';
@@ -25,9 +25,15 @@ import { EncryptionService } from '@services/encryption.service';
 import { indicate } from '@utils/reactive-loading.utils';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { DisclaimerStateService } from '@services/disclaimer-state.service';
 import { ConditionsComponent } from '../conditions/conditions.component';
-import { DisclaimerForm, DisclaimerFormStore } from '@models/disclaimer.model';
+import {
+  DisclaimerState,
+  DisclaimerStateStore,
+} from '@models/disclaimer.model';
+import { LocalStorageService } from 'src/app/storage/local-storage.service';
+import { getCurrentStateBySKU } from '@utils/disclaimer.utils';
+import { LsKeys } from '@models/storage.model';
+import { CrossSaleProductId } from '@models/cross-sale.model';
 
 @Component({
   selector: 'app-checkout-container',
@@ -48,20 +54,52 @@ export class CheckoutContainerComponent implements OnInit, OnDestroy {
   wpApi = inject(WordPressApiService);
   errorService = inject(ErrorDialogService);
   customEpS = inject(CustomEndpointsService);
-  private readonly disclaimerStateS = inject(DisclaimerStateService);
+  lsService = inject(LocalStorageService);
   private readonly cryptoService = inject(EncryptionService);
   private readonly router = inject(Router);
 
+  mainItem?: WcCartItem;
+  crossSaleItem?: WcCartItem;
+
   private readonly destroy$ = new Subject<void>();
   loading$ = new Subject<boolean>();
-  cart = signal<WcCart | null>(null);
   allowedOptions = signal<string[]>([]);
   rules = signal<BlogPost | undefined>(undefined);
-  disclaimerState?: DisclaimerForm;
+  disclaimerState?: DisclaimerState;
+  excludedIds = new Set([
+    CrossSaleProductId.SOLI,
+    CrossSaleProductId.KONFUSIUS,
+    CrossSaleProductId.GOENNER,
+  ]);
 
+  cart = signal<WcCart | null>(null);
+  cartTotals = computed(() => {
+    return this.cart()?.totals ?? undefined;
+  });
+  cartItems = computed(() => {
+    return this.cart()?.items?.length ? this.cart()?.items : undefined;
+  });
   billingAddress = computed(() => {
     return this.cart()?.billing_address;
   });
+
+  constructor() {
+    effect(() => {
+      this.mainItem = this.cartItems()?.find(
+        (item) => !this.excludedIds.has(item.id),
+      );
+      this.crossSaleItem = this.cartItems()?.find((item) =>
+        this.excludedIds.has(item.id),
+      );
+
+      if (this.mainItem) {
+        this.disclaimerState = getCurrentStateBySKU(
+          this.lsService.getItem<DisclaimerStateStore>(LsKeys.DISC_STATE) ?? {},
+          this.mainItem.sku,
+        );
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.loading$.next(true);
@@ -85,8 +123,6 @@ export class CheckoutContainerComponent implements OnInit, OnDestroy {
     this.customEpS.listAllowedInvites().subscribe((response: string[]) => {
       this.allowedOptions.set(response);
     });
-
-    this.disclaimerState = this.disclaimerStateS.getState;
   }
 
   ngOnDestroy(): void {
@@ -95,8 +131,11 @@ export class CheckoutContainerComponent implements OnInit, OnDestroy {
   }
 
   onBillingFormSubmit(fromValues: FormOutput) {
+    console.log(fromValues, this.disclaimerState);
     const checkoutData: WcCheckOutData = {
-      disclaimer_valid: this.disclaimerStateS.validateContext(),
+      disclaimer_confirm: this.disclaimerState?.understood,
+      disclaimer_experience: this.disclaimerState?.experience,
+      gebote_confirm: fromValues.consent,
       invited_by: fromValues.invited_by,
       billing_address: fromValues.billingAddress,
       payment_method: 'cod',

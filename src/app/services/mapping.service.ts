@@ -25,6 +25,7 @@ export class MappingService {
       variations: data.variations,
       prices: data.prices,
       images: data.images,
+      sku: data.sku,
     };
   }
 

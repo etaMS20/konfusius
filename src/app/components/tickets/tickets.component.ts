@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   inject,
   OnDestroy,
   OnInit,
@@ -19,16 +18,17 @@ import {
 } from '@models/product.model';
 import { MappingService } from '@services/mapping.service';
 import { WcStoreAPI } from '@services/api/wc-store-api.service';
-import { catchError, Subject, switchMap, takeUntil, throwError } from 'rxjs';
+import { catchError, Subject, takeUntil, throwError } from 'rxjs';
 import { ProductComponent } from './product/product.component';
-import { LocalStorageKeys } from '@models/storage.model';
+import { LsKeys } from '@models/storage.model';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { crossSaleProductCat } from '@models/cross-sale.model';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
 import { DisclaimerComponent } from './disclaimer/disclaimer.component';
-import { DisclaimerForm } from '@models/disclaimer.model';
-import { DisclaimerStateService } from '@services/disclaimer-state.service';
+import { Disclaimer } from '@models/disclaimer.model';
+import { LocalStorageService } from 'src/app/storage/local-storage.service';
+import { getDisclaimer } from '@utils/disclaimer.utils';
 
 @Component({
   selector: 'app-tickets',
@@ -47,45 +47,45 @@ import { DisclaimerStateService } from '@services/disclaimer-state.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
-  private readonly destroy$ = new Subject<void>();
+  /** injectable */
   private readonly mappingService = inject(MappingService);
   private readonly errorService = inject(ErrorDialogService);
-  private readonly disclaimerStateS = inject(DisclaimerStateService);
   private readonly wcStore = inject(WcStoreAPI);
+  private readonly lsService = inject(LocalStorageService);
+
+  /** basic variables */
   listVariations = ['instock']; // add 'outofstock' here, to show out-of-stock variations
+  currentSelectedId?: number;
+  currentSelectedSingle?: boolean;
+  currentSelectedSKU?: string;
+  showDisclaimer: boolean = true; // in the base case: show the disclaimer
 
   /** loading */
   viewLoading = true;
   productsLoading = signal<boolean>(false);
 
+  /** observables and subjects */
+  private readonly destroy$ = new Subject<void>();
+  selectedProductId$ = this.lsService.getItem$<number>(LsKeys.PRD_SEL_ID);
+
   /** signals */
   products = signal<Array<WcProduct>>([]);
   crossSaleProducts = signal<Array<WcProduct>>([]);
   selectedProduct = signal<WcProduct | undefined>(undefined);
-  isSelectedProductVariable = signal<boolean>(false);
   selectedProductVariations = signal<Array<WcProductVariationDetails> | []>([]);
-  selectedProductId = computed(() => {
-    return this.selectedProduct()?.id;
-  });
-  selectedProductHasDisclaimer = computed(() => {
-    return this.disclaimerStateS.hasProductDisclaimer(
-      this.selectedProduct()?.id,
-    );
-  });
-  /** returns true, if the selectedProduct is marked as having a disclaimer and its valid */
-  selectedProductValidDisclaimer = computed(() => {
-    if (this.selectedProductHasDisclaimer()) {
-      return this.disclaimerStateS.validateDisclaimerState(
-        this.selectedProduct()!.id,
-      );
-    } else return false;
-  });
-  /** on signal change, will set the disclaimer for the product */
-  setDisclaimer = effect(() => {
+
+  selectedProdDisclaimer = computed<Disclaimer | undefined>(() => {
     const product = this.selectedProduct();
-    if (this.selectedProductHasDisclaimer()) {
-      this.disclaimerStateS.setDisclaimer(product!);
-    }
+    return product ? getDisclaimer(product) : undefined;
+  });
+
+  // set of products that are not variable as signal
+  singleProductSet = computed<Set<number>>(() => {
+    return new Set(
+      this.products()
+        .filter((product) => product.type !== WcProductTypes.VARIABLE)
+        .map((product) => product.id), // Extract IDs
+    );
   });
 
   // TODO
@@ -102,12 +102,21 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.initProducts();
     this.queryCrossSaleOptions();
+    this.initProducts().subscribe((response) => {
+      const products = response.map((product: any) =>
+        this.mappingService.mapProduct(product),
+      );
+      this.products.set(products);
 
-    const storedSelect = this.getStoredSelect();
-    // query the product and set it as selected
-    if (storedSelect) this.querySelectedProduct(storedSelect);
+      this.selectedProductId$.pipe(takeUntil(this.destroy$)).subscribe((id) => {
+        this.showDisclaimer = true;
+        this.currentSelectedId = id;
+        this.currentSelectedSingle =
+          id !== undefined && this.singleProductSet().has(id);
+        this.selectProduct(id);
+      });
+    });
   }
 
   private queryCrossSaleOptions() {
@@ -127,56 +136,40 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  private querySelectedProduct(id: number) {
-    this.productsLoading.set(true);
-    this.wcStore
-      .getProductById(id)
-      .pipe(
-        takeUntil(this.destroy$),
-        catchError((error) => {
-          this.productsLoading.set(false);
-          this.errorService.handleError(error);
-          return throwError(() => error);
-        }),
-        switchMap((product) => {
-          this.selectedProduct.set(product);
-          this.productsLoading.set(false);
-
-          if (product.type === WcProductTypes.VARIABLE) {
-            this.isSelectedProductVariable.set(true);
-            this.productsLoading.set(true);
-            return this.wcStore.listProductVariations(id, this.listVariations);
-          } else {
-            this.isSelectedProductVariable.set(false);
-            return []; // Return an empty array if it's not a variable product
-          }
-        }),
-        takeUntil(this.destroy$),
-      )
-      .pipe(
-        catchError((error) => {
-          this.productsLoading.set(false);
-          this.errorService.handleError(error);
-          return throwError(() => error);
-        }),
-      )
-      .subscribe((response) => {
-        this.selectedProductVariations.set(response.length > 0 ? response : []);
-        this.productsLoading.set(false);
-      });
+  getSelectedProduct(id?: number): WcProduct | undefined {
+    return this.products().find((p) => p.id === id);
   }
 
-  private getStoredSelect(): number | undefined {
-    const storedItem = localStorage.getItem(
-      LocalStorageKeys.PRODUCT_SELECTED_ID,
-    );
-    let storedId = undefined;
-    if (storedItem) storedId = parseInt(storedItem, 10);
-    return storedId;
+  private selectProduct(id?: number) {
+    this.selectedProduct.set(this.getSelectedProduct(id));
+    if (id) {
+      this.productsLoading.set(true);
+
+      if (this.currentSelectedSingle) {
+        this.productsLoading.set(false);
+      } else {
+        this.wcStore
+          .listProductVariations(id, this.listVariations)
+          .pipe(
+            takeUntil(this.destroy$),
+            catchError((error) => {
+              this.productsLoading.set(false);
+              this.errorService.handleError(error);
+              return throwError(() => error);
+            }),
+          )
+          .subscribe((response) => {
+            this.selectedProductVariations.set(
+              response.length > 0 ? response : [],
+            );
+            this.productsLoading.set(false);
+          });
+      }
+    }
   }
 
   get getProductCat(): number {
-    const storedCat = localStorage.getItem(LocalStorageKeys.USER_PRODUCT_CAT);
+    const storedCat = localStorage.getItem(LsKeys.USER_PRODUCT_CAT);
     return storedCat ? parseInt(storedCat) : 22;
   }
 
@@ -189,37 +182,30 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   onProductSelected(id: number | null): void {
     if (id === null) {
       this.selectedProduct.set(undefined);
-      localStorage.removeItem(LocalStorageKeys.PRODUCT_SELECTED_ID);
+      this.lsService.removeItem(LsKeys.PRD_SEL_ID);
     } else {
-      id ? this.querySelectedProduct(id) : new Error();
-      localStorage.setItem(LocalStorageKeys.PRODUCT_SELECTED_ID, id.toString());
+      this.lsService.setItem(LsKeys.PRD_SEL_ID, id); // this triggers the subscription
     }
   }
 
-  onCloseDisclaimer(event: boolean) {
-    // unselect the product on close because disclaimer invalid
-    this.selectedProduct.set(undefined);
+  onCloseDisclaimer() {
+    // unselect the product which will also destroy the disclaimer
+    this.lsService.removeItem(LsKeys.PRD_SEL_ID);
   }
 
-  onDisclaimerSubmitted(event: DisclaimerForm) {
-    this.productsLoading.set(true);
-    const currentSelected = this.selectedProductId();
-    if (currentSelected) {
-      this.disclaimerStateS.pushDisclaimerState(currentSelected, event);
-      // trigger signal chain to destroy disclaimer if valid disclaimer state, should also kill the loading animation
-      this.onProductSelected(currentSelected);
-    }
+  onDisclaimerSubmit() {
+    // destroy disclaimer on submit
+    this.showDisclaimer = false;
   }
 
   initProducts() {
-    this.wcStore
-      .listProducts(this.getProductCat)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((response) => {
-        const products = response.map((product: any) =>
-          this.mappingService.mapProduct(product),
-        );
-        this.products.set(products);
-      });
+    return this.wcStore.listProducts(this.getProductCat).pipe(
+      takeUntil(this.destroy$),
+      catchError((error) => {
+        this.productsLoading.set(false);
+        this.errorService.handleError(error);
+        return throwError(() => error);
+      }),
+    );
   }
 }

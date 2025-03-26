@@ -1,9 +1,17 @@
 <div class="conditions-container">
-  <div class="conditions-items">
-    <div class="disclaimer-condition">
-      <div class="cart-item-details">
-        <span>Disclaimer Akzeptiert: {{ disclaimerState()?.understood }}</span>
-      </div>
-    </div>
+  <div class="payment-method">
+    <h4>Zahlung:</h4>
+    <span> {{ paymentMethod }}</span>
+  </div>
+  <div class="disclaimer-confirm">
+    <h4>Disclaimer Akzeptiert:</h4>
+    <mat-icon>{{ disclaimerState()?.understood ? 'check' : 'close' }}</mat-icon>
+  </div>
+  <div
+    class="disclaimer-experience"
+    *ngIf="disclaimerState()?.experience as xp"
+  >
+    <h4>Disclaimer Erfahrung:</h4>
+    <span>{{ xp }}</span>
   </div>
 </div>

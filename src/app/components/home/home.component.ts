@@ -10,6 +10,8 @@ import { NgOptimizedImage } from '@angular/common';
 import { DialogPopupComponent } from '@shared/dialog-popup/dialog-popup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { BaseDialogData } from '@models/types.model';
+import { ErrorDialogService } from '@shared/errors/error-dialog.service';
+import { catchError, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -25,6 +27,7 @@ import { BaseDialogData } from '@models/types.model';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
+  errorService = inject(ErrorDialogService);
   private readonly wpApi = inject(WordPressApiService);
   private readonly includePosts = [
     BlogPostId.INTRO,
@@ -40,9 +43,17 @@ export class HomeComponent implements OnInit {
   constructor(private readonly dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.wpApi.getPosts(this.includePosts).subscribe((r) => {
-      this.wpPosts.set(r);
-    });
+    this.wpApi
+      .getPosts(this.includePosts)
+      .pipe(
+        catchError((error) => {
+          this.errorService.handleError(error);
+          return throwError(() => error);
+        }),
+      )
+      .subscribe((r) => {
+        this.wpPosts.set(r);
+      });
   }
 
   get intro() {

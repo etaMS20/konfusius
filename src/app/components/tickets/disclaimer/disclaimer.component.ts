@@ -2,13 +2,13 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
+  effect,
   EventEmitter,
   inject,
   input,
   OnDestroy,
-  OnInit,
   Output,
+  signal,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -21,12 +21,19 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatError, MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
-import { DisclaimerForm } from '@models/disclaimer.model';
-import { WcProduct, WcProductAttribute } from '@models/product.model';
+import {
+  Disclaimer,
+  DisclaimerFormControl,
+  DisclaimerState,
+  DisclaimerStateStore,
+} from '@models/disclaimer.model';
+import { WcProduct } from '@models/product.model';
+import { LsKeys } from '@models/storage.model';
 import { SafeHtmlPipe } from '@pipes//safe-html.pipe';
 import { ClientDeviceService } from '@services/client-device.service';
-import { DisclaimerStateService } from '@services/disclaimer-state.service';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { getCurrentStateBySKU } from '@utils/disclaimer.utils';
+import { Subject, takeUntil } from 'rxjs';
+import { LocalStorageService } from 'src/app/storage/local-storage.service';
 
 @Component({
   selector: 'app-disclaimer',
@@ -45,51 +52,57 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DisclaimerComponent implements OnInit, OnDestroy, OnInit {
-  fb = inject(FormBuilder);
-  formG: FormGroup;
-  disclaimerStateS = inject(DisclaimerStateService);
+export class DisclaimerComponent implements OnDestroy {
+  formG!: FormGroup;
   deviceService = inject(ClientDeviceService);
+  lsService = inject(LocalStorageService);
+  disclaimer = input.required<Disclaimer>();
+  currentStore = signal<DisclaimerStateStore>(
+    this.lsService.getItem(LsKeys.DISC_STATE) ?? {},
+  );
+  product = input.required<WcProduct>();
 
   /** inputs and outputs */
-  disclaimer = computed(() =>
-    this.disclaimerStateS.getDisclaimer(this.disclaimerStateS.context),
-  );
   @Output() abortDisclaimer: EventEmitter<boolean> =
     new EventEmitter<boolean>();
-  @Output() formValuesSubmit: EventEmitter<DisclaimerForm> =
-    new EventEmitter<any>();
+  @Output() submitDisclaimer: EventEmitter<boolean> =
+    new EventEmitter<boolean>();
 
   private readonly destroy$ = new Subject<void>();
-  showDisclaimer: boolean = false;
-  isDestroyed: boolean = false;
 
-  constructor() {
-    this.formG = this.fb.group({
-      understood: [false, [Validators.requiredTrue]],
-      experience: [null, [Validators.maxLength(300)]],
-    });
-
+  constructor(private readonly fb: FormBuilder) {
     /** Disable background scroll for touch devices */
     this.deviceService.isTouchDevice
       .pipe(takeUntil(this.destroy$))
       .subscribe((isTouchDevice) => {
-        if (isTouchDevice) {
-          document.body.style.overflow = 'hidden';
-        } else {
-          document.body.style.overflow = '';
-        }
+        document.body.style.overflow = isTouchDevice ? 'hidden' : '';
       });
-  }
 
-  ngOnInit() {
-    // trigger the slide-in animation
-    this.showDisclaimer = true;
+    this.formG = this.fb.group<DisclaimerFormControl>({
+      understood: new FormControl(false, {
+        nonNullable: true,
+        validators: [Validators.requiredTrue],
+      }),
+      experience: new FormControl(undefined, {
+        nonNullable: true,
+        validators: [Validators.maxLength(300)],
+      }),
+    });
+
+    // on productId change -> also change the current form values
+    effect(() => {
+      this.formG.controls['understood'].setValue(
+        getCurrentStateBySKU(this.currentStore(), this.product().sku)
+          ?.understood,
+      );
+      this.formG.controls['experience'].setValue(
+        getCurrentStateBySKU(this.currentStore(), this.product().sku)
+          ?.experience,
+      );
+    });
   }
 
   ngOnDestroy() {
-    // trigger the slide-out animation
-    this.isDestroyed = true;
     document.body.style.overflow = '';
     this.destroy$.next();
     this.destroy$.complete();
@@ -97,7 +110,12 @@ export class DisclaimerComponent implements OnInit, OnDestroy, OnInit {
 
   onSubmit() {
     if (this.formG.valid) {
-      this.formValuesSubmit.emit(this.formG.value);
+      const currentStore = this.currentStore() || {};
+      this.lsService.setItem<DisclaimerStateStore>(
+        LsKeys.DISC_STATE,
+        Object.assign(currentStore, { [this.product().sku]: this.formG.value }),
+      );
+      this.submitDisclaimer.emit(true); // tell parent that disclaimer got submitted
     } else {
       this.formG.controls['understood'].markAllAsTouched();
     }
@@ -105,8 +123,13 @@ export class DisclaimerComponent implements OnInit, OnDestroy, OnInit {
 
   onClose(event: Event) {
     event.stopPropagation();
-    this.abortDisclaimer.emit(event.bubbles);
-    this.isDestroyed = event.bubbles;
+    const currentStore = this.currentStore() || {};
+    this.formG.reset();
+    this.lsService.setItem<DisclaimerStateStore>(
+      LsKeys.DISC_STATE,
+      Object.assign(currentStore, { [this.product().sku]: this.formG.value }),
+    );
+    this.abortDisclaimer.emit();
   }
 
   hasError(control: FormControl, errorType: string): boolean {

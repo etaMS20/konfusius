@@ -7,6 +7,8 @@ import { WordPressApiService } from '../../../services/api/wp-api.service';
 import { BlogPost, BlogPostId } from 'src/app/models/blog-post.model';
 import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
 import { PdfDownloadViewerComponent } from '@shared/pdf-download-viewer/pdf-download-viewer.component';
+import { catchError, throwError } from 'rxjs';
+import { ErrorDialogService } from '@shared/errors/error-dialog.service';
 
 interface InfoTab {
   icon: string;
@@ -29,6 +31,7 @@ interface InfoTab {
   styleUrls: ['./info-tabs.component.scss'],
 })
 export class InfoTabsComponent implements OnInit {
+  errorService = inject(ErrorDialogService);
   private readonly wpApi = inject(WordPressApiService);
   wpInfoPosts = signal<Array<BlogPost>>([]);
   pdfUrl = signal<string>('./public/Grundriss_Konfusi24_A2.pdf');
@@ -59,9 +62,17 @@ export class InfoTabsComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.wpApi.getPosts(this.includePosts).subscribe((r) => {
-      this.wpInfoPosts.set(r);
-    });
+    this.wpApi
+      .getPosts(this.includePosts)
+      .pipe(
+        catchError((error) => {
+          this.errorService.handleError(error);
+          return throwError(() => error);
+        }),
+      )
+      .subscribe((r) => {
+        this.wpInfoPosts.set(r);
+      });
   }
 
   get anmeldung() {

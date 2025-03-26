@@ -1,4 +1,6 @@
+import { Disclaimer, DisclaimerAttributeKey } from '@models/disclaimer.model';
 import { WcPriceRange } from '@models/price.model';
+import { WcProduct, WcProductAttribute } from '@models/product.model';
 
 export function formatPrice(
   price: string,

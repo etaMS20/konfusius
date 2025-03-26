@@ -15,7 +15,11 @@
     </div>
 
     <div class="cart-section">
-      <app-cart-totals [cart]="cart()"></app-cart-totals>
+      <app-cart-totals
+        [cartTotals]="cartTotals()"
+        [mainCartItem]="mainItem"
+        [crossSaleCartItem]="crossSaleItem"
+      ></app-cart-totals>
       <app-conditions
         *ngIf="disclaimerState"
         [disclaimerState]="disclaimerState"

@@ -1,8 +1,8 @@
 <div class="disclaimer-container" tabindex="-2">
   <form class="billing_address" [formGroup]="formG" (ngSubmit)="onSubmit()">
     <div class="disclaimer-content">
-      <h4>Disclaimer: {{ disclaimerStateS.contextName }}</h4>
-      @if (disclaimer()?.content; as c) {
+      <h4>Disclaimer:</h4>
+      @if (disclaimer().content; as c) {
         <div class="disclaimer-text" [innerHTML]="c | safeHtml"></div>
       }
       <div class="disclaimer-checkbox">
@@ -20,7 +20,7 @@
         *ngIf="disclaimer()?.textbox_content"
         id="experience"
         formControlName="experience"
-        [placeholder]="disclaimer()?.textbox_content"
+        [placeholder]="disclaimer().textbox_content"
         rows="4"
         maxlength="300"
       ></textarea>
