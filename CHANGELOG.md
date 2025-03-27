@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - fullscreen to image slider
 - FAQ
 - in-stock identifier on ticket page
+- Image gallery
 
 ### Changed
 
