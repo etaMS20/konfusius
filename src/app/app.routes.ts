@@ -62,4 +62,12 @@ export const routes: Routes = [
       );
     },
   },
+  {
+    path: 'gallery',
+    loadComponent: () => {
+      return import('./components/gallery/gallery.component').then(
+        (m) => m.GalleryComponent,
+      );
+    },
+  },
 ];

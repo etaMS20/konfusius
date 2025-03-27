@@ -1,7 +1,9 @@
+@use './styles/style-vars.scss' as *;
+
 .image-gallery {
   display: columns;
-  column-count: 3;
-  column-gap: 16px;
+  column-count: 5;
+  column-gap: 0.5rem;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -9,7 +11,7 @@
 
 .image-container {
   break-inside: avoid;
-  margin-bottom: 16px;
+  margin-bottom: 0.5rem;
   cursor: pointer;
   transition: transform 0.2s ease;
 }
@@ -21,18 +23,18 @@
 .image-container img {
   width: 100%;
   height: auto;
-  border-radius: 8px;
+  border-radius: 0.2rem;
   object-fit: cover;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: $breakpoint-mobile-tilt) {
   .image-gallery {
-    column-count: 2;
+    column-count: 4;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: $breakpoint-mobile) {
   .image-gallery {
-    column-count: 1;
+    column-count: 3;
   }
 }
