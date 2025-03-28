@@ -96,14 +96,6 @@
   }
 }
 
-@media (max-width: 750px) {
-  ::ng-deep {
-    .mat-expansion-panel-body {
-      padding: 0 5px 5px !important;
-    }
-  }
-}
-
 // Responsive adjustments
 @media (max-width: 750px) {
   .content-wrapper {

@@ -1,0 +1,51 @@
+@use './styles/style-vars.scss' as *;
+
+.gallery-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.image-gallery {
+  display: columns;
+  column-count: 5;
+  column-gap: 0.5rem;
+  width: 100%;
+}
+
+.image-container {
+  break-inside: avoid;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.image-container:hover {
+  transform: scale(1.02);
+  :hover {
+    box-shadow: $default-box-shadow;
+  }
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.2rem;
+  object-fit: cover;
+  box-shadow: $shadow-sm;
+}
+
+@media (max-width: $breakpoint-mobile-tilt) {
+  .image-gallery {
+    column-count: 4;
+    margin: 0.2rem;
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .image-gallery {
+    column-count: 3;
+    column-gap: 0.2rem;
+  }
+}

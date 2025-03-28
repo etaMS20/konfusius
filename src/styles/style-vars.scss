@@ -49,6 +49,17 @@ $order-status: (
   ),
 );
 
+$stock-status: (
+  out-of-stock: (
+    background-color: #ececec,
+    color: #696969,
+  ),
+  in-stock: (
+    background-color: #e8f5e9,
+    color: #2e7d32,
+  ),
+);
+
 // nav
 $nav-height: 90px;
 $nav-max-height: 15vh;

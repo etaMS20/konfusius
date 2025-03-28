@@ -29,6 +29,7 @@ import { DisclaimerComponent } from './disclaimer/disclaimer.component';
 import { Disclaimer } from '@models/disclaimer.model';
 import { LocalStorageService } from 'src/app/storage/local-storage.service';
 import { getDisclaimer } from '@utils/disclaimer.utils';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-tickets',
@@ -41,6 +42,7 @@ import { getDisclaimer } from '@utils/disclaimer.utils';
     MatProgressBarModule,
     CommonModule,
     DisclaimerComponent,
+    MatButtonModule,
   ],
   templateUrl: './tickets.component.html',
   styleUrl: './tickets.component.scss',
@@ -169,8 +171,8 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   get getProductCat(): number {
-    const storedCat = localStorage.getItem(LsKeys.USER_PRODUCT_CAT);
-    return storedCat ? parseInt(storedCat) : 22;
+    const storedCat = this.lsService.getItem<number>(LsKeys.USER_PRODUCT_CAT);
+    return storedCat ?? 22;
   }
 
   ngOnDestroy() {

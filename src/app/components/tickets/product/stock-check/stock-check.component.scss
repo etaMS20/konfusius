@@ -1,0 +1,22 @@
+@use 'src/styles/style-vars.scss' as *;
+@use 'sass:map';
+
+.stock-status {
+  padding: 0.2rem 0;
+  border-radius: 0.5rem;
+  font-size: 0.65rem;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+
+  @each $status, $styles in $stock-status {
+    &.#{$status} {
+      background-color: map.get($styles, background-color);
+      color: map.get($styles, color);
+    }
+  }
+
+  @media (max-width: $breakpoint-mobile-tilt) {
+    font-size: 0.6rem;
+  }
+}

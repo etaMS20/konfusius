@@ -1,1 +1,11 @@
-<p>gallery works!</p>
+<div class="gallery-container">
+  <div class="image-gallery">
+    <div
+      *ngFor="let img of album; let i = index"
+      class="image-container"
+      (click)="openImage(i)"
+    >
+      <img [src]="img.thumb" [alt]="img.caption" loading="lazy" />
+    </div>
+  </div>
+</div>

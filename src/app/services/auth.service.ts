@@ -6,6 +6,7 @@ import { GuestAuth } from './auth.model';
 import shajs from 'sha.js';
 import { authProductCatMap, AuthType } from '@models/auth.model';
 import { LsKeys } from '@models/storage.model';
+import { LocalStorageService } from '../storage/local-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,9 +19,10 @@ export class AuthService {
   private readonly guestPwHash?: string;
   private readonly crewPwHash?: string;
 
-  userAuthType = signal<AuthType | undefined>(undefined);
-
-  constructor(private readonly http: HttpClient) {
+  constructor(
+    private readonly http: HttpClient,
+    private readonly lsService: LocalStorageService,
+  ) {
     this.salt = SALT!;
     this.guestPwHash = this.hashPassword(GUEST_PW);
     this.crewPwHash = this.hashPassword(CREW_PW);
@@ -36,22 +38,20 @@ export class AuthService {
   login(passwordInput: string) {
     const inputHash = this.hashPassword(passwordInput);
     if (inputHash && inputHash === this.guestPwHash) {
-      localStorage.setItem(LsKeys.GUEST_AUTH, inputHash);
-      localStorage.removeItem(LsKeys.CREW_AUTH);
-      localStorage.setItem(
+      this.lsService.setItem<string>(LsKeys.GUEST_AUTH, inputHash);
+      this.lsService.removeItem(LsKeys.CREW_AUTH);
+      this.lsService.setItem<number>(
         LsKeys.USER_PRODUCT_CAT,
-        authProductCatMap[AuthType.GUEST].toString(),
+        authProductCatMap[AuthType.GUEST],
       );
-      this.userAuthType.set(AuthType.GUEST);
       return true;
     } else if (inputHash && inputHash === this.crewPwHash) {
-      localStorage.setItem(LsKeys.CREW_AUTH, inputHash);
-      localStorage.removeItem(LsKeys.GUEST_AUTH);
-      localStorage.setItem(
+      this.lsService.setItem<string>(LsKeys.CREW_AUTH, inputHash);
+      this.lsService.removeItem(LsKeys.GUEST_AUTH);
+      this.lsService.setItem<number>(
         LsKeys.USER_PRODUCT_CAT,
-        authProductCatMap[AuthType.CREW].toString(),
+        authProductCatMap[AuthType.CREW],
       );
-      this.userAuthType.set(AuthType.CREW);
       return true;
     }
     return false;
@@ -59,20 +59,20 @@ export class AuthService {
 
   isAuthenticatedBase(): boolean {
     return (
-      localStorage.getItem(LsKeys.GUEST_AUTH) === this.guestPwHash ||
+      this.lsService.getItem<string>(LsKeys.GUEST_AUTH) === this.guestPwHash ||
       this.isAuthenticatedCrew()
     );
   }
 
   isAuthenticatedCrew(): boolean {
-    return localStorage.getItem(LsKeys.CREW_AUTH) === this.crewPwHash;
+    return this.lsService.getItem<string>(LsKeys.CREW_AUTH) === this.crewPwHash;
   }
 
   // on logout remove all storage items
   logout(): void {
     Object.keys(localStorage).forEach((key) => {
       if (key.startsWith('konfusius')) {
-        localStorage.removeItem(key);
+        this.lsService.removeItem(key);
       }
     });
   }
@@ -86,7 +86,7 @@ export class AuthService {
 
   /** we use a custom endpoint to authenticate guests */
   authenticateGuest(pw: string): Observable<GuestAuth> {
-    const jwtToken = localStorage.getItem('jwtToken');
+    const jwtToken = this.lsService.getItem<string>('jwtToken');
 
     let headers = new HttpHeaders();
     if (jwtToken) {

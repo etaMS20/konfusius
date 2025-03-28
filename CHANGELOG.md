@@ -2,14 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.5]
+
+### Added
+
+- localStorage service
+- conditions in checkout component
+- disclaimer order meta
+- fullscreen to image slider
+- FAQ
+- in-stock identifier on ticket page
+- Image gallery
+
+### Changed
+
+- state behavior in ticket component
+
+---
+
 ## [1.0.4]
 
 ### Added
 
 - cross-sale products mat-radio
 - disclaimer component
+- encryption to order redirect page
 
 ### Changed
+
+- order overview
 
 ### Fixed
 
@@ -28,7 +49,6 @@ All notable changes to this project will be documented in this file.
 - extra login token for crew
 - versioning
 - ng service-worker
-- encryption to order redirect page
 - ci deployment to wp ftp
 - loading indication for tickets page
 

@@ -17,6 +17,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { DialogPopupComponent } from '@shared/dialog-popup/dialog-popup.component';
 import { BaseDialogData } from '@models/types.model';
+import { StockCheckComponent } from './stock-check/stock-check.component';
 
 @Component({
   selector: 'product',
@@ -28,6 +29,7 @@ import { BaseDialogData } from '@models/types.model';
     CommonModule,
     MatTooltipModule,
     MatButtonModule,
+    StockCheckComponent,
   ],
 })
 export class ProductComponent implements OnInit {

@@ -5,7 +5,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute } from '@angular/router';
 import { HumanReadableDatePipe } from '@pipes//datetime.pipe';
 import { EncryptionService } from '@services/encryption.service';
-import { WcOrder } from 'src/app/models/order.model';
+import { ErrorDialogService } from '@shared/errors/error-dialog.service';
+import { catchError, throwError } from 'rxjs';
+import { WcOrder, WcPaymentGateway } from 'src/app/models/order.model';
 import { WcV3Service } from 'src/app/services/api/wc-v3.service';
 
 @Component({
@@ -18,10 +20,12 @@ export class OrderOverviewComponent implements OnInit {
   private readonly wcApi = inject(WcV3Service);
   private readonly route = inject(ActivatedRoute);
   private readonly cryptoService = inject(EncryptionService);
+  errorService = inject(ErrorDialogService);
 
   order = signal<WcOrder | null>(null);
   error = signal<string | null>(null);
   orderId = signal<number | null>(null);
+  gateway = signal<WcPaymentGateway | undefined>(undefined);
   loading = signal(true);
 
   ngOnInit(): void {
@@ -35,6 +39,18 @@ export class OrderOverviewComponent implements OnInit {
         this.loading.set(false);
       }
     });
+
+    this.wcApi
+      .getPaymentGateway('cod')
+      .pipe(
+        catchError((error) => {
+          this.errorService.handleError(error);
+          return throwError(() => error);
+        }),
+      )
+      .subscribe((r) => {
+        this.gateway.set(r);
+      });
   }
 
   fetchOrderDetails(orderId: number) {

@@ -31,6 +31,11 @@
           </button>
         </span>
 
+        <button mat-button routerLink="/gallery" routerLinkActive="active-link">
+          <mat-icon>collections</mat-icon>
+          Gallerie
+        </button>
+
         <button mat-button routerLink="/faq" routerLinkActive="active-link">
           <mat-icon>help_outline</mat-icon>
           FAQ
@@ -74,6 +79,16 @@
         {{
           ticketsActive() ? 'Zur Anmeldung' : 'Zur Anmeldung (bald verfügbar)'
         }}
+      </a>
+
+      <a
+        mat-button
+        routerLink="/gallery"
+        routerLinkActive="active-link"
+        (click)="toggleMenu()"
+      >
+        <mat-icon>collections</mat-icon>
+        Gallerie
       </a>
 
       <a

@@ -65,6 +65,9 @@ importers:
       ngx-cookieconsent:
         specifier: ^8.0.0
         version: 8.0.0(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(cookieconsent@3.1.1)(rxjs@7.8.1)
+      ngx-lightbox:
+        specifier: ^3.0.0
+        version: 3.0.0(@types/file-saver@2.0.7)
       rxjs:
         specifier: ~7.8.1
         version: 7.8.1
@@ -1857,6 +1860,9 @@ packages:
   '@types/express@4.17.21':
     resolution: {integrity: sha512-ejlPM315qwLpaQlQDTjPdsUFSc6ZsP4AN6AlWnogPjQ7CVi7PYF3YVz+CY3jE2pwYf7E/7HlDAN0rV2GxTG0HQ==}
 
+  '@types/file-saver@2.0.7':
+    resolution: {integrity: sha512-dNKVfHd/jk0SkR/exKGj2ggkB45MAkzvWCaqLUUgkyjITkGNzH8H+yUwr+BLJUBjZOe9w8X3wgmXhZDRg1ED6A==}
+
   '@types/http-errors@2.0.4':
     resolution: {integrity: sha512-D0CFMMtydbJAegzOyHjtiKPLlvnm3iTZyZRSZoLq2mRhDdmLfIWOCYPfQJ4cu2erKghU++QvjcUjp/5h7hESpA==}
 
@@ -2857,6 +2863,9 @@ packages:
     resolution: {integrity: sha512-XXTUwCvisa5oacNGRP9SfNtYBNAMi+RPwBFmblZEF7N7swHYQS6/Zfk7SRwx4D5j3CH211YNRco1DEMNVfZCnQ==}
     engines: {node: '>=16.0.0'}
 
+  file-saver@2.0.5:
+    resolution: {integrity: sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==}
+
   fill-range@7.1.1:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
     engines: {node: '>=8'}
@@ -3737,6 +3746,15 @@ packages:
       '@angular/core': '>=19.0.0'
       cookieconsent: ^3.1.1
       rxjs: ^6.5.3 || ^7.4.0
+
+  ngx-filesaver@14.0.0:
+    resolution: {integrity: sha512-YnSbruOprSpcXZiuhnJ+AannRnSqRWiL0HIlDdwPd48DZYpuU0BTvSNmFj5oFbwLA0RFoOv2EkgedW4k2DEpYA==}
+    peerDependencies:
+      '@types/file-saver': ^2.0.0
+      file-saver: ^2.0.0
+
+  ngx-lightbox@3.0.0:
+    resolution: {integrity: sha512-gKLy0R3SbbzHkDnAINtT3HFC71XVd86+dkP3LBeKrvjngxB6wMABfY73fF5IGsu9HfKQUN2Ni2Nx6s12xNwXow==}
 
   node-addon-api@6.1.0:
     resolution: {integrity: sha512-+eawOlIgy680F0kBzPUNFhMZGtJ1YmqM6l4+Crf4IkImjYrO/mqPwRMh352g23uIaQKFItcQ64I7KMaJxHgAVA==}
@@ -6854,6 +6872,8 @@ snapshots:
       '@types/qs': 6.9.18
       '@types/serve-static': 1.15.7
 
+  '@types/file-saver@2.0.7': {}
+
   '@types/http-errors@2.0.4': {}
 
   '@types/http-proxy@1.17.16':
@@ -7991,6 +8011,8 @@ snapshots:
     dependencies:
       flat-cache: 4.0.1
 
+  file-saver@2.0.5: {}
+
   fill-range@7.1.1:
     dependencies:
       to-regex-range: 5.0.1
@@ -8924,6 +8946,19 @@ snapshots:
       cookieconsent: 3.1.1
       rxjs: 7.8.1
       tslib: 2.8.1
+
+  ngx-filesaver@14.0.0(@types/file-saver@2.0.7)(file-saver@2.0.5):
+    dependencies:
+      '@types/file-saver': 2.0.7
+      file-saver: 2.0.5
+      tslib: 2.8.1
+
+  ngx-lightbox@3.0.0(@types/file-saver@2.0.7):
+    dependencies:
+      file-saver: 2.0.5
+      ngx-filesaver: 14.0.0(@types/file-saver@2.0.7)(file-saver@2.0.5)
+    transitivePeerDependencies:
+      - '@types/file-saver'
 
   node-addon-api@6.1.0:
     optional: true

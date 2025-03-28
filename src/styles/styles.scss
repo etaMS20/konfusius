@@ -39,23 +39,30 @@ html {
   );
 
   .slimline {
-    .radio-label {
-      p {
-        font-size: 1rem;
-        margin: 0.2rem;
-        @media (max-width: $breakpoint-mobile-tilt) {
-          font-size: 0.9rem;
-        }
-      }
-    }
-    // @include mat.form-field-density(-3);
     @include mat.all-component-densities(-3);
+    @include mat.form-field-density(-4);
     @media (max-width: $breakpoint-mobile) {
       margin-bottom: 0.25rem;
     }
     @media (max-width: $breakpoint-mobile-tilt) {
       font-size: 0.8rem;
       margin: 0.1rem;
+    }
+
+    .radio-label {
+      p {
+        font-size: 0.8rem;
+        margin: 0.2rem;
+        @media (max-width: $breakpoint-mobile-tilt) {
+          font-size: 0.7rem;
+        }
+      }
+    }
+  }
+
+  .slimline-mobile {
+    @media (max-width: $breakpoint-mobile-tilt) {
+      @include mat.all-component-densities(-3);
     }
   }
 }
@@ -145,14 +152,33 @@ li {
   }
 }
 
-/* Error message styling */
+/** Error message styling */
 mat-error {
   color: $error-color;
   font-size: 0.875rem;
-  display: block; // Ensures the error message is on its own line
-  margin-top: 4px; // Adds some spacing between the input and the error message
+  display: block; // ensures the error message is on its own line
+  margin-top: 4px; // adds some spacing between the input and the error message
 }
 
+/** expansion panel overwrites */
+@media (max-width: $breakpoint-mobile-tilt) {
+  mat-expansion-panel-header {
+    font-size: 0.8rem;
+    line-height: 1rem;
+  }
+
+  mat-panel-title {
+    font-size: 0.8rem;
+    line-height: 1rem;
+  }
+
+  .mat-expansion-panel-body {
+    padding: 0 5px 5px !important;
+    font-size: 0.8rem;
+  }
+}
+
+/** loading spinner */
 .fixed-spinner {
   position: fixed;
   top: calc($nav-height + 20px);
@@ -164,4 +190,9 @@ mat-error {
   align-items: center;
   background: transparent;
   z-index: 2000;
+}
+
+/** lightbox overwrites */
+.lb-outerContainer {
+  background-color: black !important;
 }
