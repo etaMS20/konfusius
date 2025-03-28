@@ -33,7 +33,7 @@ import {
 import { LocalStorageService } from 'src/app/storage/local-storage.service';
 import { getCurrentStateBySKU } from '@utils/disclaimer.utils';
 import { LsKeys } from '@models/storage.model';
-import { CrossSaleProductId } from '@models/cross-sale.model';
+import { DISCLAIMER_PRODUCTS } from '@models/cross-sale.model';
 
 @Component({
   selector: 'app-checkout-container',
@@ -66,11 +66,6 @@ export class CheckoutContainerComponent implements OnInit, OnDestroy {
   allowedOptions = signal<string[]>([]);
   rules = signal<BlogPost | undefined>(undefined);
   disclaimerState?: DisclaimerState;
-  excludedIds = new Set([
-    CrossSaleProductId.SOLI,
-    CrossSaleProductId.KONFUSIUS,
-    CrossSaleProductId.GOENNER,
-  ]);
 
   cart = signal<WcCart | null>(null);
   cartTotals = computed(() => {
@@ -86,10 +81,10 @@ export class CheckoutContainerComponent implements OnInit, OnDestroy {
   constructor() {
     effect(() => {
       this.mainItem = this.cartItems()?.find(
-        (item) => !this.excludedIds.has(item.id),
+        (item) => !DISCLAIMER_PRODUCTS.has(item.id),
       );
       this.crossSaleItem = this.cartItems()?.find((item) =>
-        this.excludedIds.has(item.id),
+        DISCLAIMER_PRODUCTS.has(item.id),
       );
 
       if (this.mainItem) {

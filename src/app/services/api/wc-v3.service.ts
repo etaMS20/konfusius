@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BACKEND, CONSUMER_KEY, CONSUMER_SECRET } from '@config/http.config';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
@@ -40,5 +40,25 @@ export class WcV3Service {
         withCredentials: true,
       },
     );
+  }
+
+  getOrders(after = '2025-01-01T00:00:00'): Observable<Array<WcOrder>> {
+    let params = new HttpParams();
+
+    if (after) {
+      params = params.set('after', after);
+    }
+
+    return this.http
+      .get<Array<WcOrder>>(`${this.wcBackend}/orders`, {
+        headers: this.headers,
+        params: params,
+      })
+      .pipe(
+        catchError((error) => {
+          this.errorService.handleError(error);
+          return throwError(() => error);
+        }),
+      );
   }
 }

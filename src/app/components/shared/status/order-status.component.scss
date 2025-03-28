@@ -1,0 +1,16 @@
+@use 'src/styles/style-vars.scss' as *;
+@use 'sass:map';
+
+.order-status {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 500;
+
+  @each $status, $styles in $order-status {
+    &.#{$status} {
+      background-color: map.get($styles, background-color);
+      color: map.get($styles, color);
+    }
+  }
+}

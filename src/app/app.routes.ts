@@ -61,6 +61,7 @@ export const routes: Routes = [
         (m) => m.FaqComponent,
       );
     },
+    canActivate: [AuthGuard],
   },
   {
     path: 'gallery',
@@ -69,5 +70,15 @@ export const routes: Routes = [
         (m) => m.GalleryComponent,
       );
     },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'crew-area',
+    loadComponent: () => {
+      return import('./components/crew-area/crew-area.component').then(
+        (m) => m.CrewAreaComponent,
+      );
+    },
+    canActivate: [AuthGuard],
   },
 ];
