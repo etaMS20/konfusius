@@ -152,14 +152,15 @@ li {
   }
 }
 
-/* Error message styling */
+/** Error message styling */
 mat-error {
   color: $error-color;
   font-size: 0.875rem;
-  display: block; // Ensures the error message is on its own line
-  margin-top: 4px; // Adds some spacing between the input and the error message
+  display: block; // ensures the error message is on its own line
+  margin-top: 4px; // adds some spacing between the input and the error message
 }
 
+/** expansion panel overwrites */
 @media (max-width: $breakpoint-mobile-tilt) {
   mat-expansion-panel-header {
     font-size: 0.8rem;
@@ -177,6 +178,7 @@ mat-error {
   }
 }
 
+/** loading spinner */
 .fixed-spinner {
   position: fixed;
   top: calc($nav-height + 20px);
@@ -188,4 +190,9 @@ mat-error {
   align-items: center;
   background: transparent;
   z-index: 2000;
+}
+
+/** lightbox overwrites */
+.lb-outerContainer {
+  background-color: black !important;
 }

@@ -1,14 +1,11 @@
-<div class="image-gallery">
-  <div
-    *ngFor="let image of galleryImages()"
-    class="image-container"
-    (click)="openImageModal(image)"
-  >
-    <img
-      [src]="image.url"
-      [alt]="image.alt || 'Gallery image'"
-      [title]="image.title"
-      loading="lazy"
-    />
+<div class="gallery-container">
+  <div class="image-gallery">
+    <div
+      *ngFor="let img of album; let i = index"
+      class="image-container"
+      (click)="openImage(i)"
+    >
+      <img [src]="img.thumb" [alt]="img.caption" loading="lazy" />
+    </div>
   </div>
 </div>

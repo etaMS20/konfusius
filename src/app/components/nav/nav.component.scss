@@ -61,7 +61,7 @@ $scrolled-height: calc(min($nav-max-height, $nav-height) - 20px);
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: 0 24px;
   height: 100%;
@@ -218,13 +218,12 @@ $scrolled-height: calc(min($nav-max-height, $nav-height) - 20px);
 .mobile-nav-links {
   display: flex;
   flex-direction: column;
-  padding: 16px;
+  padding: 0.1rem;
 
   a {
     display: flex;
     align-items: center;
-    padding: 16px;
-    margin: 8px 0;
+    margin: 0.2rem;
     text-decoration: none;
     color: white;
     border-radius: 8px;
