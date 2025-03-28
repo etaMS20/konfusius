@@ -4,8 +4,6 @@ This repo contains the Angular application (soon) serving the **Konfusius Festiv
 
 The app uses _WordPress_ (WP) + _WooCommerce_ (WC) backend as **headless CMS** to manage the festival's ticket sales.
 
-The app is still in early development.
-
 ---
 
 # Development Setup
@@ -51,15 +49,13 @@ Open a browser and head to [localhost:4200](http://localhost:4200/)
 
 ---
 
-## Current Setup to host the app on wordpress
+## Deploying the app on wordpress
 
-1. Compile with production config and custom base-href
+On git-pushes the app fill be automatically deployed to wordpress using `.github/workflows/deploy.yml`
 
 ```
  ng build --configuration=production --base-href=/festival/
 ```
-
-2. Upload the local content of `dist/konfusius` to `/festival` which is located at the wordpress root
 
 ---
 
@@ -67,13 +63,12 @@ Open a browser and head to [localhost:4200](http://localhost:4200/)
 
 ### Known Issues
 
-- Image Slider image index can overflow
 - privacy page renders without content on brave browser
+- shop doesn't work with cookie limitation on brave
 
 ### Planned Features
 
 - custom payment method in backend (can have)
-- implement [fullscreen directive](https://medium.com/@milan.barac/angular-fullscreen-cd8b788c348f) (can have)
 - implement Ui for crew members with website settings (can have)
 - activate/implement wp-nonces (should have)
 - smooth scrolling navigation (can have)

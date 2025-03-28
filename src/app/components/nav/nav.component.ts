@@ -4,7 +4,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { TICKETS_ON } from '../../../config/http.config';
+import { TICKETS_ON } from '@config/http.config';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthService } from '@services/auth.service';
 
@@ -25,7 +25,6 @@ import { AuthService } from '@services/auth.service';
 })
 export class NavComponent {
   authService = inject(AuthService);
-  title = signal('Your App Title');
   isMenuOpen = signal(false);
   isScrolled = false;
   ticketsActive = signal<boolean>(TICKETS_ON);
