@@ -119,9 +119,30 @@ $scrolled-height: calc(min($nav-max-height, $nav-height) - 20px);
   gap: 0.5rem;
 }
 
-::ng-deep .nav-links .mat-mdc-button {
+.mat-icon {
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.mat-mdc-icon-button {
+  background-color: rgba(255, 255, 163, 0.822);
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(33, 150, 243, 0.3);
+
+    &::before {
+      left: 0;
+    }
+  }
+}
+
+.nav-links .mat-mdc-button {
   border-radius: 24px;
-  padding: 0 0.5rem;
   height: 2rem;
   font-weight: 700;
   letter-spacing: 0.2px;
@@ -155,18 +176,6 @@ $scrolled-height: calc(min($nav-max-height, $nav-height) - 20px);
   &.active-link {
     background-color: rgba(255, 255, 255, 0.2);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  }
-
-  .mat-icon {
-    margin-right: 8px;
-    transition: transform 0.2s ease;
-    font-size: 20px;
-    height: 20px;
-    width: 20px;
-  }
-
-  &:hover .mat-icon {
-    transform: translateY(-2px);
   }
 }
 

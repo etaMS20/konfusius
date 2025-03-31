@@ -50,6 +50,16 @@
           <mat-icon>logout</mat-icon>
           logout
         </button>
+
+        <button
+          *ngIf="authService.isAuthenticatedCrew()"
+          mat-icon-button
+          routerLink="/crew-area"
+          routerLinkActive="active-link"
+          class="crew-button"
+        >
+          <mat-icon>settings</mat-icon>
+        </button>
       </div>
 
       <!-- Mobile Navigation Toggle -->
