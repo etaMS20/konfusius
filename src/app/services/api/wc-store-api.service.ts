@@ -40,7 +40,7 @@ export class WcStoreAPI {
   ): Observable<any> {
     return this.http.get(
       this.storeApiBackend +
-        `/products?type=variation&parent=${parentId}&stock_status=${stockStatus}`,
+        `/products?type=variation&parent=${parentId}&stock_status=${stockStatus}&per_page=100`,
       { headers: this.headers },
     );
   }

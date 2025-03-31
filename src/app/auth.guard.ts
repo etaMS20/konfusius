@@ -22,7 +22,12 @@ export class AuthGuard implements CanActivate {
   ): boolean {
     if (this.authService.isAuthenticatedBase()) {
       if (route.routeConfig?.path === 'crew-area') {
-        return this.authService.isAuthenticatedCrew();
+        if (this.authService.isAuthenticatedCrew()) {
+          return true;
+        } else {
+          alert('insufficient access rights for this route');
+          return false;
+        }
       }
       return true;
     } else {
