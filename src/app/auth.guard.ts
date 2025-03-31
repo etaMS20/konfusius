@@ -21,6 +21,9 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot,
   ): boolean {
     if (this.authService.isAuthenticatedBase()) {
+      if (route.routeConfig?.path === 'crew-area') {
+        return this.authService.isAuthenticatedCrew();
+      }
       return true;
     } else {
       this.router.navigate(['/login'], {

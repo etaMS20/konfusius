@@ -102,7 +102,7 @@ $scrolled-height: calc(min($nav-max-height, $nav-height) - 20px);
 // Logo image styling
 .logo-image {
   border-radius: 8px;
-  height: 80px;
+  height: 65px;
   width: auto;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
   transition: all 0.3s ease;
@@ -116,15 +116,15 @@ $scrolled-height: calc(min($nav-max-height, $nav-height) - 20px);
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 0.5rem;
 }
 
 ::ng-deep .nav-links .mat-mdc-button {
   border-radius: 24px;
-  padding: 0 20px;
-  height: 40px;
-  font-weight: 1000;
-  letter-spacing: 0.5px;
+  padding: 0 0.5rem;
+  height: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
   transition: all 0.2s ease;
   position: relative;
   overflow: hidden;

@@ -35,8 +35,7 @@
 // Title
 .title {
   text-align: center;
-  font-size: 3.5rem;
-  margin: 40px 0;
+  margin: 2rem 0;
   color: $text-color;
   text-transform: uppercase;
   letter-spacing: 3px;
@@ -49,7 +48,6 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 2rem;
     color: $primary-color;
   }
 

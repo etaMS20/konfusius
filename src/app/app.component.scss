@@ -7,6 +7,6 @@ main {
   margin-top: calc($nav-height + 20px);
   width: 100%;
   min-height: 85vh;
-  max-width: 1400px;
+  max-width: max(1300px, 60vw);
   flex-grow: 1;
 }
