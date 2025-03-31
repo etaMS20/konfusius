@@ -14,15 +14,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { WcLineItem, WcOrder } from '@models/order.model';
 import { WcV3Service } from '@services/api/wc-v3.service';
 import { DateFormatPipe } from '@pipes/date-format.pipe';
-import { WcCartItem } from '@models/cart.model';
 import { DISCLAIMER_PRODUCTS } from '@models/cross-sale.model';
 import { CommonModule } from '@angular/common';
 import { OrderStatusComponent } from '@shared/status/order-status.component';
 import { CustomEndpointsService } from '@services/api/custom-endpoints.service';
 import { MatSelectModule } from '@angular/material/select';
+import { LineItemMin, OrderMin } from '@models/types.model';
+import { WC_ORDER_STATUSES, WcOrderStatus } from '@models/order.model';
 
 @Component({
   selector: 'app-crew-area',
@@ -50,7 +50,7 @@ export class CrewAreaComponent implements AfterViewInit, OnInit {
   endpoints = inject(WcV3Service);
   customEpS = inject(CustomEndpointsService);
   contactPersons = signal<Array<string>>([]);
-  dataSource = new MatTableDataSource<WcOrder>([]);
+  dataSource = new MatTableDataSource<OrderMin>([]);
   @ViewChild(MatSort) sort!: MatSort;
   displayedColumns: Array<string> = [
     'id',
@@ -64,14 +64,17 @@ export class CrewAreaComponent implements AfterViewInit, OnInit {
     'order_status',
   ];
 
+  statuses = WC_ORDER_STATUSES;
   shiftFilter = '';
+  nameFilter = '';
   contactFilter: string | null = null;
-  statusFilter: string | null = null;
+  statusFilter: WcOrderStatus | null = null;
 
   constructor() {}
 
   ngOnInit(): void {
-    this.endpoints.getOrders().subscribe((orders) => {
+    //TODO: This can be improved
+    this.customEpS.getOrdersByInvite('', ['2025']).subscribe((orders) => {
       this.dataSource.data = orders;
     });
 
@@ -79,49 +82,66 @@ export class CrewAreaComponent implements AfterViewInit, OnInit {
       this.contactPersons.set(response);
     });
 
-    this.dataSource.filterPredicate = (order: WcOrder, filter: string) => {
+    /** filter predicate */
+    this.dataSource.filterPredicate = (order: OrderMin, filter: string) => {
       const parsedFilter = JSON.parse(filter);
 
       const shift = this.findMainItem(order.line_items) ?? '';
-      this.dataSource.sortingDataAccessor = (order, property) => {
-        if (property === 'name') {
-          return `${order.billing.first_name} ${order.billing.last_name}`.toLowerCase();
-        }
-        return order[property as keyof WcOrder] || '';
-      };
 
       const contactMatch =
-        !parsedFilter.kontakt ||
-        order.billing.billing_invite === parsedFilter.kontakt;
-      const statusMatch =
-        !parsedFilter.status || order.status === parsedFilter.status;
-      const shiftMatch = shift
-        .toLowerCase()
-        .includes(parsedFilter.schicht.toLowerCase());
+        !parsedFilter.invited_by ||
+        order.billing.billing_invite === parsedFilter.invited_by;
 
-      return shiftMatch && contactMatch && statusMatch;
+      const statusMatch =
+        !parsedFilter.order_status ||
+        order.status === parsedFilter.order_status;
+
+      const shiftMatch =
+        !parsedFilter.items_main ||
+        shift.toLowerCase().includes(parsedFilter.items_main);
+
+      const nameMatch =
+        !parsedFilter.name ||
+        order.billing.full_name.toLowerCase().includes(parsedFilter.name);
+
+      return shiftMatch && contactMatch && statusMatch && nameMatch;
     };
   }
 
-  findMainItem(items: Array<WcLineItem>) {
+  findMainItem(items: Array<LineItemMin>) {
     return items.find((item) => !DISCLAIMER_PRODUCTS.has(item.product_id))
       ?.name;
   }
 
-  findCrossItem(items: Array<WcLineItem>) {
+  findCrossItem(items: Array<LineItemMin>) {
     return items.find((item) => DISCLAIMER_PRODUCTS.has(item.product_id))?.name;
   }
 
   applyFilter() {
     const filterObj = {
-      schicht: this.shiftFilter,
-      kontakt: this.contactFilter,
-      status: this.statusFilter,
+      name: this.nameFilter.trim().toLowerCase(),
+      items_main: this.shiftFilter.trim().toLowerCase(),
+      invited_by: this.contactFilter,
+      order_status: this.statusFilter,
     };
     this.dataSource.filter = JSON.stringify(filterObj);
   }
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
+    this.sort.active = 'date_created'; // default sort column
+    this.sort.direction = 'desc'; // default sort direction to descending
+    this.sort.sortChange.emit(); // trigger sorting
+
+    this.dataSource.sortingDataAccessor = (order, property) => {
+      switch (property) {
+        case 'total_price':
+          return parseInt(order.total);
+        case 'date_created':
+          return order.date_created.toLowerCase();
+        default:
+          return '';
+      }
+    };
   }
 }

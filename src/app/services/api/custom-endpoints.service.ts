@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { BACKEND } from '@config/http.config';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
-import { WcOrder } from '@models/order.model';
+import { OrderMin } from '@models/types.model';
 
 @Injectable({
   providedIn: 'root',
@@ -32,11 +32,12 @@ export class CustomEndpointsService {
 
   getOrdersByInvite(
     inv: string,
-    years?: Array<number>,
-  ): Observable<Array<WcOrder>> {
+    years = ['2025'],
+    meta_key = 'billing_invite',
+  ): Observable<Array<OrderMin>> {
     let params = new HttpParams();
 
-    params = params.set('meta_key', 'billing_invite');
+    params = params.set('meta_key', meta_key);
     params = params.set('meta_value', inv);
 
     if (years && years.length > 0) {
@@ -45,7 +46,7 @@ export class CustomEndpointsService {
 
     return this.http
       .get<
-        Array<WcOrder>
+        Array<OrderMin>
       >(this.customBackend + `/orders-by-meta`, { headers: this.headers, params })
       .pipe(
         catchError((error) => {

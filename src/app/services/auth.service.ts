@@ -1,8 +1,6 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BACKEND, CREW_PW, GUEST_PW, SALT } from '../../config/http.config';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, map, Observable, of } from 'rxjs';
-import { GuestAuth } from './auth.model';
+import { HttpClient } from '@angular/common/http';
 import shajs from 'sha.js';
 import { authProductCatMap, AuthType } from '@models/auth.model';
 import { LsKeys } from '@models/storage.model';
@@ -82,39 +80,5 @@ export class AuthService {
   sessionHasNonce(): boolean {
     const nonce = sessionStorage.getItem('nonce');
     return nonce !== null;
-  }
-
-  /** we use a custom endpoint to authenticate guests */
-  authenticateGuest(pw: string): Observable<GuestAuth> {
-    const jwtToken = this.lsService.getItem<string>('jwtToken');
-
-    let headers = new HttpHeaders();
-    if (jwtToken) {
-      headers.set('Authorization', `Bearer ${jwtToken}`);
-    }
-
-    return this.http.post<GuestAuth>(
-      this.customBackend + `/guest-auth`,
-      { password: pw },
-      {
-        headers,
-      },
-    );
-  }
-
-  validateToken(): Observable<boolean> {
-    const token = sessionStorage.getItem('token');
-    if (!token) {
-      return of(false);
-    }
-
-    return this.http
-      .post<any>(this.jwtAuthBackend + '/token/validate', null, {
-        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
-      })
-      .pipe(
-        map((result) => result?.code === 'jwt_auth_valid_token'),
-        catchError(() => of(false)),
-      );
   }
 }

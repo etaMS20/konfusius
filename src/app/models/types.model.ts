@@ -1,3 +1,6 @@
+import { CrossSaleProductId } from './cross-sale.model';
+import { WcOrderStatus } from './order.model';
+
 export interface BaseDialogData {
   content?: string;
   title?: string;
@@ -15,4 +18,22 @@ export interface ImageMeta {
 export interface FaqSection {
   question: string;
   answer: string;
+}
+
+export interface OrderMin {
+  id: number;
+  date_created: string;
+  billing: {
+    full_name: string;
+    email: string;
+    billing_invite: string;
+  };
+  line_items: Array<LineItemMin>;
+  total: string;
+  status: WcOrderStatus;
+}
+
+export interface LineItemMin {
+  product_id: number | CrossSaleProductId;
+  name: string;
 }

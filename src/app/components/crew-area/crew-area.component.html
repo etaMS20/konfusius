@@ -1,14 +1,40 @@
 <div class="crew-container slimline">
   <mat-form-field appearance="outline">
     <mat-label>Schicht-Filter</mat-label>
-    <input matInput (keyup)="applyFilter()" placeholder="Schicht name" #input />
+    <input
+      matInput
+      #shiftInput
+      (keyup)="shiftFilter = shiftInput.value; applyFilter()"
+      placeholder="Schicht"
+    />
   </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Name-Filter</mat-label>
+    <input
+      matInput
+      #nameInput
+      (keyup)="nameFilter = nameInput.value; applyFilter()"
+      placeholder="Name"
+    />
+  </mat-form-field>
+
   <mat-form-field appearance="outline">
     <mat-label>Kontaktperson-Filter</mat-label>
     <mat-select [(value)]="contactFilter" (selectionChange)="applyFilter()">
       <mat-option [value]="null">Alle</mat-option>
       <mat-option *ngFor="let person of contactPersons()" [value]="person">
         {{ person }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Status-Filter</mat-label>
+    <mat-select [(value)]="statusFilter" (selectionChange)="applyFilter()">
+      <mat-option [value]="null">Alle</mat-option>
+      <mat-option *ngFor="let st of statuses" [value]="st">
+        {{ st }}
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -33,9 +59,9 @@
 
     <!-- name Column -->
     <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+      <th mat-header-cell *matHeaderCellDef>Name</th>
       <td mat-cell *matCellDef="let order">
-        {{ order.billing.first_name }} {{ order.billing.last_name }}
+        {{ order.billing.full_name }}
       </td>
     </ng-container>
 
@@ -47,7 +73,7 @@
 
     <!-- invited_by Column -->
     <ng-container matColumnDef="invited_by">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Kontaktperson</th>
+      <th mat-header-cell *matHeaderCellDef>Kontaktperson</th>
       <td mat-cell *matCellDef="let order">
         {{ order.billing.billing_invite }}
       </td>
@@ -55,14 +81,14 @@
 
     <!-- Schichten -->
     <ng-container matColumnDef="items_main">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Schicht</th>
+      <th mat-header-cell *matHeaderCellDef>Schicht</th>
       <td mat-cell *matCellDef="let order">
         {{ findMainItem(order.line_items) }}
       </td>
     </ng-container>
 
     <ng-container matColumnDef="items_cross">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Ticket</th>
+      <th mat-header-cell *matHeaderCellDef>Ticket</th>
       <td mat-cell *matCellDef="let order">
         {{ findCrossItem(order.line_items) }}
       </td>
@@ -78,7 +104,7 @@
 
     <!-- status Column -->
     <ng-container matColumnDef="order_status">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+      <th mat-header-cell *matHeaderCellDef>Status</th>
       <td mat-cell *matCellDef="let order">
         <app-order-status [orderStatus]="order.status"></app-order-status>
       </td>
