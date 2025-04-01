@@ -23,14 +23,14 @@ export interface WcCheckout {
 }
 
 export const WC_ORDER_STATUSES = [
-  'pending',
   'processing',
-  'on-hold',
   'completed',
   'cancelled',
-  'refunded',
   'failed',
   'trash',
+  'pending',
+  'refunded',
+  'on-hold',
 ] as const;
 
 export type WcOrderStatus = (typeof WC_ORDER_STATUSES)[number];

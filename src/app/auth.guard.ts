@@ -26,6 +26,9 @@ export class AuthGuard implements CanActivate {
           return true;
         } else {
           alert('insufficient access rights for this route');
+          this.router.navigate(['/login'], {
+            queryParams: { redirect: state.url },
+          });
           return false;
         }
       }

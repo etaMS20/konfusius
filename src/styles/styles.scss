@@ -38,6 +38,10 @@ html {
     )
   );
 
+  .invited-by {
+    @include mat.all-component-densities(-1);
+  }
+
   .slimline {
     @include mat.all-component-densities(-3);
     @include mat.form-field-density(-4);
@@ -195,4 +199,19 @@ mat-error {
 /** lightbox overwrites */
 .lb-outerContainer {
   background-color: black !important;
+}
+
+/** mat-menu */
+.mat-mdc-menu-content {
+  padding: 0 !important;
+}
+
+.mat-mdc-menu-item {
+  min-height: 2rem !important;
+  margin: 0.2rem auto !important;
+}
+
+/** select-options */
+.mat-mdc-option {
+  min-height: 2rem !important;
 }

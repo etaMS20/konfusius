@@ -28,6 +28,10 @@ $error-color: #e53935;
 
 $order-status: (
   processing: (
+    background-color: #d0f3f8,
+    color: #517c83,
+  ),
+  pending: (
     background-color: #fff8e1,
     color: #ff8f00,
   ),
@@ -40,8 +44,8 @@ $order-status: (
     color: #c62828,
   ),
   trash: (
-    background-color: #ffebee,
-    color: #c62828,
+    background-color: #d4d4d4,
+    color: #363636,
   ),
 );
 

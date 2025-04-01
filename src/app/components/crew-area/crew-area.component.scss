@@ -1,9 +1,54 @@
-crew-container {
+@use './styles/style-vars.scss' as *;
+
+.crew-container {
   display: block;
+  place-content: center; /* Horizontal centering */
   height: 100%;
+  width: 110%;
+  margin-left: -5%;
+
+  h2 {
+    margin-bottom: 1rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    text-align: right;
+  }
 }
 
-table {
-  overflow-x: auto;
-  overflow-y: hidden;
+.order-table {
+  overflow: auto;
+}
+
+.bulk-menu {
+  place-content: end;
+  margin: 1rem 0;
+}
+
+.status-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.status-head {
+  text-align: center;
+}
+
+.price-cell {
+  text-align: right;
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: auto 0.5rem;
+}
+
+button[mat-icon-button] {
+  border: 0.5px dashed grey;
+
+  &:enabled {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+    border: 0.5px solid darkgray;
+  }
 }

@@ -3,7 +3,11 @@ import { inject, Injectable } from '@angular/core';
 import { BACKEND, CONSUMER_KEY, CONSUMER_SECRET } from '@config/http.config';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
 import { catchError, Observable, throwError } from 'rxjs';
-import { WcOrder, WcPaymentGateway } from 'src/app/models/order.model';
+import {
+  WcOrder,
+  WcOrderStatus,
+  WcPaymentGateway,
+} from 'src/app/models/order.model';
 
 @Injectable({
   providedIn: 'root',
@@ -61,5 +65,30 @@ export class WcV3Service {
           return throwError(() => error);
         }),
       );
+  }
+
+  // set_paid also possible
+  batchUpdateOrderStatus(
+    ids: Array<number>,
+    status: WcOrderStatus,
+  ): Observable<any> {
+    const updates = ids.map((id) => {
+      return {
+        id: id,
+        status: status,
+      };
+    });
+
+    const payload = {
+      update: updates,
+    };
+
+    return this.http.post<Array<any>>(
+      `${this.wcBackend}/orders/batch`,
+      payload,
+      {
+        headers: this.headers,
+      },
+    );
   }
 }
