@@ -202,7 +202,7 @@ $scrolled-height: calc(min($nav-max-height, $nav-height) - 20px);
   top: min($nav-max-height, $nav-height); // Match initial header height
   left: 0;
   right: 0;
-  background: linear-gradient(180deg, #9c27b0 0%, #7b1fa2 100%);
+  background: linear-gradient(180deg, #7b1fa2 0%, #227f96 100%);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 999;
   transform: translateY(-100%);
@@ -237,10 +237,11 @@ $scrolled-height: calc(min($nav-max-height, $nav-height) - 20px);
     color: white;
     border-radius: 8px;
     transition: all 0.3s ease;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.2);
+    border: hsl(from color h s l);
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: rgba(255, 255, 255, 0.3);
       transform: translateX(5px);
     }
 
@@ -311,38 +312,4 @@ $scrolled-height: calc(min($nav-max-height, $nav-height) - 20px);
 
 .logo-link:hover .logo-text {
   animation: pulse 1s infinite;
-}
-
-// Add a subtle ripple effect to the mobile menu items
-.mobile-nav-links a::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 5px;
-  height: 5px;
-  background: rgba(255, 255, 255, 0.5);
-  opacity: 0;
-  border-radius: 100%;
-  transform: scale(1, 1) translate(-50%);
-  transform-origin: 50% 50%;
-}
-
-.mobile-nav-links a:focus:not(:active)::after {
-  animation: ripple 1s ease-out;
-}
-
-@keyframes ripple {
-  0% {
-    transform: scale(0, 0);
-    opacity: 0.5;
-  }
-  20% {
-    transform: scale(25, 25);
-    opacity: 0.3;
-  }
-  100% {
-    opacity: 0;
-    transform: scale(40, 40);
-  }
 }
