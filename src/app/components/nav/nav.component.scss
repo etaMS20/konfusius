@@ -127,7 +127,7 @@ $scrolled-height: calc(min($nav-max-height, $nav-height) - 20px);
   }
 }
 
-.mat-mdc-icon-button {
+.crew-button {
   background-color: rgba(255, 255, 163, 0.822);
   transition: all 0.2s ease;
 
@@ -247,6 +247,11 @@ $scrolled-height: calc(min($nav-max-height, $nav-height) - 20px);
     mat-icon {
       margin-right: 12px;
     }
+  }
+
+  .crew-button-mobile {
+    background-color: rgba(219, 219, 133, 0.822);
+    color: black;
   }
 }
 

@@ -88,6 +88,7 @@ export class WcV3Service {
       payload,
       {
         headers: this.headers,
+        withCredentials: true,
       },
     );
   }
