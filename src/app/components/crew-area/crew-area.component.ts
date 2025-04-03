@@ -86,7 +86,8 @@ export class CrewAreaComponent implements AfterViewInit, OnInit {
   nameFilter = '';
   contactFilter: string | null = null;
   statusFilter: WcOrderStatus[] = this.statuses.filter(
-    (status) => !new Set(['on-hold', 'refunded', 'failed']).has(status),
+    (status) =>
+      !new Set(['pending', 'refunded', 'failed', 'processing']).has(status),
   );
 
   constructor(private readonly errorService: ErrorDialogService) {}

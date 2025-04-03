@@ -31,9 +31,13 @@ $order-status: (
     background-color: #d0f3f8,
     color: #517c83,
   ),
-  pending: (
+  on-hold: (
     background-color: #fff8e1,
     color: #ff8f00,
+  ),
+  pending: (
+    background-color: #fdffe1,
+    color: #ffa32c,
   ),
   completed: (
     background-color: #e8f5e9,
