@@ -102,7 +102,7 @@ $scrolled-height: calc(min($nav-max-height, $nav-height) - 20px);
 // Logo image styling
 .logo-image {
   border-radius: 8px;
-  height: 80px;
+  height: 65px;
   width: auto;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
   transition: all 0.3s ease;
@@ -116,15 +116,36 @@ $scrolled-height: calc(min($nav-max-height, $nav-height) - 20px);
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 0.5rem;
 }
 
-::ng-deep .nav-links .mat-mdc-button {
+.mat-icon {
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.crew-button {
+  background-color: rgba(255, 255, 163, 0.822);
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(33, 150, 243, 0.3);
+
+    &::before {
+      left: 0;
+    }
+  }
+}
+
+.nav-links .mat-mdc-button {
   border-radius: 24px;
-  padding: 0 20px;
-  height: 40px;
-  font-weight: 1000;
-  letter-spacing: 0.5px;
+  height: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
   transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
@@ -156,18 +177,6 @@ $scrolled-height: calc(min($nav-max-height, $nav-height) - 20px);
     background-color: rgba(255, 255, 255, 0.2);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   }
-
-  .mat-icon {
-    margin-right: 8px;
-    transition: transform 0.2s ease;
-    font-size: 20px;
-    height: 20px;
-    width: 20px;
-  }
-
-  &:hover .mat-icon {
-    transform: translateY(-2px);
-  }
 }
 
 .menu-toggle {
@@ -193,7 +202,7 @@ $scrolled-height: calc(min($nav-max-height, $nav-height) - 20px);
   top: min($nav-max-height, $nav-height); // Match initial header height
   left: 0;
   right: 0;
-  background: linear-gradient(180deg, #9c27b0 0%, #7b1fa2 100%);
+  background: linear-gradient(180deg, #7b1fa2 0%, #227f96 100%);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 999;
   transform: translateY(-100%);
@@ -228,16 +237,22 @@ $scrolled-height: calc(min($nav-max-height, $nav-height) - 20px);
     color: white;
     border-radius: 8px;
     transition: all 0.3s ease;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.2);
+    border: hsl(from color h s l);
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: rgba(255, 255, 255, 0.3);
       transform: translateX(5px);
     }
 
     mat-icon {
       margin-right: 12px;
     }
+  }
+
+  .crew-button-mobile {
+    background-color: rgba(219, 219, 133, 0.822);
+    color: black;
   }
 }
 
@@ -297,38 +312,4 @@ $scrolled-height: calc(min($nav-max-height, $nav-height) - 20px);
 
 .logo-link:hover .logo-text {
   animation: pulse 1s infinite;
-}
-
-// Add a subtle ripple effect to the mobile menu items
-.mobile-nav-links a::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 5px;
-  height: 5px;
-  background: rgba(255, 255, 255, 0.5);
-  opacity: 0;
-  border-radius: 100%;
-  transform: scale(1, 1) translate(-50%);
-  transform-origin: 50% 50%;
-}
-
-.mobile-nav-links a:focus:not(:active)::after {
-  animation: ripple 1s ease-out;
-}
-
-@keyframes ripple {
-  0% {
-    transform: scale(0, 0);
-    opacity: 0.5;
-  }
-  20% {
-    transform: scale(25, 25);
-    opacity: 0.3;
-  }
-  100% {
-    opacity: 0;
-    transform: scale(40, 40);
-  }
 }

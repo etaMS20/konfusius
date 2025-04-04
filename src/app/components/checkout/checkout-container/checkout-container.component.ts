@@ -13,13 +13,13 @@ import {
   BillingComponent,
   FormOutput,
 } from '../billing-input/billing-input.component';
-import { WcStoreAPI } from '../../../services/api/wc-store-api.service';
+import { WcStoreAPI } from '@services/api/wc-store-api.service';
 import { catchError, Subject, throwError } from 'rxjs';
-import { ErrorDialogService } from '../../shared/errors/error-dialog.service';
-import { WcCart, WcCartItem, WcCheckOutData } from '../../../models/cart.model';
-import { CustomEndpointsService } from 'src/app/services/api/custom-endpoints.service';
-import { BlogPost, BlogPostId } from 'src/app/models/blog-post.model';
-import { WordPressApiService } from 'src/app/services/api/wp-api.service';
+import { ErrorDialogService } from '@shared/errors/error-dialog.service';
+import { WcCart, WcCartItem, WcCheckOutData } from '@models/cart.model';
+import { CustomEndpointsService } from '@services/api/custom-endpoints.service';
+import { BlogPost, BlogPostId } from '@models/blog-post.model';
+import { WordPressApiService } from '@services/api/wp-api.service';
 import { Router } from '@angular/router';
 import { EncryptionService } from '@services/encryption.service';
 import { indicate } from '@utils/reactive-loading.utils';
@@ -30,10 +30,10 @@ import {
   DisclaimerState,
   DisclaimerStateStore,
 } from '@models/disclaimer.model';
-import { LocalStorageService } from 'src/app/storage/local-storage.service';
+import { LocalStorageService } from '@storage/local-storage.service';
 import { getCurrentStateBySKU } from '@utils/disclaimer.utils';
 import { LsKeys } from '@models/storage.model';
-import { CrossSaleProductId } from '@models/cross-sale.model';
+import { DISCLAIMER_PRODUCTS } from '@models/cross-sale.model';
 
 @Component({
   selector: 'app-checkout-container',
@@ -66,11 +66,6 @@ export class CheckoutContainerComponent implements OnInit, OnDestroy {
   allowedOptions = signal<string[]>([]);
   rules = signal<BlogPost | undefined>(undefined);
   disclaimerState?: DisclaimerState;
-  excludedIds = new Set([
-    CrossSaleProductId.SOLI,
-    CrossSaleProductId.KONFUSIUS,
-    CrossSaleProductId.GOENNER,
-  ]);
 
   cart = signal<WcCart | null>(null);
   cartTotals = computed(() => {
@@ -86,10 +81,10 @@ export class CheckoutContainerComponent implements OnInit, OnDestroy {
   constructor() {
     effect(() => {
       this.mainItem = this.cartItems()?.find(
-        (item) => !this.excludedIds.has(item.id),
+        (item) => !DISCLAIMER_PRODUCTS.has(item.id),
       );
       this.crossSaleItem = this.cartItems()?.find((item) =>
-        this.excludedIds.has(item.id),
+        DISCLAIMER_PRODUCTS.has(item.id),
       );
 
       if (this.mainItem) {

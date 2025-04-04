@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
+import { SafeHtmlPipe } from '@pipes/safe-html.pipe';
 
 @Component({
   selector: 'app-info-box',

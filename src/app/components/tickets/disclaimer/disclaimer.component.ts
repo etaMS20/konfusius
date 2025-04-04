@@ -24,16 +24,15 @@ import { MatIcon } from '@angular/material/icon';
 import {
   Disclaimer,
   DisclaimerFormControl,
-  DisclaimerState,
   DisclaimerStateStore,
 } from '@models/disclaimer.model';
 import { WcProduct } from '@models/product.model';
 import { LsKeys } from '@models/storage.model';
-import { SafeHtmlPipe } from '@pipes//safe-html.pipe';
+import { SafeHtmlPipe } from '@pipes/safe-html.pipe';
 import { ClientDeviceService } from '@services/client-device.service';
 import { getCurrentStateBySKU } from '@utils/disclaimer.utils';
 import { Subject, takeUntil } from 'rxjs';
-import { LocalStorageService } from 'src/app/storage/local-storage.service';
+import { LocalStorageService } from '@storage/local-storage.service';
 
 @Component({
   selector: 'app-disclaimer',

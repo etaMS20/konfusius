@@ -64,7 +64,6 @@ On git-pushes the app fill be automatically deployed to wordpress using `.github
 ### Known Issues
 
 - privacy page renders without content on brave browser
-- shop doesn't work with cookie limitation on brave
 
 ### Planned Features
 
@@ -72,10 +71,10 @@ On git-pushes the app fill be automatically deployed to wordpress using `.github
 - implement Ui for crew members with website settings (can have)
 - activate/implement wp-nonces (should have)
 - smooth scrolling navigation (can have)
-- use JWT token for all requests (can have)
+- use JWT token for all requests (should have)
+- limit order to 1 per email (can have)
 
 ### Useful Links
 
-- https://stackoverflow.com/questions/72070748/failed-to-load-module-script-expected-a-javascript-module-script-but-the-server
-- https://dev.to/stephenwhitmore/take-your-wordpress-site-farther-with-angular-3o6p
-- icons: https://mui.com/material-ui/material-icons/?query=foo
+- alternative deployment method: https://dev.to/stephenwhitmore/take-your-wordpress-site-farther-with-angular-3o6p
+- mat-icons: https://mui.com/material-ui/material-icons/?query=foo

@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.7]
+
+### Added
+
+- crew-page
+
+### Fixed
+
+- payment method not always showing on checkout overview
+- replaced imports with @ notation were applicable
+
+## [1.0.6]
+
+### Changed
+
+- styling of nav
+
+### Removed
+
+- unused services and redundant code
+- non-generic dialog components
+
 ## [1.0.5]
 
 ### Added

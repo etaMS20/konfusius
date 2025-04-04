@@ -28,24 +28,28 @@ $error-color: #e53935;
 
 $order-status: (
   processing: (
+    background-color: #d0f3f8,
+    color: #517c83,
+  ),
+  on-hold: (
     background-color: #fff8e1,
     color: #ff8f00,
   ),
-  shipped: (
+  pending: (
+    background-color: #fdffe1,
+    color: #ffa32c,
+  ),
+  completed: (
     background-color: #e8f5e9,
     color: #2e7d32,
-  ),
-  delivered: (
-    background-color: #e3f2fd,
-    color: #1565c0,
   ),
   cancelled: (
     background-color: #ffebee,
     color: #c62828,
   ),
   trash: (
-    background-color: #ffebee,
-    color: #c62828,
+    background-color: #d4d4d4,
+    color: #363636,
   ),
 );
 
@@ -61,7 +65,7 @@ $stock-status: (
 );
 
 // nav
-$nav-height: 90px;
+$nav-height: 70px;
 $nav-max-height: 15vh;
 $nav-linear-gradient: linear-gradient(
   -45deg,

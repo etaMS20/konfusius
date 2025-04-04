@@ -20,11 +20,7 @@
         [mainCartItem]="mainItem"
         [crossSaleCartItem]="crossSaleItem"
       ></app-cart-totals>
-      <app-conditions
-        *ngIf="disclaimerState"
-        [disclaimerState]="disclaimerState"
-      >
-      </app-conditions>
+      <app-conditions [disclaimerState]="disclaimerState"> </app-conditions>
     </div>
   </div>
 </div>

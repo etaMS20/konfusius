@@ -22,16 +22,18 @@ export interface WcCheckout {
   extensions: {};
 }
 
-export enum WcOrderStatus {
-  PENDING = 'pending',
-  PROCESSING = 'processing',
-  ON_HOLD = 'on-hold',
-  COMPLETED = 'completed',
-  CANCELLED = 'cancelled',
-  REFUNDED = 'refunded',
-  FAILED = 'failed',
-  TRASH = 'trash',
-}
+export const WC_ORDER_STATUSES = [
+  'completed',
+  'cancelled',
+  'on-hold',
+  'trash',
+  'processing',
+  'pending',
+  'refunded',
+  'failed',
+] as const;
+
+export type WcOrderStatus = (typeof WC_ORDER_STATUSES)[number];
 
 export interface WcPaymentGateway {
   id: string;

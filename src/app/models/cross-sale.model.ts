@@ -5,3 +5,9 @@ export enum CrossSaleProductId {
 }
 
 export const crossSaleProductCat = 49;
+
+export const DISCLAIMER_PRODUCTS = new Set([
+  CrossSaleProductId.SOLI,
+  CrossSaleProductId.KONFUSIUS,
+  CrossSaleProductId.GOENNER,
+]);

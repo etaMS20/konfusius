@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { WcProduct } from '../models/product.model';
-import { WPImageSizeApiKey, WPMappedImage } from '../models/media.model';
+import { WcProduct } from '@models/product.model';
+import { WPImageSizeApiKey, WPMappedImage } from '@models/media.model';
 
 /**
  * service to map the api responses to typed objects

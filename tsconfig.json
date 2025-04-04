@@ -26,10 +26,11 @@
       "@shared/*": ["src/app/components/shared/*"],
       "@components/*": ["src/app/components/*"],
       "@models/*": ["src/app/models/*"],
-      "@pipes/*": ["src/app/pipes*"],
+      "@pipes/*": ["src/app/pipes/*"],
       "@services/*": ["src/app/services/*"],
       "@directives/*": ["src/app/directives/*"],
-      "@utils/*": ["src/app/utils/*"]
+      "@utils/*": ["src/app/utils/*"],
+      "@storage/*": ["src/app/storage/*"]
     }
   },
   "angularCompilerOptions": {

@@ -1,6 +1,6 @@
 import { Component, inject, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { NavComponent } from './components/nav/nav.component';
+import { NavComponent } from '@components/nav/nav.component';
 import { CommonModule } from '@angular/common';
 import { filter, map, Observable, Subscription } from 'rxjs';
 import { FooterComponent } from '@components/footer/footer.component';
