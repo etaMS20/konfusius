@@ -27,7 +27,7 @@ import { crossSaleProductCat } from '@models/cross-sale.model';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
 import { DisclaimerComponent } from './disclaimer/disclaimer.component';
 import { Disclaimer } from '@models/disclaimer.model';
-import { LocalStorageService } from 'src/app/storage/local-storage.service';
+import { LocalStorageService } from '@storage/local-storage.service';
 import { getDisclaimer } from '@utils/disclaimer.utils';
 import { MatButtonModule } from '@angular/material/button';
 

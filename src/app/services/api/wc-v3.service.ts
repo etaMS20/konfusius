@@ -3,11 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { BACKEND, CONSUMER_KEY, CONSUMER_SECRET } from '@config/http.config';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
 import { catchError, Observable, throwError } from 'rxjs';
-import {
-  WcOrder,
-  WcOrderStatus,
-  WcPaymentGateway,
-} from 'src/app/models/order.model';
+import { WcOrder, WcOrderStatus, WcPaymentGateway } from '@models/order.model';
 
 @Injectable({
   providedIn: 'root',

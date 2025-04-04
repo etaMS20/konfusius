@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { BACKEND, CREW_PW, GUEST_PW, SALT } from '../../config/http.config';
+import { BACKEND, CREW_PW, GUEST_PW, SALT } from '@config/http.config';
 import { HttpClient } from '@angular/common/http';
 import shajs from 'sha.js';
 import { authProductCatMap, AuthType } from '@models/auth.model';
 import { LsKeys } from '@models/storage.model';
-import { LocalStorageService } from '../storage/local-storage.service';
+import { LocalStorageService } from '@storage/local-storage.service';
 
 @Injectable({
   providedIn: 'root',

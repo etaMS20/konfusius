@@ -1,12 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BACKEND } from '../../../config/http.config';
-import {
-  WcBillingAddress,
-  WcShippingAddress,
-} from '../../models/customer.model';
-import { WcCheckOutData } from 'src/app/models/cart.model';
+import { BACKEND } from '@config/http.config';
+import { WcBillingAddress, WcShippingAddress } from '@models/customer.model';
+import { WcCheckOutData } from '@models/cart.model';
 import { WcProduct } from '@models/product.model';
 
 @Injectable({
@@ -36,7 +33,7 @@ export class WcStoreAPI {
 
   listProductVariations(
     parentId: number,
-    stockStatus = ['instock', 'outofstock'],
+    stockStatus = ['instock'],
   ): Observable<any> {
     return this.http.get(
       this.storeApiBackend +
@@ -54,7 +51,7 @@ export class WcStoreAPI {
         method: 'POST',
         cache: 'no-store',
         body: { id, quantity: 1 },
-        // headers: { Nonce: '1db1d13784' },
+        // headers: { Nonce: '...' },
       })),
     };
 

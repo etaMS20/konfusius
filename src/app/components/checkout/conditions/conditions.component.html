@@ -3,9 +3,9 @@
     <h4>Zahlung:</h4>
     <span> {{ paymentMethod }}</span>
   </div>
-  <div class="disclaimer-confirm">
+  <div class="disclaimer-confirm" *ngIf="disclaimerState()?.understood as u">
     <h4>Disclaimer Akzeptiert:</h4>
-    <mat-icon>{{ disclaimerState()?.understood ? 'check' : 'close' }}</mat-icon>
+    <mat-icon>{{ u ? 'check' : 'close' }}</mat-icon>
   </div>
   <div
     class="disclaimer-experience"

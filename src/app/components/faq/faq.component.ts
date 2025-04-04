@@ -3,7 +3,7 @@ import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { BlogPost } from '@models/blog-post.model';
 import { FaqSection } from '@models/types.model';
-import { SafeHtmlPipe } from '@pipes//safe-html.pipe';
+import { SafeHtmlPipe } from '@pipes/safe-html.pipe';
 import { WordPressApiService } from '@services/api/wp-api.service';
 
 @Component({

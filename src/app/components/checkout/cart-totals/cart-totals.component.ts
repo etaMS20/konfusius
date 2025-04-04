@@ -2,7 +2,7 @@ import { Component, computed, input } from '@angular/core';
 import { CommonModule, NgIf } from '@angular/common';
 import { WcCartItem, WcCartType } from '@models/cart.model';
 import { formatPrice } from '@utils/price.utils';
-import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
+import { SafeHtmlPipe } from '@pipes/safe-html.pipe';
 import { WcCartTotals } from '@models/price.model';
 
 @Component({

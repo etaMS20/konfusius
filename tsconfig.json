@@ -29,7 +29,8 @@
       "@pipes/*": ["src/app/pipes/*"],
       "@services/*": ["src/app/services/*"],
       "@directives/*": ["src/app/directives/*"],
-      "@utils/*": ["src/app/utils/*"]
+      "@utils/*": ["src/app/utils/*"],
+      "@storage/*": ["src/app/storage/*"]
     }
   },
   "angularCompilerOptions": {

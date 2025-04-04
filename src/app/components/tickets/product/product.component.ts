@@ -12,7 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { CommonModule } from '@angular/common';
-import { ProductTypeLabels, WcProduct } from '../../../models/product.model';
+import { ProductTypeLabels, WcProduct } from '@models/product.model';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { DialogPopupComponent } from '@shared/dialog-popup/dialog-popup.component';

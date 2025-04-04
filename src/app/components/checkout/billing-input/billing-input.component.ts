@@ -16,13 +16,13 @@ import type { WcBillingAddress } from '@models/customer.model';
 import { NgFor, NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatError, MatFormFieldModule } from '@angular/material/form-field';
-import type { WcCart } from 'src/app/models/cart.model';
+import type { WcCart } from '@models/cart.model';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
-import type { BlogPost } from 'src/app/models/blog-post.model';
+import type { BlogPost } from '@models/blog-post.model';
 import { BaseDialogData } from '@models/types.model';
 import { DialogPopupComponent } from '@shared/dialog-popup/dialog-popup.component';
 
