@@ -8,6 +8,11 @@ All notable changes to this project will be documented in this file.
 
 - crew-page
 
+### Fixed
+
+- payment method not always showing on checkout overview
+- replaced imports with @ notation were applicable
+
 ## [1.0.6]
 
 ### Changed
