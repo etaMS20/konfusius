@@ -126,7 +126,6 @@ export class CheckoutContainerComponent implements OnInit, OnDestroy {
   }
 
   onBillingFormSubmit(fromValues: FormOutput) {
-    console.log(fromValues, this.disclaimerState);
     const checkoutData: WcCheckOutData = {
       disclaimer_confirm: this.disclaimerState?.understood,
       disclaimer_experience: this.disclaimerState?.experience,
