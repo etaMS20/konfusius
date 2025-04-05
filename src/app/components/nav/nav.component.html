@@ -20,27 +20,39 @@
           matTooltipShowDelay="100"
           [matTooltipDisabled]="ticketsActive()"
         >
-          <button
+          <a
             mat-button
             routerLink="/tickets"
             routerLinkActive="active-link"
             [disabled]="!ticketsActive()"
+            [href]="'/tickets'"
           >
             <mat-icon>confirmation_number</mat-icon>
             Zur Anmeldung
-          </button>
+          </a>
         </span>
 
-        <button mat-button routerLink="/gallery" routerLinkActive="active-link">
+        <a
+          mat-button
+          routerLink="/gallery"
+          routerLinkActive="active-link"
+          [href]="'/gallery'"
+        >
           <mat-icon>collections</mat-icon>
           Gallerie
-        </button>
+        </a>
 
-        <button mat-button routerLink="/faq" routerLinkActive="active-link">
+        <a
+          mat-button
+          routerLink="/faq"
+          routerLinkActive="active-link"
+          [href]="'/faq'"
+        >
           <mat-icon>help_outline</mat-icon>
           FAQ
-        </button>
+        </a>
 
+        <!-- code this not as <a> -->
         <button
           mat-button
           routerLink="/login"
@@ -51,15 +63,16 @@
           logout
         </button>
 
-        <button
+        <a
           *ngIf="authService.isAuthenticatedCrew()"
           mat-icon-button
           routerLink="/crew-area"
           routerLinkActive="active-link"
           class="crew-button"
+          [href]="'/crew-area'"
         >
           <mat-icon>settings</mat-icon>
-        </button>
+        </a>
       </div>
 
       <!-- Mobile Navigation Toggle -->
