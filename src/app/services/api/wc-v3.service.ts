@@ -1,8 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BACKEND, CONSUMER_KEY, CONSUMER_SECRET } from '@config/http.config';
-import { ErrorDialogService } from '@shared/errors/error-dialog.service';
-import { catchError, Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { WcOrder, WcOrderStatus, WcPaymentGateway } from '@models/order.model';
 
 @Injectable({
@@ -11,7 +10,6 @@ import { WcOrder, WcOrderStatus, WcPaymentGateway } from '@models/order.model';
 export class WcV3Service {
   private readonly wcBackend = BACKEND + '/wc/v3';
   private readonly headers: HttpHeaders;
-  errorService = inject(ErrorDialogService);
 
   constructor(private readonly http: HttpClient) {
     const encodedCredentials = btoa(`${CONSUMER_KEY}:${CONSUMER_SECRET}`);
@@ -22,14 +20,9 @@ export class WcV3Service {
   }
 
   getOrderById(id: number): Observable<WcOrder> {
-    return this.http
-      .get<WcOrder>(this.wcBackend + `/orders/${id}`, { headers: this.headers })
-      .pipe(
-        catchError((error) => {
-          this.errorService.handleError(error);
-          return throwError(() => error);
-        }),
-      );
+    return this.http.get<WcOrder>(this.wcBackend + `/orders/${id}`, {
+      headers: this.headers,
+    });
   }
 
   getPaymentGateway(gateway: string): Observable<WcPaymentGateway> {
@@ -50,17 +43,10 @@ export class WcV3Service {
       params = params.set('per_page', 100);
     }
 
-    return this.http
-      .get<Array<WcOrder>>(`${this.wcBackend}/orders`, {
-        headers: this.headers,
-        params: params,
-      })
-      .pipe(
-        catchError((error) => {
-          this.errorService.handleError(error);
-          return throwError(() => error);
-        }),
-      );
+    return this.http.get<Array<WcOrder>>(`${this.wcBackend}/orders`, {
+      headers: this.headers,
+      params: params,
+    });
   }
 
   // set_paid also possible

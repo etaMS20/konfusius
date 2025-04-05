@@ -2,11 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.8]
+
+### Added
+
+- destroy to certain subscriptions
+
 ## [1.0.7]
 
 ### Added
 
 - crew-page
+- table of orders with filters and actions
 
 ### Fixed
 

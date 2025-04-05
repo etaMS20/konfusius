@@ -11,9 +11,10 @@
   <div *ngIf="order() && !loading()" class="order-container">
     <header class="order-header">
       <h2>Anmeldung #{{ _order.id }}</h2>
-      <span class="order-status" [class]="_order.status.toLowerCase()">
-        {{ _order.status }}
-      </span>
+      <app-order-status
+        class="status-cell"
+        [orderStatus]="_order.status"
+      ></app-order-status>
     </header>
 
     <div class="order-details">

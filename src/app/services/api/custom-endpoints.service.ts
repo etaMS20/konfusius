@@ -1,15 +1,13 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { catchError, Observable, throwError } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { BACKEND } from '@config/http.config';
-import { ErrorDialogService } from '@shared/errors/error-dialog.service';
 import { OrderMin } from '@models/types.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CustomEndpointsService {
-  private readonly errorService = inject(ErrorDialogService);
   private readonly customBackend = BACKEND + '/custom/v1';
   private readonly headers: HttpHeaders;
 
@@ -18,16 +16,9 @@ export class CustomEndpointsService {
   }
 
   listAllowedInvites(): Observable<any> {
-    return this.http
-      .get(this.customBackend + `/allowed_invite_options`, {
-        headers: this.headers,
-      })
-      .pipe(
-        catchError((error) => {
-          this.errorService.handleError(error);
-          return throwError(() => error);
-        }),
-      );
+    return this.http.get(this.customBackend + `/allowed_invite_options`, {
+      headers: this.headers,
+    });
   }
 
   getOrdersByInvite(
@@ -44,15 +35,9 @@ export class CustomEndpointsService {
       params = params.set('years', years.join(','));
     }
 
-    return this.http
-      .get<
-        Array<OrderMin>
-      >(this.customBackend + `/orders-by-meta`, { headers: this.headers, params })
-      .pipe(
-        catchError((error) => {
-          this.errorService.handleError(error);
-          return throwError(() => error);
-        }),
-      );
+    return this.http.get<Array<OrderMin>>(
+      this.customBackend + `/orders-by-meta`,
+      { headers: this.headers, params },
+    );
   }
 }
