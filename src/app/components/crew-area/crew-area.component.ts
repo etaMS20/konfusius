@@ -210,7 +210,6 @@ export class CrewAreaComponent implements AfterViewInit, OnInit {
   }
 
   selectAll(event: Event) {
-    console.log(event);
     if (!event.bubbles) {
       this.statusFilter = []; // Unselect all if already all are selected
     } else {
