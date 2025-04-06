@@ -47,4 +47,5 @@ export enum BlogPostId {
   KODEX_INFO = 1741,
   CAMPING_INFO = 1737,
   ANMELDUNG_INFO = 1739,
+  PRIVACY = 2188,
 }

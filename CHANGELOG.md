@@ -38,6 +38,7 @@ All notable changes to this project will be documented in this file.
 - changed html tag of nav buttons to `<a>`
 - styling of nav
 - replaced imports with `@` notation were applicable
+- fetch privacy page content instead of hardcode
 
 ### Fixed
 
