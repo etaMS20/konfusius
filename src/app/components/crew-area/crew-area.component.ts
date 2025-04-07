@@ -160,6 +160,21 @@ export class CrewAreaComponent implements AfterViewInit, OnInit, OnDestroy {
       });
   }
 
+  get sumPrice(): number {
+    return this.dataSource.filteredData.reduce(
+      (sum, order) => sum + Number(order.total),
+      0,
+    );
+  }
+
+  get sumFilter(): number {
+    return this.dataSource.filteredData.length;
+  }
+
+  get selected(): number {
+    return this.selection.selected.length;
+  }
+
   findMainItem(items: Array<LineItemMin>) {
     return items.find((item) => !DISCLAIMER_PRODUCTS.has(item.product_id))
       ?.name;

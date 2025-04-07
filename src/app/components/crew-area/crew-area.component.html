@@ -84,6 +84,7 @@
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef>OrderID</th>
         <td mat-cell *matCellDef="let order">#{{ order.id }}</td>
+        <td mat-footer-cell *matFooterCellDef>Σ(Anmeld.):</td>
       </ng-container>
 
       <!-- Date Column -->
@@ -92,6 +93,7 @@
         <td mat-cell *matCellDef="let order">
           {{ order.date_created | dateFormat }}
         </td>
+        <td mat-footer-cell *matFooterCellDef>{{ sumFilter }}</td>
       </ng-container>
 
       <!-- name Column -->
@@ -100,12 +102,14 @@
         <td mat-cell *matCellDef="let order">
           {{ order.billing.full_name }}
         </td>
+        <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
 
       <!-- email Column -->
       <ng-container matColumnDef="email">
         <th mat-header-cell *matHeaderCellDef>email</th>
         <td mat-cell *matCellDef="let order">{{ order.billing.email }}</td>
+        <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
 
       <!-- invited_by Column -->
@@ -114,6 +118,7 @@
         <td mat-cell *matCellDef="let order">
           {{ order.billing.billing_invite }}
         </td>
+        <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
 
       <!-- Schichten -->
@@ -122,6 +127,7 @@
         <td mat-cell *matCellDef="let order">
           {{ findMainItem(order.line_items) }}
         </td>
+        <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
 
       <ng-container matColumnDef="items_cross">
@@ -129,6 +135,7 @@
         <td mat-cell *matCellDef="let order">
           {{ findCrossItem(order.line_items) }}
         </td>
+        <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
 
       <!-- Preis -->
@@ -136,6 +143,9 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Preis(€)</th>
         <td mat-cell *matCellDef="let order">
           <div class="price-cell">{{ order.total }}</div>
+        </td>
+        <td mat-footer-cell *matFooterCellDef style="text-align: right">
+          {{ sumPrice | number: '1.2-2' }}
         </td>
       </ng-container>
 
@@ -148,6 +158,7 @@
             [orderStatus]="order.status"
           ></app-order-status>
         </td>
+        <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
 
       <!-- Selection Column -->
@@ -169,10 +180,18 @@
           >
           </mat-checkbox>
         </td>
+        <td mat-footer-cell *matFooterCellDef>
+          {{ selected }} / {{ sumFilter }}
+        </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr
+        mat-footer-row
+        *matFooterRowDef="displayedColumns"
+        class="footer-row"
+      ></tr>
     </table>
   </div>
 </div>

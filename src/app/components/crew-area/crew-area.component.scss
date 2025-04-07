@@ -50,3 +50,13 @@ button[mat-icon-button] {
     border: 0.5px solid darkgray;
   }
 }
+
+.footer-row {
+  padding-top: 1rem;
+  font-weight: 500;
+  height: 2rem;
+}
+
+td[mat-footer-cell] {
+  border-top: 3px double black;
+}

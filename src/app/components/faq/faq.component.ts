@@ -8,7 +8,7 @@ import {
   signal,
 } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { BlogPost } from '@models/blog-post.model';
+import { BlogPost, BlogPostId } from '@models/blog-post.model';
 import { FaqSection } from '@models/types.model';
 import { SafeHtmlPipe } from '@pipes/safe-html.pipe';
 import { WordPressApiService } from '@services/api/wp-api.service';
@@ -33,7 +33,7 @@ export class FaqComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.wpApi
-      .getPostById(1926)
+      .getPostById(BlogPostId.FAQ)
       .pipe(
         takeUntil(this.destroy$),
         catchError((error) => {
