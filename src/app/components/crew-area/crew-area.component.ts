@@ -192,6 +192,14 @@ export class CrewAreaComponent implements AfterViewInit, OnInit, OnDestroy {
       order_status: this.statusFilter.length ? this.statusFilter : null,
     };
     this.dataSource.filter = JSON.stringify(filterObj);
+
+    // unselect if not visible due to filter
+    const visibleIds = new Set(
+      this.dataSource.filteredData.map((order) => order.id),
+    );
+    this.selection.selected
+      .filter((order) => !visibleIds.has(order.id))
+      .forEach((order) => this.selection.deselect(order));
   }
 
   toggleRow(order: OrderMin) {
