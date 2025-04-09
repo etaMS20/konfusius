@@ -25,6 +25,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  word-break: keep-all; // avoid word break in status cell
 }
 
 .status-head {
@@ -51,12 +52,7 @@ button[mat-icon-button] {
   }
 }
 
-.footer-row {
-  padding-top: 1rem;
-  font-weight: 500;
-  height: 2rem;
-}
-
 td[mat-footer-cell] {
   border-top: 3px double black;
+  font-weight: 500;
 }
