@@ -55,6 +55,7 @@
     "@types/node": "^22.14.0",
     "@types/sha.js": "^2.4.4",
     "@types/webpack": "^5.28.5",
+    "autoprefixer": "^10.4.21",
     "browserlist": "^1.0.1",
     "crypto-browserify": "^3.12.1",
     "dotenv-webpack": "^8.1.0",
