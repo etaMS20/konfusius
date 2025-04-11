@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  OnDestroy,
   OnInit,
   signal,
   ViewChild,
@@ -27,7 +28,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { WcV3Service } from '@services/api/wc-v3.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { catchError, Subject, throwError } from 'rxjs';
+import { catchError, Subject, takeUntil, throwError } from 'rxjs';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
 import { indicate } from '@utils/reactive-loading.utils';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -60,7 +61,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CrewAreaComponent implements AfterViewInit, OnInit {
+export class CrewAreaComponent implements AfterViewInit, OnInit, OnDestroy {
   wcV3 = inject(WcV3Service);
   customEpS = inject(CustomEndpointsService);
   contactPersons = signal<Array<string>>([]);
@@ -80,6 +81,7 @@ export class CrewAreaComponent implements AfterViewInit, OnInit {
   ];
   selection = new SelectionModel<OrderMin>(true, []);
   loading$ = new Subject<boolean>();
+  private readonly destroy$ = new Subject<void>();
 
   statuses = WC_ORDER_STATUSES;
   shiftFilter = '';
@@ -122,10 +124,15 @@ export class CrewAreaComponent implements AfterViewInit, OnInit {
     };
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   private refreshCollection() {
     this.loading$.next(true);
-    //TODO: This can be improved
-    this.customEpS
+
+    this.customEpS // endpoint can be improved
       .getOrdersByInvite('', ['2025'])
       .pipe(
         indicate(this.loading$),
@@ -133,6 +140,7 @@ export class CrewAreaComponent implements AfterViewInit, OnInit {
           this.errorService.handleError(error);
           return throwError(() => error);
         }),
+        takeUntil(this.destroy$),
       )
       .subscribe((orders) => {
         this.dataSource.data = orders;
@@ -145,10 +153,26 @@ export class CrewAreaComponent implements AfterViewInit, OnInit {
           this.errorService.handleError(error);
           return throwError(() => error);
         }),
+        takeUntil(this.destroy$),
       )
       .subscribe((response: string[]) => {
         this.contactPersons.set(response);
       });
+  }
+
+  get sumPrice(): number {
+    return this.dataSource.filteredData.reduce(
+      (sum, order) => sum + Number(order.total),
+      0,
+    );
+  }
+
+  get sumFilter(): number {
+    return this.dataSource.filteredData.length;
+  }
+
+  get selected(): number {
+    return this.selection.selected.length;
   }
 
   findMainItem(items: Array<LineItemMin>) {
@@ -168,6 +192,14 @@ export class CrewAreaComponent implements AfterViewInit, OnInit {
       order_status: this.statusFilter.length ? this.statusFilter : null,
     };
     this.dataSource.filter = JSON.stringify(filterObj);
+
+    // unselect if not visible due to filter
+    const visibleIds = new Set(
+      this.dataSource.filteredData.map((order) => order.id),
+    );
+    this.selection.selected
+      .filter((order) => !visibleIds.has(order.id))
+      .forEach((order) => this.selection.deselect(order));
   }
 
   toggleRow(order: OrderMin) {
@@ -210,7 +242,6 @@ export class CrewAreaComponent implements AfterViewInit, OnInit {
   }
 
   selectAll(event: Event) {
-    console.log(event);
     if (!event.bubbles) {
       this.statusFilter = []; // Unselect all if already all are selected
     } else {

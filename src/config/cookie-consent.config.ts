@@ -10,7 +10,7 @@ export const cookieConfig: NgcCookieConsentConfig = {
       background: '#fff',
     },
     button: {
-      background: '#f1d600',
+      background: '#4f46e5',
     },
   },
   theme: 'edgeless',
@@ -22,16 +22,20 @@ export const cookieConfig: NgcCookieConsentConfig = {
   elements: {
     messagelink: `
     <span id="cookieconsent:desc" class="cc-message">{{message}} 
-      <a aria-label="learn more about cookies" tabindex="0" class="cc-link" href="{{cookiePolicyHref}}" target="_blank" rel="noopener">{{cookiePolicyLink}}</a>. 
+      <a aria-label="learn more about cookies" tabindex="0" class="cc-link" href="{{usedCookiesHref}}" target="_blank" rel="noopener">{{usedCookiesLink}}</a>. 
+      <a aria-label="learn more about our privacy policy" tabindex="1" class="cc-link" href="{{cookiePolicyHref}}" target="_blank" rel="noopener">{{cookiePolicyLink}}</a>. 
     </span>
     `,
   },
   content: {
     dismiss: 'Geht klar!',
     message:
-      'Diese Webseite nutzt Cookies um die Kern-Funktion von WooCommerce (unserem Ticketing-Backend) zu ermöglichen. Mehr dazu ',
+      'Damit die Anmeldung auf dieser Seite funktioniert verwenden wir notwendige ',
 
-    cookiePolicyLink: 'hier',
+    cookiePolicyLink: 'Datenschutzerklärung',
     cookiePolicyHref: 'https://konfusius.org/festival/#/privacy',
+    usedCookiesLink: 'Cookies',
+    usedCookiesHref:
+      'https://woocommerce.com/document/woocommerce-cookies/#section-2',
   },
 };

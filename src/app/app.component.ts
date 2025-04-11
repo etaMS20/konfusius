@@ -7,6 +7,7 @@ import { FooterComponent } from '@components/footer/footer.component';
 import { BackgroundComponent } from './components/shared/background/background.component';
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
 import { APP_VERSION } from '@config/http.config';
+import { NgcCookieConsentService } from 'ngx-cookieconsent';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,7 @@ import { APP_VERSION } from '@config/http.config';
 })
 export class AppComponent implements OnInit, OnDestroy {
   swUpdate = inject(SwUpdate);
+  ccService = inject(NgcCookieConsentService); // inject to trigger cookie consent popup
   private updatesAvailable$?: Observable<any>;
   private updatesAvailable?: Subscription;
 

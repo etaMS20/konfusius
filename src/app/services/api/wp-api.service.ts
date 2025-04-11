@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BACKEND, WP_SECRET, WP_USER } from '@config/http.config';
 import { WPMediaCategory, WPMediaTag } from '@models/media.model';
+import { BlogPost } from '@models/blog-post.model';
 @Injectable({
   providedIn: 'root',
 })
@@ -20,21 +21,21 @@ export class WordPressApiService {
     });
   }
 
-  getPosts(ids?: Array<number>): Observable<any> {
+  getPosts(ids?: Array<number>): Observable<Array<BlogPost>> {
     let params = new HttpParams();
 
     if (ids && ids.length > 0) {
       params = params.set('include', ids.join(','));
     }
 
-    return this.http.get(`${this.apiUrl}/posts`, {
+    return this.http.get<Array<BlogPost>>(`${this.apiUrl}/posts`, {
       headers: this.headers,
       params,
     });
   }
 
-  getPostById(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/posts/${id}`, {
+  getPostById(id: number): Observable<BlogPost> {
+    return this.http.get<BlogPost>(`${this.apiUrl}/posts/${id}`, {
       headers: this.headers,
     });
   }

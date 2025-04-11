@@ -14,7 +14,7 @@ import {
   FormOutput,
 } from '../billing-input/billing-input.component';
 import { WcStoreAPI } from '@services/api/wc-store-api.service';
-import { catchError, Subject, throwError } from 'rxjs';
+import { catchError, Subject, takeUntil, throwError } from 'rxjs';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
 import { WcCart, WcCartItem, WcCheckOutData } from '@models/cart.model';
 import { CustomEndpointsService } from '@services/api/custom-endpoints.service';
@@ -106,6 +106,7 @@ export class CheckoutContainerComponent implements OnInit, OnDestroy {
       .getCart()
       .pipe(
         indicate(this.loading$),
+        takeUntil(this.destroy$),
         catchError((error) => {
           this.errorService.handleError(error);
           return throwError(() => error);
@@ -115,9 +116,12 @@ export class CheckoutContainerComponent implements OnInit, OnDestroy {
         this.cart.set(response);
       });
 
-    this.customEpS.listAllowedInvites().subscribe((response: string[]) => {
-      this.allowedOptions.set(response);
-    });
+    this.customEpS
+      .listAllowedInvites()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: string[]) => {
+        this.allowedOptions.set(response);
+      });
   }
 
   ngOnDestroy(): void {
@@ -126,7 +130,7 @@ export class CheckoutContainerComponent implements OnInit, OnDestroy {
   }
 
   onBillingFormSubmit(fromValues: FormOutput) {
-    console.log(fromValues, this.disclaimerState);
+    this.loading$.next(true);
     const checkoutData: WcCheckOutData = {
       disclaimer_confirm: this.disclaimerState?.understood,
       disclaimer_experience: this.disclaimerState?.experience,
@@ -139,6 +143,8 @@ export class CheckoutContainerComponent implements OnInit, OnDestroy {
     this.wcStoreApi
       .checkout(checkoutData)
       .pipe(
+        indicate(this.loading$),
+        takeUntil(this.destroy$),
         catchError((error) => {
           this.errorService.handleError(error);
           return throwError(() => error);

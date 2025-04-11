@@ -7,6 +7,7 @@ import {
   inject,
   input,
   OnDestroy,
+  OnInit,
   Output,
   signal,
 } from '@angular/core';
@@ -51,7 +52,7 @@ import { LocalStorageService } from '@storage/local-storage.service';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DisclaimerComponent implements OnDestroy {
+export class DisclaimerComponent implements OnInit, OnDestroy {
   formG!: FormGroup;
   deviceService = inject(ClientDeviceService);
   lsService = inject(LocalStorageService);
@@ -70,6 +71,18 @@ export class DisclaimerComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   constructor(private readonly fb: FormBuilder) {
+    // on productId change -> also change the current form values
+    effect(() => {
+      this.formG.controls['understood'].setValue(false); // reset to false
+      this.formG.controls['experience'].setValue(
+        getCurrentStateBySKU(this.currentStore(), this.product().sku)
+          ?.experience,
+      );
+      this.formG.controls['understood'].markAllAsTouched(); // mark touched
+    });
+  }
+
+  ngOnInit(): void {
     /** Disable background scroll for touch devices */
     this.deviceService.isTouchDevice
       .pipe(takeUntil(this.destroy$))
@@ -86,16 +99,6 @@ export class DisclaimerComponent implements OnDestroy {
         nonNullable: true,
         validators: [Validators.maxLength(300)],
       }),
-    });
-
-    // on productId change -> also change the current form values
-    effect(() => {
-      this.formG.controls['understood'].setValue(false); // reset to false
-      this.formG.controls['experience'].setValue(
-        getCurrentStateBySKU(this.currentStore(), this.product().sku)
-          ?.experience,
-      );
-      this.formG.controls['understood'].markAllAsTouched(); // mark touched
     });
   }
 

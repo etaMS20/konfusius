@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { WordPressApiService } from '@services/api/wp-api.service';
 import { InfoTabsComponent } from './info-tabs/info-tabs.component';
@@ -11,7 +11,7 @@ import { DialogPopupComponent } from '@shared/dialog-popup/dialog-popup.componen
 import { MatDialog } from '@angular/material/dialog';
 import { BaseDialogData } from '@models/types.model';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
-import { catchError, throwError } from 'rxjs';
+import { catchError, Subject, takeUntil, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -26,9 +26,11 @@ import { catchError, throwError } from 'rxjs';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   errorService = inject(ErrorDialogService);
   private readonly wpApi = inject(WordPressApiService);
+  private readonly destroy$ = new Subject<void>();
+
   private readonly includePosts = [
     BlogPostId.INTRO,
     BlogPostId.KONFUSIUS,
@@ -46,6 +48,7 @@ export class HomeComponent implements OnInit {
     this.wpApi
       .getPosts(this.includePosts)
       .pipe(
+        takeUntil(this.destroy$),
         catchError((error) => {
           this.errorService.handleError(error);
           return throwError(() => error);
@@ -54,6 +57,11 @@ export class HomeComponent implements OnInit {
       .subscribe((r) => {
         this.wpPosts.set(r);
       });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   get intro() {

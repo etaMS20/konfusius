@@ -90,7 +90,7 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
     );
   });
 
-  // TODO
+  // TODO: note
   /**
    * The cleanest approach here would probably be to define a parent FC and having the mat-cards as main-controls.
    * Otherwise, since we query the product on select anyways (which could also be avoided probably),
@@ -112,11 +112,12 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.products.set(products);
 
       this.selectedProductId$.pipe(takeUntil(this.destroy$)).subscribe((id) => {
+        this.selectedProductVariations.set([]); // reset variations on new product selection to avoid showing old ones in the select component until the new ones are loaded
         this.showDisclaimer = true;
         this.currentSelectedId = id;
         this.currentSelectedSingle =
           id !== undefined && this.singleProductSet().has(id);
-        this.selectProduct(id);
+        this.selectProduct(id); // variations will be fetched again here
       });
     });
   }

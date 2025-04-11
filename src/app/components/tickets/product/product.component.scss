@@ -28,6 +28,11 @@
     box-shadow: $default-box-shadow;
   }
 
+  /*   &:focus  {
+    transform: translateY(-5px);
+    box-shadow: $default-box-shadow;
+  } */
+
   &.selected {
     background: linear-gradient(135deg, #6bf7f7, #0056b3);
     color: white;

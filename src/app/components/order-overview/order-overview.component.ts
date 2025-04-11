@@ -1,29 +1,37 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute } from '@angular/router';
 import { HumanReadableDatePipe } from '@pipes/datetime.pipe';
 import { EncryptionService } from '@services/encryption.service';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
-import { catchError, throwError } from 'rxjs';
+import { catchError, Subject, takeUntil, throwError } from 'rxjs';
 import { WcOrder, WcPaymentGateway } from '@models/order.model';
 import { WcV3Service } from '@services/api/wc-v3.service';
 import { LocalStorageService } from '@storage/local-storage.service';
 import { LsKeys } from '@models/storage.model';
+import { OrderStatusComponent } from '@shared/status/order-status.component';
 
 @Component({
   selector: 'app-order-overview',
-  imports: [CommonModule, HumanReadableDatePipe, MatIcon, MatTooltipModule],
+  imports: [
+    CommonModule,
+    HumanReadableDatePipe,
+    MatIcon,
+    MatTooltipModule,
+    OrderStatusComponent,
+  ],
   templateUrl: './order-overview.component.html',
   styleUrl: './order-overview.component.scss',
 })
-export class OrderOverviewComponent implements OnInit {
+export class OrderOverviewComponent implements OnInit, OnDestroy {
   private readonly wcApi = inject(WcV3Service);
   private readonly route = inject(ActivatedRoute);
   private readonly cryptoService = inject(EncryptionService);
   errorService = inject(ErrorDialogService);
   lsService = inject(LocalStorageService);
+  private readonly destroy$ = new Subject<void>();
 
   order = signal<WcOrder | null>(null);
   error = signal<string | null>(null);
@@ -54,19 +62,34 @@ export class OrderOverviewComponent implements OnInit {
           this.errorService.handleError(error);
           return throwError(() => error);
         }),
+        takeUntil(this.destroy$),
       )
       .subscribe((r) => {
         this.gateway.set(r);
       });
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   fetchOrderDetails(orderId: number) {
-    this.wcApi.getOrderById(orderId).subscribe((data) => {
-      if (data) {
-        this.order.set(data);
-      }
-      this.loading.set(false);
-    });
+    this.wcApi
+      .getOrderById(orderId)
+      .pipe(
+        catchError((error) => {
+          this.errorService.handleError(error);
+          return throwError(() => error);
+        }),
+        takeUntil(this.destroy$),
+      )
+      .subscribe((data) => {
+        if (data) {
+          this.order.set(data);
+        }
+        this.loading.set(false);
+      });
   }
 
   get _order(): WcOrder {

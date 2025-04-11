@@ -25,6 +25,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  word-break: keep-all; // avoid word break in status cell
 }
 
 .status-head {
@@ -49,4 +50,9 @@ button[mat-icon-button] {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
     border: 0.5px solid darkgray;
   }
+}
+
+td[mat-footer-cell] {
+  border-top: 3px double black;
+  font-weight: 500;
 }

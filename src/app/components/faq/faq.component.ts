@@ -1,10 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { BlogPost } from '@models/blog-post.model';
+import { BlogPost, BlogPostId } from '@models/blog-post.model';
 import { FaqSection } from '@models/types.model';
 import { SafeHtmlPipe } from '@pipes/safe-html.pipe';
 import { WordPressApiService } from '@services/api/wp-api.service';
+import { catchError, Subject, takeUntil, throwError } from 'rxjs';
+import { ErrorDialogService } from '@shared/errors/error-dialog.service';
 
 @Component({
   selector: 'app-faq',
@@ -12,8 +21,10 @@ import { WordPressApiService } from '@services/api/wp-api.service';
   templateUrl: './faq.component.html',
   styleUrl: './faq.component.scss',
 })
-export class FaqComponent implements OnInit {
+export class FaqComponent implements OnInit, OnDestroy {
   private readonly wpApi = inject(WordPressApiService);
+  private readonly destroy$ = new Subject<void>();
+  errorService = inject(ErrorDialogService);
 
   faqContent = signal<BlogPost | undefined>(undefined);
   faqQuestions = computed(() => {
@@ -21,9 +32,23 @@ export class FaqComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.wpApi.getPostById(1926).subscribe((post) => {
-      this.faqContent.set(post);
-    });
+    this.wpApi
+      .getPostById(BlogPostId.FAQ)
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError((error) => {
+          this.errorService.handleError(error);
+          return throwError(() => error);
+        }),
+      )
+      .subscribe((post) => {
+        this.faqContent.set(post);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   extractQuestionsAndAnswers(content?: string): Array<FaqSection> {

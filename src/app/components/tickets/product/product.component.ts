@@ -62,10 +62,21 @@ export class ProductComponent implements OnInit {
   onProductSelect(event: Event): void {
     event.stopPropagation();
 
+    // handle keyboard input safely
+    if (event instanceof KeyboardEvent) {
+      const key = event.key.toLowerCase();
+      if (key === 'escape') {
+        this.productSelected.emit(null);
+        return;
+      }
+      if (key !== 'enter' && key !== ' ') return;
+      event.preventDefault(); // prevent scrolling with space
+    }
+
     if (this.isProductSelected()) {
-      this.productSelected.emit(null); // Emitting null means "deselect"
+      this.productSelected.emit(null);
     } else {
-      this.productSelected.emit(this.product?.id); // Otherwise, select the product
+      this.productSelected.emit(this.product?.id);
     }
   }
 

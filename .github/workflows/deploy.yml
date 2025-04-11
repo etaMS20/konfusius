@@ -7,6 +7,15 @@ on:
   pull_request:
     branches:
       - main # Run on pull requests targeting main
+  workflow_dispatch:
+    inputs:
+      deploy-gh-pages:
+        description: 'Deploy to gh-pages?'
+        required: false
+        default: 'false'
+
+env:
+  DEPLOY_GH_PAGES: 'false'
 
 jobs:
   build:
@@ -23,7 +32,7 @@ jobs:
 
       - name: Install pnpm and Dependencies
         run: |
-          npm install -g pnpm@10.4.1
+          npm install -g pnpm@10.7.1
           pnpm config set store-dir .pnpm-store
           pnpm install
 
