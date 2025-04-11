@@ -42,6 +42,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
+- compatibility
 - refactored tickets page
 - styling on mobile (v1)
 - loading indicator for products
