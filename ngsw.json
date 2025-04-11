@@ -1,0 +1,66 @@
+{
+  "configVersion": 1,
+  "timestamp": 1744386467188,
+  "index": "./festival/index.html",
+  "assetGroups": [
+    {
+      "name": "konfusius",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "api-requests",
+      "patterns": [
+        "https:\\/\\/konfusius\\.org\\/wp-json\\/wc\\/v3\\/.*",
+        "https:\\/\\/konfusius\\.org\\/wp-json\\/wc\\/store\\/v1\\/.*",
+        "https:\\/\\/konfusius\\.org\\/wp-json\\/custom\\/v1\\/.*",
+        "https:\\/\\/konfusius\\.org\\/wp-json\\/wp\\/v2\\/.*"
+      ],
+      "strategy": "freshness",
+      "maxSize": 100,
+      "maxAge": 3600000,
+      "timeoutMs": 10000,
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "version": 1
+    }
+  ],
+  "hashTable": {},
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
