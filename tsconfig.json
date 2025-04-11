@@ -13,10 +13,10 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2022",
+    "target": "ES2015",
     "module": "esnext",
     "types": ["node", "jest"],
-    "lib": ["es2022", "dom"],
+    "lib": ["es2015", "dom"],
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
