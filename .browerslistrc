@@ -1,8 +1,7 @@
-> 0.5%
-last 2 versions
-iOS >= 12
-Safari >= 12
-Chrome >= 80
-Firefox >= 78
-not dead
-not op_mini all
+last 2 Chrome versions
+last 1 Firefox version
+last 2 Edge major versions
+last 4 Safari major versions
+last 4 iOS major versions
+last 2 Android major versions
+Firefox ESR 
