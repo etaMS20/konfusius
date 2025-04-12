@@ -1,6 +1,6 @@
 name: Reusable deploy workflow
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       perform_deploy:
       description: 'Do you want to deploy?'
