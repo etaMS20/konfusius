@@ -1,4 +1,4 @@
-name: Reusable deploy workflow
+name: deploy manual 🚀
 
 on:
   workflow_dispatch:
