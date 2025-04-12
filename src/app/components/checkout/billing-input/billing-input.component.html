@@ -20,7 +20,7 @@
           hasError(firstName, 'required') || hasError(firstName, 'minlength')
         "
       >
-        First Name is required (min 2 characters).
+        Vorname ist erforderlich (min 2 Ziffern)
       </mat-error>
 
       <input
@@ -35,7 +35,7 @@
           hasError(lastName, 'required') || hasError(lastName, 'minlength')
         "
       >
-        Last Name is required (min 2 characters).
+        Nachname ist erforderlich (min 2 Ziffern)
       </mat-error>
 
       <input
@@ -46,7 +46,7 @@
         placeholder="Street & Number*"
       />
       <mat-error *ngIf="hasError(address1, 'required')">
-        Street address is required.
+        Straße + Nr. ist erforderlich
       </mat-error>
 
       <input
@@ -57,16 +57,8 @@
         placeholder="City*"
       />
       <mat-error *ngIf="hasError(city, 'required')">
-        City is required.
+        Wohnort ist erforderlich
       </mat-error>
-
-      <input
-        id="state"
-        type="text"
-        formControlName="state"
-        autocomplete="address-level1"
-        placeholder="State*"
-      />
 
       <input
         id="postcode"
@@ -74,9 +66,16 @@
         formControlName="postcode"
         autocomplete="postal-code"
         placeholder="ZIP Code*"
+        patternZip="'^[0-9]{4,10}$'"
       />
-      <mat-error *ngIf="hasError(postcode, 'required')">
-        Enter a valid 5-digit ZIP code.
+      <mat-error
+        *ngIf="
+          (formGroup.get('billingAddress')?.get('postcode')?.invalid &&
+            formGroup.get('billingAddress')?.get('postcode')?.touched) ||
+          formGroup.get('billingAddress')?.get('postcode')?.hasError('pattern')
+        "
+      >
+        Bitte gültige PLZ eingeben (4-10 Stellen)
       </mat-error>
 
       <input
@@ -85,9 +84,16 @@
         formControlName="country"
         autocomplete="country"
         placeholder="Country*"
+        [pattern]="'^[A-Z]{2}$'"
       />
-      <mat-error *ngIf="hasError(country, 'required')">
-        Country is required.
+      <mat-error
+        *ngIf="
+          (formGroup.get('billingAddress')?.get('country')?.invalid &&
+            formGroup.get('billingAddress')?.get('country')?.touched) ||
+          formGroup.get('billingAddress')?.get('country')?.hasError('pattern')
+        "
+      >
+        bitte einen 2-stelligen ISO-Ländercode eingeben (zB. AT, DE, CH...)
       </mat-error>
 
       <input
@@ -100,7 +106,7 @@
       <mat-error
         *ngIf="hasError(email, 'required') || hasError(email, 'email')"
       >
-        Enter a valid email address.
+        Die email muss einem gültigen format entsprechen
       </mat-error>
 
       <input
@@ -108,10 +114,10 @@
         type="tel"
         formControlName="phone"
         autocomplete="tel"
-        placeholder="Phone"
+        placeholder="Mobile (optional)"
       />
       <mat-error *ngIf="hasError(phone, 'pattern')">
-        Enter a valid phone number.
+        Ungültiges Format
       </mat-error>
     </div>
 

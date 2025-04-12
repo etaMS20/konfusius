@@ -32,25 +32,25 @@
           <p>{{ _order.billing.first_name }} {{ _order.billing.last_name }}</p>
           <p>{{ _order.billing.address_1 }}</p>
           <p>
-            {{ _order.billing.city }},
-            {{ _order.billing.postcode }}
+            {{ _order.billing.city }}, {{ _order.billing.postcode }},
+            {{ _order.billing.country }}
           </p>
-          <p>{{ _order.billing.country }}</p>
+          <p>{{ _order.billing.email }}</p>
         </address>
       </div>
     </div>
 
+    <mat-divider style="margin: 1rem 0"></mat-divider>
+
     <div class="order-text">
       <p>
-        Du solltest jetzt eine vorläufige Bestätigungs-mail bekommen haben. Hat
-        die Kontaktperson den Abschluss bestätigt, folgt eine separate mail.
+        Du solltest jetzt eine vorläufige Bestätigungs-mail bekommen haben.
+        Sobald die Zahlung verarbeitet ist, folgt eine separate mail.
         <mat-icon>favorite</mat-icon>
       </p>
       <p>
-        <strong
-          >PS: Du kannst dir die URL oben rauskopieren & speichern, um zu dieser
-          Seite zurückzukehren</strong
-        >
+        <strong>PS:</strong> Du kannst dir die URL oben rauskopieren &
+        speichern, um zu dieser Seite zurückzukehren
       </p>
     </div>
     <div class="order-items">

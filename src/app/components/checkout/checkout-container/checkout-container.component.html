@@ -1,8 +1,10 @@
 <div class="checkout-container">
-  <div *ngIf="loading$ | async">
-    <mat-progress-bar mode="query"></mat-progress-bar>
-  </div>
   <h1>Checkout</h1>
+
+  <!-- loading spinner for an individual product and their variations -->
+  <div class="fixed-spinner" *ngIf="loading$ | async">
+    <mat-spinner [diameter]="45" />
+  </div>
 
   <div class="checkout-content">
     <div class="billing-section">

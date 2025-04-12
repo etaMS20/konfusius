@@ -134,14 +134,17 @@ export class BillingComponent implements OnChanges {
         address_1: [null, Validators.required],
         address_2: [null],
         city: [null, Validators.required],
-        state: [null],
+        state: undefined, // just set to undefined because not
         postcode: [
           null,
           [Validators.required, Validators.pattern('^[0-9]{3,10}$')],
         ],
         country: [null, Validators.required],
         email: [null, [Validators.required, Validators.email]],
-        phone: [null, [Validators.pattern('^[0-9]+$')]],
+        phone: [
+          null,
+          [Validators.pattern('^\\+?[0-9]{1,4}[\\s\\-]?[0-9]{6,14}$')],
+        ],
       }),
       invited_by: [null, Validators.required],
       consent: [false, Validators.requiredTrue], // Must be true to submit

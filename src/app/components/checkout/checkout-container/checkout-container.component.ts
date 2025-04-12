@@ -24,7 +24,6 @@ import { Router } from '@angular/router';
 import { EncryptionService } from '@services/encryption.service';
 import { indicate } from '@utils/reactive-loading.utils';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ConditionsComponent } from '../conditions/conditions.component';
 import {
   DisclaimerState,
@@ -43,7 +42,6 @@ import { DISCLAIMER_PRODUCTS } from '@models/cross-sale.model';
     CartTotalsComponent,
     BillingComponent,
     MatProgressSpinnerModule,
-    MatProgressBarModule,
     ConditionsComponent,
   ],
   templateUrl: './checkout-container.component.html',

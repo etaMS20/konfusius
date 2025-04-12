@@ -12,6 +12,7 @@ import { WcV3Service } from '@services/api/wc-v3.service';
 import { LocalStorageService } from '@storage/local-storage.service';
 import { LsKeys } from '@models/storage.model';
 import { OrderStatusComponent } from '@shared/status/order-status.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-order-overview',
@@ -21,6 +22,7 @@ import { OrderStatusComponent } from '@shared/status/order-status.component';
     MatIcon,
     MatTooltipModule,
     OrderStatusComponent,
+    MatDividerModule,
   ],
   templateUrl: './order-overview.component.html',
   styleUrl: './order-overview.component.scss',

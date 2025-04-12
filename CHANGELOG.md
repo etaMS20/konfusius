@@ -42,7 +42,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- compatibility
+- checkout form validation
 - refactored tickets page
 - styling on mobile (v1)
 - loading indicator for products
