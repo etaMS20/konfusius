@@ -3,7 +3,9 @@ on:
   workflow_call:
     inputs:
       perform_deploy:
+      description: 'Do you want to deploy?'
         required: true
+        default: 'false'
         type: boolean
 
 jobs:
