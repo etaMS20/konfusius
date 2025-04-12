@@ -27,21 +27,16 @@ import 'core-js/es/set';
 import 'core-js/es/reflect';
 
 // Web APIs and DOM polyfills
-import 'whatwg-fetch'; // Fetch API polyfill
-import 'intersection-observer'; // IntersectionObserver polyfill
+import 'whatwg-fetch';
+import 'intersection-observer';
+import 'web-animations-js'; // web Animations API for Angular animations
+import 'idb';
+import 'url-polyfill';
+import 'pepjs';
 
-// Service Worker specific polyfills
-// Check if service worker is supported and add polyfill if needed
 if (!('serviceWorker' in navigator)) {
-  // Include a service worker polyfill - though most Safari 16 instances should support this
-  console.warn('Service Worker API not natively supported');
+  console.warn('Service Worker API is not supported in this browser');
 }
-
-// IndexedDB polyfill (Safari has had issues with IndexedDB in the past)
-import 'idb'; // Lightweight IndexedDB wrapper
-
-// Web Animations API for Angular animations
-import 'web-animations-js';
 
 // Ensure requestAnimationFrame is available
 if (!window.requestAnimationFrame) {
@@ -50,46 +45,16 @@ if (!window.requestAnimationFrame) {
   };
 }
 
-// For Safari bug fixes with ResizeObserver
 if (typeof window !== 'undefined' && !window.ResizeObserver) {
   import('resize-observer-polyfill').then((module) => {
     window.ResizeObserver = module.default;
   });
 }
 
-// Add URL polyfill for older browsers
-import 'url-polyfill';
-
-// Safari-specific touch events polyfill (if using touch features)
-import 'pepjs';
-
-// Intl API polyfill for internationalization (if needed)
 if (!Intl.PluralRules) {
   import('@formatjs/intl-pluralrules/polyfill');
 }
 
 if (!Intl.RelativeTimeFormat) {
   import('@formatjs/intl-relativetimeformat/polyfill');
-}
-
-// Optional: Ensure Promise.prototype.finally is available
-if (typeof Promise.prototype.finally === 'undefined') {
-  // Utility function to mimic Promise.prototype.finally behavior
-  function promiseFinally<T>(
-    promise: Promise<T>,
-    callback: () => void,
-  ): Promise<T> {
-    return promise.then(
-      (value) =>
-        Promise.resolve(
-          typeof callback === 'function' ? callback() : undefined,
-        ).then(() => value),
-      (error) =>
-        Promise.resolve(
-          typeof callback === 'function' ? callback() : undefined,
-        ).then(() => {
-          throw error;
-        }),
-    );
-  }
 }
