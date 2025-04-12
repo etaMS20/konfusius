@@ -102,4 +102,4 @@ jobs:
 
   deploy-to-wp-manual:
     needs: build
-    uses: ./.github/workflows/wp-deploy.yml
+    uses: ./wp-deploy.yml
