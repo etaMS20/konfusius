@@ -1,14 +1,8 @@
-// polyfills.ts
+// polyfills.ts for Safari/IOS 16 and lower compatibility
 
-/**
- * Polyfills for Safari 16 compatibility with Angular 19 and Service Workers
- * Note: Some polyfills may already be included by Angular CLI based on your browserslist
- */
-
-// Zone.js - Required by Angular (already included in Angular CLI projects)
 import 'zone.js';
 
-// Core-js polyfills for ES6+ features
+// core-js (for ES6+ features)
 import 'core-js/stable';
 import 'core-js/es/symbol';
 import 'core-js/es/object';
@@ -26,19 +20,13 @@ import 'core-js/es/weak-map';
 import 'core-js/es/set';
 import 'core-js/es/reflect';
 
-// Web APIs and DOM polyfills
-import 'whatwg-fetch';
-import 'intersection-observer';
-import 'web-animations-js'; // web Animations API for Angular animations
-import 'idb';
-import 'url-polyfill';
-import 'pepjs';
+import 'whatwg-fetch'; // web APIs and DOM
+import 'intersection-observer'; // polyfills native IntersectionObserver API
+import 'web-animations-js'; // web animations API for Angular animations
+import 'idb'; // lightweight IndexedDB wrapper
+import 'pepjs'; // safari-specific touch events
 
-if (!('serviceWorker' in navigator)) {
-  console.warn('Service Worker API is not supported in this browser');
-}
-
-// Ensure requestAnimationFrame is available
+// ensure requestAnimationFrame is available
 if (!window.requestAnimationFrame) {
   window.requestAnimationFrame = function (callback) {
     return window.setTimeout(callback, 1000 / 60);
