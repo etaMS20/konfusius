@@ -89,10 +89,6 @@ export class BillingComponent implements OnChanges {
     return this.billingAddress.get('city') as FormControl;
   }
 
-  get state(): FormControl {
-    return this.billingAddress.get('state') as FormControl;
-  }
-
   get postcode(): FormControl {
     return this.billingAddress.get('postcode') as FormControl;
   }
@@ -135,11 +131,8 @@ export class BillingComponent implements OnChanges {
         address_2: [null],
         city: [null, Validators.required],
         state: [null],
-        postcode: [
-          null,
-          [Validators.required, Validators.pattern('^[0-9]{5}$')],
-        ],
-        country: [null, Validators.required],
+        postcode: [null, [Validators.required]],
+        country: [null, Validators.required, Validators.pattern('^[A-Z]{2}$')], // Only two uppercase letters],
         email: [null, [Validators.required, Validators.email]],
         phone: [null, [Validators.pattern('^[0-9]+$')]],
       }),
@@ -164,7 +157,6 @@ export class BillingComponent implements OnChanges {
         address_1: billingAddress.address_1,
         address_2: billingAddress.address_2,
         city: billingAddress.city,
-        state: billingAddress.state,
         postcode: billingAddress.postcode,
         country: billingAddress.country,
         email: billingAddress.email,

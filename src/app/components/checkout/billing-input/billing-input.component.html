@@ -61,14 +61,6 @@
       </mat-error>
 
       <input
-        id="state"
-        type="text"
-        formControlName="state"
-        autocomplete="address-level1"
-        placeholder="State*"
-      />
-
-      <input
         id="postcode"
         type="text"
         formControlName="postcode"
@@ -76,7 +68,7 @@
         placeholder="ZIP Code*"
       />
       <mat-error *ngIf="hasError(postcode, 'required')">
-        Enter a valid 5-digit ZIP code.
+        Enter a ZIP code.
       </mat-error>
 
       <input
@@ -85,9 +77,12 @@
         formControlName="country"
         autocomplete="country"
         placeholder="Country*"
+        [pattern]="'^[A-Z]{2}$'"
       />
-      <mat-error *ngIf="hasError(country, 'required')">
-        Country is required.
+      <mat-error
+        *ngIf="hasError(country, 'required') || hasError(country, 'pattern')"
+      >
+        pls enter an ISO country code (eg. AT, DE, CH...)
       </mat-error>
 
       <input
@@ -108,7 +103,7 @@
         type="tel"
         formControlName="phone"
         autocomplete="tel"
-        placeholder="Phone"
+        placeholder="Phone (optional)"
       />
       <mat-error *ngIf="hasError(phone, 'pattern')">
         Enter a valid phone number.
