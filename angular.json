@@ -15,12 +15,14 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@ngx-env/builder:browser",
           "options": {
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": ["zone.js"],
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -48,16 +50,16 @@
             "serviceWorker": true,
             "ngswConfigPath": "ngsw-config.json",
             "stylePreprocessorOptions": {
-              "includePaths": ["src", "public"]
+              "includePaths": [
+                "src",
+                "public"
+              ]
             }
           },
           "configurations": {
             "production": {
               "buildOptimizer": true,
               "serviceWorker": true,
-              "customWebpackConfig": {
-                "path": "webpack.config.ts"
-              },
               "baseHref": "./",
               "budgets": [
                 {
@@ -80,9 +82,6 @@
               ]
             },
             "development": {
-              "customWebpackConfig": {
-                "path": "webpack.config.ts"
-              },
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
@@ -91,7 +90,7 @@
           "defaultConfiguration": "development"
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@ngx-env/builder:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "konfusius:build:production"
@@ -101,10 +100,12 @@
               "proxyConfig": "proxy.conf.json"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {}
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n"
+          "builder": "@ngx-env/builder:extract-i18n",
+          "options": {}
         }
       }
     }

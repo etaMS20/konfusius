@@ -105,6 +105,9 @@ importers:
       '@jest/globals':
         specifier: ^29.7.0
         version: 29.7.0
+      '@ngx-env/builder':
+        specifier: 19.0.4
+        version: 19.0.4(webpack@5.98.0)
       '@types/crypto-js':
         specifier: ^4.2.2
         version: 4.2.2
@@ -1003,6 +1006,14 @@ packages:
     resolution: {integrity: sha512-4B4OijXeVNOPZlYA2oEwWOTkzyltLao+xbotHQeqN++Rv27Y6s818+n2Qkp8q+Fxhn0t/5lA5X1Mxktud8eayQ==}
     engines: {node: '>=14.17.0'}
 
+  '@dotenv-run/core@1.3.6':
+    resolution: {integrity: sha512-lVfZc2DWu2P2rKyjrLDN9dw0gKHaFmNMdnrb7peoFv+LUmMxvp9QrWTzU585dU1z2Jj93a2Y3X2T890hAj+mcw==}
+
+  '@dotenv-run/webpack@1.5.0':
+    resolution: {integrity: sha512-OXHWKbG7bsJ+I21CytLP/YLT5BaLesrE8QSJgEGzorLAMklgr8FkRWvZMpAYg7R7lQ5/r/67ei36QH7gAdBkpA==}
+    peerDependencies:
+      webpack: ^5.0.0
+
   '@esbuild/aix-ppc64@0.25.1':
     resolution: {integrity: sha512-kfYGy8IdzTGy+z0vFGvExZtxkFlA4zAxgKEahG9KE1ScBjpQnFsNOX8KTU5ojNru5ed5CVoJYXFtoxaq5nFbjQ==}
     engines: {node: '>=18'}
@@ -1661,6 +1672,9 @@ packages:
       '@angular/compiler-cli': ^19.0.0 || ^19.2.0-next.0
       typescript: '>=5.5 <5.9'
       webpack: ^5.54.0
+
+  '@ngx-env/builder@19.0.4':
+    resolution: {integrity: sha512-1WTXhgcuAfSk6RFDnuvfEvLDZsxcc/B7fb3+gk6cYhGKKj+Di6LbA93VMXHNexws1eNGqiGZwKYICGUuP7evAg==}
 
   '@ngx-translate/core@16.0.4':
     resolution: {integrity: sha512-s8llTL2SJvROhqttxvEs7Cg+6qSf4kvZPFYO+cTOY1d8DWTjlutRkWAleZcPPoeX927Dm7ALfL07G7oYDJ7z6w==}
@@ -2907,6 +2921,10 @@ packages:
 
   dotenv-defaults@2.0.2:
     resolution: {integrity: sha512-iOIzovWfsUHU91L5i8bJce3NYK5JXeAwH50Jh6+ARUdLiiGlYWfGw6UkzsYqaXZH/hjE/eCd/PlfM/qqyK0AMg==}
+
+  dotenv-expand@10.0.0:
+    resolution: {integrity: sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==}
+    engines: {node: '>=12'}
 
   dotenv-webpack@8.1.0:
     resolution: {integrity: sha512-owK1JcsPkIobeqjVrk6h7jPED/W6ZpdFsMPR+5ursB7/SdgDyO+VzAU+szK8C8u3qUhtENyYnj8eyXMR5kkGag==}
@@ -6825,6 +6843,18 @@ snapshots:
 
   '@discoveryjs/json-ext@0.6.3': {}
 
+  '@dotenv-run/core@1.3.6':
+    dependencies:
+      chalk: 4.1.2
+      dotenv: 16.4.7
+      dotenv-expand: 10.0.0
+      find-up: 5.0.0
+
+  '@dotenv-run/webpack@1.5.0(webpack@5.98.0)':
+    dependencies:
+      '@dotenv-run/core': 1.3.6
+      webpack: 5.98.0(esbuild@0.25.1)
+
   '@esbuild/aix-ppc64@0.25.1':
     optional: true
 
@@ -7450,6 +7480,13 @@ snapshots:
       '@angular/compiler-cli': 19.2.5(@angular/compiler@19.2.5)(typescript@5.7.3)
       typescript: 5.7.3
       webpack: 5.98.0(esbuild@0.25.1)
+
+  '@ngx-env/builder@19.0.4(webpack@5.98.0)':
+    dependencies:
+      '@dotenv-run/webpack': 1.5.0(webpack@5.98.0)
+      glob: 10.4.5
+    transitivePeerDependencies:
+      - webpack
 
   '@ngx-translate/core@16.0.4(@angular/common@19.2.5(@angular/core@19.2.5(rxjs@7.8.2)(zone.js@0.15.0))(rxjs@7.8.2))(@angular/core@19.2.5(rxjs@7.8.2)(zone.js@0.15.0))':
     dependencies:
@@ -8788,6 +8825,8 @@ snapshots:
   dotenv-defaults@2.0.2:
     dependencies:
       dotenv: 8.6.0
+
+  dotenv-expand@10.0.0: {}
 
   dotenv-webpack@8.1.0(webpack@5.98.0):
     dependencies:
