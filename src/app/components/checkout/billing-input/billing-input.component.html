@@ -8,6 +8,13 @@
   <form class="billing_address" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
     <!-- Billing Address Section -->
     <div class="form-section" formGroupName="billingAddress">
+      <mat-error
+        *ngIf="
+          hasError(firstName, 'required') || hasError(firstName, 'minlength')
+        "
+      >
+        Vorname ist erforderlich (mind. 2 Ziffern)
+      </mat-error>
       <input
         id="first_name"
         type="text"
@@ -15,14 +22,14 @@
         autocomplete="given-name"
         placeholder="First Name*"
       />
+
       <mat-error
         *ngIf="
-          hasError(firstName, 'required') || hasError(firstName, 'minlength')
+          hasError(lastName, 'required') || hasError(lastName, 'minlength')
         "
       >
-        Vorname ist erforderlich (min 2 Ziffern)
+        Nachname ist erforderlich (mind. 2 Ziffern)
       </mat-error>
-
       <input
         id="last_name"
         type="text"
@@ -30,14 +37,10 @@
         autocomplete="family-name"
         placeholder="Last Name*"
       />
-      <mat-error
-        *ngIf="
-          hasError(lastName, 'required') || hasError(lastName, 'minlength')
-        "
-      >
-        Nachname ist erforderlich (min 2 Ziffern)
-      </mat-error>
 
+      <mat-error *ngIf="hasError(address1, 'required')">
+        Straße + Nr. ist erforderlich
+      </mat-error>
       <input
         id="address_1"
         type="text"
@@ -45,10 +48,10 @@
         autocomplete="address-line1"
         placeholder="Street & Number*"
       />
-      <mat-error *ngIf="hasError(address1, 'required')">
-        Straße + Nr. ist erforderlich
-      </mat-error>
 
+      <mat-error *ngIf="hasError(city, 'required')">
+        Wohnort ist erforderlich
+      </mat-error>
       <input
         id="city"
         type="text"
@@ -56,18 +59,7 @@
         autocomplete="address-level2"
         placeholder="City*"
       />
-      <mat-error *ngIf="hasError(city, 'required')">
-        Wohnort ist erforderlich
-      </mat-error>
 
-      <input
-        id="postcode"
-        type="text"
-        formControlName="postcode"
-        autocomplete="postal-code"
-        placeholder="ZIP Code*"
-        patternZip="'^[0-9]{4,10}$'"
-      />
       <mat-error
         *ngIf="
           (formGroup.get('billingAddress')?.get('postcode')?.invalid &&
@@ -77,7 +69,24 @@
       >
         Bitte gültige PLZ eingeben (4-10 Stellen)
       </mat-error>
+      <input
+        id="postcode"
+        type="text"
+        formControlName="postcode"
+        autocomplete="postal-code"
+        placeholder="ZIP Code*"
+        patternZip="'^[0-9]{4,10}$'"
+      />
 
+      <mat-error
+        *ngIf="
+          (formGroup.get('billingAddress')?.get('country')?.invalid &&
+            formGroup.get('billingAddress')?.get('country')?.touched) ||
+          formGroup.get('billingAddress')?.get('country')?.hasError('pattern')
+        "
+      >
+        Bitte hier einen 2-stelligen ISO-Ländercode eingeben (zB. AT, DE, CH...)
+      </mat-error>
       <input
         id="country"
         type="text"
@@ -86,16 +95,12 @@
         placeholder="Country*"
         [pattern]="'^[A-Z]{2}$'"
       />
-      <mat-error
-        *ngIf="
-          (formGroup.get('billingAddress')?.get('country')?.invalid &&
-            formGroup.get('billingAddress')?.get('country')?.touched) ||
-          formGroup.get('billingAddress')?.get('country')?.hasError('pattern')
-        "
-      >
-        bitte einen 2-stelligen ISO-Ländercode eingeben (zB. AT, DE, CH...)
-      </mat-error>
 
+      <mat-error
+        *ngIf="hasError(email, 'required') || hasError(email, 'email')"
+      >
+        Die eMail-Addresse muss einem gültigen Format entsprechen
+      </mat-error>
       <input
         id="email"
         type="email"
@@ -103,22 +108,17 @@
         autocomplete="email"
         placeholder="Email*"
       />
-      <mat-error
-        *ngIf="hasError(email, 'required') || hasError(email, 'email')"
-      >
-        Die email muss einem gültigen format entsprechen
-      </mat-error>
 
+      <mat-error *ngIf="hasError(phone, 'pattern')">
+        Ungültiges Format der Rufnummer
+      </mat-error>
       <input
         id="phone"
         type="tel"
         formControlName="phone"
         autocomplete="tel"
-        placeholder="Mobile (optional)"
+        placeholder="Phone (optional)"
       />
-      <mat-error *ngIf="hasError(phone, 'pattern')">
-        Ungültiges Format
-      </mat-error>
     </div>
 
     <mat-divider />
