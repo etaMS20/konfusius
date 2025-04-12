@@ -39,12 +39,12 @@ jobs:
       - name: Create .env # create required env variables for the application
         run: |
           touch .env
-          echo "CONSUMER_KEY=${{ secrets.CONSUMER_KEY }}" >> .env
-          echo "CONSUMER_SECRET=${{ secrets.CONSUMER_SECRET }}" >> .env
-          echo "WP_SECRET=${{ secrets.WP_SECRET }}" >> .env
-          echo "CREW_PW=${{ secrets.CREW_PW }}" >> .env
-          echo "GUEST_PW=${{ secrets.GUEST_PW }}" >> .env
-          echo "SALT=${{ secrets.SALT }}" >> .env
+          echo "NG_APP_CONSUMER_KEY=${{ secrets.CONSUMER_KEY }}" >> .env
+          echo "NG_APP_CONSUMER_SECRET=${{ secrets.CONSUMER_SECRET }}" >> .env
+          echo "NG_APP_WP_SECRET=${{ secrets.WP_SECRET }}" >> .env
+          echo "NG_APP_CREW_PW=${{ secrets.CREW_PW }}" >> .env
+          echo "NG_APP_GUEST_PW=${{ secrets.GUEST_PW }}" >> .env
+          echo "NG_APP_SALT=${{ secrets.SALT }}" >> .env
 
       - name: 🔨 Compile app
         run: pnpm ng build --configuration=production --base-href ./ --output-path=dist
