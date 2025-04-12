@@ -3,12 +3,10 @@ name: build and deploy 🚀
 on:
   push:
     branches:
-      - main # Run on pushes to main
+      - main # on pushes to main
   pull_request:
     branches:
-      - main # Run on pull requests targeting main
-
-on:
+      - main #  on pull requests targeting main
   workflow_dispatch:
     inputs:
       deploy_wp:
