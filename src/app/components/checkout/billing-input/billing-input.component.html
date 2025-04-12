@@ -75,9 +75,7 @@
         autocomplete="postal-code"
         placeholder="ZIP Code*"
       />
-      <mat-error
-        *ngIf="hasError(postcode, 'required') || hasError(postcode, 'pattern')"
-      >
+      <mat-error *ngIf="hasError(postcode, 'required')">
         Enter a valid 5-digit ZIP code.
       </mat-error>
 
