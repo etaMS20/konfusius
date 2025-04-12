@@ -23,9 +23,10 @@ The app uses _WordPress_ (WP) + _WooCommerce_ (WC) backend as **headless CMS** t
 
 4. Env Variables
 
-   The application requires certain env variables to function (like guest password, backend url , etc.)
+   The application requires certain env variables to function. It is build with `@ngx-env/builder` to support reading from a `dotenv` on runtime.
+   Devs must request the required Secrets used in `env` from WP admins.
 
-   In development config, the Application reads the `.env` file on runtime using a custom `webpack.config.ts` setup. Devs must request the required Secrets from WP admins.
+5. Dev setup on localhost uses a proxy to enable cookies-setters with CORS restriction
 
    ```json
    serve.configurations.development:
@@ -51,7 +52,8 @@ Open a browser and head to [localhost:4200](http://localhost:4200/)
 
 ## Deploying the app on wordpress
 
-On git-pushes the app fill be automatically deployed to wordpress using `.github/workflows/deploy.yml`
+On git-pushes the app fill be automatically deployed to wordpress using `.github/workflows/main.yml`.
+A manual workflow is defined in wp-deploy.yml
 
 ```
  ng build --configuration=production --base-href=/festival/

@@ -11,3 +11,14 @@ export const WP_SECRET = environment.wp_secret;
 export const APP_VERSION = environment.app_version;
 export const TICKETS_ON = true;
 export const EMAIL = 'festival@konfusius.org';
+
+export const envLoaded = () => {
+  return [
+    CONSUMER_KEY,
+    CONSUMER_SECRET,
+    GUEST_PW,
+    CREW_PW,
+    SALT,
+    WP_SECRET,
+  ].every((v) => v && v.trim() !== '');
+};

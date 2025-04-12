@@ -6,7 +6,7 @@ import { filter, map, Observable, Subscription } from 'rxjs';
 import { FooterComponent } from '@components/footer/footer.component';
 import { BackgroundComponent } from './components/shared/background/background.component';
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
-import { APP_VERSION } from '@config/http.config';
+import { APP_VERSION, envLoaded } from '@config/http.config';
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
 
 @Component({
@@ -44,7 +44,11 @@ export class AppComponent implements OnInit, OnDestroy {
       this.promptUser();
     });
 
-    console.log('devMode: ', isDevMode());
+    console.log(`devMode: ${isDevMode()}\nenv loaded: ${envLoaded()}`);
+    if (!envLoaded())
+      alert(
+        'One or more environment variables did not get loaded. Please contact site admin.',
+      );
   }
 
   ngOnDestroy() {
