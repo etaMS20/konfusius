@@ -137,7 +137,7 @@ export class BillingComponent implements OnChanges {
         state: [null],
         postcode: [
           null,
-          [Validators.required, Validators.pattern('^[0-9]{5}$')],
+          [Validators.required, Validators.pattern('^[0-9]{3,10}$')],
         ],
         country: [null, Validators.required],
         email: [null, [Validators.required, Validators.email]],
