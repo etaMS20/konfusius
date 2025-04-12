@@ -47,7 +47,6 @@ jobs:
           path: dist
 
   deploy-gh-pages:
-    # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: build
 
