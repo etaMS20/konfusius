@@ -19,10 +19,15 @@ export class WcStoreAPI {
 
   // Products
 
-  listProducts(category = 22, per_page = 50): Observable<any> {
+  listProducts(
+    category = 22,
+    order_by = 'title',
+    order = 'asc',
+    per_page = 50,
+  ): Observable<any> {
     return this.http.get(
       this.storeApiBackend +
-        `/products?per_page=${per_page}&category=${category}`,
+        `/products?per_page=${per_page}&category=${category}&orderby=${order_by}&order=${order}`,
       { headers: this.headers },
     );
   }

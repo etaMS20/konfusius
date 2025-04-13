@@ -125,7 +125,7 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   private queryCrossSaleOptions() {
     this.productsLoading.set(true);
     this.wcStore
-      .listProducts(crossSaleProductCat)
+      .listProducts(crossSaleProductCat, 'price')
       .pipe(
         catchError((error) => {
           this.errorService.handleError(error);
