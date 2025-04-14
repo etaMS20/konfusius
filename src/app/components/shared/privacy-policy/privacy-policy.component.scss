@@ -1,38 +1,11 @@
 @use 'src/styles/style-vars.scss' as *;
 
-::ng-deep .cookie-privacy-container {
+.cookie-privacy-container {
   background-color: $background-color-form;
-  width: 95vw;
+  width: 95%;
+  height: 100%;
   max-width: 900px;
   margin: auto;
-  height: 100%;
   box-sizing: border-box;
   display: block;
-  font-family:
-    system-ui,
-    -apple-system;
-}
-
-::ng-deep .privacy-content {
-  padding: 1rem;
-}
-
-::ng-deep p {
-  color: $text-color;
-  font-size: 1em;
-  line-height: 1.6;
-}
-
-::ng-deep li {
-  color: $text-color;
-  font-size: 1em;
-}
-
-::ng-deep a {
-  color: #007bff;
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
 }

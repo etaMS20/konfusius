@@ -52,8 +52,7 @@ Open a browser and head to [localhost:4200](http://localhost:4200/)
 
 ## Deploying the app on wordpress
 
-On git-pushes the app fill be automatically deployed to wordpress using `.github/workflows/main.yml`.
-A manual workflow is defined in wp-deploy.yml
+On git-pushes the app fill be automatically deployed to wordpress using `.github/workflows/ci.yml`.
 
 ```
  ng build --configuration=production --base-href=/festival/
@@ -66,11 +65,11 @@ A manual workflow is defined in wp-deploy.yml
 ### Known Issues
 
 - privacy page renders without content on brave browser
+- possible compatibility issues with older browser (most notably IOS/safari) versions
 
 ### Planned Features
 
 - custom payment method in backend (can have)
-- implement Ui for crew members with website settings (can have)
 - activate/implement wp-nonces (should have)
 - smooth scrolling navigation (can have)
 - use JWT token for all requests (should have)
