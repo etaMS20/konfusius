@@ -236,28 +236,3 @@ mat-error {
   padding: 0.2rem !important;
   font-size: 0.8rem !important;
 }
-
-/** Privacy page */
-
-.privacy-content {
-  padding: 1rem;
-
-  p {
-    color: $text-color;
-    line-height: 1.5;
-  }
-
-  li {
-    color: $text-color;
-    font-size: 1em;
-  }
-
-  a {
-    color: #007bff;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-}
