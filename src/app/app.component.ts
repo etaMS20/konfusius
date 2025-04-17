@@ -45,10 +45,17 @@ export class AppComponent implements OnInit, OnDestroy {
     });
 
     console.log(`devMode: ${isDevMode()}\nenv loaded: ${envLoaded()}`);
+
     if (!envLoaded())
       alert(
-        'One or more environment variables did not get loaded. Please contact site admin.',
+        'One or more environment variables did not get loaded during build. Please contact site admin.',
       );
+
+    if (!('serviceWorker' in navigator)) {
+      alert(
+        'Service Worker API is not supported in this browser version. Please use a more recent browser.',
+      );
+    }
   }
 
   ngOnDestroy() {

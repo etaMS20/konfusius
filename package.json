@@ -1,6 +1,6 @@
 {
   "name": "konfusius",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "scripts": {
     "start": "ng serve",
     "build": "ng build",
@@ -23,23 +23,31 @@
     "@angular/platform-browser-dynamic": "^19.2.5",
     "@angular/router": "^19.2.5",
     "@angular/service-worker": "^19.2.5",
+    "@formatjs/intl-pluralrules": "^5.4.4",
+    "@formatjs/intl-relativetimeformat": "^11.4.11",
     "@ionic/angular": "^8.5.3",
     "@ngx-translate/core": "^16.0.4",
     "cookieconsent": "^3.1.1",
     "core-js": "^3.41.0",
     "crypto-js": "^4.2.0",
     "dotenv": "^16.4.7",
+    "idb": "^8.0.2",
+    "intersection-observer": "^0.12.2",
     "material-icons": "^1.13.14",
     "ngx-cookieconsent": "^8.0.0",
     "ngx-lightbox": "^3.0.0",
+    "pepjs": "^0.5.3",
+    "resize-observer-polyfill": "^1.5.1",
     "rxjs": "~7.8.2",
     "sha.js": "^2.4.11",
     "stream-browserify": "^3.0.0",
     "tslib": "^2.8.1",
+    "url-polyfill": "^1.1.13",
+    "web-animations-js": "^2.3.2",
+    "whatwg-fetch": "^3.6.20",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular-builders/custom-webpack": "^19.0.0",
     "@angular-builders/dev-server": "^7.3.1",
     "@angular-builders/jest": "^19.0.0",
     "@angular-devkit/build-angular": "^19.2.6",
@@ -49,12 +57,9 @@
     "@jest/globals": "^29.7.0",
     "@ngx-env/builder": "19.0.4",
     "@types/crypto-js": "^4.2.2",
-    "@types/dotenv-webpack": "^7.0.8",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.14.0",
     "@types/sha.js": "^2.4.4",
-    "@types/webpack": "^5.28.5",
-    "dotenv-webpack": "^8.1.0",
     "eslint": "^9.24.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.6",
@@ -65,7 +70,6 @@
     "ts-jest": "^29.3.1",
     "ts-node": "^10.9.2",
     "typescript": "~5.7.3",
-    "typescript-eslint": "^8.29.0",
-    "webpack": "^5.98.0"
+    "typescript-eslint": "^8.29.0"
   }
 }

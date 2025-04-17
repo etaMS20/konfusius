@@ -42,6 +42,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
+- browser compatibility with older browsers (most notably Safari/IOS 16 and below)
 - checkout form validation
 - refactored tickets page
 - styling on mobile (v1)
