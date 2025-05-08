@@ -66,6 +66,7 @@ On git-pushes the app fill be automatically deployed to wordpress using `.github
 
 - privacy page renders without content on brave browser
 - possible compatibility issues with older browser (most notably IOS/safari) versions
+- env settings is sometimes unreliable
 
 ### Planned Features
 

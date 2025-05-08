@@ -45,10 +45,9 @@ export class CrossSaleOptionsComponent implements OnInit, OnDestroy {
 
   private readonly fb = inject(FormBuilder);
   optionsForm = this.fb.group({
-    variationId: new FormControl<CrossSaleProductId>(
-      CrossSaleProductId.KONFUSIUS,
-      [Validators.required],
-    ),
+    variationId: new FormControl<CrossSaleProductId>(CrossSaleProductId.SOLI, [
+      Validators.required,
+    ]),
   });
 
   ngOnInit() {

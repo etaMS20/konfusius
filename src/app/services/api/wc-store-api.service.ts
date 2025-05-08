@@ -21,7 +21,7 @@ export class WcStoreAPI {
 
   listProducts(
     category = 22,
-    order_by = 'title',
+    order_by = 'price', // or by title
     order = 'asc',
     per_page = 50,
   ): Observable<any> {
@@ -38,7 +38,7 @@ export class WcStoreAPI {
 
   listProductVariations(
     parentId: number,
-    stockStatus = ['instock'],
+    stockStatus = ['instock'], // by default only list in stock items
   ): Observable<any> {
     return this.http.get(
       this.storeApiBackend +

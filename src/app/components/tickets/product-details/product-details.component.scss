@@ -38,14 +38,14 @@ $animation-duration: 0.3s;
     // left container with product info
     .left-container {
       h4 {
-        margin: 0 0 8px 0;
-        font-size: 1.1rem;
-        font-weight: 500;
+        margin: 0 0 0.2rem 0;
+        font-size: 1rem;
+        font-weight: 400;
       }
 
       p {
         margin: 0;
-        font-size: 0.8rem;
+        font-size: 0.9rem;
         color: #555;
       }
 
@@ -60,8 +60,11 @@ $animation-duration: 0.3s;
         height: 100%;
 
         h4 {
-          margin: 0;
-          font-size: 0.9rem;
+          font-size: 0.8rem;
+        }
+
+        p {
+          font-size: 0.8rem;
         }
       }
     }
