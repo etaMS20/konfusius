@@ -72,9 +72,7 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
     variationId: new FormControl<number | null>(null, [Validators.required]),
   });
   crossSaleItems = input<Array<WcProduct>>([]); // modern approach with new input API
-  selectedCossSaleItemId = signal<CrossSaleProductId>(
-    CrossSaleProductId.KONFUSIUS,
-  );
+  selectedCossSaleItemId = signal<CrossSaleProductId>(CrossSaleProductId.SOLI);
   disableCrossSale = signal<boolean>(true);
 
   constructor() {}

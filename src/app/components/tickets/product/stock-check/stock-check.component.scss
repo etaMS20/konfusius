@@ -20,3 +20,22 @@
     font-size: 0.6rem;
   }
 }
+
+.on-sale {
+  padding: 0.2rem 0.4rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+
+  background-color: #ffebee;
+  border: solid grey 1px;
+  color: #c62828;
+  text-transform: uppercase;
+
+  @media (max-width: $breakpoint-mobile-tilt) {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.3rem;
+  }
+}
