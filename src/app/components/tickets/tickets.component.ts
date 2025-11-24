@@ -60,7 +60,7 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   currentSelectedId?: number;
   currentSelectedSingle?: boolean;
   currentSelectedSKU?: string;
-  showDisclaimer: boolean = true; // in the base case: show the disclaimer
+  showDisclaimer: boolean = true; // flag to enable disclaimers globally
 
   /** loading */
   viewLoading = true;
@@ -86,7 +86,7 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
     return new Set(
       this.products()
         .filter((product) => product.type !== WcProductTypes.VARIABLE)
-        .map((product) => product.id), // Extract IDs
+        .map((product) => product.id), // extract Ids
     );
   });
 
@@ -94,7 +94,8 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
    * The cleanest approach here would probably be to define a parent FC and having the mat-cards as main-controls.
    * Otherwise, since we query the product on select anyways (which could also be avoided probably),
-   * we might want to destroy the productDetails on select
+   * we might want to destroy the productDetails on select.
+   * Current approach works perfectly fine however so thats something to consider in the future.
    */
 
   constructor() {}

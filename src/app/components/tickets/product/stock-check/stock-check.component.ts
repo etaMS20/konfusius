@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core';
 import { WcProduct } from '@models/product.model';
 
 @Component({
@@ -12,4 +17,7 @@ import { WcProduct } from '@models/product.model';
 })
 export class StockCheckComponent {
   product = input.required<WcProduct>();
+  onSale = computed(() => {
+    return this.product().id == 590;
+  });
 }

@@ -66,14 +66,22 @@ On git-pushes the app fill be automatically deployed to wordpress using `.github
 
 - privacy page renders without content on brave browser
 - possible compatibility issues with older browser (most notably IOS/safari) versions
+- env settings is sometimes unreliable
 
-### Planned Features
+### Planned Features (for 2026)
 
 - custom payment method in backend (can have)
 - activate/implement wp-nonces (should have)
 - smooth scrolling navigation (can have)
 - use JWT token for all requests (should have)
-- limit order to 1 per email (can have)
+- limit order to 1 per unique name per year (can have)
+- email-filter in overview (can have)
+- enhanced email templates (can have)
+- move deployment from ftp to ssh (should have)
+- install wp-cli to dev console (can have)
+- migrate to tailwind (can have)
+- clean-up backend, data-retention etc. (can have)
+- extend crew-area features: generate excel, make custom orders etc (can have)
 
 ### Useful Links
 
