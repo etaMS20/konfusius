@@ -48,7 +48,7 @@ jobs:
 
   deploy-gh-pages:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: build
 
     steps:
@@ -70,7 +70,7 @@ jobs:
 
   deploy-to-wp:
     runs-on: ubuntu-latest
-    # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: build
     environment:
       name: 'production'
