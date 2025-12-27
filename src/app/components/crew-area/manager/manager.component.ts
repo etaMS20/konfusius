@@ -34,7 +34,7 @@ import { indicate } from '@utils/reactive-loading.utils';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-crew-area',
+  selector: 'app-manager',
   imports: [
     MatTableModule,
     MatInputModule,
@@ -56,12 +56,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatCheckboxModule,
     MatProgressSpinnerModule,
   ],
-  templateUrl: './crew-area.component.html',
-  styleUrl: './crew-area.component.scss',
+  templateUrl: './manager.component.html',
+  styleUrl: './manager.component.scss',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CrewAreaComponent implements AfterViewInit, OnInit, OnDestroy {
+export class ManagerComponent implements AfterViewInit, OnInit, OnDestroy {
   wcV3 = inject(WcV3Service);
   customEpS = inject(CustomEndpointsService);
   contactPersons = signal<Array<string>>([]);

@@ -75,10 +75,26 @@ export const routes: Routes = [
   {
     path: 'crew-area',
     loadComponent: () => {
-      return import('./components/crew-area/crew-area.component').then(
-        (m) => m.CrewAreaComponent,
+      return import('./components/crew-area/crew-container.component').then(
+        (m) => m.CrewContainerComponent,
       );
     },
     canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: 'manage-tickets',
+        pathMatch: 'full',
+      },
+      {
+        path: 'manage-tickets',
+        loadComponent: () => {
+          return import(
+            './components/crew-area/manager/manager.component'
+          ).then((m) => m.ManagerComponent);
+        },
+        canActivate: [AuthGuard],
+      },
+    ],
   },
 ];
