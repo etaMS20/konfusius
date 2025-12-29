@@ -95,6 +95,15 @@ export const routes: Routes = [
         },
         canActivate: [AuthGuard],
       },
+      {
+        path: 'scheduler',
+        loadComponent: () => {
+          return import(
+            './components/crew-area/scheduler/scheduler.component'
+          ).then((m) => m.SchedulerComponent);
+        },
+        canActivate: [AuthGuard],
+      },
     ],
   },
 ];

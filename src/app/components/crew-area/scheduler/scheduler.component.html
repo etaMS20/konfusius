@@ -1,1 +1,30 @@
-<p>scheduler works!</p>
+<div>
+  <mat-button-toggle-group [(ngModel)]="viewDate">
+    <mat-button-toggle *ngFor="let date of viewDates" [value]="date">
+      {{ date | date: 'EEEE d. MMMM' }}
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+</div>
+
+<div>
+  @switch (view) {
+    @case ('month') {
+      <mwl-calendar-month-view
+        [viewDate]="viewDate"
+        [events]="calendarEntries()"
+      />
+    }
+    @case ('week') {
+      <mwl-calendar-week-view
+        [viewDate]="viewDate"
+        [events]="calendarEntries()"
+      />
+    }
+    @case ('day') {
+      <mwl-calendar-day-view
+        [viewDate]="viewDate"
+        [events]="calendarEntries()"
+      />
+    }
+  }
+</div>

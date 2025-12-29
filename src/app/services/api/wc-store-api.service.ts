@@ -24,8 +24,8 @@ export class WcStoreAPI {
     order_by = 'price', // or by title
     order = 'asc',
     per_page = 50,
-  ): Observable<any> {
-    return this.http.get(
+  ): Observable<WcProduct[]> {
+    return this.http.get<WcProduct[]>(
       this.storeApiBackend +
         `/products?per_page=${per_page}&category=${category}&orderby=${order_by}&order=${order}`,
       { headers: this.headers },
