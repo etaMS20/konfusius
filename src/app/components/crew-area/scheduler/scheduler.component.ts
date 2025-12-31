@@ -5,12 +5,27 @@ import {
   signal,
   OnInit,
 } from '@angular/core';
-import { CalendarEvent, CalendarView, CalendarModule } from 'angular-calendar';
-import { CommonModule } from '@angular/common';
+import {
+  CalendarEvent,
+  CalendarView,
+  CalendarModule,
+  CalendarEventTitleFormatter,
+  CalendarDateFormatter,
+  DAYS_OF_WEEK,
+} from 'angular-calendar';
+import { CommonModule, registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
 import { setHours, setMinutes } from 'date-fns';
 import { FormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { WcStoreAPI } from '@services/api/wc-store-api.service';
+import { WcTimeframeUtil } from '../time-mapper.util';
+import { DateTime } from 'luxon';
+import { Subject, takeUntil } from 'rxjs';
+import { CustomEventTitleFormatter } from '../title-formatter.provider';
+import { CustomDateFormatter } from '../date-formatter.provider';
+
+registerLocaleData(localeDe);
 
 @Component({
   selector: 'app-schedule',
@@ -19,12 +34,33 @@ import { WcStoreAPI } from '@services/api/wc-store-api.service';
   imports: [CommonModule, CalendarModule, MatButtonToggleModule, FormsModule],
   templateUrl: './scheduler.component.html',
   styleUrls: ['./scheduler.component.scss'],
+  providers: [
+    {
+      provide: CalendarEventTitleFormatter,
+      useClass: CustomEventTitleFormatter,
+    },
+    {
+      provide: CalendarDateFormatter,
+      useClass: CustomDateFormatter,
+    },
+  ],
 })
 export class SchedulerComponent implements OnInit {
+  private readonly destroy$ = new Subject<void>();
   private readonly wcStoreApi = inject(WcStoreAPI);
+
+  locale: string = 'de-DE';
+
+  weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
+
+  weekendDays: number[] = [DAYS_OF_WEEK.SATURDAY, DAYS_OF_WEEK.SUNDAY];
+
+  private productIds = signal<number[]>([]);
+
   view: CalendarView = CalendarView.Day;
 
   viewDates: Date[] = [
+    new Date(2026, 4, 14),
     new Date(2026, 4, 15),
     new Date(2026, 4, 16),
     new Date(2026, 4, 17),
@@ -32,6 +68,7 @@ export class SchedulerComponent implements OnInit {
   ];
 
   viewDate: Date = this.viewDates[0];
+  private timeUtil = new WcTimeframeUtil(new Date(2026, 4, 0));
 
   calendarEntries = signal<CalendarEvent[]>([]);
 
@@ -39,29 +76,61 @@ export class SchedulerComponent implements OnInit {
     this.loadProductsToCalendar();
   }
 
-  events: CalendarEvent[] = [
-    {
-      title: 'No event end date',
-      start: setHours(setMinutes(new Date(2026, 4, 15), 0), 3),
-    },
-    {
-      title: 'No event end date',
-      start: setHours(setMinutes(new Date(2026, 4, 15), 0), 3),
-    },
-    {
-      title: 'No event end date',
-      start: setHours(setMinutes(new Date(2026, 4, 15), 0), 5),
-    },
-  ];
+  ngAfterViewInit() {}
 
   private loadProductsToCalendar() {
-    this.wcStoreApi.listProducts().subscribe((products) => {
-      const shifts = products.map((product) => ({
-        title: product.name ?? 'Untitled Shift',
-        start: setHours(setMinutes(new Date(2026, 4, 15), 0), 5), // Example: using product ID as timestamp
-        end: setHours(setMinutes(new Date(2026, 4, 15), 30), 13), // Example end time
-      }));
-      this.calendarEntries.set(shifts);
+    const anchorDate = this.viewDate;
+
+    this.wcStoreApi
+      .listProducts(50)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((products) => {
+        this.productIds.set(products.map((p) => p.id));
+        const events: CalendarEvent[] = products.flatMap((p) => {
+          const name = p.name;
+          const timesWithIds = (p.variations ?? []).flatMap((v) =>
+            v.attributes.map((item) => ({
+              value: item.value,
+              variationId: v.id,
+            })),
+          );
+
+          return timesWithIds.map((t, idx) => ({
+            id: t.variationId,
+            title: `${name ?? 'Fehlerhafter Eintrag'} (${idx + 1})`,
+            start:
+              this.timeUtil.parseRelativeInterval(t.value).start ?? anchorDate,
+            end: this.timeUtil.parseRelativeInterval(t.value).end ?? anchorDate,
+          }));
+        });
+
+        this.calendarEntries.set(events);
+        this.loadMetaInformation();
+      });
+  }
+
+  private loadMetaInformation() {
+    this.productIds().forEach((id) => {
+      this.wcStoreApi
+        .listProductVariations(id as number, ['instock', 'outofstock'])
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((variations) => {
+          this.calendarEntries.update((entries) => {
+            return entries.map((entry) => {
+              const variation = variations.find((v) => v.id === entry.id);
+              if (variation) {
+                return {
+                  ...entry,
+                  meta: {
+                    ...entry.meta,
+                    stock: variation.stock_availability,
+                  },
+                };
+              }
+              return entry;
+            });
+          });
+        });
     });
   }
 }

@@ -28,7 +28,14 @@ import { MatMenuModule } from '@angular/material/menu';
 import { WcV3Service } from '@services/api/wc-v3.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { catchError, Subject, takeUntil, throwError } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  finalize,
+  Subject,
+  takeUntil,
+  throwError,
+} from 'rxjs';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
 import { indicate } from '@utils/reactive-loading.utils';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -80,7 +87,7 @@ export class ManagerComponent implements AfterViewInit, OnInit, OnDestroy {
     'select',
   ];
   selection = new SelectionModel<OrderMin>(true, []);
-  loading$ = new Subject<boolean>();
+  loading$ = new BehaviorSubject<boolean>(false);
   private readonly destroy$ = new Subject<void>();
 
   statuses = WC_ORDER_STATUSES;
@@ -135,7 +142,6 @@ export class ManagerComponent implements AfterViewInit, OnInit, OnDestroy {
     this.customEpS // endpoint can be improved
       .getOrdersByInvite('', ['2025'])
       .pipe(
-        indicate(this.loading$),
         catchError((error) => {
           this.errorService.handleError(error);
           return throwError(() => error);
@@ -154,6 +160,7 @@ export class ManagerComponent implements AfterViewInit, OnInit, OnDestroy {
           return throwError(() => error);
         }),
         takeUntil(this.destroy$),
+        finalize(() => this.loading$.next(false)),
       )
       .subscribe((response: string[]) => {
         this.contactPersons.set(response);

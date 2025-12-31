@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { BACKEND } from '@config/http.config';
 import { WcBillingAddress, WcShippingAddress } from '@models/customer.model';
 import { WcCheckOutData } from '@models/cart.model';
-import { WcProduct } from '@models/product.model';
+import { WcProduct, WcProductVariationDetails } from '@models/product.model';
 
 @Injectable({
   providedIn: 'root',
@@ -39,11 +39,17 @@ export class WcStoreAPI {
   listProductVariations(
     parentId: number,
     stockStatus = ['instock'], // by default only list in stock items
-  ): Observable<any> {
-    return this.http.get(
+  ): Observable<WcProductVariationDetails[]> {
+    return this.http.get<WcProductVariationDetails[]>(
       this.storeApiBackend +
         `/products?type=variation&parent=${parentId}&stock_status=${stockStatus}&per_page=100`,
       { headers: this.headers },
+    );
+  }
+
+  getVariationById(id: number): Observable<WcProductVariationDetails> {
+    return this.http.get<WcProductVariationDetails>(
+      this.storeApiBackend + `/products/${id}`,
     );
   }
 

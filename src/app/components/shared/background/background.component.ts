@@ -29,7 +29,7 @@ export class BackgroundComponent implements OnInit {
       });
   }
 
-  @HostListener('window:scroll', ['$event'])
+  @HostListener('window:scroll')
   onScroll() {
     const scrollPosition = window.scrollY;
     this.backgroundPosition = `center ${scrollPosition * 0.1}px`;

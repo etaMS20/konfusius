@@ -12,18 +12,25 @@
       <mwl-calendar-month-view
         [viewDate]="viewDate"
         [events]="calendarEntries()"
+        [locale]="locale"
+        [weekStartsOn]="weekStartsOn"
+        [weekendDays]="weekendDays"
       />
     }
     @case ('week') {
       <mwl-calendar-week-view
         [viewDate]="viewDate"
         [events]="calendarEntries()"
+        [locale]="locale"
+        [weekStartsOn]="weekStartsOn"
+        [weekendDays]="weekendDays"
       />
     }
     @case ('day') {
       <mwl-calendar-day-view
         [viewDate]="viewDate"
         [events]="calendarEntries()"
+        [locale]="locale"
       />
     }
   }
