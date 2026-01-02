@@ -23,6 +23,6 @@ export class CustomEventTitleFormatter extends CalendarEventTitleFormatter {
   override day(event: CalendarEvent): string {
     return `<b>${event.title}</b>
       </br>${formatDate(event.start, 'HH:mm', this.locale)} - ${formatDate(event.end!, 'HH:mm', this.locale)}
-      <br/><b>${event.meta?.stock.class} - ${event.meta?.stock.text}</b>`;
+      <br/><b>${event.meta?.stock.text}</b>`;
   }
 }
