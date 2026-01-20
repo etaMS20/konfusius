@@ -15,15 +15,14 @@ import {
 } from 'angular-calendar';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
-import { setHours, setMinutes } from 'date-fns';
 import { FormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { WcStoreAPI } from '@services/api/wc-store-api.service';
 import { WcTimeframeUtil } from '../time-mapper.util';
-import { DateTime } from 'luxon';
 import { Subject, takeUntil } from 'rxjs';
 import { CustomEventTitleFormatter } from '../title-formatter.provider';
 import { CustomDateFormatter } from '../date-formatter.provider';
+import { generateProductColors } from './colors.util';
 
 registerLocaleData(localeDe);
 
@@ -68,7 +67,7 @@ export class SchedulerComponent implements OnInit {
   ];
 
   viewDate: Date = this.viewDates[0];
-  private timeUtil = new WcTimeframeUtil(new Date(2026, 4, 0));
+  private timeUtil = new WcTimeframeUtil(new Date(2026, 4, 0), this.viewDate);
 
   calendarEntries = signal<CalendarEvent[]>([]);
 
@@ -82,10 +81,15 @@ export class SchedulerComponent implements OnInit {
     const anchorDate = this.viewDate;
 
     this.wcStoreApi
-      .listProducts(50)
+      .listProducts(50) // category 50 = "Variable Basic"
       .pipe(takeUntil(this.destroy$))
       .subscribe((products) => {
+        document.documentElement.style.setProperty(
+          '--calendar-event-max-width',
+          '200px',
+        );
         this.productIds.set(products.map((p) => p.id));
+        const colors = generateProductColors(this.productIds());
         const events: CalendarEvent[] = products.flatMap((p) => {
           const name = p.name;
           const timesWithIds = (p.variations ?? []).flatMap((v) =>
@@ -101,6 +105,8 @@ export class SchedulerComponent implements OnInit {
             start:
               this.timeUtil.parseRelativeInterval(t.value).start ?? anchorDate,
             end: this.timeUtil.parseRelativeInterval(t.value).end ?? anchorDate,
+            color: colors[p.id],
+            cssClass: 'kf-calendar-event',
           }));
         });
 

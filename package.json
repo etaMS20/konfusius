@@ -28,6 +28,7 @@
     "@ionic/angular": "^8.5.3",
     "@ngx-translate/core": "^16.0.4",
     "angular-calendar": "^0.31.1",
+    "calendar-utils": "^0.12.4",
     "cookieconsent": "^3.1.1",
     "core-js": "^3.41.0",
     "crypto-js": "^4.2.0",

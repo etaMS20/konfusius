@@ -2,16 +2,18 @@ import { DateTime, Duration } from 'luxon';
 
 export class WcTimeframeUtil {
   private anchorDate: Date;
+  private defaultDate: Date;
 
-  constructor(anchorDate?: Date) {
+  constructor(anchorDate?: Date, defaultDate?: Date) {
     this.anchorDate = anchorDate ?? new Date();
+    this.defaultDate = defaultDate ?? new Date();
   }
 
   parseRelativeInterval(
     interval: string,
     anchorDate?: DateTime,
   ): { start: Date; end: Date } {
-    const defaultResult = { start: this.anchorDate, end: this.anchorDate };
+    const defaultResult = { start: this.defaultDate, end: this.defaultDate };
     try {
       const anchor = anchorDate ?? DateTime.fromJSDate(this.anchorDate);
       const [offsetStr, durationStr] = interval.split('/');

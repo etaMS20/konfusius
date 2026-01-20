@@ -1,4 +1,4 @@
-<div>
+<div class="date-toggle-group">
   <mat-button-toggle-group [(ngModel)]="viewDate">
     <mat-button-toggle *ngFor="let date of viewDates" [value]="date">
       {{ date | date: 'EEEE d. MMMM' }}

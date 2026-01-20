@@ -56,6 +56,9 @@ importers:
       angular-calendar:
         specifier: ^0.31.1
         version: 0.31.1(@angular/core@19.2.5(rxjs@7.8.2)(zone.js@0.15.0))
+      calendar-utils:
+        specifier: ^0.12.4
+        version: 0.12.4(date-fns@4.1.0)(luxon@3.7.2)
       cookieconsent:
         specifier: ^3.1.1
         version: 3.1.1
@@ -2590,6 +2593,20 @@ packages:
 
   calendar-utils@0.10.4:
     resolution: {integrity: sha512-gBK4xCJ42yjaUKwuUha6cZOfxAmGzvSgbdAaX3xLRioeKbYoOK1x1qeD6dch72rsMZlTgATPbBBx42bnkStqgQ==}
+
+  calendar-utils@0.12.4:
+    resolution: {integrity: sha512-OYhqJdeDRRVUdMYJMUrXtR7Go+80oEcA6VK4T3zjcUloQqcOVQKs/kp7j8Yw0HiLOcGwzF50WhLmzZoUNfkM7A==}
+    peerDependencies:
+      date-fns: ^4.0.0
+      luxon: ^3.0.0
+      moment: ^2.0.0
+    peerDependenciesMeta:
+      date-fns:
+        optional: true
+      luxon:
+        optional: true
+      moment:
+        optional: true
 
   call-bind-apply-helpers@1.0.2:
     resolution: {integrity: sha512-Sp1ablJ0ivDkSzjcaJdxEunN5/XvksFJ2sMBFfq6x0ryhQV/2b/KwFe21cMpmHtPOSij8K99/wSfoEuTObmuMQ==}
@@ -8530,6 +8547,11 @@ snapshots:
       unique-filename: 4.0.0
 
   calendar-utils@0.10.4: {}
+
+  calendar-utils@0.12.4(date-fns@4.1.0)(luxon@3.7.2):
+    optionalDependencies:
+      date-fns: 4.1.0
+      luxon: 3.7.2
 
   call-bind-apply-helpers@1.0.2:
     dependencies:
