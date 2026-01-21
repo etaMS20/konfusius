@@ -12,6 +12,7 @@ import {
   CalendarEventTitleFormatter,
   CalendarDateFormatter,
   DAYS_OF_WEEK,
+  CalendarDayViewBeforeRenderEvent,
 } from 'angular-calendar';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
@@ -81,12 +82,12 @@ export class SchedulerComponent implements OnInit {
     const anchorDate = this.viewDate;
 
     this.wcStoreApi
-      .listProducts(50) // category 50 = "Variable Basic"
+      .listProducts(50, 'title') // cat "Variable Basic" + sort by title
       .pipe(takeUntil(this.destroy$))
       .subscribe((products) => {
         document.documentElement.style.setProperty(
           '--calendar-event-max-width',
-          '200px',
+          '100px',
         );
         this.productIds.set(products.map((p) => p.id));
         const colors = generateProductColors(this.productIds());
@@ -96,6 +97,7 @@ export class SchedulerComponent implements OnInit {
             v.attributes.map((item) => ({
               value: item.value,
               variationId: v.id,
+              productId: p.id, // "parent"
             })),
           );
 
@@ -107,6 +109,9 @@ export class SchedulerComponent implements OnInit {
             end: this.timeUtil.parseRelativeInterval(t.value).end ?? anchorDate,
             color: colors[p.id],
             cssClass: 'kf-calendar-event',
+            meta: {
+              productId: t.productId,
+            },
           }));
         });
 
@@ -138,5 +143,25 @@ export class SchedulerComponent implements OnInit {
           });
         });
     });
+  }
+
+  beforeDayViewRender(renderEvent: CalendarDayViewBeforeRenderEvent) {
+    if (renderEvent.hourColumns) {
+      renderEvent.hourColumns.forEach((column: any) => {
+        if (column.events) {
+          const factor = this.productIds().length;
+          const widthPerProduct = 100 / factor;
+          column.events.forEach((dayViewEvent: any) => {
+            const productId = dayViewEvent.event.meta?.productId;
+            const productIndex = this.productIds().indexOf(productId);
+
+            if (productIndex !== -1) {
+              dayViewEvent.width = widthPerProduct;
+              dayViewEvent.left = productIndex * widthPerProduct;
+            }
+          });
+        }
+      });
+    }
   }
 }

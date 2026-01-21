@@ -31,6 +31,7 @@
         [viewDate]="viewDate"
         [events]="calendarEntries()"
         [locale]="locale"
+        (beforeViewRender)="beforeDayViewRender($event)"
       />
     }
   }
