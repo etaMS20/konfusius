@@ -14,6 +14,16 @@ import {
   DAYS_OF_WEEK,
   CalendarDayViewBeforeRenderEvent,
 } from 'angular-calendar';
+import {
+  startOfDay,
+  endOfDay,
+  subDays,
+  addDays,
+  endOfMonth,
+  isSameDay,
+  isSameMonth,
+  addHours,
+} from 'date-fns';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { FormsModule } from '@angular/forms';
@@ -57,7 +67,7 @@ export class SchedulerComponent implements OnInit {
 
   private productIds = signal<number[]>([]);
 
-  view: CalendarView = CalendarView.Day;
+  view: CalendarView = CalendarView.Month;
 
   viewDates: Date[] = [
     new Date(2026, 4, 14),
@@ -67,8 +77,8 @@ export class SchedulerComponent implements OnInit {
     new Date(2026, 4, 18),
   ];
 
-  viewDate: Date = this.viewDates[0];
-  private timeUtil = new WcTimeframeUtil(new Date(2026, 4, 0), this.viewDate);
+  viewDate = signal<Date>(new Date(2026, 4, 15));
+  private timeUtil = new WcTimeframeUtil(new Date(2026, 4, 0), this.viewDate());
 
   calendarEntries = signal<CalendarEvent[]>([]);
 
@@ -85,10 +95,6 @@ export class SchedulerComponent implements OnInit {
       .listProducts(50, 'title') // cat "Variable Basic" + sort by title
       .pipe(takeUntil(this.destroy$))
       .subscribe((products) => {
-        document.documentElement.style.setProperty(
-          '--calendar-event-max-width',
-          '100px',
-        );
         this.productIds.set(products.map((p) => p.id));
         const colors = generateProductColors(this.productIds());
         const events: CalendarEvent[] = products.flatMap((p) => {
@@ -103,12 +109,11 @@ export class SchedulerComponent implements OnInit {
 
           return timesWithIds.map((t, idx) => ({
             id: t.variationId,
-            title: `${name ?? 'Fehlerhafter Eintrag'} (${idx + 1})`,
+            title: `${name ?? 'Fehlerhafter Eintrag'} ${idx + 1}`,
             start:
               this.timeUtil.parseRelativeInterval(t.value).start ?? anchorDate,
             end: this.timeUtil.parseRelativeInterval(t.value).end ?? anchorDate,
             color: colors[p.id],
-            cssClass: 'kf-calendar-event',
             meta: {
               productId: t.productId,
             },
@@ -162,6 +167,22 @@ export class SchedulerComponent implements OnInit {
           });
         }
       });
+    }
+  }
+
+  activeDayIsOpen: boolean = true;
+
+  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+    if (isSameMonth(date, this.viewDate())) {
+      if (
+        (isSameDay(this.viewDate(), date) && this.activeDayIsOpen === true) ||
+        events.length === 0
+      ) {
+        this.activeDayIsOpen = false;
+      } else {
+        this.activeDayIsOpen = true;
+      }
+      this.viewDate.set(date);
     }
   }
 }

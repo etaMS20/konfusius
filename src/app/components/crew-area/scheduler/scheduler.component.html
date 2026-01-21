@@ -1,5 +1,11 @@
-<div class="date-toggle-group">
-  <mat-button-toggle-group [(ngModel)]="viewDate">
+<h3>{{ viewDate() | calendarDate: view + 'ViewTitle' : 'de' }}</h3>
+
+<div class="calendar-toolbar">
+  <mat-button-toggle-group [(ngModel)]="view">
+    <mat-button-toggle value="month">Monat</mat-button-toggle>
+    <mat-button-toggle value="day">Tag</mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group [(ngModel)]="viewDate" *ngIf="view === 'day'">
     <mat-button-toggle *ngFor="let date of viewDates" [value]="date">
       {{ date | date: 'EEEE d. MMMM' }}
     </mat-button-toggle>
@@ -10,25 +16,18 @@
   @switch (view) {
     @case ('month') {
       <mwl-calendar-month-view
-        [viewDate]="viewDate"
+        [viewDate]="viewDate()"
         [events]="calendarEntries()"
         [locale]="locale"
-        [weekStartsOn]="weekStartsOn"
-        [weekendDays]="weekendDays"
-      />
-    }
-    @case ('week') {
-      <mwl-calendar-week-view
-        [viewDate]="viewDate"
-        [events]="calendarEntries()"
-        [locale]="locale"
+        [activeDayIsOpen]="activeDayIsOpen"
+        (dayClicked)="dayClicked($event.day)"
         [weekStartsOn]="weekStartsOn"
         [weekendDays]="weekendDays"
       />
     }
     @case ('day') {
       <mwl-calendar-day-view
-        [viewDate]="viewDate"
+        [viewDate]="viewDate()"
         [events]="calendarEntries()"
         [locale]="locale"
         (beforeViewRender)="beforeDayViewRender($event)"

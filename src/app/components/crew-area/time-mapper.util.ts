@@ -3,6 +3,7 @@ import { DateTime, Duration } from 'luxon';
 export class WcTimeframeUtil {
   private anchorDate: Date;
   private defaultDate: Date;
+  private defaultDuration = Duration.fromISO('PT4H');
 
   constructor(anchorDate?: Date, defaultDate?: Date) {
     this.anchorDate = anchorDate ?? new Date();
@@ -19,7 +20,10 @@ export class WcTimeframeUtil {
       const [offsetStr, durationStr] = interval.split('/');
 
       const offset = Duration.fromISO(offsetStr);
-      const duration = Duration.fromISO(durationStr);
+      const duration =
+        durationStr === 'OPEN'
+          ? this.defaultDuration
+          : Duration.fromISO(durationStr);
 
       if (!offset.isValid || !duration.isValid) {
         console.error(`Invalid ISO duration format: ${interval}`);
