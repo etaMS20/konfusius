@@ -14,16 +14,7 @@ import {
   DAYS_OF_WEEK,
   CalendarDayViewBeforeRenderEvent,
 } from 'angular-calendar';
-import {
-  startOfDay,
-  endOfDay,
-  subDays,
-  addDays,
-  endOfMonth,
-  isSameDay,
-  isSameMonth,
-  addHours,
-} from 'date-fns';
+import { subDays, addDays, isSameDay, isSameMonth } from 'date-fns';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { FormsModule } from '@angular/forms';
@@ -34,6 +25,10 @@ import { Subject, takeUntil } from 'rxjs';
 import { CustomEventTitleFormatter } from '../title-formatter.provider';
 import { CustomDateFormatter } from '../date-formatter.provider';
 import { generateProductColors } from './colors.util';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatDivider } from '@angular/material/divider';
 
 registerLocaleData(localeDe);
 
@@ -41,7 +36,16 @@ registerLocaleData(localeDe);
   selector: 'app-schedule',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, CalendarModule, MatButtonToggleModule, FormsModule],
+  imports: [
+    CommonModule,
+    CalendarModule,
+    MatButtonToggleModule,
+    FormsModule,
+    MatRadioModule,
+    MatIconButton,
+    MatIcon,
+    MatDivider,
+  ],
   templateUrl: './scheduler.component.html',
   styleUrls: ['./scheduler.component.scss'],
   providers: [
@@ -69,18 +73,13 @@ export class SchedulerComponent implements OnInit {
 
   view: CalendarView = CalendarView.Month;
 
-  viewDates: Date[] = [
-    new Date(2026, 4, 14),
-    new Date(2026, 4, 15),
-    new Date(2026, 4, 16),
-    new Date(2026, 4, 17),
-    new Date(2026, 4, 18),
-  ];
-
   viewDate = signal<Date>(new Date(2026, 4, 15));
+
   private timeUtil = new WcTimeframeUtil(new Date(2026, 4, 0), this.viewDate());
 
   calendarEntries = signal<CalendarEvent[]>([]);
+
+  activeDayIsOpen: boolean = true;
 
   ngOnInit() {
     this.loadProductsToCalendar();
@@ -170,8 +169,6 @@ export class SchedulerComponent implements OnInit {
     }
   }
 
-  activeDayIsOpen: boolean = true;
-
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate())) {
       if (
@@ -184,5 +181,13 @@ export class SchedulerComponent implements OnInit {
       }
       this.viewDate.set(date);
     }
+  }
+
+  previousDay($event: MouseEvent): void {
+    this.viewDate.set(subDays(this.viewDate(), 1));
+  }
+
+  nextDay($event: MouseEvent): void {
+    this.viewDate.set(addDays(this.viewDate(), 1));
   }
 }

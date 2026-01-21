@@ -1,17 +1,19 @@
-<h3>{{ viewDate() | calendarDate: view + 'ViewTitle' : 'de' }}</h3>
-
 <div class="calendar-toolbar">
-  <mat-button-toggle-group [(ngModel)]="view">
-    <mat-button-toggle value="month">Monat</mat-button-toggle>
-    <mat-button-toggle value="day">Tag</mat-button-toggle>
-  </mat-button-toggle-group>
-  <mat-button-toggle-group [(ngModel)]="viewDate" *ngIf="view === 'day'">
-    <mat-button-toggle *ngFor="let date of viewDates" [value]="date">
-      {{ date | date: 'EEEE d. MMMM' }}
-    </mat-button-toggle>
-  </mat-button-toggle-group>
+  <mat-radio-group [(ngModel)]="view">
+    <mat-radio-button value="month">Monat</mat-radio-button>
+    <mat-radio-button value="day">Tag</mat-radio-button>
+  </mat-radio-group>
+  <div class="calendar-pageinator">
+    <mat-divider [vertical]="true"></mat-divider>
+    <button mat-icon-button (click)="previousDay($event)">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <span>{{ viewDate() | date: 'EEEE, d. MMM yyyy' : '' : locale }}</span>
+    <button mat-icon-button (click)="nextDay($event)">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
 </div>
-
 <div>
   @switch (view) {
     @case ('month') {
