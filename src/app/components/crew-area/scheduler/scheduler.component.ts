@@ -70,7 +70,7 @@ export class SchedulerComponent implements OnInit {
 
   weekendDays: number[] = [DAYS_OF_WEEK.SATURDAY, DAYS_OF_WEEK.SUNDAY];
 
-  private productIds = signal<number[]>([]);
+  private basicVariableProductIds = signal<number[]>([]);
 
   view: CalendarView = CalendarView.Month;
 
@@ -83,30 +83,18 @@ export class SchedulerComponent implements OnInit {
   activeDayIsOpen: boolean = true;
 
   ngOnInit() {
-    this.loadProductsToCalendar(
-      50, // Variabel Basic
-      this.timeUtil.parseAnchorInterval.bind(this.timeUtil),
-    );
-    this.loadProductsToCalendar(
-      51, // Variabel Absolut
-      this.timeUtil.parseCustomInterval.bind(this.timeUtil),
-    );
+    this.loadBasicVariationsToCalendar();
   }
 
   ngAfterViewInit() {}
 
-  private loadProductsToCalendar(
-    categoryId: number,
-    parseFn: (variationValue: string) => ParsedVariationTime,
-  ) {
+  private loadBasicVariationsToCalendar() {
     this.wcStoreApi
-      .listProducts(categoryId, 'title') // sort by title
+      .listProducts(50, 'title') // sort by title
       .pipe(takeUntil(this.destroy$))
       .subscribe((products) => {
-        this.productIds.update((existing) => [
-          ...new Set([...existing, ...products.map((p) => p.id)]),
-        ]);
-        const colors = generateProductColors(this.productIds());
+        this.basicVariableProductIds.set(products.map((p) => p.id));
+        const colors = generateProductColors(this.basicVariableProductIds());
         const events: CalendarEvent[] = products.flatMap((p) => {
           const name = p.name;
           const timesWithIds = (p.variations ?? []).flatMap((v) =>
@@ -117,16 +105,20 @@ export class SchedulerComponent implements OnInit {
             })),
           );
 
-          return timesWithIds.map((t, idx) => ({
-            id: t.variationId,
-            title: `${name ?? 'Fehlerhafter Eintrag'} ${idx + 1}`,
-            start: parseFn(t.value).start,
-            end: parseFn(t.value).end,
-            color: colors[p.id],
-            meta: {
-              productId: t.productId,
-            },
-          }));
+          return timesWithIds.map((t, idx) => {
+            const result = this.timeUtil.parseAnchorInterval(t.value);
+
+            return {
+              id: t.variationId,
+              title: `${name ?? 'Fehlerhafter Eintrag'} ${idx + 1}`,
+              start: result.start,
+              end: result.end,
+              color: colors[p.id],
+              meta: {
+                productId: t.productId,
+              },
+            };
+          });
         });
 
         this.calendarEntries.update((existing) => [...existing, ...events]);
@@ -135,7 +127,7 @@ export class SchedulerComponent implements OnInit {
   }
 
   private loadMetaInformation() {
-    this.productIds().forEach((id) => {
+    this.basicVariableProductIds().forEach((id) => {
       this.wcStoreApi
         .listProductVariations(id as number, ['instock', 'outofstock'])
         .pipe(takeUntil(this.destroy$))
@@ -163,12 +155,12 @@ export class SchedulerComponent implements OnInit {
     if (renderEvent.hourColumns) {
       renderEvent.hourColumns.forEach((column: any) => {
         if (column.events) {
-          const factor = this.productIds().length;
+          const factor = this.basicVariableProductIds().length;
           const widthPerProduct = 100 / factor;
           column.events.forEach((dayViewEvent: any) => {
             const productId = dayViewEvent.event.meta?.productId;
-            const productIndex = this.productIds().indexOf(productId);
-
+            const productIndex =
+              this.basicVariableProductIds().indexOf(productId);
             if (productIndex !== -1) {
               dayViewEvent.width = widthPerProduct;
               dayViewEvent.left = productIndex * widthPerProduct;
