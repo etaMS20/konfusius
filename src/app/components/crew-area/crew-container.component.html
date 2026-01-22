@@ -1,13 +1,18 @@
 <div class="crew-area-container">
-  <mat-toolbar>
-    <a mat-button routerLink="manage-tickets" routerLinkActive="active-link">
-      <mat-icon>confirmation_number</mat-icon>
-      Anmeldungen Verwalten</a
+  <div class="crew-area-nav">
+    <mat-tab-group
+      [(selectedIndex)]="selectedIndex"
+      (selectedIndexChange)="onTabChange($event)"
     >
-    <a mat-button routerLink="scheduler" routerLinkActive="active-link">
-      <mat-icon>confirmation_number</mat-icon>
-      Kalender Ansicht</a
-    >
-  </mat-toolbar>
+      @for (tab of tabs; track tab.route) {
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>{{ tab.icon }}</mat-icon>
+            {{ tab.label }}
+          </ng-template>
+        </mat-tab>
+      }
+    </mat-tab-group>
+  </div>
   <router-outlet></router-outlet>
 </div>

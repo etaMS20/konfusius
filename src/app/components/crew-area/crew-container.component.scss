@@ -6,3 +6,12 @@
   box-shadow: $default-box-shadow;
   padding: 1rem;
 }
+
+.crew-area-nav {
+  border-radius: $border-radius;
+  background-color: var(--mat-sys-surface);
+  margin: 0 0.5rem;
+  mat-icon {
+    margin-right: 0.5rem;
+  }
+}
