@@ -34,7 +34,8 @@
               "src/styles/styles.scss",
               "src/styles/style-vars.scss",
               "node_modules/cookieconsent/build/cookieconsent.min.css",
-              "node_modules/ngx-lightbox/lightbox.css"
+              "node_modules/ngx-lightbox/lightbox.css",
+              "node_modules/angular-calendar/css/angular-calendar.css"
             ],
             "scripts": [
               "node_modules/cookieconsent/build/cookieconsent.min.js"
@@ -48,10 +49,7 @@
             "serviceWorker": true,
             "ngswConfigPath": "ngsw-config.json",
             "stylePreprocessorOptions": {
-              "includePaths": [
-                "src",
-                "public"
-              ]
+              "includePaths": ["src", "public"]
             }
           },
           "configurations": {

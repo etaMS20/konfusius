@@ -1,13 +1,14 @@
 import { Component, inject, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavComponent } from '@components/nav/nav.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { filter, map, Observable, Subscription } from 'rxjs';
 import { FooterComponent } from '@components/footer/footer.component';
 import { BackgroundComponent } from './components/shared/background/background.component';
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
 import { APP_VERSION, envLoaded } from '@config/http.config';
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
+import { EnvStatusService } from '@services/env-status.service';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,7 @@ import { NgcCookieConsentService } from 'ngx-cookieconsent';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit, OnDestroy {
+  envStatus = inject(EnvStatusService);
   swUpdate = inject(SwUpdate);
   ccService = inject(NgcCookieConsentService); // inject to trigger cookie consent popup
   private updatesAvailable$?: Observable<any>;
@@ -46,10 +48,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
     console.log(`devMode: ${isDevMode()}\nenv loaded: ${envLoaded()}`);
 
-    if (!envLoaded())
+    this.envStatus.envsLoaded = envLoaded();
+    if (!this.envStatus.envsLoaded) {
       alert(
         'One or more environment variables did not get loaded during build. Please contact site admin.',
       );
+    }
 
     if (!('serviceWorker' in navigator)) {
       alert(

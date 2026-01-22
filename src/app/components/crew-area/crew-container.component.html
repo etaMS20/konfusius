@@ -1,0 +1,18 @@
+<div class="crew-area-container">
+  <div class="crew-area-nav">
+    <mat-tab-group
+      [(selectedIndex)]="selectedIndex"
+      (selectedIndexChange)="onTabChange($event)"
+    >
+      @for (tab of tabs; track tab.route) {
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>{{ tab.icon }}</mat-icon>
+            {{ tab.label }}
+          </ng-template>
+        </mat-tab>
+      }
+    </mat-tab-group>
+  </div>
+  <router-outlet></router-outlet>
+</div>

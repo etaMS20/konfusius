@@ -62,6 +62,7 @@ export interface WcProductVariationDetails {
   prices: WcPrice;
   type: WcCartType;
   variation: string;
+  stock_availability: { class: string; text: string };
 }
 
 export type WcProductVariationAttributes = {

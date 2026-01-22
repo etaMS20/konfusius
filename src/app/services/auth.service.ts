@@ -5,6 +5,7 @@ import shajs from 'sha.js';
 import { authProductCatMap, AuthType } from '@models/auth.model';
 import { LsKeys } from '@models/storage.model';
 import { LocalStorageService } from '@storage/local-storage.service';
+import { EnvStatusService } from './env-status.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +21,7 @@ export class AuthService {
   constructor(
     private readonly http: HttpClient,
     private readonly lsService: LocalStorageService,
+    readonly envStatus: EnvStatusService,
   ) {
     this.salt = SALT!;
     this.guestPwHash = this.hashPassword(GUEST_PW);
@@ -57,13 +59,17 @@ export class AuthService {
 
   isAuthenticatedBase(): boolean {
     return (
-      this.lsService.getItem<string>(LsKeys.GUEST_AUTH) === this.guestPwHash ||
-      this.isAuthenticatedCrew()
+      (this.lsService.getItem<string>(LsKeys.GUEST_AUTH) === this.guestPwHash ||
+        this.isAuthenticatedCrew()) &&
+      this.envStatus.envsLoaded
     );
   }
 
   isAuthenticatedCrew(): boolean {
-    return this.lsService.getItem<string>(LsKeys.CREW_AUTH) === this.crewPwHash;
+    return (
+      this.lsService.getItem<string>(LsKeys.CREW_AUTH) === this.crewPwHash &&
+      this.envStatus.envsLoaded
+    );
   }
 
   // on logout remove all storage items

@@ -2,7 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.x]
+## [2.0.0]
+
+### Added
+
+- Calendar View in Crew Area and some Refactors
+
+### Fixed
+
+- Routes can be activated when required env variables are not loaded
+
+## [1.0.0]
 
 ### Added
 

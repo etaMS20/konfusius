@@ -1,0 +1,17 @@
+@use './styles/style-vars.scss' as *;
+
+.crew-area-container {
+  background: $white-grey-color;
+  border-radius: $border-radius;
+  box-shadow: $default-box-shadow;
+  padding: 1rem;
+}
+
+.crew-area-nav {
+  border-radius: $border-radius;
+  background-color: var(--mat-sys-surface);
+  margin: 0.5rem 0rem;
+  mat-icon {
+    margin-right: 0.5rem;
+  }
+}
