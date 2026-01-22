@@ -29,6 +29,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
+import { ParsedVariationTime } from '@models/calendar.model';
 
 registerLocaleData(localeDe);
 
@@ -82,19 +83,29 @@ export class SchedulerComponent implements OnInit {
   activeDayIsOpen: boolean = true;
 
   ngOnInit() {
-    this.loadProductsToCalendar();
+    this.loadProductsToCalendar(
+      50, // Variabel Basic
+      this.timeUtil.parseAnchorInterval.bind(this.timeUtil),
+    );
+    this.loadProductsToCalendar(
+      51, // Variabel Absolut
+      this.timeUtil.parseCustomInterval.bind(this.timeUtil),
+    );
   }
 
   ngAfterViewInit() {}
 
-  private loadProductsToCalendar() {
-    const anchorDate = this.viewDate;
-
+  private loadProductsToCalendar(
+    categoryId: number,
+    parseFn: (variationValue: string) => ParsedVariationTime,
+  ) {
     this.wcStoreApi
-      .listProducts(50, 'title') // cat "Variable Basic" + sort by title
+      .listProducts(categoryId, 'title') // sort by title
       .pipe(takeUntil(this.destroy$))
       .subscribe((products) => {
-        this.productIds.set(products.map((p) => p.id));
+        this.productIds.update((existing) => [
+          ...new Set([...existing, ...products.map((p) => p.id)]),
+        ]);
         const colors = generateProductColors(this.productIds());
         const events: CalendarEvent[] = products.flatMap((p) => {
           const name = p.name;
@@ -109,9 +120,8 @@ export class SchedulerComponent implements OnInit {
           return timesWithIds.map((t, idx) => ({
             id: t.variationId,
             title: `${name ?? 'Fehlerhafter Eintrag'} ${idx + 1}`,
-            start:
-              this.timeUtil.parseRelativeInterval(t.value).start ?? anchorDate,
-            end: this.timeUtil.parseRelativeInterval(t.value).end ?? anchorDate,
+            start: parseFn(t.value).start,
+            end: parseFn(t.value).end,
             color: colors[p.id],
             meta: {
               productId: t.productId,
@@ -119,7 +129,7 @@ export class SchedulerComponent implements OnInit {
           }));
         });
 
-        this.calendarEntries.set(events);
+        this.calendarEntries.update((existing) => [...existing, ...events]);
         this.loadMetaInformation();
       });
   }

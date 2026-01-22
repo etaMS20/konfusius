@@ -1,33 +1,34 @@
+import { ParsedVariationTime } from '@models/calendar.model';
 import { DateTime, Duration } from 'luxon';
 
 enum CustomTimes {
   OPEN_END = 'OPEN',
-  START_OF_FESTIVAL = 'START',
 }
 
 export class WcTimeframeUtil {
   private anchorDate: Date;
   private defaultDate: Date;
   private defaultDuration = Duration.fromISO('PT4H');
+  private defaultResult: ParsedVariationTime;
 
   constructor(anchorDate?: Date, defaultDate?: Date) {
     this.anchorDate = anchorDate ?? new Date();
     this.defaultDate = defaultDate ?? new Date();
-  }
-
-  parseRelativeInterval(
-    interval: string,
-    anchorDate?: DateTime,
-  ): { start: Date; end: Date; meta?: string } {
-    const defaultResult = {
+    this.defaultResult = {
       start: this.defaultDate,
       end: this.defaultDate,
-      meta: 'Fehler beim Parsen des Intervalls',
+      meta: 'Fallback Wert',
     };
+  }
+
+  parseAnchorInterval(
+    rawInterval: string,
+    anchorDate?: DateTime,
+  ): ParsedVariationTime {
     try {
       const anchor = anchorDate ?? DateTime.fromJSDate(this.anchorDate);
-      const [rawInterval, meta] = interval.split(':'); // if the interval has metadata e.g. a price
-      const [offsetStr, durationStr] = rawInterval.split('/');
+      const [interval, meta] = rawInterval.split(':'); // if the interval has metadata e.g. a price
+      const [offsetStr, durationStr] = interval.split('/');
 
       const offset = Duration.fromISO(offsetStr);
       const duration =
@@ -37,7 +38,7 @@ export class WcTimeframeUtil {
 
       if (!offset.isValid || !duration.isValid) {
         console.error(`Invalid ISO duration format: ${rawInterval}`);
-        return defaultResult;
+        return this.defaultResult;
       }
 
       const start = anchor.plus(offset);
@@ -45,8 +46,31 @@ export class WcTimeframeUtil {
 
       return { start: start.toJSDate(), end: end.toJSDate(), meta };
     } catch (error) {
-      console.error(`Failed to parse interval "${interval}":`, error);
-      return defaultResult;
+      console.error(`Failed to parse interval "${rawInterval}":`, error);
+      return this.defaultResult;
+    }
+  }
+
+  parseCustomInterval(rawInterval: string): ParsedVariationTime {
+    const [interval, meta] = rawInterval.split(':');
+    const [dateTime, durationStr] = interval.split('/');
+    const absPart = DateTime.fromISO(dateTime);
+    const relPart = absPart.plus(Duration.fromISO(durationStr));
+    if (!absPart.isValid || !relPart.isValid) {
+      throw new Error(`Invalid ISO format: ${rawInterval}`);
+    }
+    if (absPart >= relPart) {
+      return {
+        start: relPart.toJSDate(),
+        end: absPart.minus({ seconds: 1 }).toJSDate(),
+        meta,
+      };
+    } else {
+      return {
+        start: absPart.toJSDate(),
+        end: relPart.minus({ seconds: 1 }).toJSDate(),
+        meta,
+      };
     }
   }
 }
