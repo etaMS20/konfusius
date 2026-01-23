@@ -1,13 +1,8 @@
 import { Component } from '@angular/core';
-import { MatToolbar } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatListModule } from '@angular/material/list';
-import { parse } from 'path';
-import { MatTab, MatTabGroup, MatTabsModule } from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { filter } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-crew-container',
@@ -30,6 +25,11 @@ export class CrewContainerComponent {
       label: 'Kalender Ansicht',
       icon: 'calendar_today',
       route: 'scheduler',
+    },
+    {
+      label: 'Schichtplan Listenansicht',
+      icon: 'list',
+      route: 'list',
     },
   ];
 

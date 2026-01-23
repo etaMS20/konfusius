@@ -1,0 +1,6 @@
+@use './styles/style-vars.scss' as *;
+
+.list-container {
+  border-radius: $border-radius;
+  border: 1px solid $border-color;
+}

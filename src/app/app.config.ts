@@ -14,6 +14,9 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { cookieConfig } from '@config/cookie-consent.config';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { providePrimeNG } from 'primeng/config';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import Aura from '@primeng/themes/aura';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -33,5 +36,13 @@ export const appConfig: ApplicationConfig = {
         useFactory: adapterFactory,
       }),
     ),
+    providePrimeNG({
+      theme: {
+        preset: Aura,
+        options: {
+          darkModeSelector: 'none',
+        },
+      },
+    }),
   ],
 };

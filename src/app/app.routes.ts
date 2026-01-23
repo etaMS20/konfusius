@@ -104,6 +104,15 @@ export const routes: Routes = [
         },
         canActivate: [AuthGuard],
       },
+      {
+        path: 'list',
+        loadComponent: () => {
+          return import('./components/crew-area/list/list.component').then(
+            (m) => m.ListComponent,
+          );
+        },
+        canActivate: [AuthGuard],
+      },
     ],
   },
 ];

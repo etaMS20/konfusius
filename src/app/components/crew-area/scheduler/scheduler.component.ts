@@ -29,7 +29,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
-import { ParsedVariationTime } from '@models/calendar.model';
 
 registerLocaleData(localeDe);
 
@@ -80,7 +79,7 @@ export class SchedulerComponent implements OnInit {
 
   calendarEntries = signal<CalendarEvent[]>([]);
 
-  activeDayIsOpen: boolean = true;
+  activeDayIsOpen: boolean = false;
 
   ngOnInit() {
     this.loadBasicVariationsToCalendar();
