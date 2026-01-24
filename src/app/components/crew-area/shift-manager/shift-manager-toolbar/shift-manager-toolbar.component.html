@@ -1,0 +1,37 @@
+<div>
+  <p-toolbar>
+    <ng-template #start>
+      <div class="toolbar-row">
+        <p-iconfield iconPosition="left">
+          <p-inputicon styleClass="pi pi-search" />
+          <input type="text" pInputText placeholder="Keyword Filter" />
+        </p-iconfield>
+        <p-selectbutton
+          [options]="nameFilterOptions"
+          [(ngModel)]="selectedFilters"
+          optionLabel="label"
+          optionValue="value"
+          aria-labelledby="basic"
+          size="small"
+          [multiple]="true"
+          (ngModelChange)="onFilterChange($event)"
+        />
+      </div>
+    </ng-template>
+
+    <ng-template #end>
+      <div class="toolbar-row">
+        <ng-container *ngFor="let btn of buttonConfigs">
+          <p-button
+            [disabled]="actionsDisabled()"
+            [icon]="btn.icon"
+            raised
+            [severity]="btn.severity"
+            [pTooltip]="btn.tooltip"
+            tooltipPosition="bottom"
+          ></p-button>
+        </ng-container>
+      </div>
+    </ng-template>
+  </p-toolbar>
+</div>

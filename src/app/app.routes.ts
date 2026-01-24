@@ -113,6 +113,15 @@ export const routes: Routes = [
         },
         canActivate: [AuthGuard],
       },
+      {
+        path: 'manage',
+        loadComponent: () => {
+          return import(
+            './components/crew-area/shift-manager/shift-manager.component'
+          ).then((m) => m.ShiftManagerComponent);
+        },
+        canActivate: [AuthGuard],
+      },
     ],
   },
 ];

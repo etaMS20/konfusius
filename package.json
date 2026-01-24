@@ -42,6 +42,7 @@
     "ngx-cookieconsent": "^8.0.0",
     "ngx-lightbox": "^3.0.0",
     "pepjs": "^0.5.3",
+    "primeicons": "^7.0.0",
     "primeng": "^19.1.4",
     "resize-observer-polyfill": "^1.5.1",
     "rxjs": "~7.8.2",

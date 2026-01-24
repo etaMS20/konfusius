@@ -31,6 +31,11 @@ export class CrewContainerComponent {
       icon: 'list',
       route: 'list',
     },
+    {
+      label: 'Anmeldungen Verwalten v2',
+      icon: 'manage_accounts',
+      route: 'manage',
+    },
   ];
 
   selectedIndex = 0;
