@@ -33,6 +33,8 @@ export class ShiftManagerToolbarComponent {
   nameFilterTypeChange = output<string[]>();
   scopeYearChange = output<string[]>();
 
+  keywordFilter = signal<string>('');
+
   nameFilterOptions = [
     { label: 'Name', value: 'name' },
     { label: 'E-Mail', value: 'e-mail' },
@@ -82,6 +84,10 @@ export class ShiftManagerToolbarComponent {
   onFilterChange(values: string[]) {
     this.nameFilterTypeChange.emit(values);
     console.log('Filter changed:', values);
+  }
+
+  onFilterTypeChange(value: string) {
+    console.log('Filter type changed:', value);
   }
 
   onScopeYearChange(years: string[]) {

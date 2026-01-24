@@ -29,7 +29,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TooltipModule } from 'primeng/tooltip';
-import { FilterService, SelectItem } from 'primeng/api';
+import { FilterService } from 'primeng/api';
 
 // Deine Models & Services
 import { WcV3Service } from '@services/api/wc-v3.service';

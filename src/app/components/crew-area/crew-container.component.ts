@@ -27,12 +27,12 @@ export class CrewContainerComponent {
       route: 'scheduler',
     },
     {
-      label: 'Schichtplan Listenansicht',
+      label: 'Schichtplan Listenansicht (beta)',
       icon: 'list',
       route: 'list',
     },
     {
-      label: 'Anmeldungen Verwalten v2',
+      label: 'Anmeldungen Verwalten (beta)',
       icon: 'manage_accounts',
       route: 'manage',
     },

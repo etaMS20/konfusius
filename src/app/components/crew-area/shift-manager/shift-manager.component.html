@@ -1,70 +1,74 @@
-<kf-shift-manager-toolbar
-  [actionsDisabled]="selectedOrders().length === 0"
-  (scopeYearChange)="onScopeYearChange($event)"
-></kf-shift-manager-toolbar>
-<p-table
-  #dt
-  [value]="orders()"
-  [paginator]="true"
-  [rows]="10"
-  [rowsPerPageOptions]="[10, 20, 50, 100]"
-  [showCurrentPageReport]="true"
-  currentPageReportTemplate="Zeigt {first} bis {last} von {totalRecords} Anmeldungen"
-  [(selection)]="selectedOrders"
-  [loading]="loading$ | async"
-  (onPage)="onPageChange($event)"
-  (onFilter)="onFilter($event)"
-  [globalFilterFields]="['billing.full_name', 'id']"
->
-  <ng-template pTemplate="header">
-    <tr>
-      <th style="width: 4rem">
-        <p-tableHeaderCheckbox />
-      </th>
-      <th pSortableColumn="id">ID<p-sortIcon field="id" /></th>
-      <th pSortableColumn="date_created">
-        Datum<p-sortIcon field="date_created" />
-      </th>
-      <th pSortableColumn="billing.full_name">
-        Name<p-sortIcon field="billing.full_name" />
-      </th>
-      <th>E-mail</th>
-      <th>Kontaktp.</th>
-      <th>Schicht</th>
-      <th>Ticket</th>
-      <th>Preis</th>
-      <th pSortableColumn="status">
-        Status
-        <p-sortIcon field="status" />
-      </th>
-    </tr>
-  </ng-template>
+<div>
+  <kf-shift-manager-toolbar
+    [actionsDisabled]="selectedOrders().length === 0"
+    (scopeYearChange)="onScopeYearChange($event)"
+  ></kf-shift-manager-toolbar>
+  <div>
+    <p-table
+      #dt
+      [value]="orders()"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 20, 50, 100]"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Zeigt {first} bis {last} von {totalRecords} Anmeldungen"
+      [(selection)]="selectedOrders"
+      [loading]="loading$ | async"
+      (onPage)="onPageChange($event)"
+      (onFilter)="onFilter($event)"
+      [globalFilterFields]="['billing.full_name', 'id']"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 4rem">
+            <p-tableHeaderCheckbox />
+          </th>
+          <th pSortableColumn="id">ID<p-sortIcon field="id" /></th>
+          <th pSortableColumn="date_created">
+            Datum<p-sortIcon field="date_created" />
+          </th>
+          <th pSortableColumn="billing.full_name">
+            Name<p-sortIcon field="billing.full_name" />
+          </th>
+          <th>E-mail</th>
+          <th>Kontaktp.</th>
+          <th>Schicht</th>
+          <th>Ticket</th>
+          <th>Preis</th>
+          <th pSortableColumn="status">
+            Status
+            <p-sortIcon field="status" />
+          </th>
+        </tr>
+      </ng-template>
 
-  <ng-template pTemplate="body" let-order>
-    <tr>
-      <td><p-tableCheckbox [value]="order" /></td>
-      <td>{{ order.id }}</td>
-      <td>{{ order.date_created | dateFormat }}</td>
-      <td class="truncate-cell" [pTooltip]="findMainItem(order.line_items)">
-        {{ order.billing.full_name }}
-      </td>
-      <td class="truncate-cell" [pTooltip]="findMainItem(order.line_items)">
-        {{ order.billing.email }}
-      </td>
-      <td>{{ order.billing.billing_invite }}</td>
-      <td class="truncate-cell" [pTooltip]="findMainItem(order.line_items)">
-        {{ findMainItem(order.line_items) }}
-      </td>
-      <td>{{ findCrossItem(order.line_items) }}</td>
-      <td>{{ order.total | currency: 'EUR' }}</td>
-      <td>{{ order.status }}</td>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="footer">
-    <tr>
-      <td colspan="8"></td>
-      <td>{{ pageSum() | currency: 'EUR' }}</td>
-      <td></td>
-    </tr>
-  </ng-template>
-</p-table>
+      <ng-template pTemplate="body" let-order>
+        <tr>
+          <td><p-tableCheckbox [value]="order" /></td>
+          <td>{{ order.id }}</td>
+          <td>{{ order.date_created | dateFormat }}</td>
+          <td class="truncate-cell" [pTooltip]="findMainItem(order.line_items)">
+            {{ order.billing.full_name }}
+          </td>
+          <td class="truncate-cell" [pTooltip]="findMainItem(order.line_items)">
+            {{ order.billing.email }}
+          </td>
+          <td>{{ order.billing.billing_invite }}</td>
+          <td class="truncate-cell" [pTooltip]="findMainItem(order.line_items)">
+            {{ findMainItem(order.line_items) }}
+          </td>
+          <td>{{ findCrossItem(order.line_items) }}</td>
+          <td>{{ order.total | currency: 'EUR' }}</td>
+          <td>{{ order.status }}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <tr>
+          <td colspan="8"></td>
+          <td>{{ pageSum() | currency: 'EUR' }}</td>
+          <td></td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

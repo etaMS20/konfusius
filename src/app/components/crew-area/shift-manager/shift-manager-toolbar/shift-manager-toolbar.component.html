@@ -4,7 +4,13 @@
       <div class="toolbar-row">
         <p-iconfield iconPosition="left">
           <p-inputicon styleClass="pi pi-search" />
-          <input type="text" pInputText placeholder="Keyword Filter" />
+          <input
+            type="text"
+            pInputText
+            placeholder="Keyword Filter"
+            [ngModel]="keywordFilter()"
+            (ngModelChange)="onFilterChange($event)"
+          />
         </p-iconfield>
         <p-selectbutton
           [options]="nameFilterOptions"
@@ -13,7 +19,7 @@
           optionValue="value"
           aria-labelledby="basic"
           [multiple]="true"
-          (ngModelChange)="onFilterChange($event)"
+          (ngModelChange)="onFilterTypeChange($event)"
           size="small"
         />
       </div>
@@ -25,12 +31,12 @@
         [(ngModel)]="selectedYears"
         [filter]="false"
         [showToggleAll]="false"
-        placeholder="Jahr"
+        placeholder="Alle"
         [maxSelectedLabels]="3"
         (ngModelChange)="onScopeYearChange($event)"
         inputId="year"
         display="chip"
-        pTooltip="Festivaljahr"
+        pTooltip="Festivaljahre"
       />
     </ng-template>
 
