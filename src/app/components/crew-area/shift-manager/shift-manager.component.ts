@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   OnDestroy,
   OnInit,
@@ -66,22 +67,20 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
   private errorService = inject(ErrorDialogService);
   private filterService = inject(FilterService);
 
-  // Daten & Status
+  scopeYears = signal<string[]>(['2025']);
   orders = signal<OrderMin[]>([]);
-  filteredOrders = signal<OrderMin[]>([]); // Für die Summenberechnung
+  filteredOrders = signal<OrderMin[]>([]);
   contactPersons = signal<string[]>([]);
   selectedOrders = signal<OrderMin[]>([]);
   loading$ = new BehaviorSubject<boolean>(false);
   private readonly destroy$ = new Subject<void>();
 
-  // Filter Optionen
   statuses = WC_ORDER_STATUSES.map((s) => ({
     label: s.toUpperCase(),
     value: s,
   }));
 
   constructor() {
-    // Custom Filter-Logik für PrimeNG registrieren
     this.setupCustomFilters();
   }
 
@@ -106,7 +105,7 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
 
     // API Calls
     this.customEpS
-      .getOrdersByInvite('', ['2025'])
+      .getOrdersByInvite('', this.scopeYears())
       .pipe(
         catchError((err) => this.handleError(err)),
         takeUntil(this.destroy$),
@@ -126,7 +125,6 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
       .subscribe((res) => this.contactPersons.set(res));
   }
 
-  // Helper für die Template-Logik
   findMainItem(items: LineItemMin[]) {
     return (
       items.find((i) => !DISCLAIMER_PRODUCTS.has(i.product_id))?.name || ''
@@ -135,15 +133,6 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
 
   findCrossItem(items: Array<LineItemMin>) {
     return items.find((item) => DISCLAIMER_PRODUCTS.has(item.product_id))?.name;
-  }
-
-  get sumPrice(): number {
-    return this.filteredOrders().reduce((sum, o) => sum + Number(o.total), 0);
-  }
-
-  onFilter(event: any) {
-    // PrimeNG Table gibt die aktuell gefilterten Daten zurück
-    this.filteredOrders.set(event.filteredValue);
   }
 
   bulkUpdateStatus(status: WcOrderStatus) {
@@ -159,11 +148,42 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
 
   private handleError(error: any) {
     this.errorService.handleError(error);
+    this.orders.set([]);
     return throwError(() => error);
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  pageRange = signal({ first: 0, rows: 10 });
+  pageSum = computed(() => {
+    const data = this.filteredOrders();
+    const { first, rows } = this.pageRange();
+
+    return data
+      .slice(first, first + rows)
+      .reduce((acc, order) => acc + (Number(order.total) || 0), 0);
+  });
+
+  totalFilteredSum = computed(() => {
+    return this.filteredOrders().reduce(
+      (acc, order) => acc + (Number(order.total) || 0),
+      0,
+    );
+  });
+
+  onFilter(event: any) {
+    this.filteredOrders.set(event.filteredValue);
+  }
+
+  onPageChange(event: any) {
+    this.pageRange.set({ first: event.first, rows: event.rows });
+  }
+
+  onScopeYearChange(years: string[]) {
+    this.scopeYears.set(years);
+    this.refreshCollection();
   }
 }

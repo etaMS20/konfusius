@@ -7,7 +7,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { DividerModule } from 'primeng/divider';
 import { NgFor } from '@angular/common';
 import { Tooltip } from 'primeng/tooltip';
 import { ButtonSeverity } from 'primeng/button';
@@ -23,7 +22,6 @@ import { ButtonSeverity } from 'primeng/button';
     SelectButtonModule,
     FormsModule,
     MultiSelectModule,
-    DividerModule,
     NgFor,
     Tooltip,
   ],
@@ -33,6 +31,7 @@ import { ButtonSeverity } from 'primeng/button';
 export class ShiftManagerToolbarComponent {
   actionsDisabled = input<boolean>(true);
   nameFilterTypeChange = output<string[]>();
+  scopeYearChange = output<string[]>();
 
   nameFilterOptions = [
     { label: 'Name', value: 'name' },
@@ -40,9 +39,13 @@ export class ShiftManagerToolbarComponent {
     { label: 'Schicht', value: 'shift' },
   ];
 
+  yearOptions = ['2025', '2026', '2027'];
+
   selectedFilters = signal<string[]>(
     this.nameFilterOptions.map((opt) => opt.value),
   );
+
+  selectedYears = signal<string[]>(['2025']);
 
   buttonConfigs: {
     label: string;
@@ -79,5 +82,10 @@ export class ShiftManagerToolbarComponent {
   onFilterChange(values: string[]) {
     this.nameFilterTypeChange.emit(values);
     console.log('Filter changed:', values);
+  }
+
+  onScopeYearChange(years: string[]) {
+    this.scopeYearChange.emit(years);
+    console.log('Scope year changed:', years);
   }
 }

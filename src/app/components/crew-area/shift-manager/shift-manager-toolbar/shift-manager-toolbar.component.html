@@ -12,11 +12,26 @@
           optionLabel="label"
           optionValue="value"
           aria-labelledby="basic"
-          size="small"
           [multiple]="true"
           (ngModelChange)="onFilterChange($event)"
+          size="small"
         />
       </div>
+    </ng-template>
+
+    <ng-template #center>
+      <p-multiselect
+        [options]="yearOptions"
+        [(ngModel)]="selectedYears"
+        [filter]="false"
+        [showToggleAll]="false"
+        placeholder="Jahr"
+        [maxSelectedLabels]="3"
+        (ngModelChange)="onScopeYearChange($event)"
+        inputId="year"
+        display="chip"
+        pTooltip="Festivaljahr"
+      />
     </ng-template>
 
     <ng-template #end>
