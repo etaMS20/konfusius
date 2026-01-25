@@ -1,4 +1,4 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, input, model, output, signal } from '@angular/core';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -35,22 +35,26 @@ export class ShiftManagerToolbarComponent {
   actionsDisabled = input<boolean>(true);
   nameFilterTypeChange = output<string[]>();
   scopeYearChange = output<string[]>();
-
   orderStatusChange = output<WcOrderStatus>();
 
-  keywordFilter = signal<string>('');
-
   nameFilterOptions = [
-    { tooltip: 'Name', value: 'name', icon: 'pi pi-user' },
-    { tooltip: 'E-Mail', value: 'e-mail', icon: 'pi pi-at' },
-    { tooltip: 'Schicht', value: 'shift', icon: 'pi pi-hammer' },
+    {
+      tooltip: 'Namen einbeziehen',
+      value: 'billing.full_name',
+      icon: 'pi pi-user',
+    },
+    { tooltip: 'E-Mail einbeziehen', value: 'billing.email', icon: 'pi pi-at' },
+    {
+      tooltip: 'Schicht einbeziehen',
+      value: 'line_items',
+      icon: 'pi pi-hammer',
+    },
   ];
 
   yearOptions = ['2025', '2026', '2027'];
 
-  selectedFilters = signal<string[]>(
-    this.nameFilterOptions.map((opt) => opt.value),
-  );
+  selectedFilters = model<string[]>([]);
+  keywordFilter = model<string>('');
 
   selectedYears = input.required<string[]>();
 
@@ -91,18 +95,8 @@ export class ShiftManagerToolbarComponent {
     },
   ];
 
-  onFilterChange(values: string[]) {
-    this.nameFilterTypeChange.emit(values);
-    console.log('Filter changed:', values);
-  }
-
-  onFilterTypeChange(value: string) {
-    console.log('Filter type changed:', value);
-  }
-
   onScopeYearChange(years: string[]) {
     this.scopeYearChange.emit(years);
-    console.log('Scope year changed:', years);
   }
 
   onSetCompleted() {}

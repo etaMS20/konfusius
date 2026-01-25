@@ -1,5 +1,7 @@
 <div>
   <kf-shift-manager-toolbar
+    [(selectedFilters)]="selectedFields"
+    [(keywordFilter)]="keywordFilter"
     [selectedYears]="scopeYears()"
     [actionsDisabled]="selectedOrders().length === 0"
     (scopeYearChange)="onScopeYearChange($event)"
@@ -8,7 +10,7 @@
   <div>
     <p-table
       #dt
-      [value]="orders()"
+      [value]="filteredOrders()"
       [paginator]="true"
       [rows]="10"
       [rowsPerPageOptions]="[10, 20, 50, 100]"
@@ -17,7 +19,6 @@
       [(selection)]="selectedOrders"
       [loading]="loading$ | async"
       (onPage)="onPageChange($event)"
-      (onFilter)="onFilter($event)"
       [globalFilterFields]="['billing.full_name', 'id']"
     >
       <ng-template pTemplate="header">

@@ -71,10 +71,38 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
   private filterService = inject(FilterService);
 
   scopeYears = signal<string[]>(['2026']);
+
+  /** Raw coming from API */
   orders = signal<OrderMin[]>([]);
-  filteredOrders = signal<OrderMin[]>([]);
-  contactPersons = signal<string[]>([]);
+
+  /** Current keyword filter state */
+  keywordFilter = signal<string>('');
+  selectedFields = signal<string[]>([
+    'billing.full_name',
+    'billing.email',
+    'line_items',
+  ]);
+
+  filteredOrders = computed(() => {
+    const term = this.keywordFilter().toLowerCase().trim();
+
+    if (!term || !this.selectedFields().length) return this.orders();
+
+    return this.orders().filter((order) =>
+      this.selectedFields().some((path) =>
+        String(this.getNestedValue(order, path) ?? '')
+          .toLowerCase()
+          .includes(term),
+      ),
+    );
+  });
+
+  private getNestedValue(obj: OrderMin, path: string): unknown {
+    return path.split('.').reduce((acc: any, key: string) => acc?.[key], obj);
+  }
+
   selectedOrders = signal<OrderMin[]>([]);
+  contactPersons = signal<string[]>([]);
   loading$ = new BehaviorSubject<boolean>(false);
   private readonly destroy$ = new Subject<void>();
 
@@ -92,7 +120,6 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
   }
 
   private setupCustomFilters() {
-    // Beispiel für einen komplexen Filter (wie dein Invited_by)
     this.filterService.register(
       'custom-invite',
       (value: any, filter: any): boolean => {
@@ -115,7 +142,6 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
       )
       .subscribe((data) => {
         this.orders.set(data);
-        this.filteredOrders.set(data);
       });
 
     this.customEpS
@@ -176,10 +202,6 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
       0,
     );
   });
-
-  onFilter(event: any) {
-    this.filteredOrders.set(event.filteredValue);
-  }
 
   onPageChange(event: any) {
     this.pageRange.set({ first: event.first, rows: event.rows });

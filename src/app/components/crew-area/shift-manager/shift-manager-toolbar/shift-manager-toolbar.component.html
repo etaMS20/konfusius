@@ -2,45 +2,18 @@
   <p-toolbar>
     <ng-template #start>
       <div class="toolbar-row">
-        <p-inputGroup>
-          <p-inputgroup-addon>
-            <i class="pi pi-search"></i>
-          </p-inputgroup-addon>
-
-          <input
-            type="text"
-            pInputText
-            placeholder="Keyword Filter"
-            [ngModel]="keywordFilter()"
-            (ngModelChange)="onFilterChange($event)"
-          />
-
-          <p-inputgroup-addon [style.padding]="'0'">
-            <p-selectButton
-              [options]="nameFilterOptions"
-              [(ngModel)]="selectedFilters"
-              optionValue="value"
-              [multiple]="true"
-              (ngModelChange)="onFilterTypeChange($event)"
-              size="small"
-            >
-              <ng-template #item let-item>
-                <i
-                  [class]="item.icon"
-                  [pTooltip]="item.tooltip"
-                  tooltipPosition="top"
-                ></i>
-              </ng-template>
-            </p-selectButton>
-          </p-inputgroup-addon>
-        </p-inputGroup>
-      </div>
-    </ng-template>
-
-    <ng-template #center> </ng-template>
-
-    <ng-template #end>
-      <div class="toolbar-row">
+        <ng-container *ngFor="let btn of buttonConfigs">
+          <p-button
+            [disabled]="actionsDisabled()"
+            [icon]="btn.icon"
+            raised
+            [severity]="btn.severity"
+            [pTooltip]="btn.tooltip"
+            tooltipPosition="bottom"
+            (click)="btn.onClick()"
+          ></p-button>
+        </ng-container>
+        <p-divider layout="vertical"></p-divider>
         <p-multiselect
           [options]="yearOptions"
           [ngModel]="selectedYears()"
@@ -53,18 +26,43 @@
           display="chip"
           pTooltip="Festivaljahre"
         />
-        <p-divider layout="vertical"></p-divider>
-        <ng-container *ngFor="let btn of buttonConfigs">
-          <p-button
-            [disabled]="actionsDisabled()"
-            [icon]="btn.icon"
-            raised
-            [severity]="btn.severity"
-            [pTooltip]="btn.tooltip"
-            tooltipPosition="bottom"
-            (click)="btn.onClick()"
-          ></p-button>
-        </ng-container>
+      </div>
+    </ng-template>
+
+    <ng-template #center> </ng-template>
+
+    <ng-template #end>
+      <div class="toolbar-row">
+        <p-inputGroup>
+          <p-inputgroup-addon>
+            <i class="pi pi-search"></i>
+          </p-inputgroup-addon>
+
+          <input
+            type="text"
+            pInputText
+            placeholder="Keyword Filter"
+            [(ngModel)]="keywordFilter"
+          />
+
+          <p-inputgroup-addon [style.padding]="'0'">
+            <p-selectButton
+              [options]="nameFilterOptions"
+              [(ngModel)]="selectedFilters"
+              optionValue="value"
+              [multiple]="true"
+              size="small"
+            >
+              <ng-template #item let-item>
+                <i
+                  [class]="item.icon"
+                  [pTooltip]="item.tooltip"
+                  tooltipPosition="top"
+                ></i>
+              </ng-template>
+            </p-selectButton>
+          </p-inputgroup-addon>
+        </p-inputGroup>
       </div>
     </ng-template>
   </p-toolbar>
