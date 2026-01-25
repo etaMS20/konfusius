@@ -43,7 +43,7 @@
       <div class="toolbar-row">
         <p-multiselect
           [options]="yearOptions"
-          [(ngModel)]="selectedYears"
+          [ngModel]="selectedYears()"
           [filter]="false"
           [showToggleAll]="false"
           placeholder="Alle"
@@ -62,6 +62,7 @@
             [severity]="btn.severity"
             [pTooltip]="btn.tooltip"
             tooltipPosition="bottom"
+            (click)="btn.onClick()"
           ></p-button>
         </ng-container>
       </div>

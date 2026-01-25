@@ -1,7 +1,9 @@
 <div>
   <kf-shift-manager-toolbar
+    [selectedYears]="scopeYears()"
     [actionsDisabled]="selectedOrders().length === 0"
     (scopeYearChange)="onScopeYearChange($event)"
+    (orderStatusChange)="bulkUpdateStatus($event)"
   ></kf-shift-manager-toolbar>
   <div>
     <p-table
@@ -136,8 +138,9 @@
       </ng-template>
       <ng-template pTemplate="footer">
         <tr>
-          <td colspan="8"></td>
+          <td colspan="7"></td>
           <td>{{ pageSum() | currency: 'EUR' }}</td>
+          <td></td>
           <td></td>
         </tr>
       </ng-template>

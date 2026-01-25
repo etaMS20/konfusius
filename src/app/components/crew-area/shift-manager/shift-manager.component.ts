@@ -70,7 +70,7 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
   private errorService = inject(ErrorDialogService);
   private filterService = inject(FilterService);
 
-  scopeYears = signal<string[]>(['2025']);
+  scopeYears = signal<string[]>(['2026']);
   orders = signal<OrderMin[]>([]);
   filteredOrders = signal<OrderMin[]>([]);
   contactPersons = signal<string[]>([]);

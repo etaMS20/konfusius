@@ -1,4 +1,4 @@
-import { Component, Input, input, OnInit, output, signal } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -11,6 +11,7 @@ import { ButtonSeverity } from 'primeng/button';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { DividerModule } from 'primeng/divider';
+import { WcOrderStatus } from '@models/order.model';
 
 @Component({
   selector: 'kf-shift-manager-toolbar',
@@ -35,6 +36,8 @@ export class ShiftManagerToolbarComponent {
   nameFilterTypeChange = output<string[]>();
   scopeYearChange = output<string[]>();
 
+  orderStatusChange = output<WcOrderStatus>();
+
   keywordFilter = signal<string>('');
 
   nameFilterOptions = [
@@ -49,37 +52,42 @@ export class ShiftManagerToolbarComponent {
     this.nameFilterOptions.map((opt) => opt.value),
   );
 
-  selectedYears = signal<string[]>(['2025']);
+  selectedYears = input.required<string[]>();
 
   buttonConfigs: {
     label: string;
     icon: string;
     tooltip: string;
     severity: ButtonSeverity;
+    onClick: () => void;
   }[] = [
     {
       label: 'On-Hold',
       icon: 'pi pi-undo',
       tooltip: 'Ausgewählte Anmeldungen auf "On-Hold" setzen',
       severity: 'secondary',
+      onClick: () => this.orderStatusChange.emit('on-hold'),
     },
     {
       label: 'Stornieren',
       icon: 'pi pi-times-circle',
       tooltip: 'Ausgewählte Anmeldungen stornieren',
       severity: 'secondary',
+      onClick: () => this.orderStatusChange.emit('cancelled'),
     },
     {
       label: 'Löschen',
       icon: 'pi pi-trash',
       tooltip: 'Ausgewählte Anmeldungen löschen',
       severity: 'secondary',
+      onClick: () => this.orderStatusChange.emit('trash'),
     },
     {
       label: 'Bezahlt',
       icon: 'pi pi-check-circle',
       tooltip: 'Ausgewählte Anmeldungen auf Bezahlt setzen',
       severity: 'success',
+      onClick: () => this.orderStatusChange.emit('completed'),
     },
   ];
 
@@ -96,4 +104,6 @@ export class ShiftManagerToolbarComponent {
     this.scopeYearChange.emit(years);
     console.log('Scope year changed:', years);
   }
+
+  onSetCompleted() {}
 }
