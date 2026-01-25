@@ -189,4 +189,12 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
     this.scopeYears.set(years);
     this.refreshCollection();
   }
+
+  copyToClipboard(value: string | number) {
+    navigator.clipboard.writeText(value.toString()).then(() => {
+      // Optional: Erfolgserlebnis via Toast
+      // this.messageService.add({ severity: 'success', summary: 'Kopiert', detail: 'In die Zwischenablage kopiert' });
+      console.log('Kopiert:', value);
+    });
+  }
 }

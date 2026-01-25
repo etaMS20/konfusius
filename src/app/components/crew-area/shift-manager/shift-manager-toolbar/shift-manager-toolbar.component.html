@@ -40,19 +40,20 @@
     <ng-template #center> </ng-template>
 
     <ng-template #end>
-      <p-multiselect
-        [options]="yearOptions"
-        [(ngModel)]="selectedYears"
-        [filter]="false"
-        [showToggleAll]="false"
-        placeholder="Alle"
-        [maxSelectedLabels]="3"
-        (ngModelChange)="onScopeYearChange($event)"
-        inputId="year"
-        display="chip"
-        pTooltip="Festivaljahre"
-      />
       <div class="toolbar-row">
+        <p-multiselect
+          [options]="yearOptions"
+          [(ngModel)]="selectedYears"
+          [filter]="false"
+          [showToggleAll]="false"
+          placeholder="Alle"
+          [maxSelectedLabels]="3"
+          (ngModelChange)="onScopeYearChange($event)"
+          inputId="year"
+          display="chip"
+          pTooltip="Festivaljahre"
+        />
+        <p-divider layout="vertical"></p-divider>
         <ng-container *ngFor="let btn of buttonConfigs">
           <p-button
             [disabled]="actionsDisabled()"

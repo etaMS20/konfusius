@@ -10,6 +10,7 @@ import { Tooltip } from 'primeng/tooltip';
 import { ButtonSeverity } from 'primeng/button';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { DividerModule } from 'primeng/divider';
 
 @Component({
   selector: 'kf-shift-manager-toolbar',
@@ -24,6 +25,7 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
     Tooltip,
     InputGroupModule,
     InputGroupAddonModule,
+    DividerModule,
   ],
   templateUrl: './shift-manager-toolbar.component.html',
   styleUrl: './shift-manager-toolbar.component.scss',

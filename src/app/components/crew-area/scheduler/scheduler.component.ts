@@ -20,7 +20,7 @@ import localeDe from '@angular/common/locales/de';
 import { FormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { WcStoreAPI } from '@services/api/wc-store-api.service';
-import { WcTimeframeUtil } from '../time-mapper.util';
+import { WcTimeframeUtil } from '../../../utils/time-mapper.util';
 import { Subject, takeUntil } from 'rxjs';
 import { CustomEventTitleFormatter } from '../title-formatter.provider';
 import { CustomDateFormatter } from '../date-formatter.provider';

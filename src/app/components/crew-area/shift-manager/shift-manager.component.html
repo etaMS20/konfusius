@@ -107,14 +107,25 @@
               [orderStatus]="order.status"
             ></app-order-status>
           </td>
-          <td class="truncate-cell" [pTooltip]="findMainItem(order.line_items)">
-            {{ order.billing.full_name }}
+          <td [pTooltip]="order.billing.full_name" class="limited-cell">
+            <span class="truncate-text">{{ order.billing.full_name }}</span>
           </td>
-          <td class="truncate-cell" [pTooltip]="findMainItem(order.line_items)">
-            {{ findMainItem(order.line_items) }}
+          <td [pTooltip]="findMainItem(order.line_items)" class="limited-cell">
+            <span class="truncate-text">{{
+              findMainItem(order.line_items)
+            }}</span>
           </td>
-          <td class="truncate-cell" [pTooltip]="findMainItem(order.line_items)">
-            {{ order.billing.email }}
+          <td class="email-cell limited-cell" [pTooltip]="order.billing.email">
+            <div class="relative-wrapper">
+              <span class="truncate-text">{{ order.billing.email }}</span>
+              <p-button
+                icon="pi pi-copy"
+                [text]="true"
+                [rounded]="true"
+                (onClick)="copyToClipboard(order.billing.email)"
+                class="copy-btn"
+              />
+            </div>
           </td>
           <td>{{ order.billing.billing_invite }}</td>
           <td>{{ findCrossItem(order.line_items) }}</td>

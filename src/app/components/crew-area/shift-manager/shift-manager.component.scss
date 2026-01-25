@@ -1,6 +1,35 @@
-.truncate-cell {
+.limited-cell {
   max-width: 10vw;
+}
+
+.email-cell {
+  padding-right: 25px;
+}
+
+.relative-wrapper {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.truncate-text {
+  display: block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  width: 100%;
+}
+
+.copy-btn {
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+  background: white;
+}
+
+td:hover .copy-btn {
+  opacity: 1;
 }

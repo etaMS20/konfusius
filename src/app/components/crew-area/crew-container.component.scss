@@ -7,6 +7,10 @@
   padding: 1rem;
 }
 
+:host ::ng-deep main {
+  max-width: 2000px;
+}
+
 .crew-area-nav {
   border-radius: $border-radius;
   background-color: var(--mat-sys-surface);

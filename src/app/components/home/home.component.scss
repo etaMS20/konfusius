@@ -1,10 +1,12 @@
 @use 'src/styles/style-vars.scss' as *;
 
 .home-container {
-  width: 100%;
-  display: block;
+  max-width: max(1350px, 60vw);
+  display: flex;
   flex-direction: column;
   padding: 0.5rem;
+  width: auto;
+  margin: auto;
 }
 
 // Top Image Section
