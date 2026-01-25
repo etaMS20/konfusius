@@ -85,6 +85,7 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
     shift: ['main_item_name', 'cross_item_name'],
   };
 
+  /** implements the global filter */
   filteredOrders = computed(() => {
     const term = this.keywordFilter().toLowerCase().trim();
     const selected = this.selectedFields();
@@ -129,7 +130,7 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
 
   private setupCustomFilters() {
     this.filterService.register(
-      'custom-invite',
+      'statusContains',
       (value: any, filter: any): boolean => {
         if (filter === undefined || filter === null || filter.trim() === '')
           return true;

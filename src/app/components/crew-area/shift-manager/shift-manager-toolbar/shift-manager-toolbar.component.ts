@@ -98,6 +98,4 @@ export class ShiftManagerToolbarComponent {
   onScopeYearChange(years: string[]) {
     this.scopeYearChange.emit(years);
   }
-
-  onSetCompleted() {}
 }
