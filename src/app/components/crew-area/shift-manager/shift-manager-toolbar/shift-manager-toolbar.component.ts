@@ -12,6 +12,7 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { DividerModule } from 'primeng/divider';
 import { WcOrderStatus } from '@models/order.model';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'kf-shift-manager-toolbar',
@@ -27,6 +28,7 @@ import { WcOrderStatus } from '@models/order.model';
     InputGroupModule,
     InputGroupAddonModule,
     DividerModule,
+    SelectModule,
   ],
   templateUrl: './shift-manager-toolbar.component.html',
   styleUrl: './shift-manager-toolbar.component.scss',
@@ -55,6 +57,7 @@ export class ShiftManagerToolbarComponent {
 
   selectedFilters = model<string[]>([]);
   keywordFilter = model<string>('');
+  contactPersonFilter = model<string>('');
 
   selectedYears = input.required<string[]>();
 

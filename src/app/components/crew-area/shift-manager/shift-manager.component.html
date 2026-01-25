@@ -33,23 +33,19 @@
               field="status"
               matchMode="in"
               display="menu"
-              type="text"
               [showMatchModes]="false"
               [showOperator]="false"
               [showAddButton]="false"
               [hideOnClear]="true"
             >
-              <ng-template
-                #filter
-                pTemplate="filter"
-                let-value
-                let-filter="filterCallback"
-              >
+              <ng-template #filter let-value let-filter="filterCallback">
                 <p-multiSelect
+                  #select
                   [ngModel]="value"
                   [options]="statuses"
                   placeholder="Status Filter"
-                  (onChange)="filter($event.value)"
+                  (onChange)="filter($event.value); select.hide()"
+                  (onClear)="filter.hide()"
                   optionLabel="label"
                   optionValue="value"
                   [filter]="false"
@@ -67,33 +63,7 @@
           </th>
           <th>Schicht</th>
           <th>E-mail</th>
-          <th>
-            Kontaktp.
-            <p-columnFilter
-              field="billing.billing_invite"
-              matchMode="in"
-              display="menu"
-              [showMatchModes]="false"
-              [showOperator]="false"
-              [showAddButton]="false"
-              [showApplyButton]="false"
-              [showClearButton]="false"
-            >
-              <ng-template
-                #filter
-                pTemplate="filter"
-                let-value
-                let-filterCallback="filterCallback"
-              >
-                <p-listbox
-                  [ngModel]="value"
-                  [options]="contactPersons()"
-                  (onChange)="filterCallback($event.value)"
-                >
-                </p-listbox>
-              </ng-template>
-            </p-columnFilter>
-          </th>
+          <th>Kontaktp.</th>
           <th>Ticket</th>
           <th>Preis</th>
           <th pSortableColumn="date_created">
