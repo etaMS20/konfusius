@@ -19,7 +19,6 @@
       [(selection)]="selectedOrders"
       [loading]="loading$ | async"
       (onPage)="onPageChange($event)"
-      [globalFilterFields]="['billing.full_name', 'id']"
     >
       <ng-template pTemplate="header">
         <tr>
@@ -84,9 +83,13 @@
                 #filter
                 pTemplate="filter"
                 let-value
-                let-filter="filterCallback"
+                let-filterCallback="filterCallback"
               >
-                <p-listbox [ngModel]="value" [options]="contactPersons()">
+                <p-listbox
+                  [ngModel]="value"
+                  [options]="contactPersons()"
+                  (onChange)="filterCallback($event.value)"
+                >
                 </p-listbox>
               </ng-template>
             </p-columnFilter>
@@ -113,10 +116,8 @@
           <td [pTooltip]="order.billing.full_name" class="limited-cell">
             <span class="truncate-text">{{ order.billing.full_name }}</span>
           </td>
-          <td [pTooltip]="findMainItem(order.line_items)" class="limited-cell">
-            <span class="truncate-text">{{
-              findMainItem(order.line_items)
-            }}</span>
+          <td [pTooltip]="order.main_item_name" class="limited-cell">
+            <span class="truncate-text">{{ order.main_item_name }}</span>
           </td>
           <td class="email-cell limited-cell" [pTooltip]="order.billing.email">
             <div class="relative-wrapper">
@@ -131,7 +132,7 @@
             </div>
           </td>
           <td>{{ order.billing.billing_invite }}</td>
-          <td>{{ findCrossItem(order.line_items) }}</td>
+          <td>{{ order.cross_item_name }}</td>
           <td>{{ order.total | currency: 'EUR' }}</td>
           <td>{{ order.date_created | dateFormat }}</td>
           <td>{{ order.id }}</td>
@@ -140,7 +141,11 @@
       <ng-template pTemplate="footer">
         <tr>
           <td colspan="7"></td>
-          <td>{{ pageSum() | currency: 'EUR' }}</td>
+          <td>
+            <span style="font-weight: bold">{{
+              pageSum() | currency: 'EUR'
+            }}</span>
+          </td>
           <td></td>
           <td></td>
         </tr>

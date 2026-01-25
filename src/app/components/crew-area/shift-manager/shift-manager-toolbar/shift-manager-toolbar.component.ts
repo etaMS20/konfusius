@@ -40,13 +40,13 @@ export class ShiftManagerToolbarComponent {
   nameFilterOptions = [
     {
       tooltip: 'Namen einbeziehen',
-      value: 'billing.full_name',
+      value: 'name',
       icon: 'pi pi-user',
     },
-    { tooltip: 'E-Mail einbeziehen', value: 'billing.email', icon: 'pi pi-at' },
+    { tooltip: 'E-Mail einbeziehen', value: 'email', icon: 'pi pi-at' },
     {
       tooltip: 'Schicht einbeziehen',
-      value: 'line_items',
+      value: 'shift',
       icon: 'pi pi-hammer',
     },
   ];

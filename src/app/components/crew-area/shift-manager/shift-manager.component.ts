@@ -37,9 +37,9 @@ import { CustomEndpointsService } from '@services/api/custom-endpoints.service';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
 import { OrderMin, LineItemMin } from '@models/types.model';
 import { WC_ORDER_STATUSES, WcOrderStatus } from '@models/order.model';
-import { DISCLAIMER_PRODUCTS } from '@models/cross-sale.model';
 import { DateFormatPipe } from '@pipes/date-format.pipe';
 import { OrderStatusComponent } from '@shared/status/order-status.component';
+import { findCrossItem, findMainItem } from '@utils/oder.utils';
 
 @Component({
   selector: 'kf-shift-manager',
@@ -77,24 +77,32 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
 
   /** Current keyword filter state */
   keywordFilter = signal<string>('');
-  selectedFields = signal<string[]>([
-    'billing.full_name',
-    'billing.email',
-    'line_items',
-  ]);
+  selectedFields = signal<string[]>(['name', 'email', 'shift']);
+
+  private readonly FILTER_MAP: Record<string, string[]> = {
+    name: ['billing.full_name'],
+    email: ['billing.email'],
+    shift: ['main_item_name', 'cross_item_name'],
+  };
 
   filteredOrders = computed(() => {
     const term = this.keywordFilter().toLowerCase().trim();
+    const selected = this.selectedFields();
+    const data = this.orders();
 
-    if (!term || !this.selectedFields().length) return this.orders();
+    if (!term || !selected.length) return data;
 
-    return this.orders().filter((order) =>
-      this.selectedFields().some((path) =>
-        String(this.getNestedValue(order, path) ?? '')
+    return this.orders().filter((order) => {
+      const pathsToSearch = selected.flatMap(
+        (key) => this.FILTER_MAP[key] || [key],
+      );
+      return pathsToSearch.some((path) => {
+        const value = this.getNestedValue(order, path);
+        return String(value ?? '')
           .toLowerCase()
-          .includes(term),
-      ),
-    );
+          .includes(term);
+      });
+    });
   });
 
   private getNestedValue(obj: OrderMin, path: string): unknown {
@@ -141,7 +149,13 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
       )
       .subscribe((data) => {
-        this.orders.set(data);
+        // Enrich order data model for easier access and less run time computation
+        const enrichedData = data.map((order) => ({
+          ...order,
+          main_item_name: findMainItem(order.line_items),
+          cross_item_name: findCrossItem(order.line_items),
+        }));
+        this.orders.set(enrichedData);
       });
 
     this.customEpS
@@ -154,21 +168,16 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
       .subscribe((res) => this.contactPersons.set(res));
   }
 
-  findMainItem(items: LineItemMin[]) {
-    return (
-      items.find((i) => !DISCLAIMER_PRODUCTS.has(i.product_id))?.name || ''
-    );
-  }
-
-  findCrossItem(items: Array<LineItemMin>) {
-    return items.find((item) => DISCLAIMER_PRODUCTS.has(item.product_id))?.name;
-  }
-
   bulkUpdateStatus(status: WcOrderStatus) {
+    this.loading$.next(true);
     const ids = this.selectedOrders().map((o) => o.id);
     this.wcV3
       .batchUpdateOrderStatus(ids, status)
-      .pipe(catchError((err) => this.handleError(err)))
+      .pipe(
+        catchError((err) => this.handleError(err)),
+        finalize(() => this.loading$.next(false)),
+        takeUntil(this.destroy$),
+      )
       .subscribe(() => {
         this.refreshCollection();
         this.selectedOrders.set([]);
