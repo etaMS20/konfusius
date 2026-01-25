@@ -6,7 +6,6 @@ import {
   OnDestroy,
   OnInit,
   signal,
-  ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -30,6 +29,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TooltipModule } from 'primeng/tooltip';
 import { FilterService } from 'primeng/api';
+import { ChipModule } from 'primeng/chip';
 
 // Deine Models & Services
 import { WcV3Service } from '@services/api/wc-v3.service';
@@ -39,6 +39,7 @@ import { OrderMin, LineItemMin } from '@models/types.model';
 import { WC_ORDER_STATUSES, WcOrderStatus } from '@models/order.model';
 import { DISCLAIMER_PRODUCTS } from '@models/cross-sale.model';
 import { DateFormatPipe } from '@pipes/date-format.pipe';
+import { OrderStatusComponent } from '@shared/status/order-status.component';
 
 @Component({
   selector: 'kf-shift-manager',
@@ -56,6 +57,7 @@ import { DateFormatPipe } from '@pipes/date-format.pipe';
     TooltipModule,
     DateFormatPipe,
     ShiftManagerToolbarComponent,
+    OrderStatusComponent,
   ],
   templateUrl: './shift-manager.component.html',
   styleUrl: './shift-manager.component.scss',
@@ -76,7 +78,7 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   statuses = WC_ORDER_STATUSES.map((s) => ({
-    label: s.toUpperCase(),
+    label: s.charAt(0).toUpperCase() + s.slice(1),
     value: s,
   }));
 

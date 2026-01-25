@@ -23,43 +23,81 @@
           <th style="width: 4rem">
             <p-tableHeaderCheckbox />
           </th>
-          <th pSortableColumn="id">ID<p-sortIcon field="id" /></th>
-          <th pSortableColumn="date_created">
-            Datum<p-sortIcon field="date_created" />
+
+          <th pSortableColumn="status">
+            Status
+            <p-sortIcon field="status" />
+            <p-columnFilter
+              field="status"
+              matchMode="in"
+              display="menu"
+              [showMatchModes]="false"
+              [showOperator]="false"
+              [showAddButton]="false"
+              [hideOnClear]="true"
+            >
+              <ng-template
+                #filter
+                pTemplate="filter"
+                let-value
+                let-filter="filterCallback"
+              >
+                <p-multiSelect
+                  [ngModel]="value"
+                  [options]="statuses"
+                  placeholder="Status Filter"
+                  (onChange)="filter($event.value)"
+                  optionLabel="label"
+                  optionValue="value"
+                  [filter]="false"
+                  [showToggleAll]="false"
+                  display="chip"
+                  variant="filled"
+                  [style.width]="'100%'"
+                >
+                </p-multiSelect>
+              </ng-template>
+            </p-columnFilter>
           </th>
           <th pSortableColumn="billing.full_name">
             Name<p-sortIcon field="billing.full_name" />
           </th>
+          <th>Schicht</th>
           <th>E-mail</th>
           <th>Kontaktp.</th>
-          <th>Schicht</th>
           <th>Ticket</th>
           <th>Preis</th>
-          <th pSortableColumn="status">
-            Status
-            <p-sortIcon field="status" />
+          <th pSortableColumn="date_created">
+            Datum<p-sortIcon field="date_created" />
           </th>
+          <th pSortableColumn="id">ID<p-sortIcon field="id" /></th>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="body" let-order>
         <tr>
           <td><p-tableCheckbox [value]="order" /></td>
-          <td>{{ order.id }}</td>
-          <td>{{ order.date_created | dateFormat }}</td>
+
+          <td>
+            <app-order-status
+              class="status-cell"
+              [orderStatus]="order.status"
+            ></app-order-status>
+          </td>
           <td class="truncate-cell" [pTooltip]="findMainItem(order.line_items)">
             {{ order.billing.full_name }}
+          </td>
+          <td class="truncate-cell" [pTooltip]="findMainItem(order.line_items)">
+            {{ findMainItem(order.line_items) }}
           </td>
           <td class="truncate-cell" [pTooltip]="findMainItem(order.line_items)">
             {{ order.billing.email }}
           </td>
           <td>{{ order.billing.billing_invite }}</td>
-          <td class="truncate-cell" [pTooltip]="findMainItem(order.line_items)">
-            {{ findMainItem(order.line_items) }}
-          </td>
           <td>{{ findCrossItem(order.line_items) }}</td>
           <td>{{ order.total | currency: 'EUR' }}</td>
-          <td>{{ order.status }}</td>
+          <td>{{ order.date_created | dateFormat }}</td>
+          <td>{{ order.id }}</td>
         </tr>
       </ng-template>
       <ng-template pTemplate="footer">
