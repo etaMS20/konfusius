@@ -29,7 +29,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TooltipModule } from 'primeng/tooltip';
 import { FilterService } from 'primeng/api';
-import { ChipModule } from 'primeng/chip';
+import { ListboxModule } from 'primeng/listbox';
 
 // Deine Models & Services
 import { WcV3Service } from '@services/api/wc-v3.service';
@@ -58,6 +58,7 @@ import { OrderStatusComponent } from '@shared/status/order-status.component';
     DateFormatPipe,
     ShiftManagerToolbarComponent,
     OrderStatusComponent,
+    ListboxModule,
   ],
   templateUrl: './shift-manager.component.html',
   styleUrl: './shift-manager.component.scss',

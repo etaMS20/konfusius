@@ -31,6 +31,7 @@
               field="status"
               matchMode="in"
               display="menu"
+              type="text"
               [showMatchModes]="false"
               [showOperator]="false"
               [showAddButton]="false"
@@ -64,7 +65,29 @@
           </th>
           <th>Schicht</th>
           <th>E-mail</th>
-          <th>Kontaktp.</th>
+          <th>
+            Kontaktp.
+            <p-columnFilter
+              field="billing.billing_invite"
+              matchMode="in"
+              display="menu"
+              [showMatchModes]="false"
+              [showOperator]="false"
+              [showAddButton]="false"
+              [showApplyButton]="false"
+              [showClearButton]="false"
+            >
+              <ng-template
+                #filter
+                pTemplate="filter"
+                let-value
+                let-filter="filterCallback"
+              >
+                <p-listbox [ngModel]="value" [options]="contactPersons()">
+                </p-listbox>
+              </ng-template>
+            </p-columnFilter>
+          </th>
           <th>Ticket</th>
           <th>Preis</th>
           <th pSortableColumn="date_created">

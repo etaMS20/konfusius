@@ -2,8 +2,11 @@
   <p-toolbar>
     <ng-template #start>
       <div class="toolbar-row">
-        <p-iconfield iconPosition="left">
-          <p-inputicon styleClass="pi pi-search" />
+        <p-inputGroup>
+          <p-inputgroup-addon>
+            <i class="pi pi-search"></i>
+          </p-inputgroup-addon>
+
           <input
             type="text"
             pInputText
@@ -11,21 +14,32 @@
             [ngModel]="keywordFilter()"
             (ngModelChange)="onFilterChange($event)"
           />
-        </p-iconfield>
-        <p-selectbutton
-          [options]="nameFilterOptions"
-          [(ngModel)]="selectedFilters"
-          optionLabel="label"
-          optionValue="value"
-          aria-labelledby="basic"
-          [multiple]="true"
-          (ngModelChange)="onFilterTypeChange($event)"
-          size="small"
-        />
+
+          <p-inputgroup-addon [style.padding]="'0'">
+            <p-selectButton
+              [options]="nameFilterOptions"
+              [(ngModel)]="selectedFilters"
+              optionValue="value"
+              [multiple]="true"
+              (ngModelChange)="onFilterTypeChange($event)"
+              size="small"
+            >
+              <ng-template #item let-item>
+                <i
+                  [class]="item.icon"
+                  [pTooltip]="item.tooltip"
+                  tooltipPosition="top"
+                ></i>
+              </ng-template>
+            </p-selectButton>
+          </p-inputgroup-addon>
+        </p-inputGroup>
       </div>
     </ng-template>
 
-    <ng-template #center>
+    <ng-template #center> </ng-template>
+
+    <ng-template #end>
       <p-multiselect
         [options]="yearOptions"
         [(ngModel)]="selectedYears"
@@ -38,9 +52,6 @@
         display="chip"
         pTooltip="Festivaljahre"
       />
-    </ng-template>
-
-    <ng-template #end>
       <div class="toolbar-row">
         <ng-container *ngFor="let btn of buttonConfigs">
           <p-button

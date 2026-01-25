@@ -1,8 +1,6 @@
-import { Component, input, OnInit, output, signal } from '@angular/core';
+import { Component, Input, input, OnInit, output, signal } from '@angular/core';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
-import { IconField } from 'primeng/iconfield';
-import { InputIcon } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
@@ -10,20 +8,22 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { NgFor } from '@angular/common';
 import { Tooltip } from 'primeng/tooltip';
 import { ButtonSeverity } from 'primeng/button';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
 @Component({
   selector: 'kf-shift-manager-toolbar',
   imports: [
     ToolbarModule,
     ButtonModule,
-    IconField,
-    InputIcon,
     InputTextModule,
     SelectButtonModule,
     FormsModule,
     MultiSelectModule,
     NgFor,
     Tooltip,
+    InputGroupModule,
+    InputGroupAddonModule,
   ],
   templateUrl: './shift-manager-toolbar.component.html',
   styleUrl: './shift-manager-toolbar.component.scss',
@@ -36,9 +36,9 @@ export class ShiftManagerToolbarComponent {
   keywordFilter = signal<string>('');
 
   nameFilterOptions = [
-    { label: 'Name', value: 'name' },
-    { label: 'E-Mail', value: 'e-mail' },
-    { label: 'Schicht', value: 'shift' },
+    { tooltip: 'Name', value: 'name', icon: 'pi pi-user' },
+    { tooltip: 'E-Mail', value: 'e-mail', icon: 'pi pi-at' },
+    { tooltip: 'Schicht', value: 'shift', icon: 'pi pi-hammer' },
   ];
 
   yearOptions = ['2025', '2026', '2027'];
