@@ -51,6 +51,21 @@ export class WcTimeframeUtil {
     }
   }
 
+  // TODO: This should be a backend service
+  parseHumanReadable(rawInterval: string, anchorDate?: DateTime): string {
+    const parsed = this.parseAnchorInterval(rawInterval, anchorDate);
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    };
+    const startStr = parsed.start.toLocaleString(undefined, options);
+    const endStr = parsed.end.toLocaleString(undefined, options);
+    return `${startStr} - ${endStr}`;
+  }
+
   parseCustomInterval(rawInterval: string): ParsedVariationTime {
     const [interval, meta] = rawInterval.split(':');
     const [dateTime, durationStr] = interval.split('/');
