@@ -43,6 +43,10 @@ export const appConfig: ApplicationConfig = {
           darkModeSelector: 'none',
         },
       },
+      translation: {
+        apply: 'OK',
+        clear: 'Löschen',
+      },
     }),
   ],
 };

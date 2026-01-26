@@ -33,3 +33,9 @@
 td:hover .copy-btn {
   opacity: 1;
 }
+
+.status-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

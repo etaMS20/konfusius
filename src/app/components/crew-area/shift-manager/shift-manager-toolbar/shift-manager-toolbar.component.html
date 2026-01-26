@@ -25,6 +25,7 @@
           inputId="year"
           display="chip"
           pTooltip="Festivaljahre"
+          [style]="{ 'min-width': '150px' }"
         />
       </div>
     </ng-template>
@@ -33,7 +34,14 @@
 
     <ng-template #end>
       <div class="toolbar-row">
-        <p-select></p-select>
+        <p-select
+          [options]="contactPersonOptions()"
+          (onChange)="tableRef().filterGlobal($event.value, 'contains')"
+          [showClear]="true"
+          placeholder="Kontaktperson Filter"
+          panelStyleClass="slim-select-panel"
+          [style]="{ 'min-width': '200px' }"
+        ></p-select>
         <p-divider layout="vertical"></p-divider>
         <p-inputGroup>
           <p-inputgroup-addon>

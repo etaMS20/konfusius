@@ -18,8 +18,8 @@ export class CrewContainerComponent {
   tabs = [
     {
       label: 'Anmeldungen Verwalten',
-      icon: 'confirmation_number',
-      route: 'manage-tickets',
+      icon: 'manage_accounts',
+      route: 'manage',
     },
     {
       label: 'Kalender Ansicht',
@@ -30,11 +30,6 @@ export class CrewContainerComponent {
       label: 'Schichtplan Listenansicht (beta)',
       icon: 'list',
       route: 'list',
-    },
-    {
-      label: 'Anmeldungen Verwalten (beta)',
-      icon: 'manage_accounts',
-      route: 'manage',
     },
   ];
 

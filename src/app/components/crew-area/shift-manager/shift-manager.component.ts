@@ -28,14 +28,13 @@ import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TooltipModule } from 'primeng/tooltip';
-import { FilterService } from 'primeng/api';
 import { ListboxModule } from 'primeng/listbox';
 
 // Deine Models & Services
 import { WcV3Service } from '@services/api/wc-v3.service';
 import { CustomEndpointsService } from '@services/api/custom-endpoints.service';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
-import { OrderMin, LineItemMin } from '@models/types.model';
+import { OrderMin } from '@models/types.model';
 import { WC_ORDER_STATUSES, WcOrderStatus } from '@models/order.model';
 import { DateFormatPipe } from '@pipes/date-format.pipe';
 import { OrderStatusComponent } from '@shared/status/order-status.component';
@@ -68,7 +67,6 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
   private wcV3 = inject(WcV3Service);
   private customEpS = inject(CustomEndpointsService);
   private errorService = inject(ErrorDialogService);
-  private filterService = inject(FilterService);
 
   scopeYears = signal<string[]>(['2026']);
 
@@ -120,23 +118,10 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
     value: s,
   }));
 
-  constructor() {
-    this.setupCustomFilters();
-  }
+  constructor() {}
 
   ngOnInit(): void {
     this.refreshCollection();
-  }
-
-  private setupCustomFilters() {
-    this.filterService.register(
-      'statusContains',
-      (value: any, filter: any): boolean => {
-        if (filter === undefined || filter === null || filter.trim() === '')
-          return true;
-        return value === filter;
-      },
-    );
   }
 
   private refreshCollection() {

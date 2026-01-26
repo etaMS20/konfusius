@@ -6,12 +6,15 @@
     [actionsDisabled]="selectedOrders().length === 0"
     (scopeYearChange)="onScopeYearChange($event)"
     (orderStatusChange)="bulkUpdateStatus($event)"
+    [tableRef]="dt"
+    [contactPersonOptions]="contactPersons()"
   ></kf-shift-manager-toolbar>
   <div>
     <p-table
       #dt
       [value]="filteredOrders()"
       [paginator]="true"
+      [filterDelay]="10"
       [rows]="10"
       [rowsPerPageOptions]="[10, 20, 50, 100]"
       [showCurrentPageReport]="true"
@@ -19,6 +22,7 @@
       [(selection)]="selectedOrders"
       [loading]="loading$ | async"
       (onPage)="onPageChange($event)"
+      [globalFilterFields]="['billing.billing_invite']"
     >
       <ng-template pTemplate="header">
         <tr>
@@ -26,8 +30,7 @@
             <p-tableHeaderCheckbox />
           </th>
 
-          <th pSortableColumn="status">
-            Status
+          <th pSortableColumn="status" class="status-cell">
             <p-sortIcon field="status" />
             <p-columnFilter
               field="status"
