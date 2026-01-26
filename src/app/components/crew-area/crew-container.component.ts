@@ -38,10 +38,10 @@ export class CrewContainerComponent {
   constructor(private router: Router) {}
 
   ngOnInit() {
-    // Set initial active tab based on current route
+    // set initial active tab based on current route
     this.updateSelectedIndex(this.router.url);
 
-    // Listen to route changes
+    // listen to route changes
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
