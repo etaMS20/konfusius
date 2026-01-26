@@ -1,0 +1,128 @@
+<div>
+  <kf-shift-manager-toolbar
+    [(selectedFilters)]="selectedFields"
+    [(keywordFilter)]="keywordFilter"
+    [selectedYears]="scopeYears()"
+    [actionsDisabled]="selectedOrders().length === 0"
+    (scopeYearChange)="onScopeYearChange($event)"
+    (orderStatusChange)="bulkUpdateStatus($event)"
+    [tableRef]="dt"
+    [contactPersonOptions]="contactPersons()"
+  ></kf-shift-manager-toolbar>
+  <div>
+    <p-table
+      #dt
+      [value]="filteredOrders()"
+      [paginator]="true"
+      [filterDelay]="10"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 20, 50, 100]"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Zeigt {first} bis {last} von {totalRecords} Anmeldungen"
+      [(selection)]="selectedOrders"
+      [loading]="loading$ | async"
+      (onPage)="onPageChange($event)"
+      [globalFilterFields]="['billing.billing_invite']"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 4rem">
+            <p-tableHeaderCheckbox />
+          </th>
+
+          <th pSortableColumn="status" class="status-cell">
+            <p-sortIcon field="status" />
+            <p-columnFilter
+              field="status"
+              matchMode="in"
+              display="menu"
+              [showMatchModes]="false"
+              [showOperator]="false"
+              [showAddButton]="false"
+              [hideOnClear]="true"
+            >
+              <ng-template #filter let-value let-filter="filterCallback">
+                <p-multiSelect
+                  #select
+                  [ngModel]="value"
+                  [options]="statuses"
+                  placeholder="Status Filter"
+                  (onChange)="filter($event.value); select.hide()"
+                  (onClear)="filter.hide()"
+                  optionLabel="label"
+                  optionValue="value"
+                  [filter]="false"
+                  [showToggleAll]="false"
+                  display="chip"
+                  variant="filled"
+                  [style.width]="'100%'"
+                >
+                </p-multiSelect>
+              </ng-template>
+            </p-columnFilter>
+          </th>
+          <th pSortableColumn="billing.full_name">
+            Name<p-sortIcon field="billing.full_name" />
+          </th>
+          <th>Schicht</th>
+          <th>E-mail</th>
+          <th>Kontaktp.</th>
+          <th>Ticket</th>
+          <th>Preis</th>
+          <th pSortableColumn="date_created">
+            Datum<p-sortIcon field="date_created" />
+          </th>
+          <th pSortableColumn="id">ID<p-sortIcon field="id" /></th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-order>
+        <tr>
+          <td><p-tableCheckbox [value]="order" /></td>
+
+          <td>
+            <app-order-status
+              class="status-cell"
+              [orderStatus]="order.status"
+            ></app-order-status>
+          </td>
+          <td [pTooltip]="order.billing.full_name" class="limited-cell">
+            <span class="truncate-text">{{ order.billing.full_name }}</span>
+          </td>
+          <td [pTooltip]="order.main_item_name" class="limited-cell">
+            <span class="truncate-text">{{ order.main_item_name }}</span>
+          </td>
+          <td class="email-cell limited-cell" [pTooltip]="order.billing.email">
+            <div class="relative-wrapper">
+              <span class="truncate-text">{{ order.billing.email }}</span>
+              <p-button
+                icon="pi pi-copy"
+                [text]="true"
+                [rounded]="true"
+                (onClick)="copyToClipboard(order.billing.email)"
+                class="copy-btn"
+              />
+            </div>
+          </td>
+          <td>{{ order.billing.billing_invite }}</td>
+          <td>{{ order.cross_item_name }}</td>
+          <td>{{ order.total | currency: 'EUR' }}</td>
+          <td>{{ order.date_created | dateFormat }}</td>
+          <td>{{ order.id }}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <tr>
+          <td colspan="7"></td>
+          <td>
+            <span style="font-weight: bold">{{
+              pageSum() | currency: 'EUR'
+            }}</span>
+          </td>
+          <td></td>
+          <td></td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

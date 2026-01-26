@@ -1,13 +1,8 @@
 import { Component } from '@angular/core';
-import { MatToolbar } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatListModule } from '@angular/material/list';
-import { parse } from 'path';
-import { MatTab, MatTabGroup, MatTabsModule } from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { filter } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-crew-container',
@@ -23,14 +18,19 @@ export class CrewContainerComponent {
   tabs = [
     {
       label: 'Anmeldungen Verwalten',
-      icon: 'confirmation_number',
-      route: 'manage-tickets',
+      icon: 'manage_accounts',
+      route: 'manage',
     },
     {
       label: 'Kalender Ansicht',
       icon: 'calendar_today',
       route: 'scheduler',
     },
+    /*     {
+      label: 'Schichtplan Listenansicht (beta)',
+      icon: 'list',
+      route: 'list',
+    }, */
   ];
 
   selectedIndex = 0;
@@ -38,10 +38,10 @@ export class CrewContainerComponent {
   constructor(private router: Router) {}
 
   ngOnInit() {
-    // Set initial active tab based on current route
+    // set initial active tab based on current route
     this.updateSelectedIndex(this.router.url);
 
-    // Listen to route changes
+    // listen to route changes
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {

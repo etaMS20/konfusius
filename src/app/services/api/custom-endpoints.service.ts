@@ -23,7 +23,7 @@ export class CustomEndpointsService {
 
   getOrdersByInvite(
     inv: string,
-    years = ['2025'],
+    years: string[] = [],
     meta_key = 'billing_invite',
   ): Observable<Array<OrderMin>> {
     let params = new HttpParams();

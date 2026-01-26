@@ -5,8 +5,8 @@ main {
   justify-content: center;
   margin: auto;
   margin-top: calc($nav-height + 20px);
-  width: 100%;
+  width: auto;
   min-height: 85vh;
-  max-width: max(1350px, 60vw);
+  max-width: max(1600px, 60vw);
   flex-grow: 1;
 }

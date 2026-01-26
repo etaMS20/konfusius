@@ -83,17 +83,8 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'manage-tickets',
+        redirectTo: 'manage',
         pathMatch: 'full',
-      },
-      {
-        path: 'manage-tickets',
-        loadComponent: () => {
-          return import(
-            './components/crew-area/manager/manager.component'
-          ).then((m) => m.ManagerComponent);
-        },
-        canActivate: [AuthGuard],
       },
       {
         path: 'scheduler',
@@ -101,6 +92,24 @@ export const routes: Routes = [
           return import(
             './components/crew-area/scheduler/scheduler.component'
           ).then((m) => m.SchedulerComponent);
+        },
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'list',
+        loadComponent: () => {
+          return import('./components/crew-area/list/list.component').then(
+            (m) => m.ListComponent,
+          );
+        },
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'manage',
+        loadComponent: () => {
+          return import(
+            './components/crew-area/shift-manager/shift-manager.component'
+          ).then((m) => m.ShiftManagerComponent);
         },
         canActivate: [AuthGuard],
       },

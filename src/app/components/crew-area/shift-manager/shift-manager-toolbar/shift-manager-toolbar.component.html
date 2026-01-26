@@ -1,0 +1,79 @@
+<div>
+  <p-toolbar>
+    <ng-template #start>
+      <div class="toolbar-row">
+        <ng-container *ngFor="let btn of buttonConfigs">
+          <p-button
+            [disabled]="actionsDisabled()"
+            [icon]="btn.icon"
+            raised
+            [severity]="btn.severity"
+            [pTooltip]="btn.tooltip"
+            tooltipPosition="bottom"
+            (click)="btn.onClick()"
+          ></p-button>
+        </ng-container>
+        <p-divider layout="vertical"></p-divider>
+        <p-multiselect
+          [options]="yearOptions"
+          [ngModel]="selectedYears()"
+          [filter]="false"
+          [showToggleAll]="false"
+          placeholder="Alle"
+          [maxSelectedLabels]="3"
+          (ngModelChange)="onScopeYearChange($event)"
+          inputId="year"
+          display="chip"
+          pTooltip="Festivaljahre"
+          [style]="{ 'min-width': '150px' }"
+        />
+      </div>
+    </ng-template>
+
+    <ng-template #center> </ng-template>
+
+    <ng-template #end>
+      <div class="toolbar-row">
+        <p-select
+          [options]="contactPersonOptions()"
+          (onChange)="tableRef().filterGlobal($event.value, 'contains')"
+          [showClear]="true"
+          placeholder="Kontaktperson Filter"
+          panelStyleClass="slim-select-panel"
+          [style]="{ 'min-width': '200px' }"
+        ></p-select>
+        <p-divider layout="vertical"></p-divider>
+        <p-inputGroup>
+          <p-inputgroup-addon>
+            <i class="pi pi-search"></i>
+          </p-inputgroup-addon>
+
+          <input
+            type="text"
+            pInputText
+            placeholder="Keyword Filter"
+            [(ngModel)]="keywordFilter"
+          />
+
+          <p-inputgroup-addon [style.padding]="'0'">
+            <p-selectButton
+              [options]="nameFilterOptions"
+              [(ngModel)]="selectedFilters"
+              optionValue="value"
+              [multiple]="true"
+              size="small"
+            >
+              <ng-template #item let-item>
+                <i
+                  [class]="item.icon"
+                  [pTooltip]="item.tooltip"
+                  tooltipPosition="top"
+                ></i>
+              </ng-template>
+            </p-selectButton>
+          </p-inputgroup-addon>
+        </p-inputGroup>
+      </div>
+    </ng-template>
+  </p-toolbar>
+</div>

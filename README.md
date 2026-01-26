@@ -87,3 +87,12 @@ On git-pushes the app fill be automatically deployed to wordpress using `.github
 
 - alternative deployment method: https://dev.to/stephenwhitmore/take-your-wordpress-site-farther-with-angular-3o6p
 - mat-icons: https://mui.com/material-ui/material-icons/?query=foo
+
+## Dev Notes
+
+- Awareness -> 2 per shift
+- Early Bird -> minus 10
+- Ticket Preis bleibt
+- Deadline: Anfang Mai
+- Kochen auch am Montag
+- Kochen - 1 Person weniger

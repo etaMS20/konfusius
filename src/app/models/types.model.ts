@@ -31,6 +31,8 @@ export interface OrderMin {
   line_items: Array<LineItemMin>;
   total: string;
   status: WcOrderStatus;
+  main_item_name?: string; // mapping for easier access - Name der Schicht
+  cross_item_name?: string; // mapping for easier access - Name des Tickets
 }
 
 export interface LineItemMin {
