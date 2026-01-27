@@ -20,7 +20,6 @@ import localeDe from '@angular/common/locales/de';
 import { FormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { WcStoreAPI } from '@services/api/wc-store-api.service';
-import { WcTimeframeUtil } from '../../../utils/time-mapper.util';
 import { Subject, takeUntil } from 'rxjs';
 import { CustomEventTitleFormatter } from '../title-formatter.provider';
 import { CustomDateFormatter } from '../date-formatter.provider';
@@ -29,6 +28,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
+import { KTimeUtilsService } from '@services/k-time-utils.service';
 
 registerLocaleData(localeDe);
 
@@ -62,8 +62,7 @@ registerLocaleData(localeDe);
 export class SchedulerComponent implements OnInit {
   private readonly destroy$ = new Subject<void>();
   private readonly wcStoreApi = inject(WcStoreAPI);
-
-  locale: string = 'de-DE';
+  protected readonly timeUtil = inject(KTimeUtilsService);
 
   weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
 
@@ -73,9 +72,7 @@ export class SchedulerComponent implements OnInit {
 
   view: CalendarView = CalendarView.Month;
 
-  viewDate = signal<Date>(new Date(2026, 4, 15));
-
-  private timeUtil = new WcTimeframeUtil(new Date(2026, 4, 0), this.viewDate());
+  viewDate = signal<Date>(new Date());
 
   calendarEntries = signal<CalendarEvent[]>([]);
 
@@ -83,6 +80,7 @@ export class SchedulerComponent implements OnInit {
 
   ngOnInit() {
     this.loadBasicVariationsToCalendar();
+    this.viewDate.set(this.timeUtil.festivalStart);
   }
 
   ngAfterViewInit() {}
@@ -110,12 +108,14 @@ export class SchedulerComponent implements OnInit {
 
           return timesWithIds.map((t, idx) => {
             const result = this.timeUtil.parseAnchorInterval(t.value);
+            const start = result?.start;
+            const end = result?.end.minus({ seconds: 1 });
 
             return {
               id: t.variationId,
               title: `${name ?? 'Fehlerhafter Eintrag'} ${idx + 1}`,
-              start: result.start,
-              end: result.end,
+              start: start?.toJSDate() ?? this.timeUtil.anchorDate,
+              end: end?.toJSDate() ?? this.timeUtil.anchorDate,
               color: colors[p.id],
               meta: {
                 productId: t.productId,

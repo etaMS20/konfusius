@@ -1,5 +1,11 @@
+import { DateTime } from 'luxon';
+
+export enum CustomTime {
+  OPEN_END = 'OPEN',
+}
+
 export interface ParsedVariationTime {
-  start: Date;
-  end: Date;
+  start: DateTime;
+  end: DateTime;
   meta?: string;
 }

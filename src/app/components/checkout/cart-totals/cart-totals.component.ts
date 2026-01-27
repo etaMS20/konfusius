@@ -2,13 +2,13 @@ import { Component, computed, input } from '@angular/core';
 import { CommonModule, NgIf } from '@angular/common';
 import { WcCartItem, WcCartType } from '@models/cart.model';
 import { formatPrice } from '@utils/price.utils';
-import { SafeHtmlPipe } from '@pipes/safe-html.pipe';
 import { WcCartTotals } from '@models/price.model';
+import { VariationIntervalPipe } from '@pipes/variation-interval.pipe';
 
 @Component({
   selector: 'app-cart-totals',
   standalone: true,
-  imports: [CommonModule, SafeHtmlPipe, NgIf],
+  imports: [CommonModule, NgIf, VariationIntervalPipe],
   templateUrl: './cart-totals.component.html',
   styleUrls: ['./cart-totals.component.scss'],
 })

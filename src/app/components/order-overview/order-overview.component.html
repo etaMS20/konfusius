@@ -65,7 +65,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of _order.line_items">
-            <td>{{ item.name }}</td>
+            <td>{{ item.name | variationInterval }}</td>
             <td>{{ item.quantity }}</td>
             <td class="price">
               {{ item.price.toFixed(2) }}{{ _order.currency_symbol }}

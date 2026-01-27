@@ -36,7 +36,7 @@
               *ngFor="let option of productVariations"
               [value]="option.id"
             >
-              <span [innerHTML]="option.variation | safeHtml"></span>
+              <span>{{ option.variation | variationInterval }}</span>
             </mat-option>
           </mat-select>
         </mat-form-field>

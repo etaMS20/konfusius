@@ -14,10 +14,9 @@
           @if (mainItemIsVariable()) {
             <div class="cart-item-detail">
               <span class="detail-label">{{ variation?.attribute }}:</span>
-              <span
-                class="detail-value"
-                [innerHTML]="variation?.value | safeHtml"
-              ></span>
+              <span class="detail-value">
+                {{ variation?.value | variationInterval }}</span
+              >
             </div>
           }
 

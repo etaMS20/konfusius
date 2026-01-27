@@ -13,6 +13,7 @@ import { LocalStorageService } from '@storage/local-storage.service';
 import { LsKeys } from '@models/storage.model';
 import { OrderStatusComponent } from '@shared/status/order-status.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { VariationIntervalPipe } from '@pipes/variation-interval.pipe';
 
 @Component({
   selector: 'app-order-overview',
@@ -23,6 +24,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatTooltipModule,
     OrderStatusComponent,
     MatDividerModule,
+    VariationIntervalPipe,
   ],
   templateUrl: './order-overview.component.html',
   styleUrl: './order-overview.component.scss',

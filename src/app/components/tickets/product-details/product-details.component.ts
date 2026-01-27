@@ -30,12 +30,13 @@ import { ErrorDialogService } from '@shared/errors/error-dialog.service';
 import { WcStoreAPI } from '@services/api/wc-store-api.service';
 import { WcProduct, WcProductVariationDetails } from '@models/product.model';
 import { Router } from '@angular/router';
-import { SafeHtmlPipe } from 'src/app/pipes/safe-html.pipe';
 import { formatPrice, formatPriceRange } from '@utils/price.utils';
 import { indicate } from '@utils/reactive-loading.utils';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CrossSaleOptionsComponent } from './cross-sale-options/cross-sale-options.component';
 import { CrossSaleProductId } from '@models/cross-sale.model';
+import { KTimeUtilsService } from '@services/k-time-utils.service';
+import { VariationIntervalPipe } from '@pipes/variation-interval.pipe';
 
 @Component({
   selector: 'app-product-details',
@@ -51,9 +52,9 @@ import { CrossSaleProductId } from '@models/cross-sale.model';
     MatTooltipModule,
     ReactiveFormsModule,
     DisableControlDirective,
-    SafeHtmlPipe,
     MatProgressBarModule,
     CrossSaleOptionsComponent,
+    VariationIntervalPipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -66,6 +67,8 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
   private readonly wcStore = inject(WcStoreAPI);
   private readonly fb = inject(FormBuilder);
+
+  private readonly timeUtil = inject(KTimeUtilsService);
   private readonly errorService = inject(ErrorDialogService);
   private readonly router = inject(Router);
   selectForm = this.fb.group({
