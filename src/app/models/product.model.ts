@@ -1,5 +1,6 @@
 import { WcCartType } from './cart.model';
 import { WcPrice } from './price.model';
+import { ShiftInterval } from './time.model';
 
 export enum WcProductTypes {
   VARIABLE = 'variable',
@@ -25,6 +26,9 @@ export interface WcProduct {
   prices: WcPrice;
   images: Array<WcProductImage>;
   sku: string;
+  extensions: {
+    konfusius_shift: WcKonfusiusShift;
+  };
 }
 
 export interface WcProductImage {
@@ -52,6 +56,9 @@ export interface WcProductAttribute {
 export type WcProductVariation = {
   id: number;
   attributes: Array<WcProductVariationAttributes>;
+  extensions: {
+    konfusius_shift: WcKonfusiusShift;
+  };
 };
 
 export interface WcProductVariationDetails {
@@ -63,9 +70,25 @@ export interface WcProductVariationDetails {
   type: WcCartType;
   variation: string;
   stock_availability: { class: string; text: string };
+  extensions: {
+    konfusius_shift: WcKonfusiusShift;
+  };
 }
 
 export type WcProductVariationAttributes = {
   name: string;
   value: string;
 };
+
+export interface WcKonfusiusShift {
+  time_interval: ShiftInterval;
+  default_stock: number;
+  variation_data: Array<WcKonfusiusShiftVariationData>;
+}
+
+export interface WcKonfusiusShiftVariationData {
+  id: number;
+  name: string;
+  time_interval: ShiftInterval;
+  default_stock: number;
+}

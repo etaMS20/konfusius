@@ -11,6 +11,7 @@ export const WP_SECRET = environment.wp_secret;
 export const APP_VERSION = environment.app_version;
 export const TICKETS_ON = true;
 export const EMAIL = 'festival@konfusius.org';
+export const FESTIVAL_START = new Date(2026, 4, 15); // this should be set in backend
 
 export const envLoaded = () => {
   return [

@@ -6,9 +6,10 @@ import { filter, map, Observable, Subscription } from 'rxjs';
 import { FooterComponent } from '@components/footer/footer.component';
 import { BackgroundComponent } from './components/shared/background/background.component';
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
-import { APP_VERSION, envLoaded } from '@config/http.config';
+import { APP_VERSION, envLoaded, FESTIVAL_START } from '@config/http.config';
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
 import { EnvStatusService } from '@services/env-status.service';
+import { KTimeUtilsService } from '@services/time-utils.service';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,7 @@ export class AppComponent implements OnInit, OnDestroy {
   envStatus = inject(EnvStatusService);
   swUpdate = inject(SwUpdate);
   ccService = inject(NgcCookieConsentService); // inject to trigger cookie consent popup
+  timeUtil = inject(KTimeUtilsService);
   private updatesAvailable$?: Observable<any>;
   private updatesAvailable?: Subscription;
 
@@ -60,6 +62,7 @@ export class AppComponent implements OnInit, OnDestroy {
         'Service Worker API is not supported in this browser version. Please use a more recent browser.',
       );
     }
+    this.timeUtil.setFestivalStart(FESTIVAL_START);
   }
 
   ngOnDestroy() {
