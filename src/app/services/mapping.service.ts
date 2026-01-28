@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { WcProduct } from '@models/product.model';
 import { WPImageSizeApiKey, WPMappedImage } from '@models/media.model';
 
 /**
@@ -10,24 +9,6 @@ import { WPImageSizeApiKey, WPMappedImage } from '@models/media.model';
 })
 export class MappingService {
   constructor() {}
-
-  mapProduct(data: any): WcProduct {
-    return {
-      id: data.id,
-      type: data.type,
-      slug: data.slug,
-      name: data.name,
-      description: data.description,
-      short_description: data.description,
-      is_in_stock: data.is_in_stock,
-      is_purchasable: data.is_purchasable,
-      attributes: data.attributes,
-      variations: data.variations,
-      prices: data.prices,
-      images: data.images,
-      sku: data.sku,
-    };
-  }
 
   /**
    * Maps a wp media response of type array to an array of WPMappedImage

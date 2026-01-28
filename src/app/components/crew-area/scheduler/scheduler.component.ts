@@ -20,7 +20,6 @@ import localeDe from '@angular/common/locales/de';
 import { FormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { WcStoreAPI } from '@services/api/wc-store-api.service';
-import { WcTimeframeUtil } from '../../../utils/time-mapper.util';
 import { Subject, takeUntil } from 'rxjs';
 import { CustomEventTitleFormatter } from '../title-formatter.provider';
 import { CustomDateFormatter } from '../date-formatter.provider';
@@ -29,6 +28,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
+import { KTimeUtilsService } from '@services/time-utils.service';
 
 registerLocaleData(localeDe);
 
@@ -62,8 +62,7 @@ registerLocaleData(localeDe);
 export class SchedulerComponent implements OnInit {
   private readonly destroy$ = new Subject<void>();
   private readonly wcStoreApi = inject(WcStoreAPI);
-
-  locale: string = 'de-DE';
+  public readonly timeUtil = inject(KTimeUtilsService);
 
   weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
 
@@ -73,9 +72,7 @@ export class SchedulerComponent implements OnInit {
 
   view: CalendarView = CalendarView.Month;
 
-  viewDate = signal<Date>(new Date(2026, 4, 15));
-
-  private timeUtil = new WcTimeframeUtil(new Date(2026, 4, 0), this.viewDate());
+  viewDate = signal<Date>(this.timeUtil.festivalStart);
 
   calendarEntries = signal<CalendarEvent[]>([]);
 
@@ -96,20 +93,20 @@ export class SchedulerComponent implements OnInit {
         const colors = generateProductColors(this.basicVariableProductIds());
         const events: CalendarEvent[] = products.flatMap((p) => {
           const name = p.name;
-          const defaultCount = parseInt(
-            p.attributes?.find((attr) => attr.id === 5)?.terms[0].name ?? '',
-            10,
-          );
-          const timesWithIds = (p.variations ?? []).flatMap((v) =>
-            v.attributes.map((item) => ({
-              value: item.value,
+          const defaultCount = p.extensions.konfusius_shift?.default_stock;
+          const timesWithIds = (
+            p.extensions.konfusius_shift?.variation_data ?? []
+          ).map((v) => {
+            console.log('Variation Data', v);
+            return {
+              productId: p.id,
               variationId: v.id,
-              productId: p.id, // "parent"
-            })),
-          );
+              shiftInterval: v.time_interval,
+            };
+          });
 
           return timesWithIds.map((t, idx) => {
-            const result = this.timeUtil.parseAnchorInterval(t.value);
+            const result = this.timeUtil.parseShiftInterval(t.shiftInterval);
 
             return {
               id: t.variationId,

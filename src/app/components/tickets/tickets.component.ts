@@ -107,9 +107,7 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.queryCrossSaleOptions();
     this.initProducts().subscribe((response) => {
-      const products = response.map((product: any) =>
-        this.mappingService.mapProduct(product),
-      );
+      const products = response;
       this.products.set(products);
 
       this.selectedProductId$.pipe(takeUntil(this.destroy$)).subscribe((id) => {

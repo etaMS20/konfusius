@@ -8,7 +8,9 @@
     <button mat-icon-button (click)="previousDay($event)">
       <mat-icon>chevron_left</mat-icon>
     </button>
-    <span>{{ viewDate() | date: 'EEEE, d. MMM yyyy' : '' : locale }}</span>
+    <span>{{
+      viewDate() | date: 'EEEE, d. MMM yyyy' : '' : timeUtil.locale
+    }}</span>
     <button mat-icon-button (click)="nextDay($event)">
       <mat-icon>chevron_right</mat-icon>
     </button>
@@ -20,7 +22,7 @@
       <mwl-calendar-month-view
         [viewDate]="viewDate()"
         [events]="calendarEntries()"
-        [locale]="locale"
+        [locale]="timeUtil.locale"
         [activeDayIsOpen]="activeDayIsOpen"
         (dayClicked)="dayClicked($event.day)"
         [weekStartsOn]="weekStartsOn"
@@ -31,7 +33,7 @@
       <mwl-calendar-day-view
         [viewDate]="viewDate()"
         [events]="calendarEntries()"
-        [locale]="locale"
+        [locale]="timeUtil.locale"
         (beforeViewRender)="beforeDayViewRender($event)"
       />
     }
