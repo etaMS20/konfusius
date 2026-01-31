@@ -1,4 +1,11 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { WordPressApiService } from '@services/api/wp-api.service';
 import { InfoTabsComponent } from './info-tabs/info-tabs.component';
@@ -12,6 +19,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { BaseDialogData } from '@models/types.model';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
 import { catchError, Subject, takeUntil, throwError } from 'rxjs';
+import { EarlyBirdService } from '@services/early-bird-service.service';
 
 @Component({
   selector: 'app-home',
@@ -26,8 +34,10 @@ import { catchError, Subject, takeUntil, throwError } from 'rxjs';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   errorService = inject(ErrorDialogService);
+
+  earlyBirdService = inject(EarlyBirdService);
   private readonly wpApi = inject(WordPressApiService);
   private readonly destroy$ = new Subject<void>();
 
@@ -57,6 +67,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe((r) => {
         this.wpPosts.set(r);
       });
+  }
+
+  ngAfterViewInit() {
+    this.earlyBirdService.checkStatus();
   }
 
   ngOnDestroy(): void {

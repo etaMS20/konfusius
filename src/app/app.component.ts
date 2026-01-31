@@ -1,7 +1,7 @@
 import { Component, inject, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavComponent } from '@components/nav/nav.component';
-import { CommonModule, registerLocaleData } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { filter, map, Observable, Subscription } from 'rxjs';
 import { FooterComponent } from '@components/footer/footer.component';
 import { BackgroundComponent } from './components/shared/background/background.component';
@@ -10,6 +10,9 @@ import { APP_VERSION, envLoaded, FESTIVAL_START } from '@config/http.config';
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
 import { EnvStatusService } from '@services/env-status.service';
 import { KTimeUtilsService } from '@services/time-utils.service';
+import { MessageService } from 'primeng/api';
+import { EarlyBirdService } from '@services/early-bird-service.service';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-root',
@@ -20,15 +23,20 @@ import { KTimeUtilsService } from '@services/time-utils.service';
     CommonModule,
     FooterComponent,
     BackgroundComponent,
+    ToastModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
+  providers: [MessageService],
 })
 export class AppComponent implements OnInit, OnDestroy {
   envStatus = inject(EnvStatusService);
   swUpdate = inject(SwUpdate);
   ccService = inject(NgcCookieConsentService); // inject to trigger cookie consent popup
   timeUtil = inject(KTimeUtilsService);
+  messageService = inject(MessageService);
+  earlyBirdService = inject(EarlyBirdService);
+
   private updatesAvailable$?: Observable<any>;
   private updatesAvailable?: Subscription;
 
@@ -63,6 +71,19 @@ export class AppComponent implements OnInit, OnDestroy {
       );
     }
     this.timeUtil.setFestivalStart(FESTIVAL_START);
+
+    this.earlyBirdService.isActive$.subscribe((active) => {
+      if (active) {
+        console.log('Early Bird is active - showing notification.');
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Early Bird Rabatt',
+          detail: 'Sichere dir jetzt 10€ Rabatt vor dem 01. Mai!',
+          sticky: true,
+          icon: 'pi pi-ticket',
+        });
+      }
+    });
   }
 
   ngOnDestroy() {
