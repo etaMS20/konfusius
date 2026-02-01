@@ -10,8 +10,6 @@ import { APP_VERSION, envLoaded, FESTIVAL_START } from '@config/http.config';
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
 import { EnvStatusService } from '@services/env-status.service';
 import { KTimeUtilsService } from '@services/time-utils.service';
-import { MessageService } from 'primeng/api';
-import { EarlyBirdService } from '@services/early-bird-service.service';
 import { ToastModule } from 'primeng/toast';
 
 @Component({
@@ -27,15 +25,14 @@ import { ToastModule } from 'primeng/toast';
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  providers: [MessageService],
+  providers: [],
 })
 export class AppComponent implements OnInit, OnDestroy {
   envStatus = inject(EnvStatusService);
   swUpdate = inject(SwUpdate);
   ccService = inject(NgcCookieConsentService); // inject to trigger cookie consent popup
   timeUtil = inject(KTimeUtilsService);
-  messageService = inject(MessageService);
-  earlyBirdService = inject(EarlyBirdService);
+  // earlyBirdService = inject(EarlyBirdService);
 
   private updatesAvailable$?: Observable<any>;
   private updatesAvailable?: Subscription;
@@ -72,18 +69,11 @@ export class AppComponent implements OnInit, OnDestroy {
     }
     this.timeUtil.setFestivalStart(FESTIVAL_START);
 
-    this.earlyBirdService.isActive$.subscribe((active) => {
+    /*     this.earlyBirdService.isActive$.subscribe((active) => {
       if (active) {
-        console.log('Early Bird is active - showing notification.');
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Early Bird Rabatt',
-          detail: 'Sichere dir jetzt 10€ Rabatt vor dem 01. Mai!',
-          sticky: true,
-          icon: 'pi pi-ticket',
-        });
+        this.earlyBirdService.showEarlyBirdMessage();
       }
-    });
+    }); */
   }
 
   ngOnDestroy() {

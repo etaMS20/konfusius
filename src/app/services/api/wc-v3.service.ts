@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BACKEND, CONSUMER_KEY, CONSUMER_SECRET } from '@config/http.config';
 import { Observable } from 'rxjs';
 import { WcOrder, WcOrderStatus, WcPaymentGateway } from '@models/order.model';
+import { Coupon } from '@models/coupon.model';
 
 @Injectable({
   providedIn: 'root',
@@ -73,5 +74,11 @@ export class WcV3Service {
         withCredentials: true,
       },
     );
+  }
+
+  getCouponById(id: number): Observable<Coupon> {
+    return this.http.get<Coupon>(this.wcBackend + `/coupons/${id}`, {
+      headers: this.headers,
+    });
   }
 }
