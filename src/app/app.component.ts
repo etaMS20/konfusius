@@ -26,7 +26,6 @@ import { EarlyBirdService } from '@services/early-bird-service.service';
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  providers: [],
 })
 export class AppComponent implements OnInit, OnDestroy {
   envStatus = inject(EnvStatusService);
@@ -34,7 +33,6 @@ export class AppComponent implements OnInit, OnDestroy {
   ccService = inject(NgcCookieConsentService); // inject to trigger cookie consent popup
   timeUtil = inject(KTimeUtilsService);
   earlyBirdService = inject(EarlyBirdService);
-
   private updatesAvailable$?: Observable<any>;
   private updatesAvailable?: Subscription;
 
@@ -69,16 +67,14 @@ export class AppComponent implements OnInit, OnDestroy {
       );
     }
     this.timeUtil.setFestivalStart(FESTIVAL_START);
-
-    this.earlyBirdService.isActive$.subscribe((active) => {
-      if (active) {
-        this.earlyBirdService.showEarlyBirdMessage();
-      }
-    });
   }
 
   ngOnDestroy() {
     this.updatesAvailable?.unsubscribe();
+  }
+
+  onCloseToast() {
+    this.earlyBirdService.isMessageVisible = false;
   }
 
   private promptUser(): void {

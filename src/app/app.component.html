@@ -1,4 +1,8 @@
-<p-toast [key]="'global'" position="top-center"></p-toast>
+<p-toast
+  key="early-bird-toast"
+  position="top-center"
+  (onClose)="onCloseToast()"
+></p-toast>
 <!-- app-background -->
 <app-background />
 <!-- nav -->

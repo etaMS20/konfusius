@@ -29,7 +29,6 @@ import { Disclaimer } from '@models/disclaimer.model';
 import { LocalStorageService } from '@storage/local-storage.service';
 import { getDisclaimer } from '@utils/disclaimer.utils';
 import { MatButtonModule } from '@angular/material/button';
-import { EarlyBirdService } from '@services/early-bird-service.service';
 
 @Component({
   selector: 'app-tickets',
@@ -53,7 +52,6 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   private readonly errorService = inject(ErrorDialogService);
   private readonly wcStore = inject(WcStoreAPI);
   private readonly lsService = inject(LocalStorageService);
-  earlyBirdService = inject(EarlyBirdService);
 
   /** basic variables */
   listVariations = ['instock']; // add 'outofstock' here, to show out-of-stock variations
@@ -98,13 +96,7 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
    * Current approach works perfectly fine however so thats something to consider in the future.
    */
 
-  constructor() {
-    this.earlyBirdService.isActive$.subscribe((active) => {
-      if (active) {
-        this.earlyBirdService.showEarlyBirdMessage();
-      }
-    });
-  }
+  constructor() {}
 
   ngAfterViewInit(): void {
     this.viewLoading = false;

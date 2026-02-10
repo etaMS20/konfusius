@@ -20,7 +20,6 @@ import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    MessageService,
     provideHttpClient(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
@@ -49,5 +48,6 @@ export const appConfig: ApplicationConfig = {
         clear: 'Löschen',
       },
     }),
+    MessageService,
   ],
 };
