@@ -16,7 +16,6 @@ import {
   WcProductTypes,
   WcProductVariationDetails,
 } from '@models/product.model';
-import { MappingService } from '@services/mapping.service';
 import { WcStoreAPI } from '@services/api/wc-store-api.service';
 import { catchError, Subject, takeUntil, throwError } from 'rxjs';
 import { ProductComponent } from './product/product.component';
@@ -30,6 +29,7 @@ import { Disclaimer } from '@models/disclaimer.model';
 import { LocalStorageService } from '@storage/local-storage.service';
 import { getDisclaimer } from '@utils/disclaimer.utils';
 import { MatButtonModule } from '@angular/material/button';
+import { EarlyBirdService } from '@services/early-bird-service.service';
 
 @Component({
   selector: 'app-tickets',
@@ -50,10 +50,10 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   /** injectable */
-  private readonly mappingService = inject(MappingService);
   private readonly errorService = inject(ErrorDialogService);
   private readonly wcStore = inject(WcStoreAPI);
   private readonly lsService = inject(LocalStorageService);
+  earlyBirdService = inject(EarlyBirdService);
 
   /** basic variables */
   listVariations = ['instock']; // add 'outofstock' here, to show out-of-stock variations
@@ -98,7 +98,13 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
    * Current approach works perfectly fine however so thats something to consider in the future.
    */
 
-  constructor() {}
+  constructor() {
+    this.earlyBirdService.isActive$.subscribe((active) => {
+      if (active) {
+        this.earlyBirdService.showEarlyBirdMessage();
+      }
+    });
+  }
 
   ngAfterViewInit(): void {
     this.viewLoading = false;

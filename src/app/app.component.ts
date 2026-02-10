@@ -11,6 +11,7 @@ import { NgcCookieConsentService } from 'ngx-cookieconsent';
 import { EnvStatusService } from '@services/env-status.service';
 import { KTimeUtilsService } from '@services/time-utils.service';
 import { ToastModule } from 'primeng/toast';
+import { EarlyBirdService } from '@services/early-bird-service.service';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +33,7 @@ export class AppComponent implements OnInit, OnDestroy {
   swUpdate = inject(SwUpdate);
   ccService = inject(NgcCookieConsentService); // inject to trigger cookie consent popup
   timeUtil = inject(KTimeUtilsService);
-  // earlyBirdService = inject(EarlyBirdService);
+  earlyBirdService = inject(EarlyBirdService);
 
   private updatesAvailable$?: Observable<any>;
   private updatesAvailable?: Subscription;
@@ -69,11 +70,11 @@ export class AppComponent implements OnInit, OnDestroy {
     }
     this.timeUtil.setFestivalStart(FESTIVAL_START);
 
-    /*     this.earlyBirdService.isActive$.subscribe((active) => {
+    this.earlyBirdService.isActive$.subscribe((active) => {
       if (active) {
         this.earlyBirdService.showEarlyBirdMessage();
       }
-    }); */
+    });
   }
 
   ngOnDestroy() {
