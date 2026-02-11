@@ -86,7 +86,7 @@ export class SchedulerComponent implements OnInit {
 
   private loadBasicVariationsToCalendar() {
     this.wcStoreApi
-      .listProducts(50, 'title') // sort by title
+      .listProducts([50], 'title') // sort by title
       .pipe(takeUntil(this.destroy$))
       .subscribe((products) => {
         this.basicVariableProductIds.set(products.map((p) => p.id));
@@ -97,7 +97,6 @@ export class SchedulerComponent implements OnInit {
           const timesWithIds = (
             p.extensions.konfusius_shift?.variation_data ?? []
           ).map((v) => {
-            console.log('Variation Data', v);
             return {
               productId: p.id,
               variationId: v.id,

@@ -15,8 +15,8 @@ export const ProductTypeLabels = {
 export interface WcProduct {
   id: number;
   type: WcProductTypes;
-  slug?: string;
-  name?: string;
+  slug: string;
+  name: string;
   description?: string;
   short_description?: string;
   is_in_stock: boolean;
@@ -26,6 +26,8 @@ export interface WcProduct {
   prices: WcPrice;
   images: Array<WcProductImage>;
   sku: string;
+  stock_availability: { class: string; text: string };
+  categories: Array<{ id: number; name: string; slug: string }>;
   extensions: {
     konfusius_shift: WcKonfusiusShift;
   };

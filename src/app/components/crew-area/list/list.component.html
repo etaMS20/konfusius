@@ -1,24 +1,28 @@
 <div class="list-container">
   <p-treetable
-    [value]="files"
+    [value]="treeNodes()"
+    [columns]="columns"
     [scrollable]="true"
-    [tableStyle]="{ 'min-width': '50rem' }"
+    [styleClass]="'p-treetable-sm'"
   >
-    <ng-template #header>
+    <ng-template pTemplate="header" let-columns>
       <tr>
-        <th>Name</th>
-        <th>Size</th>
-        <th>Type</th>
+        <th *ngFor="let col of columns">
+          {{ col.header }}
+        </th>
       </tr>
     </ng-template>
-    <ng-template #body let-rowNode let-rowData="rowData">
+    <ng-template
+      pTemplate="body"
+      let-rowNode
+      let-rowData="rowData"
+      let-columns="columns"
+    >
       <tr [ttRow]="rowNode">
-        <td>
-          <p-treetable-toggler [rowNode]="rowNode" />
-          {{ rowData.name }}
+        <td *ngFor="let col of columns; let i = index">
+          <p-treetable-toggler [rowNode]="rowNode" *ngIf="i === 0" />
+          {{ rowData[col.field] }}
         </td>
-        <td>{{ rowData.size }}</td>
-        <td>{{ rowData.type }}</td>
       </tr>
     </ng-template>
   </p-treetable>

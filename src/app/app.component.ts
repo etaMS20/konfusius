@@ -52,7 +52,9 @@ export class AppComponent implements OnInit, OnDestroy {
       this.promptUser();
     });
 
-    console.log(`devMode: ${isDevMode()}\nenv loaded: ${envLoaded()}`);
+    console.info(
+      `Development Mode: ${isDevMode()}\nEnvironment Loaded: ${envLoaded()}`,
+    );
 
     this.envStatus.envsLoaded = envLoaded();
     if (!this.envStatus.envsLoaded) {

@@ -20,14 +20,15 @@ export class WcStoreAPI {
   // Products
 
   listProducts(
-    category = 22,
+    category: number[] = [22],
     order_by = 'price', // or by title
     order = 'asc',
     per_page = 50,
   ): Observable<WcProduct[]> {
+    const categoryParam = category.join(',');
     return this.http.get<WcProduct[]>(
       this.storeApiBackend +
-        `/products?per_page=${per_page}&category=${category}&orderby=${order_by}&order=${order}`,
+        `/products?per_page=${per_page}&category=${categoryParam}&orderby=${order_by}&order=${order}`,
       { headers: this.headers },
     );
   }

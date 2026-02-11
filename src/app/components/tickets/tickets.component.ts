@@ -122,7 +122,7 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   private queryCrossSaleOptions() {
     this.productsLoading.set(true);
     this.wcStore
-      .listProducts(crossSaleProductCat, 'price')
+      .listProducts([crossSaleProductCat], 'price')
       .pipe(
         catchError((error) => {
           this.errorService.handleError(error);
@@ -199,7 +199,7 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   initProducts() {
-    return this.wcStore.listProducts(this.getProductCat).pipe(
+    return this.wcStore.listProducts([this.getProductCat]).pipe(
       takeUntil(this.destroy$),
       catchError((error) => {
         this.productsLoading.set(false);
