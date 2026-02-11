@@ -59,6 +59,14 @@ export class CheckoutContainerComponent implements OnInit, OnDestroy {
   mainItem?: WcCartItem;
   crossSaleItem?: WcCartItem;
 
+  cartCoupons = computed(() => {
+    const coupons = this.cart()?.coupons;
+    if (coupons && coupons.length > 0) {
+      return coupons;
+    }
+    return [];
+  });
+
   private readonly destroy$ = new Subject<void>();
   loading$ = new Subject<boolean>();
   allowedOptions = signal<string[]>([]);

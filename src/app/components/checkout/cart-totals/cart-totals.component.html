@@ -1,10 +1,12 @@
 <div class="cart-totals-container">
   <h2>Übersicht</h2>
 
-  <div *ngIf="!hasItem" class="empty-cart">Your cart is empty</div>
+  @if (!hasItem) {
+    <div class="empty-cart">Your cart is empty</div>
+  }
 
   @if (mainCartItem(); as mainItem) {
-    <div *ngIf="hasItem" class="cart-items">
+    <div class="cart-items">
       <div class="cart-item">
         <div class="cart-item-header">
           {{ mainItem.name }}
@@ -24,25 +26,44 @@
           <div class="cart-item-detail">
             <span class="detail-label">Kostenbeitrag:</span>
             <span class="detail-value">{{
-              getCartItemTotalPrice(mainItem)
+              mainItem.totals.line_subtotal | formatWcCartPrice: mainItem.totals
             }}</span>
           </div>
 
           <div class="cart-item-detail">
             <span class="detail-label">{{ ticketCategory }}</span>
-            <span class="detail-value"
-              >+{{ getCartItemTotalPrice(crossSaleCartItem()) }}</span
-            >
+            @if (crossSaleCartItem(); as crossSaleItem) {
+              <span class="detail-value"
+                >+{{
+                  crossSaleItem.totals.line_subtotal
+                    | formatWcCartPrice: crossSaleItem.totals
+                }}</span
+              >
+            }
           </div>
+
+          @for (coupon of cartCoupons(); track coupon.code) {
+            <div class="cart-item-detail">
+              <span class="detail-label">Coupon: {{ coupon.code }}</span>
+              <span class="detail-value"
+                >-{{
+                  coupon.totals.total_discount
+                    | formatWcCartPrice: coupon.totals
+                }}</span
+              >
+            </div>
+          }
         </div>
       </div>
     </div>
   }
 
-  <div *ngIf="hasItem" class="totals-section">
-    <div class="totals-row total">
-      <span>Gesamt:</span>
-      <span>{{ cartTotalPrice }}</span>
+  @if (cartTotals(); as totals) {
+    <div class="totals-section">
+      <div class="totals-row total">
+        <span>Gesamt:</span>
+        <span>{{ totals.total_price | formatWcCartPrice: totals }}</span>
+      </div>
     </div>
-  </div>
+  }
 </div>

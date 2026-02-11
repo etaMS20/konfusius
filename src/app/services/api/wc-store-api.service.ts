@@ -141,4 +141,12 @@ export class WcStoreAPI {
       { headers: this.headers, withCredentials: true },
     );
   }
+
+  addCoupon(code: string): Observable<any> {
+    return this.http.post(
+      this.storeApiBackend + `/cart/coupons?code=${code}`,
+      { code },
+      { headers: this.headers, withCredentials: true },
+    );
+  }
 }

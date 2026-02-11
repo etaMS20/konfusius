@@ -23,8 +23,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Subject, throwError } from 'rxjs';
-import { catchError, concatMap, takeUntil } from 'rxjs/operators';
+import { of, Subject, throwError } from 'rxjs';
+import { catchError, concatMap, switchMap, takeUntil } from 'rxjs/operators';
 import { DisableControlDirective } from '@directives/disable-control.directive';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
 import { WcStoreAPI } from '@services/api/wc-store-api.service';
@@ -36,6 +36,7 @@ import { indicate } from '@utils/reactive-loading.utils';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CrossSaleOptionsComponent } from './cross-sale-options/cross-sale-options.component';
 import { CrossSaleProductId } from '@models/cross-sale.model';
+import { EarlyBirdService } from '@services/early-bird-service.service';
 
 @Component({
   selector: 'app-product-details',
@@ -66,6 +67,8 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
   private readonly wcStore = inject(WcStoreAPI);
   private readonly fb = inject(FormBuilder);
+
+  private readonly earlyBirdService = inject(EarlyBirdService);
   private readonly errorService = inject(ErrorDialogService);
   private readonly router = inject(Router);
   selectForm = this.fb.group({
@@ -158,6 +161,17 @@ export class ProductDetailsComponent implements OnChanges, OnInit, OnDestroy {
         .pipe(
           indicate(this.loadingCheckout$),
           concatMap(() => this.wcStore.batchItemsToCart(batchIds)),
+          switchMap(() => {
+            const couponCode = this.earlyBirdService.couponCode();
+            if (this.earlyBirdService.isActive$ && couponCode) {
+              return this.wcStore.addCoupon(couponCode).pipe(
+                catchError(() => {
+                  return of(null); // just ignore coupon errors and proceed to checkout
+                }),
+              );
+            }
+            return of(null); // No coupon, just continue
+          }),
           catchError((error) => {
             this.errorService.handleError(error);
             return throwError(() => error);

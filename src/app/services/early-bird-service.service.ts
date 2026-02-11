@@ -1,4 +1,4 @@
-import { computed, inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { DateTime } from 'luxon';
 import { BehaviorSubject } from 'rxjs';
 import { WcV3Service } from './api/wc-v3.service';
@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 @Injectable({ providedIn: 'root' })
 export class EarlyBirdService {
   private couponId = 2604;
+  public couponCode = signal<string | null>(null);
   private readonly wcv3 = inject(WcV3Service);
   private messageService = inject(MessageService);
   private DEADLINE: DateTime = DateTime.now();
@@ -32,6 +33,7 @@ export class EarlyBirdService {
       this.DEADLINE = expiryDate;
       this.STOCK = coupon.usage_limit - coupon.usage_count;
       this.isInStock = this.STOCK > 0;
+      this.couponCode.set(coupon.code);
       this.checkStatus();
     });
   }
