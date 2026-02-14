@@ -36,7 +36,7 @@ export class WcV3Service {
     );
   }
 
-  getOrders(after = '2024-01-01T00:00:00'): Observable<Array<WcOrder>> {
+  getOrders(after = '2025-01-01T00:00:00'): Observable<Array<WcOrder>> {
     let params = new HttpParams();
 
     if (after) {

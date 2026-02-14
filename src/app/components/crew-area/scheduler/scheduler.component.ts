@@ -93,7 +93,7 @@ export class SchedulerComponent implements OnInit {
         const colors = generateProductColors(this.basicVariableProductIds());
         const events: CalendarEvent[] = products.flatMap((p) => {
           const name = p.name;
-          const defaultCount = p.extensions.konfusius_shift?.default_stock;
+          const plannedCount = p.extensions.konfusius_shift?.planned_stock;
           const timesWithIds = (
             p.extensions.konfusius_shift?.variation_data ?? []
           ).map((v) => {
@@ -115,7 +115,7 @@ export class SchedulerComponent implements OnInit {
               color: colors[p.id],
               meta: {
                 productId: t.productId,
-                defaultCount: defaultCount,
+                plannedStock: plannedCount,
               },
             };
           });

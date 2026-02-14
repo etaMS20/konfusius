@@ -23,7 +23,7 @@ export class CustomEventTitleFormatter extends CalendarEventTitleFormatter {
   override day(event: CalendarEvent): string {
     return `<b>${event.title}</b>
       </br>${formatDate(event.start, 'HH:mm', this.locale)} - ${formatDate(event.end!, 'HH:mm', this.locale)}
-      (<b>&times; ${event.meta?.defaultCount}</b>)
+      (${event.meta?.plannedStock ?? 'nicht'} geplant)
       <br/><i>${event.meta?.stock?.text}</i>`;
   }
 }

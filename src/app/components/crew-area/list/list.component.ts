@@ -2,11 +2,10 @@ import { NgFor, NgIf } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { WcProduct } from '@models/product.model';
-import { SafeHtmlPipe } from '@pipes/safe-html.pipe';
 import { WcStoreAPI } from '@services/api/wc-store-api.service';
 import { TreeNode } from 'primeng/api';
 import { TreeTableModule } from 'primeng/treetable';
-import { of, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/internal/operators/catchError';
 
 interface TreeNodeData {
@@ -26,6 +25,7 @@ type ColumnDef = {
   field: keyof TreeNodeData;
   header: string;
   width?: string;
+  showFooter?: boolean;
 };
 
 @Component({
@@ -41,23 +41,29 @@ export class ListComponent implements OnInit {
   protected readonly treeNodes = signal<KTreeNode[]>([]);
 
   protected readonly columns: ColumnDef[] = [
-    { field: 'name', header: 'Name' },
-    { field: 'planned', header: 'Planned' },
-    { field: 'inStock', header: 'In Stock' },
-    { field: 'ordered', header: 'Ordered' },
-    { field: 'type', header: 'Type' },
+    { field: 'name', header: 'Schicht', width: '40%' },
+    { field: 'planned', header: 'Geplant', width: '20%', showFooter: true },
+    {
+      field: 'inStock',
+      header: 'Live',
+      width: '20%',
+      showFooter: true,
+    },
+    { field: 'type', header: 'Typ', width: '20%' },
   ];
+
   constructor() {
     this.loadInitialProducts();
   }
 
   ngOnInit() {}
 
-  private stockParse(stockStatus: string): number {
-    const match = stockStatus.match(/\d+/);
-    return match ? parseInt(match[0], 10) : 0;
+  sumColumn(field: string): number {
+    return this.treeNodes().reduce((total, node: TreeNode) => {
+      const value = Number(node.data?.[field]) || 0;
+      return total + value;
+    }, 0);
   }
-
   private loadInitialProducts() {
     this.wcStoreApi
       .listProducts([22, 32])
@@ -75,68 +81,24 @@ export class ListComponent implements OnInit {
             name: p.name,
             inStock:
               p.type === 'variable'
-                ? undefined
-                : this.stockParse(p.stock_availability.text),
+                ? p.extensions.konfusius_shift?.sum_variations_stock_count
+                : p.extensions.konfusius_shift?.stock_count,
             type: p.type,
-            meta: {
-              variableBasic: p.categories.some((cat) => cat.id === 50),
-              parentPlanned: p.extensions.konfusius_shift.default_stock,
-            },
+            planned:
+              p.type === 'variable'
+                ? p.extensions.konfusius_shift?.sum_planned_variations
+                : p.extensions.konfusius_shift?.planned_stock,
           },
-          children: [],
+          children: p.extensions.konfusius_shift?.variation_data?.map((v) => ({
+            data: {
+              name: v.name,
+              type: 'variation',
+              planned: v.planned_stock,
+              inStock: v.stock_count,
+            },
+          })),
         }));
         this.treeNodes.set(initialNodes);
-
-        // load variations in the background
-        this.loadVariationsInBackground(products, initialNodes);
       });
-  }
-
-  private loadVariationsInBackground(products: WcProduct[], nodes: TreeNode[]) {
-    products.forEach((product, index) => {
-      if (product.variations && product.variations.length > 0) {
-        this.wcStoreApi
-          .listProductVariations(product.id, ['instock', 'outofstock'])
-          .pipe(
-            catchError((error) => {
-              return of([]);
-            }),
-            takeUntilDestroyed(this.destroyRef),
-          )
-          .subscribe((variationDetails) => {
-            console.log('Loaded variations for product:', variationDetails);
-            const childrenNodes: KTreeNode[] = variationDetails.map(
-              (pVariation) => ({
-                data: {
-                  name: pVariation.extensions.konfusius_shift.time_interval,
-                  type: 'variation',
-                  planned: pVariation.extensions.konfusius_shift.default_stock,
-                  inStock: this.stockParse(pVariation.stock_availability.text),
-                },
-              }),
-            );
-
-            const sumStock = variationDetails.reduce((sum, v) => {
-              return sum + this.stockParse(v.stock_availability.text);
-            }, 0);
-            const updatedNodes = [...this.treeNodes()];
-            const node = nodes[index];
-            const { meta } = node.data;
-
-            updatedNodes[index] = {
-              ...node,
-              children: childrenNodes,
-              data: {
-                ...node.data,
-                planned: meta?.variableBasic
-                  ? meta.parentPlanned * variationDetails.length
-                  : meta.parentPlanned,
-                inStock: sumStock,
-              },
-            };
-            this.treeNodes.set(updatedNodes);
-          });
-      }
-    });
   }
 }

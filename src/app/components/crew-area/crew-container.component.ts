@@ -27,7 +27,7 @@ export class CrewContainerComponent {
       route: 'scheduler',
     },
     {
-      label: 'Schichtplan Listenansicht (beta)',
+      label: 'Schichtplan Listenansicht',
       icon: 'list',
       route: 'list',
     },

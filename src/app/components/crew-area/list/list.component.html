@@ -7,7 +7,7 @@
   >
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th *ngFor="let col of columns">
+        <th *ngFor="let col of columns" [style.width]="col.width">
           {{ col.header }}
         </th>
       </tr>
@@ -19,9 +19,21 @@
       let-columns="columns"
     >
       <tr [ttRow]="rowNode">
-        <td *ngFor="let col of columns; let i = index">
+        <td
+          *ngFor="let col of columns; let i = index"
+          [style.width]="col.width"
+        >
           <p-treetable-toggler [rowNode]="rowNode" *ngIf="i === 0" />
           {{ rowData[col.field] }}
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="footer" let-columns>
+      <tr>
+        <td *ngFor="let col of columns" [style.width]="col.width">
+          <span *ngIf="col.showFooter" style="font-weight: bold">
+            {{ sumColumn(col.field) }}
+          </span>
         </td>
       </tr>
     </ng-template>

@@ -22,7 +22,7 @@ export interface WcProduct {
   is_in_stock: boolean;
   is_purchasable: boolean;
   attributes?: Array<WcProductAttribute>;
-  variations?: Array<WcProductVariation>;
+  variations?: Array<WcProductVariationDetails>;
   prices: WcPrice;
   images: Array<WcProductImage>;
   sku: string;
@@ -55,14 +55,6 @@ export interface WcProductAttribute {
   terms: Array<WcProductAttributeTerm>;
 }
 
-export type WcProductVariation = {
-  id: number;
-  attributes: Array<WcProductVariationAttributes>;
-  extensions: {
-    konfusius_shift: WcKonfusiusShift;
-  };
-};
-
 export interface WcProductVariationDetails {
   name: string;
   id: number;
@@ -83,14 +75,18 @@ export type WcProductVariationAttributes = {
 };
 
 export interface WcKonfusiusShift {
-  time_interval: ShiftInterval;
-  default_stock: number;
+  time_interval?: ShiftInterval;
+  planned_stock?: number;
   variation_data: Array<WcKonfusiusShiftVariationData>;
+  sum_planned_variations: number;
+  sum_variations_stock_count: number;
+  stock_count?: number;
 }
 
 export interface WcKonfusiusShiftVariationData {
   id: number;
   name: string;
-  time_interval: ShiftInterval;
-  default_stock: number;
+  time_interval?: ShiftInterval;
+  planned_stock?: number;
+  stock_count: number;
 }
