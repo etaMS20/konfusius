@@ -1,7 +1,7 @@
 import { Component, inject, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavComponent } from '@components/nav/nav.component';
-import { CommonModule, registerLocaleData } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { filter, map, Observable, Subscription } from 'rxjs';
 import { FooterComponent } from '@components/footer/footer.component';
 import { BackgroundComponent } from './components/shared/background/background.component';
@@ -10,6 +10,8 @@ import { APP_VERSION, envLoaded, FESTIVAL_START } from '@config/http.config';
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
 import { EnvStatusService } from '@services/env-status.service';
 import { KTimeUtilsService } from '@services/time-utils.service';
+import { ToastModule } from 'primeng/toast';
+import { EarlyBirdService } from '@services/early-bird-service.service';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +22,7 @@ import { KTimeUtilsService } from '@services/time-utils.service';
     CommonModule,
     FooterComponent,
     BackgroundComponent,
+    ToastModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -29,6 +32,7 @@ export class AppComponent implements OnInit, OnDestroy {
   swUpdate = inject(SwUpdate);
   ccService = inject(NgcCookieConsentService); // inject to trigger cookie consent popup
   timeUtil = inject(KTimeUtilsService);
+  earlyBirdService = inject(EarlyBirdService);
   private updatesAvailable$?: Observable<any>;
   private updatesAvailable?: Subscription;
 
@@ -48,7 +52,9 @@ export class AppComponent implements OnInit, OnDestroy {
       this.promptUser();
     });
 
-    console.log(`devMode: ${isDevMode()}\nenv loaded: ${envLoaded()}`);
+    console.info(
+      `Development Mode: ${isDevMode()}\nEnvironment Loaded: ${envLoaded()}`,
+    );
 
     this.envStatus.envsLoaded = envLoaded();
     if (!this.envStatus.envsLoaded) {
@@ -67,6 +73,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.updatesAvailable?.unsubscribe();
+  }
+
+  onCloseToast() {
+    this.earlyBirdService.isMessageVisible = false;
   }
 
   private promptUser(): void {

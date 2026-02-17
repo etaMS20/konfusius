@@ -26,11 +26,11 @@ export class CrewContainerComponent {
       icon: 'calendar_today',
       route: 'scheduler',
     },
-    /*     {
-      label: 'Schichtplan Listenansicht (beta)',
+    {
+      label: 'Schichtplan Listenansicht',
       icon: 'list',
       route: 'list',
-    }, */
+    },
   ];
 
   selectedIndex = 0;

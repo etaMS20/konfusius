@@ -4,6 +4,7 @@
       <div class="toolbar-row">
         <ng-container *ngFor="let btn of buttonConfigs">
           <p-button
+            [hidden]="btn.hide"
             [disabled]="actionsDisabled()"
             [icon]="btn.icon"
             raised

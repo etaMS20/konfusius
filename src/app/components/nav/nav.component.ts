@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { TICKETS_ON } from '@config/http.config';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthService } from '@services/auth.service';
+import { InfoButtonComponent } from './info-button/info-button.component';
 
 @Component({
   selector: 'app-nav',
@@ -19,6 +20,7 @@ import { AuthService } from '@services/auth.service';
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
+    InfoButtonComponent,
   ],
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.scss'],

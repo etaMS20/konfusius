@@ -1,24 +1,40 @@
 <div class="list-container">
   <p-treetable
-    [value]="files"
+    [value]="treeNodes()"
+    [columns]="columns"
     [scrollable]="true"
-    [tableStyle]="{ 'min-width': '50rem' }"
+    [styleClass]="'p-treetable-sm'"
   >
-    <ng-template #header>
+    <ng-template pTemplate="header" let-columns>
       <tr>
-        <th>Name</th>
-        <th>Size</th>
-        <th>Type</th>
+        <th *ngFor="let col of columns" [style.width]="col.width">
+          {{ col.header }}
+        </th>
       </tr>
     </ng-template>
-    <ng-template #body let-rowNode let-rowData="rowData">
+    <ng-template
+      pTemplate="body"
+      let-rowNode
+      let-rowData="rowData"
+      let-columns="columns"
+    >
       <tr [ttRow]="rowNode">
-        <td>
-          <p-treetable-toggler [rowNode]="rowNode" />
-          {{ rowData.name }}
+        <td
+          *ngFor="let col of columns; let i = index"
+          [style.width]="col.width"
+        >
+          <p-treetable-toggler [rowNode]="rowNode" *ngIf="i === 0" />
+          {{ rowData[col.field] }}
         </td>
-        <td>{{ rowData.size }}</td>
-        <td>{{ rowData.type }}</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="footer" let-columns>
+      <tr>
+        <td *ngFor="let col of columns" [style.width]="col.width">
+          <span *ngIf="col.showFooter" style="font-weight: bold">
+            {{ sumColumn(col.field) }}
+          </span>
+        </td>
       </tr>
     </ng-template>
   </p-treetable>

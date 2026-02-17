@@ -1,0 +1,12 @@
+<ng-container *ngIf="isEarlyBirdActive()">
+  <p-button
+    (click)="triggerMessage()"
+    [styleClass]="glow() ? 'glowing' : ''"
+    icon="pi pi-bell"
+    aria-label="Show early bird info"
+    severity="warn"
+    [size]="'small'"
+    variant="outlined"
+    [disabled]="this.earlyBirdService.isMessageVisible"
+  ></p-button>
+</ng-container>

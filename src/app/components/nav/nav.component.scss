@@ -2,6 +2,12 @@
 
 $scrolled-height: calc(min($nav-max-height, $nav-height) - 20px);
 
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .header-toolbar {
   position: fixed;
   top: 0;

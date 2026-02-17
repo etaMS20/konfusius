@@ -17,7 +17,7 @@ export class KTimeUtilsService {
     this.festivalStart = festivalStart;
   }
 
-  parseShiftInterval(rawInterval: string): ParsedVariationTime {
+  parseShiftInterval(rawInterval?: string): ParsedVariationTime {
     const [startIso, durationIso] = (rawInterval || '').split('/');
     const start = DateTime.fromISO(startIso);
 

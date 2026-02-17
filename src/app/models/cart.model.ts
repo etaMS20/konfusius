@@ -2,6 +2,7 @@ import { WcBillingAddress, WcShippingAddress } from './customer.model';
 import { WcPaymentMethodId } from './order.model';
 import {
   WcCartTotals,
+  WcCouponTotals,
   WcItemTotals,
   WcPaymentRequirement,
   WcPrice,
@@ -9,7 +10,7 @@ import {
 
 export interface WcCart {
   billing_address: WcBillingAddress;
-  coupons: Array<any>;
+  coupons: Array<WcCartCoupon>;
   cross_sells: Array<any>;
   errors: Array<any>;
   extensions: object;
@@ -24,6 +25,12 @@ export interface WcCart {
   shipping_address: WcShippingAddress;
   shipping_rates: Array<any>;
   totals: WcCartTotals;
+}
+
+export interface WcCartCoupon {
+  code: string;
+  discount_type: string;
+  totals: WcCouponTotals;
 }
 
 export interface WcCartItem {

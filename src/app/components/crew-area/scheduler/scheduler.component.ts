@@ -86,18 +86,16 @@ export class SchedulerComponent implements OnInit {
 
   private loadBasicVariationsToCalendar() {
     this.wcStoreApi
-      .listProducts(50, 'title') // sort by title
+      .listProducts([50], 'title') // sort by title
       .pipe(takeUntil(this.destroy$))
       .subscribe((products) => {
         this.basicVariableProductIds.set(products.map((p) => p.id));
         const colors = generateProductColors(this.basicVariableProductIds());
         const events: CalendarEvent[] = products.flatMap((p) => {
           const name = p.name;
-          const defaultCount = p.extensions.konfusius_shift?.default_stock;
           const timesWithIds = (
             p.extensions.konfusius_shift?.variation_data ?? []
           ).map((v) => {
-            console.log('Variation Data', v);
             return {
               productId: p.id,
               variationId: v.id,
@@ -116,7 +114,6 @@ export class SchedulerComponent implements OnInit {
               color: colors[p.id],
               meta: {
                 productId: t.productId,
-                defaultCount: defaultCount,
               },
             };
           });
@@ -142,6 +139,8 @@ export class SchedulerComponent implements OnInit {
                   meta: {
                     ...entry.meta,
                     stock: variation.stock_availability,
+                    plannedStock:
+                      variation.extensions.konfusius_shift?.planned_stock,
                   },
                 };
               }

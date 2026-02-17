@@ -6,4 +6,4 @@ export interface ParsedVariationTime {
 export type ISODateTime =
   `${string}-${string}-${string}T${string}:${string}:${string}`;
 export type ISODuration = `P${string}`;
-export type ShiftInterval = `${ISODateTime}/${ISODuration}`;
+export type ShiftInterval = `${ISODateTime}/${ISODuration}` | undefined;

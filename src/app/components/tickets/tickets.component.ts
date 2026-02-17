@@ -16,7 +16,6 @@ import {
   WcProductTypes,
   WcProductVariationDetails,
 } from '@models/product.model';
-import { MappingService } from '@services/mapping.service';
 import { WcStoreAPI } from '@services/api/wc-store-api.service';
 import { catchError, Subject, takeUntil, throwError } from 'rxjs';
 import { ProductComponent } from './product/product.component';
@@ -50,7 +49,6 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   /** injectable */
-  private readonly mappingService = inject(MappingService);
   private readonly errorService = inject(ErrorDialogService);
   private readonly wcStore = inject(WcStoreAPI);
   private readonly lsService = inject(LocalStorageService);
@@ -124,7 +122,7 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   private queryCrossSaleOptions() {
     this.productsLoading.set(true);
     this.wcStore
-      .listProducts(crossSaleProductCat, 'price')
+      .listProducts([crossSaleProductCat], 'price')
       .pipe(
         catchError((error) => {
           this.errorService.handleError(error);
@@ -201,7 +199,7 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   initProducts() {
-    return this.wcStore.listProducts(this.getProductCat).pipe(
+    return this.wcStore.listProducts([this.getProductCat]).pipe(
       takeUntil(this.destroy$),
       catchError((error) => {
         this.productsLoading.set(false);

@@ -1,0 +1,15 @@
+@keyframes glow {
+  50% {
+    box-shadow: 0 0 10px rgba(188, 255, 99, 0.699);
+  }
+}
+
+:host ::ng-deep .p-button.glowing {
+  box-shadow: 0 0 8px rgba(0, 191, 255, 0.2);
+  animation: glow 2s ease-in-out infinite;
+}
+
+:host ::ng-deep .p-button.p-button-outlined {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+  color: inherit !important;
+}

@@ -96,3 +96,7 @@ On git-pushes the app fill be automatically deployed to wordpress using `.github
 - Deadline: Anfang Mai
 - Kochen auch am Montag
 - Kochen - 1 Person weniger
+- 20 Aufbau max
+- Artist: 40 max
+- Abbau 10er günstiger pro Tag
+- Crew: Frei gewählter Betrag (min 1€)
