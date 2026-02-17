@@ -10,8 +10,8 @@ import { catchError } from 'rxjs/internal/operators/catchError';
 
 interface TreeNodeData {
   name: string;
-  planned?: number;
-  inStock?: number;
+  planned?: number | string;
+  inStock?: number | string;
   ordered?: number;
   type: string;
   meta?: {
@@ -79,22 +79,16 @@ export class ListComponent implements OnInit {
         const initialNodes: KTreeNode[] = products.map((p) => ({
           data: {
             name: p.name,
-            inStock:
-              p.type === 'variable'
-                ? p.extensions.konfusius_shift?.sum_variations_stock_count
-                : p.extensions.konfusius_shift?.stock_count,
+            inStock: p.extensions.konfusius_shift?.stock_count,
             type: p.type,
-            planned:
-              p.type === 'variable'
-                ? p.extensions.konfusius_shift?.sum_planned_variations
-                : p.extensions.konfusius_shift?.planned_stock,
+            planned: p.extensions.konfusius_shift?.planned_stock,
           },
           children: p.extensions.konfusius_shift?.variation_data?.map((v) => ({
             data: {
               name: v.name,
               type: 'variation',
-              planned: v.planned_stock,
-              inStock: v.stock_count,
+              planned: v.planned_stock ?? '...',
+              inStock: v.stock_count ?? '...',
             },
           })),
         }));

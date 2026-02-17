@@ -66,6 +66,7 @@ export class ShiftManagerToolbarComponent {
   buttonConfigs: {
     label: string;
     icon: string;
+    hide?: boolean;
     tooltip: string;
     severity: ButtonSeverity;
     onClick: () => void;
@@ -89,6 +90,7 @@ export class ShiftManagerToolbarComponent {
       icon: 'pi pi-trash',
       tooltip: 'Ausgewählte Anmeldungen löschen',
       severity: 'secondary',
+      hide: true,
       onClick: () => this.orderStatusChange.emit('trash'),
     },
     {

@@ -77,10 +77,8 @@ export type WcProductVariationAttributes = {
 export interface WcKonfusiusShift {
   time_interval?: ShiftInterval;
   planned_stock?: number;
-  variation_data: Array<WcKonfusiusShiftVariationData>;
-  sum_planned_variations: number;
-  sum_variations_stock_count: number;
   stock_count?: number;
+  variation_data: Array<WcKonfusiusShiftVariationData>;
 }
 
 export interface WcKonfusiusShiftVariationData {

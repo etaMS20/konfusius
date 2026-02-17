@@ -93,7 +93,6 @@ export class SchedulerComponent implements OnInit {
         const colors = generateProductColors(this.basicVariableProductIds());
         const events: CalendarEvent[] = products.flatMap((p) => {
           const name = p.name;
-          const plannedCount = p.extensions.konfusius_shift?.planned_stock;
           const timesWithIds = (
             p.extensions.konfusius_shift?.variation_data ?? []
           ).map((v) => {
@@ -115,7 +114,6 @@ export class SchedulerComponent implements OnInit {
               color: colors[p.id],
               meta: {
                 productId: t.productId,
-                plannedStock: plannedCount,
               },
             };
           });
@@ -141,6 +139,8 @@ export class SchedulerComponent implements OnInit {
                   meta: {
                     ...entry.meta,
                     stock: variation.stock_availability,
+                    plannedStock:
+                      variation.extensions.konfusius_shift?.planned_stock,
                   },
                 };
               }
