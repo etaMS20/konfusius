@@ -1,4 +1,15 @@
 <div class="list-container">
+  <p-toolbar>
+    <ng-template #start></ng-template>
+    <ng-template #end>
+      <p-button
+        (click)="exportToPDF()"
+        label="Export to PDF"
+        severity="secondary"
+        size="small"
+      ></p-button>
+    </ng-template>
+  </p-toolbar>
   <p-treetable
     [value]="treeNodes()"
     [columns]="columns"
