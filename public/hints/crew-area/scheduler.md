@@ -1,3 +1,0 @@
-#### Hinweis: Kalender Ansicht
-
-blabla

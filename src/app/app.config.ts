@@ -17,7 +17,6 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 import { MessageService } from 'primeng/api';
-import { provideMarkdown } from 'ngx-markdown';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -50,6 +49,5 @@ export const appConfig: ApplicationConfig = {
       },
     }),
     MessageService,
-    provideMarkdown(),
   ],
 };

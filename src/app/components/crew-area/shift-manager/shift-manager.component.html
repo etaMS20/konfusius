@@ -1,4 +1,26 @@
-<kf-hint [mdSrc]="'public/hints/crew-area/manage.md'" />
+<kf-hint>
+  <h1>Hinweis: Anmeldungen Verwalten</h1>
+  <p>
+    In diesem Bereich können die Anmeldungen für die Schichten eingesehen und
+    verwaltet werden. Die Tabelle zeigt alle Anmeldungen an, entsprechend der
+    aktiven Filtereinstellungen und der aktuellen Seite. Unten kann die Seite
+    und die Anzahl der Einträge pro Seite angepasst werden.
+  </p>
+  <h2>Filtereinstellungen</h2>
+  <ul>
+    <li>
+      <b>Keyword Filter:</b> Mit diesem Filter können Sie nach bestimmten
+      Schlüsselwörtern suchen, die in den Anmeldungen enthalten sind. Zum
+      Beispiel können Sie nach einem Namen, einer E-Mail-Adresse oder einem
+      anderen relevanten Begriff suchen.
+    </li>
+    <li>
+      <b>Status Filter:</b> Mit diesem Filter können Sie die Anmeldungen nach
+      ihrem Status filtern. Zum Beispiel können Sie nur die Anmeldungen
+      anzeigen, die noch offen sind, oder nur die, die bereits bestätigt wurden.
+    </li>
+  </ul>
+</kf-hint>
 <div>
   <kf-shift-manager-toolbar
     [(selectedFilters)]="selectedFields"

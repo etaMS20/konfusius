@@ -1,18 +1,17 @@
-import { Component, effect, input, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
-import { MarkdownModule } from 'ngx-markdown';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'kf-hint',
   standalone: true,
-  imports: [CommonModule, ButtonModule, MarkdownModule],
+  imports: [CommonModule, ButtonModule, TooltipModule],
   templateUrl: './hint.component.html',
   styleUrls: ['./hint.component.scss'],
 })
 export class HintComponent {
   key = input<string>();
-  mdSrc = input<string>();
   visible = true;
 
   ngOnInit(): void {
@@ -29,9 +28,4 @@ export class HintComponent {
   }
 
   private persistDismiss(): void {}
-
-  onError(event: Error | string): void {
-    this.visible = false;
-    console.error('Error loading hint content from markdown file.', event);
-  }
 }
