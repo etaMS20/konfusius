@@ -1,0 +1,32 @@
+@if (visible) {
+  <div class="hint">
+    <i class="pi pi-info-circle"></i>
+    <span class="hint-text">
+      <!-- from .md file or inline content -->
+      @if (mdSrc(); as src) {
+        <markdown #content [src]="src" (error)="this.onError($event)" />
+      } @else {
+        <ng-content />
+      }
+      <ng-template #inlineContent>
+        <ng-content></ng-content>
+      </ng-template>
+    </span>
+    <p-button
+      icon="pi pi-times"
+      severity="secondary"
+      (click)="dismiss()"
+      [outlined]="true"
+      [rounded]="true"
+      size="small"
+    ></p-button>
+  </div>
+} @else {
+  <p-button
+    icon="pi pi-times"
+    severity="secondary"
+    [outlined]="true"
+    [rounded]="true"
+    size="small"
+  ></p-button>
+}

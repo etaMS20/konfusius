@@ -20,7 +20,7 @@ import localeDe from '@angular/common/locales/de';
 import { FormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { WcStoreAPI } from '@services/api/wc-store-api.service';
-import { Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { CustomEventTitleFormatter } from '../title-formatter.provider';
 import { CustomDateFormatter } from '../date-formatter.provider';
 import { generateProductColors } from './colors.util';
@@ -63,6 +63,8 @@ export class SchedulerComponent implements OnInit {
   private readonly destroy$ = new Subject<void>();
   private readonly wcStoreApi = inject(WcStoreAPI);
   public readonly timeUtil = inject(KTimeUtilsService);
+
+  loading$ = new BehaviorSubject<boolean>(false);
 
   weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
 
@@ -123,6 +125,8 @@ export class SchedulerComponent implements OnInit {
         this.loadMetaInformation();
       });
   }
+
+  // TODO: Loading and reduce requests
 
   private loadMetaInformation() {
     this.basicVariableProductIds().forEach((id) => {

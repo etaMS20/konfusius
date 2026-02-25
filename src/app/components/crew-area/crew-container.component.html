@@ -1,18 +1,19 @@
 <div class="crew-area-container">
   <div class="crew-area-nav">
-    <mat-tab-group
-      [(selectedIndex)]="selectedIndex"
-      (selectedIndexChange)="onTabChange($event)"
-    >
-      @for (tab of tabs; track tab.route) {
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <mat-icon>{{ tab.icon }}</mat-icon>
-            {{ tab.label }}
-          </ng-template>
-        </mat-tab>
-      }
-    </mat-tab-group>
+    <p-tabs [value]="currentTabRoute()">
+      <p-tablist>
+        @for (tab of tabs; track tab.route) {
+          <p-tab
+            [value]="tab.route"
+            [routerLink]="tab.route"
+            class="flex items-center !gap-2 text-inherit"
+          >
+            <i [class]="tab.icon"></i>
+            <span>{{ tab.label }}</span>
+          </p-tab>
+        }
+      </p-tablist>
+    </p-tabs>
   </div>
   <router-outlet></router-outlet>
 </div>
