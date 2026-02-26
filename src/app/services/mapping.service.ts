@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { WPImageSizeApiKey, WPMappedImage } from '@models/media.model';
 
-/**
- * service to map the api responses to typed objects
- */
 @Injectable({
   providedIn: 'root',
 })

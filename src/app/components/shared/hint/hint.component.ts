@@ -1,7 +1,8 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
+import { HintService } from './service/hint.service';
 
 @Component({
   selector: 'kf-hint',
@@ -11,21 +12,32 @@ import { TooltipModule } from 'primeng/tooltip';
   styleUrls: ['./hint.component.scss'],
 })
 export class HintComponent {
-  key = input<string>();
+  key = input.required<string>();
+  withShowButton = input(true);
   visible = true;
 
+  private readonly hintService = inject(HintService);
+
   ngOnInit(): void {
-    this.visible = !this.isDismissed();
+    const key = this.key();
+    if (key) {
+      this.visible = !this.hintService.isDismissed(key);
+    }
   }
 
   dismiss(): void {
+    const key = this.key();
+    if (key) {
+      this.hintService.dismiss(key);
+    }
     this.visible = false;
-    this.persistDismiss();
   }
 
-  private isDismissed(): boolean {
-    return false;
+  show(): void {
+    const key = this.key();
+    if (key) {
+      this.hintService.unDismiss(key);
+    }
+    this.visible = true;
   }
-
-  private persistDismiss(): void {}
 }

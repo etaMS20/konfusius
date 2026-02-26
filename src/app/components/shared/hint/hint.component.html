@@ -15,12 +15,13 @@
       tooltipPosition="bottom"
     ></p-button>
   </div>
-} @else {
+} @else if (withShowButton()) {
   <p-button
-    icon="pi pi-times"
+    icon="pi pi-info-circle"
     severity="secondary"
     [outlined]="true"
     [rounded]="true"
     size="small"
+    (click)="show()"
   ></p-button>
 }
