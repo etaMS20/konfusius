@@ -24,11 +24,11 @@ import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { CustomEventTitleFormatter } from '../title-formatter.provider';
 import { CustomDateFormatter } from '../date-formatter.provider';
 import { generateProductColors } from './colors.util';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatIconButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { MatDivider } from '@angular/material/divider';
+import { RadioButtonModule } from 'primeng/radiobutton';
 import { KTimeUtilsService } from '@services/time-utils.service';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { ToolbarModule } from 'primeng/toolbar';
+import { ButtonModule } from 'primeng/button';
 
 registerLocaleData(localeDe);
 
@@ -41,10 +41,10 @@ registerLocaleData(localeDe);
     CalendarModule,
     MatButtonToggleModule,
     FormsModule,
-    MatRadioModule,
-    MatIconButton,
-    MatIcon,
-    MatDivider,
+    RadioButtonModule,
+    ProgressBarModule,
+    ToolbarModule,
+    ButtonModule,
   ],
   templateUrl: './scheduler.component.html',
   styleUrls: ['./scheduler.component.scss'],
@@ -81,6 +81,7 @@ export class SchedulerComponent implements OnInit {
   activeDayIsOpen: boolean = false;
 
   ngOnInit() {
+    this.loading$.next(true);
     this.loadBasicVariationsToCalendar();
   }
 
@@ -102,6 +103,8 @@ export class SchedulerComponent implements OnInit {
               productId: p.id,
               variationId: v.id,
               shiftInterval: v.time_interval,
+              stock: v.stock_count,
+              plannedStock: v.planned_stock,
             };
           });
 
@@ -116,43 +119,16 @@ export class SchedulerComponent implements OnInit {
               color: colors[p.id],
               meta: {
                 productId: t.productId,
+                stock: t.stock,
+                plannedStock: t.plannedStock,
               },
             };
           });
         });
 
         this.calendarEntries.update((existing) => [...existing, ...events]);
-        this.loadMetaInformation();
+        this.loading$.next(false);
       });
-  }
-
-  // TODO: Loading and reduce requests
-
-  private loadMetaInformation() {
-    this.basicVariableProductIds().forEach((id) => {
-      this.wcStoreApi
-        .listProductVariations(id as number, ['instock', 'outofstock'])
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((variations) => {
-          this.calendarEntries.update((entries) => {
-            return entries.map((entry) => {
-              const variation = variations.find((v) => v.id === entry.id);
-              if (variation) {
-                return {
-                  ...entry,
-                  meta: {
-                    ...entry.meta,
-                    stock: variation.stock_availability,
-                    plannedStock:
-                      variation.extensions.konfusius_shift?.planned_stock,
-                  },
-                };
-              }
-              return entry;
-            });
-          });
-        });
-    });
   }
 
   beforeDayViewRender(renderEvent: CalendarDayViewBeforeRenderEvent) {

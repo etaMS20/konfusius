@@ -15,6 +15,7 @@
     [columns]="columns"
     [scrollable]="true"
     [styleClass]="'p-treetable-sm'"
+    [loading]="loading$ | async"
   >
     <ng-template pTemplate="header" let-columns>
       <tr>

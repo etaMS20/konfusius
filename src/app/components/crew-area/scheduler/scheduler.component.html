@@ -1,41 +1,72 @@
-<div class="calendar-toolbar">
-  <mat-radio-group [(ngModel)]="view">
-    <mat-radio-button value="month">Monatsansicht</mat-radio-button>
-    <mat-radio-button value="day">Tagesansicht</mat-radio-button>
-  </mat-radio-group>
-  <div class="calendar-pageinator">
-    <mat-divider [vertical]="true"></mat-divider>
-    <button mat-icon-button (click)="previousDay($event)">
-      <mat-icon>chevron_left</mat-icon>
-    </button>
-    <span>{{
-      viewDate() | date: 'EEEE, d. MMM yyyy' : '' : timeUtil.locale
-    }}</span>
-    <button mat-icon-button (click)="nextDay($event)">
-      <mat-icon>chevron_right</mat-icon>
-    </button>
+<p-toolbar>
+  <ng-template pTemplate="start">
+    <div class="view-selector">
+      <p-radioButton
+        name="view"
+        value="month"
+        [(ngModel)]="view"
+        inputId="monthView"
+      />
+      <label for="monthView">Monatsansicht</label>
+      <p-radioButton
+        name="view"
+        value="day"
+        [(ngModel)]="view"
+        inputId="dayView"
+      />
+      <label for="dayView">Tagesansicht</label>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="end">
+    <div class="calendar-paginator">
+      <p-button
+        icon="pi pi-chevron-left"
+        [text]="true"
+        [rounded]="true"
+        severity="secondary"
+        (onClick)="previousDay($event)"
+      />
+      <span>
+        <b>
+          {{ viewDate() | date: 'EEEE, d. MMM yyyy' : '' : timeUtil.locale }}
+        </b>
+      </span>
+      <p-button
+        icon="pi pi-chevron-right"
+        [text]="true"
+        [rounded]="true"
+        severity="secondary"
+        (onClick)="nextDay($event)"
+      />
+    </div>
+  </ng-template>
+</p-toolbar>
+<ng-container *ngIf="loading$ | async; else calendarView">
+  <p-progressbar mode="indeterminate" [style]="{ height: '6px' }" />
+</ng-container>
+
+<ng-template #calendarView
+  ><div>
+    @switch (view) {
+      @case ('month') {
+        <mwl-calendar-month-view
+          [viewDate]="viewDate()"
+          [events]="calendarEntries()"
+          [locale]="timeUtil.locale"
+          [activeDayIsOpen]="activeDayIsOpen"
+          (dayClicked)="dayClicked($event.day)"
+          [weekStartsOn]="weekStartsOn"
+          [weekendDays]="weekendDays"
+        />
+      }
+      @case ('day') {
+        <mwl-calendar-day-view
+          [viewDate]="viewDate()"
+          [events]="calendarEntries()"
+          [locale]="timeUtil.locale"
+          (beforeViewRender)="beforeDayViewRender($event)"
+        />
+      }
+    }
   </div>
-</div>
-<div>
-  @switch (view) {
-    @case ('month') {
-      <mwl-calendar-month-view
-        [viewDate]="viewDate()"
-        [events]="calendarEntries()"
-        [locale]="timeUtil.locale"
-        [activeDayIsOpen]="activeDayIsOpen"
-        (dayClicked)="dayClicked($event.day)"
-        [weekStartsOn]="weekStartsOn"
-        [weekendDays]="weekendDays"
-      />
-    }
-    @case ('day') {
-      <mwl-calendar-day-view
-        [viewDate]="viewDate()"
-        [events]="calendarEntries()"
-        [locale]="timeUtil.locale"
-        (beforeViewRender)="beforeDayViewRender($event)"
-      />
-    }
-  }
-</div>
+</ng-template>

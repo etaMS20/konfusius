@@ -1,11 +1,11 @@
-import { NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { WcProduct } from '@models/product.model';
 import { WcStoreAPI } from '@services/api/wc-store-api.service';
 import { TreeNode } from 'primeng/api';
 import { TreeTableModule } from 'primeng/treetable';
-import { throwError } from 'rxjs';
+import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -42,6 +42,7 @@ type ColumnDef = {
     MatExpansionModule,
     ToolbarModule,
     ButtonModule,
+    AsyncPipe,
   ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
@@ -51,6 +52,8 @@ export class ListComponent implements OnInit {
   private readonly wcStoreApi = inject(WcStoreAPI);
   private readonly destroyRef = inject(DestroyRef);
   protected readonly treeNodes = signal<KTreeNode[]>([]);
+
+  loading$ = new BehaviorSubject<boolean>(false);
 
   protected readonly columns: ColumnDef[] = [
     { field: 'name', header: 'Schicht', width: '40%' },
@@ -64,11 +67,12 @@ export class ListComponent implements OnInit {
     { field: 'type', header: 'Typ', width: '20%' },
   ];
 
-  constructor() {
-    this.loadInitialProducts();
-  }
+  constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadInitialProducts();
+    this.loading$.next(true);
+  }
 
   sumColumn(field: string): number {
     return this.treeNodes().reduce((total, node: TreeNode) => {
@@ -87,7 +91,6 @@ export class ListComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((products: WcProduct[]) => {
-        console.log('Initial products loaded:', products);
         const initialNodes: KTreeNode[] = products.map((p) => ({
           data: {
             name: p.name,
@@ -105,6 +108,7 @@ export class ListComponent implements OnInit {
           })),
         }));
         this.treeNodes.set(initialNodes);
+        this.loading$.next(false);
       });
   }
 

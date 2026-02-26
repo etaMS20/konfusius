@@ -1,16 +1,11 @@
-.calendar-pageinator {
+.calendar-paginator {
   display: flex;
   align-items: center;
   gap: 0.25rem;
 
-  mat-divider {
-    margin-right: 1rem;
-  }
-
   span {
     min-width: 240px;
     text-align: center;
-    font-weight: 500;
     white-space: nowrap;
   }
 
@@ -19,14 +14,8 @@
   }
 }
 
-.calendar-toolbar {
+.view-selector {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem 2rem;
-
-  mat-radio-group {
-    display: flex;
-    gap: 0.5rem;
-  }
+  gap: 1rem;
+  margin: 0 1rem;
 }

@@ -1,7 +1,12 @@
-import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterModule,
+} from '@angular/router';
 import { TabsModule } from 'primeng/tabs';
+import { filter } from 'rxjs/internal/operators/filter';
 
 @Component({
   selector: 'app-crew-container',
@@ -10,17 +15,13 @@ import { TabsModule } from 'primeng/tabs';
   styleUrl: './crew-container.component.scss',
 })
 export class CrewContainerComponent implements OnInit {
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+  ) {}
 
-  currentTabRoute = signal<string>('manage');
+  currentTabRoute = signal('manage');
 
-  // TODO: Bind tabs to route
-  ngOnInit() {
-    this.route.params.subscribe((params) => {
-      const tabRoute = params['tab'] || 'manage';
-      this.currentTabRoute.set(tabRoute);
-    });
-  }
   tabs = [
     {
       label: 'Anmeldungen Verwalten',
@@ -38,4 +39,17 @@ export class CrewContainerComponent implements OnInit {
       route: 'list',
     },
   ];
+
+  ngOnInit() {
+    const getTab = () => {
+      const child = this.route.firstChild;
+      return child?.snapshot.url[0]?.path ?? 'manage';
+    };
+
+    this.currentTabRoute.set(getTab());
+
+    this.router.events
+      .pipe(filter((e) => e instanceof NavigationEnd))
+      .subscribe(() => this.currentTabRoute.set(getTab()));
+  }
 }
