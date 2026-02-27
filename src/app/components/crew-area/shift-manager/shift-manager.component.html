@@ -11,9 +11,10 @@
   <div class="hint-start">
     <p><b>Anmeldestatus Bearbeiten</b></p>
     <p>
-      Über die Checkboxen in der ersten Spalte können einer oder mehrere
-      Anmeldungen ausgewählt werden. Daraufhin können die 3 Buttons benutzt
-      werden um den Status der Auswahl zu bearbeiten:
+      Klicke auf eine Zeile, um sie auszuwählen. Mit <b>Strg + Klick</b> wählst
+      du mehrere einzelne Zeilen aus, während <b>Shift + Klick</b> einen ganzen
+      Bereich markiert. Um alle aktuell angezeigten Anmeldungen gleichzeitig
+      auszuwählen, kannst du <b>Strg + A</b> nutzen.
     </p>
     <ul>
       <li><b>On Hold:</b> Dies ist der initiale Status einer Anmeldung.</li>
@@ -63,7 +64,7 @@
     [tableRef]="dt"
     [contactPersonOptions]="contactPersons()"
   ></kf-shift-manager-toolbar>
-  <div>
+  <div class="table-wrapper">
     <p-table
       #dt
       [value]="filteredOrders()"
@@ -82,9 +83,11 @@
     >
       <ng-template pTemplate="header">
         <tr>
-          <th style="width: 4rem">
-            <p-tableHeaderCheckbox />
-          </th>
+          @if (withCheckbox) {
+            <th style="width: 4rem">
+              <p-tableHeaderCheckbox />
+            </th>
+          }
 
           <th pSortableColumn="status" class="status-cell">
             <p-sortIcon field="status" />
@@ -132,10 +135,11 @@
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="body" let-order>
-        <tr [pSelectableRow]="order" selectionMode="multiple">
-          <td><p-tableCheckbox [value]="order" /></td>
-
+      <ng-template pTemplate="body" let-order let-rowIndex="rowIndex">
+        <tr [pSelectableRow]="order" [pSelectableRowIndex]="rowIndex">
+          @if (withCheckbox) {
+            <td><p-tableCheckbox [value]="order" /></td>
+          }
           <td>
             <app-order-status
               class="status-cell"
@@ -169,7 +173,7 @@
       </ng-template>
       <ng-template pTemplate="footer">
         <tr>
-          <td colspan="7"></td>
+          <td colspan="6"></td>
           <td>
             <span style="font-weight: bold">{{
               pageSum() | currency: 'EUR'

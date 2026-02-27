@@ -70,6 +70,8 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
   private customEpS = inject(CustomEndpointsService);
   private errorService = inject(ErrorDialogService);
 
+  withCheckbox = false;
+
   scopeYears = signal<string[]>(['2026']);
 
   /** Raw coming from API */
