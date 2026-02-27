@@ -1,3 +1,4 @@
+<p-contextMenu #cm [model]="menuItems"></p-contextMenu>
 <kf-hint key="manage-shifts" [withShowButton]="false">
   <h1>Hinweis: Anmeldungen Verwalten</h1>
   <p>
@@ -16,6 +17,7 @@
       Bereich markiert. Um alle aktuell angezeigten Anmeldungen gleichzeitig
       auszuwählen, kannst du <b>Strg + A</b> nutzen.
     </p>
+
     <ul>
       <li><b>On Hold:</b> Dies ist der initiale Status einer Anmeldung.</li>
       <li>
@@ -29,8 +31,10 @@
       </li>
     </ul>
     <p>
-      Der Status einzelner Anmeldungen kann auch mit Rechtsklick auf die Zeile
-      bearbeitet werden.
+      Der Status kann auch mit Rechtsklick auf die Zeile bearbeitet werden. Wenn
+      das angeklickte Element Teil der aktuellen Auswahl ist, werden alle
+      ausgewählten Elemente aktualisiert. Andernfalls wird nur das angeklickte
+      Element aktualisiert.
     </p>
   </div>
   <div class="hint-end">
@@ -68,6 +72,8 @@
     <p-table
       #dt
       [value]="filteredOrders()"
+      [contextMenu]="cm"
+      [(contextMenuSelection)]="selectedOrderForMenu"
       [paginator]="true"
       [filterDelay]="10"
       [rows]="20"
@@ -123,11 +129,13 @@
           <th pSortableColumn="billing.full_name">
             Name<p-sortIcon field="billing.full_name" />
           </th>
-          <th>Schicht</th>
+          <th pSortableColumn="main_item_name">
+            Schicht<p-sortIcon field="main_item_name" />
+          </th>
           <th>E-mail</th>
           <th>Kontaktp.</th>
           <th>Ticket</th>
-          <th>Preis</th>
+          <th pSortableColumn="total">Preis<p-sortIcon field="total" /></th>
           <th pSortableColumn="date_created">
             Datum<p-sortIcon field="date_created" />
           </th>
@@ -136,7 +144,12 @@
       </ng-template>
 
       <ng-template pTemplate="body" let-order let-rowIndex="rowIndex">
-        <tr [pSelectableRow]="order" [pSelectableRowIndex]="rowIndex">
+        <tr
+          [pSelectableRow]="order"
+          [pSelectableRowIndex]="rowIndex"
+          [pContextMenuRow]="order"
+          [pSelectableRowIndex]="rowIndex"
+        >
           @if (withCheckbox) {
             <td><p-tableCheckbox [value]="order" /></td>
           }
