@@ -1,8 +1,11 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { HintService } from './service/hint.service';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { switchMap } from 'rxjs/internal/operators/switchMap';
+import { map } from 'rxjs/internal/operators/map';
 
 @Component({
   selector: 'kf-hint',
@@ -11,33 +14,38 @@ import { HintService } from './service/hint.service';
   templateUrl: './hint.component.html',
   styleUrls: ['./hint.component.scss'],
 })
-export class HintComponent {
+export class HintComponent implements OnInit, OnDestroy {
   key = input.required<string>();
   withShowButton = input(true);
-  visible = true;
+  visible = toSignal(
+    toObservable(this.key).pipe(
+      switchMap((key) => this.hintService.isDismissed$(key)),
+      map((dismissed) => !dismissed),
+    ),
+    { initialValue: true },
+  );
 
   private readonly hintService = inject(HintService);
 
+  /**
+   * On initializing a Hint, register it as rendered
+   */
   ngOnInit(): void {
-    const key = this.key();
-    if (key) {
-      this.visible = !this.hintService.isDismissed(key);
-    }
-  }
-
-  dismiss(): void {
-    const key = this.key();
-    if (key) {
-      this.hintService.dismiss(key);
-    }
-    this.visible = false;
+    this.hintService.register(this.key());
   }
 
   show(): void {
-    const key = this.key();
-    if (key) {
-      this.hintService.unDismiss(key);
-    }
-    this.visible = true;
+    this.hintService.show(this.key());
+  }
+
+  dismiss(): void {
+    this.hintService.hide(this.key());
+  }
+
+  /**
+   * On destroy, unregister it
+   */
+  ngOnDestroy(): void {
+    this.hintService.unregister(this.key());
   }
 }
