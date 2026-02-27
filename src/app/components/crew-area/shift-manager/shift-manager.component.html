@@ -3,9 +3,9 @@
   <p>
     In diesem Bereich können die Anmeldungen eingesehen und verwaltet werden.
     Die Tabelle lädt alle eingegangen Anmeldungen aus dem Backend, entsprechend
-    der ausgewählten Festivaljahre. Die Tabelle wird entsprechend der aktiven
-    Filtereinstellungen und der aktuellen Seite aktualisiert. Unten kann die
-    Seite und die
+    der ausgewählten Festivaljahre. Die Tabelle listet die Anmeldungen
+    entsprechend der aktiven Filtereinstellungen und der aktuellen Seite. Unten
+    kann die Seite und die
     <b>Anzahl der Einträge pro Seite</b> angepasst werden.
   </p>
   <div class="hint-start">
@@ -77,6 +77,8 @@
       [loading]="loading$ | async"
       (onPage)="onPageChange($event)"
       [globalFilterFields]="['billing.billing_invite']"
+      selectionMode="multiple"
+      [metaKeySelection]="false"
     >
       <ng-template pTemplate="header">
         <tr>
@@ -131,7 +133,7 @@
       </ng-template>
 
       <ng-template pTemplate="body" let-order>
-        <tr>
+        <tr [pSelectableRow]="order" selectionMode="multiple">
           <td><p-tableCheckbox [value]="order" /></td>
 
           <td>

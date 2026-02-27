@@ -1,9 +1,5 @@
 .limited-cell {
-  max-width: 10vw;
-}
-
-.email-cell {
-  padding-right: 25px;
+  max-width: 250px;
 }
 
 .relative-wrapper {
@@ -27,7 +23,6 @@
   transform: translateY(-50%);
   opacity: 0;
   transition: opacity 0.2s;
-  background: white;
 }
 
 td:hover .copy-btn {
@@ -38,4 +33,13 @@ td:hover .copy-btn {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+tr {
+  user-select: none;
+}
+
+td.email-cell {
+  user-select: text;
+  padding-right: 25px;
 }
