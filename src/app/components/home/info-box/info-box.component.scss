@@ -34,6 +34,17 @@
       &:last-child {
         margin-bottom: 0;
       }
+
+      ul {
+        margin-left: 2rem;
+        padding-left: 0;
+
+        li {
+          &:before {
+            content: '– ';
+          }
+        }
+      }
     }
   }
 }

@@ -1,34 +1,55 @@
 <kf-hint key="manage-shifts" [withShowButton]="false">
   <h1>Hinweis: Anmeldungen Verwalten</h1>
   <p>
-    In diesem Bereich können die Anmeldungen für die Schichten eingesehen und
-    verwaltet werden. Die Tabelle zeigt alle Anmeldungen an, entsprechend der
-    aktiven Filtereinstellungen und der aktuellen Seite. Unten kann die Seite
-    und die Anzahl der Einträge pro Seite angepasst werden.
+    In diesem Bereich können die Anmeldungen eingesehen und verwaltet werden.
+    Die Tabelle lädt alle eingegangen Anmeldungen aus dem Backend, entsprechend
+    der ausgewählten Festivaljahre. Die Tabelle wird entsprechend der aktiven
+    Filtereinstellungen und der aktuellen Seite aktualisiert. Unten kann die
+    Seite und die
+    <b>Anzahl der Einträge pro Seite</b> angepasst werden.
   </p>
   <div class="hint-start">
-    <p><b>Bulk Aktionen:</b></p>
+    <p><b>Anmeldestatus Bearbeiten</b></p>
     <p>
-      Über die Checkboxen in der ersten Spalte können mehrere Anmeldungen
-      ausgewählt werden. Daraufhin können die 3 Knöpfe benutzt werden um die
-      Auswahl entweder auf <b>bezahlt</b> zu setzen, zu <b>stornieren</b> oder
-      <b>zurückzusetzen</b>.
+      Über die Checkboxen in der ersten Spalte können einer oder mehrere
+      Anmeldungen ausgewählt werden. Daraufhin können die 3 Buttons benutzt
+      werden um den Status der Auswahl zu bearbeiten:
+    </p>
+    <ul>
+      <li><b>On Hold:</b> Dies ist der initiale Status einer Anmeldung.</li>
+      <li>
+        <b>Stornieren:</b> Die Anmeldung wird storniert. Dadurch wird die
+        Schicht wieder frei.
+      </li>
+      <li>
+        <b>Ist Bezahlt:</b> Dies ist der Status, wenn ihr als Kontaktperson den
+        Kostenbeitrag sicher erhalten habt oder ihr es ggf. schon an Ana
+        weitergeleitet habt.
+      </li>
+    </ul>
+    <p>
+      Der Status einzelner Anmeldungen kann auch mit Rechtsklick auf die Zeile
+      bearbeitet werden.
     </p>
   </div>
   <div class="hint-end">
-    <p><b>Filter</b></p>
-    <div [style]="{ display: 'flex', 'flex-direction': 'row', gap: '1rem' }">
-      <p>
-        Mit dem <b>Kontaktperson Filter</b> werden nur Anmeldungen einer
-        bestimmten Kontaktperson angezeigt.
-      </p>
-
-      <p>
-        Mit dem <b>Keyword Filter</b> ganz rechts kann die Liste nach beliebigen
-        Begriffen gefiltert werden. Per default wird nach der Schicht, dem Namen
-        und der E-Mail-Adresse gesucht.
-      </p>
-    </div>
+    <p><b>Liste Filtern</b></p>
+    <p>
+      Mit dem <b>Kontaktperson Filter</b> werden nur Anmeldungen einer
+      bestimmten Kontaktperson angezeigt.
+    </p>
+    <p>
+      Mit dem <b>Keyword Filter</b> ganz rechts kann die Liste nach beliebigen
+      Begriffen gefiltert werden. Per default werden alle Anmeldungen nach der
+      Schicht, dem Namen und der E-Mail-Adresse durchsucht. Rechts neben dem
+      Eingabefeld kann ausgewählt werden, welche Felder durchsucht werden
+      sollen.
+    </p>
+    <p>
+      Es kann auch nach dem <b>Status</b> gefiltert werden. Der Filter befindet
+      sich direkt in der <b>Kopfzeile</b> der Status-Spalte. Es können mehrere
+      Status gleichzeitig ausgewählt werden.
+    </p>
   </div>
 </kf-hint>
 <div>
@@ -48,7 +69,7 @@
       [value]="filteredOrders()"
       [paginator]="true"
       [filterDelay]="10"
-      [rows]="10"
+      [rows]="20"
       [rowsPerPageOptions]="[10, 20, 50, 100]"
       [showCurrentPageReport]="true"
       currentPageReportTemplate="Zeigt {first} bis {last} von {totalRecords} Anmeldungen"

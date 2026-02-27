@@ -1,24 +1,29 @@
 @if (visible()) {
-  <div class="hint">
-    <i class="pi pi-info-circle"></i>
+  <div class="hint-container">
     <span class="hint-text">
-      <ng-content />
+      <div class="primary-container">
+        <i class="pi pi-info-circle"></i>
+        <div>
+          <ng-content />
+        </div>
+        <p-button
+          icon="pi pi-times"
+          severity="secondary"
+          (click)="dismiss()"
+          [outlined]="true"
+          [rounded]="true"
+          size="small"
+          pTooltip="ausblenden"
+          tooltipPosition="bottom"
+          label="Ok cool"
+        ></p-button>
+      </div>
       <div class="hint-actions">
         <ng-content select=".hint-start" />
         <ng-content select=".hint-center" />
         <ng-content select=".hint-end" />
       </div>
     </span>
-    <p-button
-      icon="pi pi-times"
-      severity="secondary"
-      (click)="dismiss()"
-      [outlined]="true"
-      [rounded]="true"
-      size="small"
-      pTooltip="ausblenden"
-      tooltipPosition="bottom"
-    ></p-button>
   </div>
 } @else if (withShowButton()) {
   <p-button
