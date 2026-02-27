@@ -3,6 +3,11 @@
     <i class="pi pi-info-circle"></i>
     <span class="hint-text">
       <ng-content />
+      <div class="hint-actions">
+        <ng-content select=".hint-start" />
+        <ng-content select=".hint-center" />
+        <ng-content select=".hint-end" />
+      </div>
     </span>
     <p-button
       icon="pi pi-times"
