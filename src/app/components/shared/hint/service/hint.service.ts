@@ -1,14 +1,29 @@
 import { computed, inject, Injectable } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { LocalStorageService } from '@storage/local-storage.service';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 
 const DISMISSED_HINTS_KEY = 'dismissed-hints';
 
 @Injectable({ providedIn: 'root' })
 export class HintService {
   private readonly storage = inject(LocalStorageService);
-  private readonly renderedHints = new Set<string>();
+  private readonly renderedHints$ = new BehaviorSubject(new Set<string>());
+
+  private readonly dismissed$ = this.storage
+    .getItem$<string[]>(DISMISSED_HINTS_KEY, [])
+    .pipe(map((ids) => new Set(ids ?? [])));
+
+  anyRenderedDismissed = toSignal(
+    combineLatest([this.renderedHints$, this.dismissed$]).pipe(
+      map(([rendered, dismissed]) =>
+        [...rendered].some((id) => dismissed.has(id)),
+      ),
+    ),
+    { initialValue: false },
+  );
+
+  areAllRenderedVisible = computed(() => !this.anyRenderedDismissed());
 
   show(hintId: string): void {
     this.updateDismissed(hintId, false);
@@ -19,11 +34,15 @@ export class HintService {
   }
 
   register(hintId: string): void {
-    this.renderedHints.add(hintId);
+    const set = new Set(this.renderedHints$.value);
+    set.add(hintId);
+    this.renderedHints$.next(set);
   }
 
   unregister(hintId: string): void {
-    this.renderedHints.delete(hintId);
+    const set = new Set(this.renderedHints$.value);
+    set.delete(hintId);
+    this.renderedHints$.next(set);
   }
 
   isDismissed(hintId: string): boolean {
@@ -37,12 +56,12 @@ export class HintService {
   }
 
   getRendered(): string[] {
-    return [...this.renderedHints];
+    return [...this.renderedHints$.value];
   }
 
   showAllRendered(): void {
     const dismissed = this.getDismissed();
-    this.renderedHints.forEach((hintId) => dismissed.delete(hintId));
+    this.renderedHints$.value.forEach((hintId) => dismissed.delete(hintId));
     this.storage.setItem(DISMISSED_HINTS_KEY, [...dismissed]);
   }
 
@@ -59,18 +78,4 @@ export class HintService {
     dismissed ? set.add(hintId) : set.delete(hintId);
     this.storage.setItem(DISMISSED_HINTS_KEY, [...set]);
   }
-
-  areAllRenderedVisible = toSignal(
-    this.storage.getItem$<string[]>(DISMISSED_HINTS_KEY, []).pipe(
-      map((ids) => {
-        const dismissed = new Set(ids ?? []);
-        return [...this.renderedHints].every(
-          (hintId) => !dismissed.has(hintId),
-        );
-      }),
-    ),
-    { initialValue: true },
-  );
-
-  anyRenderedDismissed = computed(() => !this.areAllRenderedVisible());
 }

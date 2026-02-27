@@ -4,8 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { HintService } from './service/hint.service';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { switchMap } from 'rxjs/internal/operators/switchMap';
-import { map } from 'rxjs/internal/operators/map';
+import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'kf-hint',
@@ -17,6 +16,9 @@ import { map } from 'rxjs/internal/operators/map';
 export class HintComponent implements OnInit, OnDestroy {
   key = input.required<string>();
   withShowButton = input(true);
+
+  private readonly hintService = inject(HintService);
+
   visible = toSignal(
     toObservable(this.key).pipe(
       switchMap((key) => this.hintService.isDismissed$(key)),
@@ -24,8 +26,6 @@ export class HintComponent implements OnInit, OnDestroy {
     ),
     { initialValue: true },
   );
-
-  private readonly hintService = inject(HintService);
 
   /**
    * On initializing a Hint, register it as rendered
