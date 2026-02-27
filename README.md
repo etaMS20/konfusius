@@ -1,6 +1,6 @@
 # Introduction
 
-This repo contains the Angular application (soon) serving the **Konfusius Festival** website.
+This repo contains the Angular application serving the **Konfusius Festival** website.
 
 The app uses _WordPress_ (WP) + _WooCommerce_ (WC) backend as **headless CMS** to manage the festival's ticket sales.
 
