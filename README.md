@@ -1,6 +1,6 @@
 # Introduction
 
-This repo contains the Angular application (soon) serving the **Konfusius Festival** website.
+This repo contains the Angular application serving the **Konfusius Festival** website.
 
 The app uses _WordPress_ (WP) + _WooCommerce_ (WC) backend as **headless CMS** to manage the festival's ticket sales.
 
@@ -91,12 +91,14 @@ On git-pushes the app fill be automatically deployed to wordpress using `.github
 ## Dev Notes
 
 - Awareness -> 2 per shift
-- Early Bird -> minus 10
-- Ticket Preis bleibt
-- Deadline: Anfang Mai
-- Kochen auch am Montag
-- Kochen - 1 Person weniger
-- 20 Aufbau max
+- Early Bird -> minus 10 fix
 - Artist: 40 max
 - Abbau 10er günstiger pro Tag
+
 - Crew: Frei gewählter Betrag (min 1€)
+- Häckchen für Unverträglichkeiten -> Mit customer note text
+- Kiosk und Bar Schichten 1 Stunde länger
+- Kiosk letzte Schicht streichen
+- Müllrunde auf 1 Schicht pro Tag
+- Cleandriver Schicht mit Optionen ganzer Tag oder ganzen Festival
+- Early bird ab bis 15. März Zahlung bis 31. März dannach

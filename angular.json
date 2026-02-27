@@ -44,7 +44,10 @@
               "lodash",
               "sha.js",
               "crypto-js",
-              "file-saver"
+              "file-saver",
+              "raf",
+              "rgbcolor",
+              "html2canvas"
             ],
             "serviceWorker": true,
             "ngswConfigPath": "ngsw-config.json",

@@ -39,6 +39,7 @@ import { WC_ORDER_STATUSES, WcOrderStatus } from '@models/order.model';
 import { DateFormatPipe } from '@pipes/date-format.pipe';
 import { OrderStatusComponent } from '@shared/status/order-status.component';
 import { findCrossItem, findMainItem } from '@utils/oder.utils';
+import { HintComponent } from '@shared/hint/hint.component';
 
 @Component({
   selector: 'kf-shift-manager',
@@ -58,6 +59,7 @@ import { findCrossItem, findMainItem } from '@utils/oder.utils';
     ShiftManagerToolbarComponent,
     OrderStatusComponent,
     ListboxModule,
+    HintComponent,
   ],
   templateUrl: './shift-manager.component.html',
   styleUrl: './shift-manager.component.scss',

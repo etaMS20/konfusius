@@ -1,31 +1,28 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EarlyBirdService } from '@services/early-bird-service.service';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { ButtonModule } from 'primeng/button';
+import { ButtonModule, ButtonSeverity } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'kf-info-button',
   standalone: true,
-  imports: [CommonModule, ButtonModule],
+  imports: [CommonModule, ButtonModule, TooltipModule],
   templateUrl: './info-button.component.html',
   styleUrl: './info-button.component.scss',
 })
 export class InfoButtonComponent {
-  protected readonly earlyBirdService = inject(EarlyBirdService);
-
-  isEarlyBirdActive = toSignal(this.earlyBirdService.isActive$, {
-    initialValue: false,
-  });
+  isInfoShown = input(false);
+  severity = input<ButtonSeverity>('info');
+  tooltipText = input<string>('');
+  triggerMessage = output<void>();
+  icon = input<string>('pi pi-info-circle');
 
   glow = computed(() => {
-    const shouldGlow =
-      this.isEarlyBirdActive() && !this.earlyBirdService.isMessageVisible;
+    const shouldGlow = !this.isInfoShown();
     return shouldGlow;
   });
 
-  constructor() {}
-  triggerMessage(): void {
-    this.earlyBirdService.showEarlyBirdMessage();
+  onTriggerMessage(): void {
+    this.triggerMessage.emit();
   }
 }

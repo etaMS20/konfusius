@@ -1,62 +1,55 @@
-import { Component } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
-import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { MatTabsModule } from '@angular/material/tabs';
-import { filter } from 'rxjs';
+import { Component, OnInit, signal } from '@angular/core';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterModule,
+} from '@angular/router';
+import { TabsModule } from 'primeng/tabs';
+import { filter } from 'rxjs/internal/operators/filter';
 
 @Component({
   selector: 'app-crew-container',
-  imports: [
-    RouterModule,
-    MatTabsModule, // Import the whole module instead of individual components
-    MatIconModule,
-  ],
+  imports: [RouterModule, TabsModule],
   templateUrl: './crew-container.component.html',
   styleUrl: './crew-container.component.scss',
 })
-export class CrewContainerComponent {
+export class CrewContainerComponent implements OnInit {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+  ) {}
+
+  currentTabRoute = signal('manage');
+
   tabs = [
     {
       label: 'Anmeldungen Verwalten',
-      icon: 'manage_accounts',
+      icon: 'pi pi-address-book',
       route: 'manage',
     },
     {
       label: 'Kalender Ansicht',
-      icon: 'calendar_today',
+      icon: 'pi pi-calendar',
       route: 'scheduler',
     },
     {
       label: 'Schichtplan Listenansicht',
-      icon: 'list',
+      icon: 'pi pi-list',
       route: 'list',
     },
   ];
 
-  selectedIndex = 0;
-
-  constructor(private router: Router) {}
-
   ngOnInit() {
-    // set initial active tab based on current route
-    this.updateSelectedIndex(this.router.url);
+    const getTab = () => {
+      const child = this.route.firstChild;
+      return child?.snapshot.url[0]?.path ?? 'manage';
+    };
 
-    // listen to route changes
+    this.currentTabRoute.set(getTab());
+
     this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe((event: NavigationEnd) => {
-        this.updateSelectedIndex(event.url);
-      });
-  }
-
-  private updateSelectedIndex(url: string) {
-    const index = this.tabs.findIndex((tab) => url.includes(tab.route));
-    if (index !== -1) {
-      this.selectedIndex = index;
-    }
-  }
-
-  onTabChange(index: number) {
-    this.router.navigate(['/crew-area', this.tabs[index].route]);
+      .pipe(filter((e) => e instanceof NavigationEnd))
+      .subscribe(() => this.currentTabRoute.set(getTab()));
   }
 }

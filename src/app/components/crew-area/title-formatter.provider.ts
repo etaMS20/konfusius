@@ -24,6 +24,6 @@ export class CustomEventTitleFormatter extends CalendarEventTitleFormatter {
     return `<b>${event.title}</b>
       </br>${formatDate(event.start, 'HH:mm', this.locale)} - ${formatDate(event.end!, 'HH:mm', this.locale)}
       (${event.meta?.plannedStock ?? 'nicht'} geplant)
-      <br/><i>${event.meta?.stock?.text}</i>`;
+      <br/><i>${event.meta?.stock ?? 'nichts'} in stock</i>`;
   }
 }

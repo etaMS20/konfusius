@@ -1,3 +1,36 @@
+<kf-hint key="manage-shifts" [withShowButton]="false">
+  <h1>Hinweis: Anmeldungen Verwalten</h1>
+  <p>
+    In diesem Bereich können die Anmeldungen für die Schichten eingesehen und
+    verwaltet werden. Die Tabelle zeigt alle Anmeldungen an, entsprechend der
+    aktiven Filtereinstellungen und der aktuellen Seite. Unten kann die Seite
+    und die Anzahl der Einträge pro Seite angepasst werden.
+  </p>
+  <div class="hint-start">
+    <p><b>Bulk Aktionen:</b></p>
+    <p>
+      Über die Checkboxen in der ersten Spalte können mehrere Anmeldungen
+      ausgewählt werden. Daraufhin können die 3 Knöpfe benutzt werden um die
+      Auswahl entweder auf <b>bezahlt</b> zu setzen, zu <b>stornieren</b> oder
+      <b>zurückzusetzen</b>.
+    </p>
+  </div>
+  <div class="hint-end">
+    <p><b>Filter</b></p>
+    <div [style]="{ display: 'flex', 'flex-direction': 'row', gap: '1rem' }">
+      <p>
+        Mit dem <b>Kontaktperson Filter</b> werden nur Anmeldungen einer
+        bestimmten Kontaktperson angezeigt.
+      </p>
+
+      <p>
+        Mit dem <b>Keyword Filter</b> ganz rechts kann die Liste nach beliebigen
+        Begriffen gefiltert werden. Per default wird nach der Schicht, dem Namen
+        und der E-Mail-Adresse gesucht.
+      </p>
+    </div>
+  </div>
+</kf-hint>
 <div>
   <kf-shift-manager-toolbar
     [(selectedFilters)]="selectedFields"

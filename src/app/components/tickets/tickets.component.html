@@ -40,6 +40,6 @@
 </div>
 
 <!-- loading spinner for an individual product and their variations -->
-<div class="fixed-spinner" *ngIf="productsLoading()">
+<div class="fixed-spinner" *ngIf="productsLoading() && !productsLoading">
   <mat-spinner [diameter]="35" />
 </div>

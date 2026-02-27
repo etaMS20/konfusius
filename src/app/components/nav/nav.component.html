@@ -11,7 +11,21 @@
             />
           </a>
         </div>
-        <kf-info-button />
+        @if (this.earlyBirdService.isActive$ | async) {
+          <kf-info-button
+            [isInfoShown]="this.earlyBirdService.isMessageVisible"
+            (triggerMessage)="earlyBirdService.showEarlyBirdMessage()"
+            severity="warn"
+            icon="pi pi-bell"
+          />
+        }
+        @if (this.hintService.anyRenderedDismissed()) {
+          <kf-info-button
+            [isInfoShown]="this.hintService.areAllRenderedVisible()"
+            (triggerMessage)="this.hintService.showAllRendered()"
+            tooltipText="Hinweise einblenden"
+          />
+        }
       </div>
 
       <!-- Desktop Navigation -->
