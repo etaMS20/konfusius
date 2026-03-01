@@ -16,6 +16,7 @@ export class InfoButtonComponent {
   tooltipText = input<string>('');
   triggerMessage = output<void>();
   icon = input<string>('pi pi-info-circle');
+  label = input<string>('');
 
   glow = computed(() => {
     const shouldGlow = !this.isInfoShown();
