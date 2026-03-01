@@ -101,7 +101,7 @@ On git-pushes the app fill be automatically deployed to wordpress using `.github
 - Bar Schichten 1 Stunde länger (done)
 - Kiosk letzte Schicht streichen und 1h länger (done)
 - Müllrunde auf 1 Schicht pro Tag (done)
-- Cleandriver Schicht mit Optionen ganzer Tag oder ganzen Festival
+- Cleandriver Schicht mit Optionen ganzer Tag oder ganzen Festival (done)
 - Early bird ab bis 15. März Zahlung bis 31. März dannach (done)
 
 - footer fixen

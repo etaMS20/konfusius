@@ -31,6 +31,7 @@ export interface FormOutput {
   invited_by: string;
   consent: boolean;
   comments: string;
+  food_intolerance: boolean;
 }
 
 @Component({
@@ -121,6 +122,10 @@ export class BillingComponent implements OnChanges {
     return this.formGroup.get('comments') as FormControl;
   }
 
+  get foodIntolerance(): FormControl {
+    return this.formGroup.get('food_intolerance') as FormControl;
+  }
+
   // Form validation helpers
   hasError(control: FormControl, errorType: string): boolean {
     return control.hasError(errorType) && control.touched;
@@ -147,6 +152,7 @@ export class BillingComponent implements OnChanges {
         ],
       }),
       invited_by: [null, Validators.required],
+      food_intolerance: [false],
       consent: [false, Validators.requiredTrue], // Must be true to submit
       comments: [null],
     });
@@ -174,6 +180,7 @@ export class BillingComponent implements OnChanges {
         phone: billingAddress.phone,
       },
       invited_by: null,
+      food_intolerance: false,
       consent: false,
       comments: null,
     });
@@ -185,6 +192,7 @@ export class BillingComponent implements OnChanges {
       const formData = {
         billingAddress: this.billingAddress.value,
         invited_by: this.invitedBy.value,
+        food_intolerance: this.foodIntolerance.value,
         consent: this.consent.value,
         comments: this.comments.value,
       };
