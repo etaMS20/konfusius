@@ -135,11 +135,17 @@
           <th>E-mail</th>
           <th>Kontaktp.</th>
           <th>Ticket</th>
-          <th pSortableColumn="total">Preis<p-sortIcon field="total" /></th>
+          <th pSortableColumn="total">UKB<p-sortIcon field="total" /></th>
           <th pSortableColumn="date_created">
             Datum<p-sortIcon field="date_created" />
           </th>
           <th pSortableColumn="id">ID<p-sortIcon field="id" /></th>
+          <th
+            pSortableColumn="billing.billing_food_intolerance"
+            [pTooltip]="'hat Lebensmittelunverträglichkeiten'"
+          >
+            AFR<p-sortIcon field="billing.billing_food_intolerance" />
+          </th>
         </tr>
       </ng-template>
 
@@ -182,6 +188,7 @@
           <td>{{ order.total | currency: 'EUR' }}</td>
           <td>{{ order.date_created | dateFormat }}</td>
           <td>{{ order.id }}</td>
+          <td>{{ order.billing.billing_food_intolerance ? 'Ja' : 'Nein' }}</td>
         </tr>
       </ng-template>
       <ng-template pTemplate="footer">
@@ -192,6 +199,7 @@
               pageSum() | currency: 'EUR'
             }}</span>
           </td>
+          <td></td>
           <td></td>
           <td></td>
         </tr>
