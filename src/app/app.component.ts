@@ -49,7 +49,11 @@ export class AppComponent implements OnInit, OnDestroy {
     );
 
     this.updatesAvailable = this.updatesAvailable$?.subscribe(() => {
-      this.promptUser();
+      this.swUpdate.activateUpdate().then(() => {
+        console.info(
+          `New version (v${APP_VERSION}) ready. Will activate on next page load.`,
+        );
+      });
     });
 
     console.info(
@@ -77,12 +81,5 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onCloseToast() {
     this.earlyBirdService.isMessageVisible = false;
-  }
-
-  private promptUser(): void {
-    alert(
-      `A new website-version (v${APP_VERSION}) is available. The site will now update.`,
-    );
-    this.swUpdate.activateUpdate().then(() => document.location.reload());
   }
 }
