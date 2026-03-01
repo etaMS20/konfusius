@@ -68,6 +68,7 @@ export interface WcCartItem {
 export interface WcCheckOutData {
   invited_by: string;
   gebote_confirm: boolean;
+  food_intolerance: boolean;
   disclaimer_confirm?: boolean;
   disclaimer_experience?: string;
   billing_address: WcBillingAddress;

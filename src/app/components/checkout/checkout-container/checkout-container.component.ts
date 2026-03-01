@@ -143,6 +143,7 @@ export class CheckoutContainerComponent implements OnInit, OnDestroy {
       gebote_confirm: fromValues.consent,
       invited_by: fromValues.invited_by,
       billing_address: fromValues.billingAddress,
+      food_intolerance: fromValues.food_intolerance,
       payment_method: 'cod',
       customer_note: fromValues.comments,
     };

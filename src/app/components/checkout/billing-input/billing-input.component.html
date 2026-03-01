@@ -141,18 +141,21 @@
       </mat-error>
     </div>
 
+    <section class="form-section">
+      <mat-checkbox formControlName="food_intolerance"></mat-checkbox>
+      Ich habe Lebensmittelunverträglichkeiten (unten angeben)
+    </section>
+
     <!-- Checkbox for consent -->
     <section class="form-section">
-      <p>
-        <mat-checkbox formControlName="consent"></mat-checkbox>
-        Hiermit bestätige ich die
-        <strong>
-          <a class="link" (click)="openRulesDialog($event)"
-            >Konfusen Gebote</a
-          ></strong
-        >
-        zu achten.
-      </p>
+      <mat-checkbox formControlName="consent"></mat-checkbox>
+      Hiermit bestätige ich die
+      <strong>
+        <a class="link" (click)="openRulesDialog($event)"
+          >Konfusen Gebote</a
+        ></strong
+      >
+      zu achten.
       <mat-error *ngIf="hasError(consent, 'required')">
         Die Bestätigung der Gebote ist erforderlich.
       </mat-error>

@@ -17,6 +17,17 @@
       <label for="dayView">Tagesansicht</label>
     </div>
   </ng-template>
+  <ng-template pTemplate="center">
+    @if (view === 'day') {
+      <p-button
+        (click)="exportToPNG()"
+        label="Export"
+        [icon]="'pi pi-download'"
+        [size]="'small'"
+        severity="secondary"
+      ></p-button>
+    }
+  </ng-template>
   <ng-template pTemplate="end">
     <div class="calendar-paginator">
       <p-button
