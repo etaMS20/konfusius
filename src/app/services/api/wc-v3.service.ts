@@ -76,6 +76,20 @@ export class WcV3Service {
     );
   }
 
+  updateSingleOrderStatus(
+    id: number,
+    status: WcOrderStatus,
+  ): Observable<WcOrder> {
+    const payload = {
+      status: status,
+    };
+
+    return this.http.put<WcOrder>(`${this.wcBackend}/orders/${id}`, payload, {
+      headers: this.headers,
+      withCredentials: true,
+    });
+  }
+
   getCouponById(id: number): Observable<Coupon> {
     return this.http.get<Coupon>(this.wcBackend + `/coupons/${id}`, {
       headers: this.headers,

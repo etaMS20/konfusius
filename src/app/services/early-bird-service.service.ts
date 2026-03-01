@@ -19,10 +19,7 @@ export class EarlyBirdService {
   private activeSubject = new BehaviorSubject<boolean>(false);
   isActive$ = this.activeSubject.asObservable();
 
-  private readonly message = computed(
-    () => `Es gibt 10€ Rabatt für die ersten 50 Anmeldungen - Bedingung ist das der Umkostenbeitrag bis spätestens zum ${this.DEADLINE.setLocale('de-DE').toLocaleString()} bei der Kontaktperson eingeht - damit wir schonmal gut planen können :).
-  Die Rabattierung erfolgt beim checkout automatisch, sofern noch Early Birds verfügbar sind.`,
-  );
+  private message: string = '';
 
   constructor() {
     this.wcv3.getCouponById(this.couponId).subscribe((coupon) => {
@@ -32,6 +29,7 @@ export class EarlyBirdService {
       const expiryDate = DateTime.fromISO(coupon.date_expires);
       this.DEADLINE = expiryDate;
       this.STOCK = coupon.usage_limit - coupon.usage_count;
+      this.message = coupon.description || '';
       this.isInStock = this.STOCK > 0;
       this.couponCode.set(coupon.code);
       this.checkStatus();
@@ -57,7 +55,7 @@ export class EarlyBirdService {
       key: this.key,
       severity: 'warn',
       summary: 'Early Bird Rabatt',
-      detail: this.message(),
+      detail: this.message,
       sticky: true,
       icon: 'pi pi-ticket',
     });

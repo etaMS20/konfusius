@@ -9,7 +9,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthService } from '@services/auth.service';
 import { InfoButtonComponent } from './info-button/info-button.component';
 import { EarlyBirdService } from '@services/early-bird-service.service';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { HintService } from '@shared/hint/service/hint.service';
 
 @Component({
@@ -35,9 +34,6 @@ export class NavComponent {
   ticketsActive = signal<boolean>(TICKETS_ON);
   protected readonly earlyBirdService = inject(EarlyBirdService);
   protected readonly hintService = inject(HintService);
-  isEarlyBirdActive = toSignal(this.earlyBirdService.isActive$, {
-    initialValue: false,
-  });
 
   @HostListener('window:scroll', [])
   onWindowScroll() {

@@ -19,7 +19,7 @@ import {
 } from 'rxjs';
 import { ShiftManagerToolbarComponent } from './shift-manager-toolbar/shift-manager-toolbar.component';
 
-// PrimeNG Imports
+// prime ng
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
@@ -29,8 +29,9 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TooltipModule } from 'primeng/tooltip';
 import { ListboxModule } from 'primeng/listbox';
+import { ContextMenuModule } from 'primeng/contextmenu';
 
-// Deine Models & Services
+// kf
 import { WcV3Service } from '@services/api/wc-v3.service';
 import { CustomEndpointsService } from '@services/api/custom-endpoints.service';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
@@ -40,6 +41,7 @@ import { DateFormatPipe } from '@pipes/date-format.pipe';
 import { OrderStatusComponent } from '@shared/status/order-status.component';
 import { findCrossItem, findMainItem } from '@utils/oder.utils';
 import { HintComponent } from '@shared/hint/hint.component';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'kf-shift-manager',
@@ -60,6 +62,7 @@ import { HintComponent } from '@shared/hint/hint.component';
     OrderStatusComponent,
     ListboxModule,
     HintComponent,
+    ContextMenuModule,
   ],
   templateUrl: './shift-manager.component.html',
   styleUrl: './shift-manager.component.scss',
@@ -69,7 +72,7 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
   private wcV3 = inject(WcV3Service);
   private customEpS = inject(CustomEndpointsService);
   private errorService = inject(ErrorDialogService);
-
+  withCheckbox = false;
   scopeYears = signal<string[]>(['2026']);
 
   /** Raw coming from API */
@@ -84,6 +87,55 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
     email: ['billing.email'],
     shift: ['main_item_name', 'cross_item_name'],
   };
+
+  ngOnInit(): void {
+    this.refreshCollection();
+    this.initContextMenu();
+  }
+
+  /** context menu */
+  selectedOrderForMenu = signal<OrderMin | null>(null);
+  menuItems: MenuItem[] = [];
+
+  private initContextMenu() {
+    this.menuItems = [
+      {
+        label: 'Auf "On Hold" setzen',
+        icon: 'pi pi-undo',
+        command: () => this.updateStatusFromMenu('on-hold'),
+      },
+      {
+        label: 'Ist Bezahlt',
+        icon: 'pi pi-check-circle',
+        command: () => this.updateStatusFromMenu('completed'),
+      },
+      {
+        label: 'Stornieren',
+        icon: 'pi pi-times-circle',
+        command: () => this.updateStatusFromMenu('cancelled'),
+      },
+    ];
+  }
+
+  private updateStatusFromMenu(status: WcOrderStatus) {
+    const currentSelection = this.selectedOrders();
+    const rightClickedOrder = this.selectedOrderForMenu();
+
+    /**
+     * If right clicked item is part of the current selection, update all selected items.
+     * Otherwise, update only the right clicked item.
+     */
+    const isRightClickInSelection = currentSelection.some(
+      (o) => o.id === rightClickedOrder?.id,
+    );
+
+    if (isRightClickInSelection) {
+      this.bulkUpdateStatus(status);
+    } else if (rightClickedOrder) {
+      this.selectedOrders.set([rightClickedOrder]);
+      this.singleUpdateStatus(rightClickedOrder.id, status);
+    }
+  }
 
   /** implements the global filter */
   filteredOrders = computed(() => {
@@ -120,12 +172,6 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
     value: s,
   }));
 
-  constructor() {}
-
-  ngOnInit(): void {
-    this.refreshCollection();
-  }
-
   private refreshCollection() {
     this.loading$.next(true);
 
@@ -161,6 +207,21 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
     const ids = this.selectedOrders().map((o) => o.id);
     this.wcV3
       .batchUpdateOrderStatus(ids, status)
+      .pipe(
+        catchError((err) => this.handleError(err)),
+        finalize(() => this.loading$.next(false)),
+        takeUntil(this.destroy$),
+      )
+      .subscribe(() => {
+        this.refreshCollection();
+        this.selectedOrders.set([]);
+      });
+  }
+
+  private singleUpdateStatus(id: number, status: WcOrderStatus) {
+    this.loading$.next(true);
+    this.wcV3
+      .updateSingleOrderStatus(id, status)
       .pipe(
         catchError((err) => this.handleError(err)),
         finalize(() => this.loading$.next(false)),

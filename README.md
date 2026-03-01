@@ -96,9 +96,12 @@ On git-pushes the app fill be automatically deployed to wordpress using `.github
 - Abbau 10er günstiger pro Tag
 
 - Crew: Frei gewählter Betrag (min 1€)
+
 - Häckchen für Unverträglichkeiten -> Mit customer note text
-- Kiosk und Bar Schichten 1 Stunde länger
-- Kiosk letzte Schicht streichen
-- Müllrunde auf 1 Schicht pro Tag
+- Bar Schichten 1 Stunde länger (done)
+- Kiosk letzte Schicht streichen und 1h länger (done)
+- Müllrunde auf 1 Schicht pro Tag (done)
 - Cleandriver Schicht mit Optionen ganzer Tag oder ganzen Festival
-- Early bird ab bis 15. März Zahlung bis 31. März dannach
+- Early bird ab bis 15. März Zahlung bis 31. März dannach (done)
+
+- footer fixen

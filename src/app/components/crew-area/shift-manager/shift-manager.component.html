@@ -1,20 +1,23 @@
+<p-contextMenu #cm [model]="menuItems"></p-contextMenu>
 <kf-hint key="manage-shifts" [withShowButton]="false">
   <h1>Hinweis: Anmeldungen Verwalten</h1>
   <p>
     In diesem Bereich können die Anmeldungen eingesehen und verwaltet werden.
     Die Tabelle lädt alle eingegangen Anmeldungen aus dem Backend, entsprechend
-    der ausgewählten Festivaljahre. Die Tabelle wird entsprechend der aktiven
-    Filtereinstellungen und der aktuellen Seite aktualisiert. Unten kann die
-    Seite und die
+    der ausgewählten Festivaljahre. Die Tabelle listet die Anmeldungen
+    entsprechend der aktiven Filtereinstellungen und der aktuellen Seite. Unten
+    kann die Seite und die
     <b>Anzahl der Einträge pro Seite</b> angepasst werden.
   </p>
   <div class="hint-start">
     <p><b>Anmeldestatus Bearbeiten</b></p>
     <p>
-      Über die Checkboxen in der ersten Spalte können einer oder mehrere
-      Anmeldungen ausgewählt werden. Daraufhin können die 3 Buttons benutzt
-      werden um den Status der Auswahl zu bearbeiten:
+      Klicke auf eine Zeile, um sie auszuwählen. Mit <b>Strg + Klick</b> wählst
+      du mehrere einzelne Zeilen aus, während <b>Shift + Klick</b> einen ganzen
+      Bereich markiert. Um alle aktuell angezeigten Anmeldungen gleichzeitig
+      auszuwählen, kannst du <b>Strg + A</b> nutzen.
     </p>
+
     <ul>
       <li><b>On Hold:</b> Dies ist der initiale Status einer Anmeldung.</li>
       <li>
@@ -28,8 +31,10 @@
       </li>
     </ul>
     <p>
-      Der Status einzelner Anmeldungen kann auch mit Rechtsklick auf die Zeile
-      bearbeitet werden.
+      Der Status kann auch mit Rechtsklick auf die Zeile bearbeitet werden. Wenn
+      das angeklickte Element Teil der aktuellen Auswahl ist, werden alle
+      ausgewählten Elemente aktualisiert. Andernfalls wird nur das angeklickte
+      Element aktualisiert.
     </p>
   </div>
   <div class="hint-end">
@@ -63,10 +68,12 @@
     [tableRef]="dt"
     [contactPersonOptions]="contactPersons()"
   ></kf-shift-manager-toolbar>
-  <div>
+  <div class="table-wrapper">
     <p-table
       #dt
       [value]="filteredOrders()"
+      [contextMenu]="cm"
+      [(contextMenuSelection)]="selectedOrderForMenu"
       [paginator]="true"
       [filterDelay]="10"
       [rows]="20"
@@ -77,12 +84,16 @@
       [loading]="loading$ | async"
       (onPage)="onPageChange($event)"
       [globalFilterFields]="['billing.billing_invite']"
+      selectionMode="multiple"
+      [metaKeySelection]="false"
     >
       <ng-template pTemplate="header">
         <tr>
-          <th style="width: 4rem">
-            <p-tableHeaderCheckbox />
-          </th>
+          @if (withCheckbox) {
+            <th style="width: 4rem">
+              <p-tableHeaderCheckbox />
+            </th>
+          }
 
           <th pSortableColumn="status" class="status-cell">
             <p-sortIcon field="status" />
@@ -118,11 +129,13 @@
           <th pSortableColumn="billing.full_name">
             Name<p-sortIcon field="billing.full_name" />
           </th>
-          <th>Schicht</th>
+          <th pSortableColumn="main_item_name">
+            Schicht<p-sortIcon field="main_item_name" />
+          </th>
           <th>E-mail</th>
           <th>Kontaktp.</th>
           <th>Ticket</th>
-          <th>Preis</th>
+          <th pSortableColumn="total">Preis<p-sortIcon field="total" /></th>
           <th pSortableColumn="date_created">
             Datum<p-sortIcon field="date_created" />
           </th>
@@ -130,10 +143,16 @@
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="body" let-order>
-        <tr>
-          <td><p-tableCheckbox [value]="order" /></td>
-
+      <ng-template pTemplate="body" let-order let-rowIndex="rowIndex">
+        <tr
+          [pSelectableRow]="order"
+          [pSelectableRowIndex]="rowIndex"
+          [pContextMenuRow]="order"
+          [pSelectableRowIndex]="rowIndex"
+        >
+          @if (withCheckbox) {
+            <td><p-tableCheckbox [value]="order" /></td>
+          }
           <td>
             <app-order-status
               class="status-cell"
@@ -167,7 +186,7 @@
       </ng-template>
       <ng-template pTemplate="footer">
         <tr>
-          <td colspan="7"></td>
+          <td colspan="6"></td>
           <td>
             <span style="font-weight: bold">{{
               pageSum() | currency: 'EUR'
