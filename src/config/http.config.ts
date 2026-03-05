@@ -5,6 +5,7 @@ export const CONSUMER_KEY = environment.consumerKey;
 export const CONSUMER_SECRET = environment.consumerSecret;
 export const GUEST_PW = environment.password;
 export const CREW_PW = environment.crewPw;
+export const ARTIST_PW = environment.artistPw;
 export const SALT = environment.salt;
 export const WP_USER = environment.wp_user;
 export const WP_SECRET = environment.wp_secret;
@@ -19,6 +20,7 @@ export const envLoaded = () => {
     CONSUMER_SECRET,
     GUEST_PW,
     CREW_PW,
+    ARTIST_PW,
     SALT,
     WP_SECRET,
   ].every((v) => v && v.trim() !== '');

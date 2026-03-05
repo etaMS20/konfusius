@@ -73,15 +73,18 @@ On git-pushes the app fill be automatically deployed to wordpress using `.github
 - custom payment method in backend (can have)
 - activate/implement wp-nonces (should have)
 - smooth scrolling navigation (can have)
-- use JWT token for all requests (should have)
+- remove JWT and use native wordpress auth methods (should have)
 - limit order to 1 per unique name per year (can have)
-- email-filter in overview (can have)
+- email-filter in overview (can have) ✅
 - enhanced email templates (can have)
-- move deployment from ftp to ssh (should have)
-- install wp-cli to dev console (can have)
+- move deployment from ftp to ssh (not possible with current hosting)
+- install wp-cli to dev console (not possible with current hosting)
 - migrate to tailwind (can have)
 - clean-up backend, data-retention etc. (can have)
-- extend crew-area features: generate excel, make custom orders etc (can have)
+- extend crew-area features: generate excel, make custom orders etc (can have) ✅
+- Implement Early Bird ✅
+- Implement Hints ✅
+- Refactor to use PrimeNG
 
 ### Useful Links
 
@@ -90,18 +93,6 @@ On git-pushes the app fill be automatically deployed to wordpress using `.github
 
 ## Dev Notes
 
-- Awareness -> 2 per shift
-- Early Bird -> minus 10 fix
-- Artist: 40 max
 - Abbau 10er günstiger pro Tag
-
 - Crew: Frei gewählter Betrag (min 1€)
-
-- Häckchen für Unverträglichkeiten -> Mit customer note text
-- Bar Schichten 1 Stunde länger (done)
-- Kiosk letzte Schicht streichen und 1h länger (done)
-- Müllrunde auf 1 Schicht pro Tag (done)
-- Cleandriver Schicht mit Optionen ganzer Tag oder ganzen Festival (done)
-- Early bird ab bis 15. März Zahlung bis 31. März dannach (done)
-
 - footer fixen
