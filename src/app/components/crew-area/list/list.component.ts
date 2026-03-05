@@ -19,10 +19,6 @@ interface TreeNodeData {
   inStock?: number | string;
   ordered?: number;
   type: string;
-  meta?: {
-    parentPlanned?: number;
-    variableBasic?: boolean;
-  };
 }
 type KTreeNode = TreeNode<TreeNodeData>;
 
@@ -91,6 +87,7 @@ export class ListComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((products: WcProduct[]) => {
+        console.log('Loaded products:', products);
         const initialNodes: KTreeNode[] = products.map((p) => ({
           data: {
             name: p.name,

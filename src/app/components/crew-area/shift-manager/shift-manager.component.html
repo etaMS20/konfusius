@@ -86,6 +86,7 @@
       [globalFilterFields]="['billing.billing_invite']"
       selectionMode="multiple"
       [metaKeySelection]="false"
+      (keydown.escape)="selectedOrders.set([])"
     >
       <ng-template pTemplate="header">
         <tr>
