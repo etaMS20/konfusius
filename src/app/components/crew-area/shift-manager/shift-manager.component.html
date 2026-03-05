@@ -64,7 +64,7 @@
     [selectedYears]="scopeYears()"
     [actionsDisabled]="selectedOrders().length === 0"
     (scopeYearChange)="onScopeYearChange($event)"
-    (orderStatusChange)="bulkUpdateStatus($event)"
+    (orderStatusChange)="onToolbarStatusChange($event)"
     [tableRef]="dt"
     [contactPersonOptions]="contactPersons()"
   ></kf-shift-manager-toolbar>

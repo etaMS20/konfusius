@@ -82,7 +82,7 @@ export class ListComponent implements OnInit {
   }
   private loadInitialProducts() {
     this.wcStoreApi
-      .listProducts([22, 32])
+      .listProducts([22, 32, 59])
       .pipe(
         catchError((error) => {
           console.error('Error loading initial products:', error);

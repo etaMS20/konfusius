@@ -30,6 +30,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TooltipModule } from 'primeng/tooltip';
 import { ListboxModule } from 'primeng/listbox';
 import { ContextMenuModule } from 'primeng/contextmenu';
+import { ConfirmationService, MenuItem } from 'primeng/api';
 
 // kf
 import { WcV3Service } from '@services/api/wc-v3.service';
@@ -41,7 +42,8 @@ import { DateFormatPipe } from '@pipes/date-format.pipe';
 import { OrderStatusComponent } from '@shared/status/order-status.component';
 import { findCrossItem, findMainItem } from '@utils/oder.utils';
 import { HintComponent } from '@shared/hint/hint.component';
-import { MenuItem } from 'primeng/api';
+import { DialogPopupComponent } from '@shared/dialog-popup/dialog-popup.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'kf-shift-manager',
@@ -69,9 +71,12 @@ import { MenuItem } from 'primeng/api';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShiftManagerComponent implements OnInit, OnDestroy {
+  constructor(private confirmationService: ConfirmationService) {}
   private wcV3 = inject(WcV3Service);
   private customEpS = inject(CustomEndpointsService);
   private errorService = inject(ErrorDialogService);
+  private wc3Service = inject(WcV3Service);
+  private dialog = inject(MatDialog);
   withCheckbox = false;
   scopeYears = signal<string[]>(['2026']);
 
@@ -98,42 +103,84 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
   menuItems: MenuItem[] = [];
 
   private initContextMenu() {
-    this.menuItems = [
+    const actions: {
+      label: string;
+      icon: string;
+      action?: () => void;
+      status?: WcOrderStatus;
+    }[] = [
+      {
+        label: 'Order Details',
+        icon: 'pi pi-info-circle',
+        action: () => this.showOrderInDialog(),
+      },
       {
         label: 'Auf "On Hold" setzen',
         icon: 'pi pi-undo',
-        command: () => this.updateStatusFromMenu('on-hold'),
+        status: 'on-hold',
       },
       {
         label: 'Ist Bezahlt',
         icon: 'pi pi-check-circle',
-        command: () => this.updateStatusFromMenu('completed'),
+        status: 'completed',
       },
       {
         label: 'Stornieren',
         icon: 'pi pi-times-circle',
-        command: () => this.updateStatusFromMenu('cancelled'),
+        status: 'cancelled',
       },
     ];
+
+    this.menuItems = actions.map((item) => ({
+      label: item.label,
+      icon: item.icon,
+      command: () => {
+        if (item.action) {
+          item.action();
+        } else if (item.status) {
+          const ordersToUpdate = this.getOrdersToUpdate();
+          this.confirmStatusChange(item.status, ordersToUpdate);
+        }
+      },
+    }));
   }
 
-  private updateStatusFromMenu(status: WcOrderStatus) {
+  private getOrdersToUpdate(): OrderMin[] {
     const currentSelection = this.selectedOrders();
     const rightClickedOrder = this.selectedOrderForMenu();
 
-    /**
-     * If right clicked item is part of the current selection, update all selected items.
-     * Otherwise, update only the right clicked item.
-     */
     const isRightClickInSelection = currentSelection.some(
       (o) => o.id === rightClickedOrder?.id,
     );
 
     if (isRightClickInSelection) {
-      this.bulkUpdateStatus(status);
+      return currentSelection;
     } else if (rightClickedOrder) {
-      this.selectedOrders.set([rightClickedOrder]);
-      this.singleUpdateStatus(rightClickedOrder.id, status);
+      return [rightClickedOrder];
+    }
+    return [];
+  }
+
+  private executeStatusUpdate(
+    status: WcOrderStatus,
+    ordersToUpdate: OrderMin[],
+  ) {
+    if (ordersToUpdate.length === 1) {
+      this.singleUpdateStatus(ordersToUpdate[0].id, status);
+    } else if (ordersToUpdate.length > 1) {
+      const ids = ordersToUpdate.map((o) => o.id);
+      this.loading$.next(true);
+      this.wcV3
+        .batchUpdateOrderStatus(ids, status)
+        .pipe(
+          catchError((err) => this.handleError(err)),
+          finalize(() => this.loading$.next(false)),
+          takeUntil(this.destroy$),
+        )
+        .subscribe(() => {
+          this.refreshCollection();
+          this.selectedOrders.set([]);
+        });
     }
   }
 
@@ -275,6 +322,53 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
       // Optional: Erfolgserlebnis via Toast
       // this.messageService.add({ severity: 'success', summary: 'Kopiert', detail: 'In die Zwischenablage kopiert' });
       console.log('Kopiert:', value);
+    });
+  }
+
+  private showOrderInDialog() {
+    const orderId = this.selectedOrderForMenu()?.id;
+    if (!orderId) return;
+    this.wc3Service.getOrderById(orderId).subscribe({
+      next: (order) => {
+        this.dialog.open(DialogPopupComponent, {
+          data: order,
+        });
+      },
+      error: (err) => this.handleError(err),
+    });
+  }
+
+  onToolbarStatusChange(status: WcOrderStatus) {
+    const ordersToUpdate = this.selectedOrders();
+    this.confirmStatusChange(status, ordersToUpdate);
+  }
+
+  private confirmStatusChange(
+    status: WcOrderStatus,
+    ordersToUpdate: OrderMin[],
+  ) {
+    const actionLabel = `auf "${status}" setzen`;
+    const orderList = ordersToUpdate
+      .map((o, i) => `${i + 1}. ${o.billing?.full_name} (#${o.id})`)
+      .join('<br>');
+
+    const message = `Ausgewählte (${ordersToUpdate.length}) Anmeldungen:<br><br>${orderList}`;
+
+    this.confirmationService.confirm({
+      header: actionLabel,
+      message,
+      closable: true,
+      closeOnEscape: true,
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonProps: {
+        label: 'Doch Nicht',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Bestätigen',
+      },
+      accept: () => this.executeStatusUpdate(status, ordersToUpdate),
     });
   }
 }
