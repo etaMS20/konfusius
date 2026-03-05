@@ -29,6 +29,7 @@ import { Disclaimer } from '@models/disclaimer.model';
 import { LocalStorageService } from '@storage/local-storage.service';
 import { getDisclaimer } from '@utils/disclaimer.utils';
 import { MatButtonModule } from '@angular/material/button';
+import { AuthService } from '@services/auth.service';
 
 @Component({
   selector: 'app-tickets',
@@ -52,6 +53,7 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   private readonly errorService = inject(ErrorDialogService);
   private readonly wcStore = inject(WcStoreAPI);
   private readonly lsService = inject(LocalStorageService);
+  private readonly authService = inject(AuthService);
 
   /** basic variables */
   listVariations = ['instock']; // add 'outofstock' here, to show out-of-stock variations
@@ -168,11 +170,6 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  get getProductCat(): number {
-    const storedCat = this.lsService.getItem<number>(LsKeys.USER_PRODUCT_CAT);
-    return storedCat ?? 22;
-  }
-
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
@@ -199,7 +196,7 @@ export class TicketsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   initProducts() {
-    return this.wcStore.listProducts([this.getProductCat]).pipe(
+    return this.wcStore.listProducts(this.authService.productCategory).pipe(
       takeUntil(this.destroy$),
       catchError((error) => {
         this.productsLoading.set(false);
