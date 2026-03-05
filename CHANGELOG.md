@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Calendar View in Crew Area and some Refactors
+- Artist login
 
 ### Fixed
 
