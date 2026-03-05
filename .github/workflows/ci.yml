@@ -49,7 +49,7 @@ jobs:
 
   deploy-gh-pages:
     runs-on: ubuntu-latest
-    if: (github.event_name == 'push' && contains(github.event.head_commit.message, '[deploy]'))
+    if: (github.event_name == 'push' && contains(github.event.head_commit.message, '[pages]'))
     needs: build
 
     steps:
