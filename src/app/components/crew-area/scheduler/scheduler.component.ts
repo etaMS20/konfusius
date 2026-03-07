@@ -30,7 +30,6 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
 import html2canvas from 'html2canvas';
-import { D } from '@angular/common/common_module.d-Qx8B6pmN';
 
 registerLocaleData(localeDe);
 
