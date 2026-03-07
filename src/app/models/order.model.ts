@@ -1,4 +1,4 @@
-import { WcBillingAddress, WcShippingAddress } from './customer.model';
+import { Billing, WcBillingAddress, WcShippingAddress } from './customer.model';
 
 export interface WcCheckout {
   order_id: number;
@@ -72,11 +72,7 @@ export interface WcOrder {
   total_tax: string;
   customer_id: number;
   order_key: string;
-  billing: WcBillingAddress & {
-    billing_invite: string;
-    billing_gebote: string;
-    billing_addinfo: string;
-  };
+  billing: Billing;
   shipping: WcShippingAddress;
   payment_method: WcPaymentMethodId;
   payment_method_title: string;

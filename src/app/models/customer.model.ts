@@ -24,3 +24,13 @@ export interface WcShippingAddress {
   country?: string;
   phone?: string;
 }
+
+export interface BillingExtra {
+  billing_invite: string;
+  billing_gebote: string;
+  billing_disclaimer_experience: string;
+  billing_disclaimer_confirmed: string;
+  billing_food_intolerance: string;
+}
+
+export type Billing = WcBillingAddress & BillingExtra;

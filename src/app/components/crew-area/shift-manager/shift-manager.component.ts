@@ -31,7 +31,11 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ListboxModule } from 'primeng/listbox';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { ConfirmationService, MenuItem } from 'primeng/api';
-
+import {
+  DialogService,
+  DynamicDialogModule,
+  DynamicDialogRef,
+} from 'primeng/dynamicdialog';
 // kf
 import { WcV3Service } from '@services/api/wc-v3.service';
 import { CustomEndpointsService } from '@services/api/custom-endpoints.service';
@@ -42,8 +46,8 @@ import { DateFormatPipe } from '@pipes/date-format.pipe';
 import { OrderStatusComponent } from '@shared/status/order-status.component';
 import { findCrossItem, findMainItem } from '@utils/oder.utils';
 import { HintComponent } from '@shared/hint/hint.component';
-import { DialogPopupComponent } from '@shared/dialog-popup/dialog-popup.component';
-import { MatDialog } from '@angular/material/dialog';
+import { OrderComponent } from '@shared/order/order.component';
+import { HumanReadableDatePipe } from '@pipes/datetime.pipe';
 
 @Component({
   selector: 'kf-shift-manager',
@@ -65,18 +69,21 @@ import { MatDialog } from '@angular/material/dialog';
     ListboxModule,
     HintComponent,
     ContextMenuModule,
+    DynamicDialogModule,
   ],
   templateUrl: './shift-manager.component.html',
   styleUrl: './shift-manager.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DialogService, HumanReadableDatePipe],
 })
 export class ShiftManagerComponent implements OnInit, OnDestroy {
+  private dialogService = inject(DialogService);
+  private humanReadableDatePipe = inject(HumanReadableDatePipe);
+  ref: DynamicDialogRef | undefined;
   constructor(private confirmationService: ConfirmationService) {}
   private wcV3 = inject(WcV3Service);
   private customEpS = inject(CustomEndpointsService);
   private errorService = inject(ErrorDialogService);
-  private wc3Service = inject(WcV3Service);
-  private dialog = inject(MatDialog);
   withCheckbox = false;
   scopeYears = signal<string[]>(['2026']);
 
@@ -112,7 +119,7 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
       {
         label: 'Order Details',
         icon: 'pi pi-info-circle',
-        action: () => this.showOrderInDialog(),
+        action: () => this.openOrderInDialog(),
       },
       {
         label: 'Auf "On Hold" setzen',
@@ -319,22 +326,8 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
 
   copyToClipboard(value: string | number) {
     navigator.clipboard.writeText(value.toString()).then(() => {
-      // Optional: Erfolgserlebnis via Toast
-      // this.messageService.add({ severity: 'success', summary: 'Kopiert', detail: 'In die Zwischenablage kopiert' });
+      //TODO: Show Toast
       console.log('Kopiert:', value);
-    });
-  }
-
-  private showOrderInDialog() {
-    const orderId = this.selectedOrderForMenu()?.id;
-    if (!orderId) return;
-    this.wc3Service.getOrderById(orderId).subscribe({
-      next: (order) => {
-        this.dialog.open(DialogPopupComponent, {
-          data: order,
-        });
-      },
-      error: (err) => this.handleError(err),
     });
   }
 
@@ -369,6 +362,22 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
         label: 'Bestätigen',
       },
       accept: () => this.executeStatusUpdate(status, ordersToUpdate),
+    });
+  }
+
+  openOrderInDialog() {
+    const order = this.selectedOrderForMenu();
+    const formattedDate = order?.date_created
+      ? this.humanReadableDatePipe.transform(order.date_created)
+      : '';
+    this.dialogService.open(OrderComponent, {
+      header: `Anmeldung #${order?.id} vom ${formattedDate}`,
+      width: '50rem',
+      contentStyle: { overflow: 'auto' },
+      focusOnShow: false,
+      data: { orderId: order?.id, mode: 'view' },
+      closable: true,
+      modal: true,
     });
   }
 }
