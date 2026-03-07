@@ -12,6 +12,7 @@ import { EnvStatusService } from '@services/env-status.service';
 import { KTimeUtilsService } from '@services/time-utils.service';
 import { ToastModule } from 'primeng/toast';
 import { EarlyBirdService } from '@services/early-bird-service.service';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,7 @@ import { EarlyBirdService } from '@services/early-bird-service.service';
     FooterComponent,
     BackgroundComponent,
     ToastModule,
+    ConfirmDialogModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

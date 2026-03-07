@@ -29,7 +29,6 @@ import { KTimeUtilsService } from '@services/time-utils.service';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
-import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
 registerLocaleData(localeDe);
@@ -167,11 +166,11 @@ export class SchedulerComponent implements OnInit {
     }
   }
 
-  previousDay($event: MouseEvent): void {
+  previousDay(): void {
     this.viewDate.set(subDays(this.viewDate(), 1));
   }
 
-  nextDay($event: MouseEvent): void {
+  nextDay(): void {
     this.viewDate.set(addDays(this.viewDate(), 1));
   }
 
@@ -181,7 +180,7 @@ export class SchedulerComponent implements OnInit {
 
     for (let i = 0; i < 3; i++) {
       this.viewDate.set(addDays(originalDate, i));
-      await new Promise((resolve) => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 200));
       const el = document.querySelector('mwl-calendar-week-view')!;
       canvases.push(await html2canvas(el as HTMLElement));
     }
@@ -201,7 +200,7 @@ export class SchedulerComponent implements OnInit {
 
     const link = document.createElement('a');
     link.href = merged.toDataURL('image/png');
-    link.download = 'calendar.png';
+    link.download = new Date().toLocaleDateString('de-DE') + '-schedule.png';
     link.click();
   }
 }

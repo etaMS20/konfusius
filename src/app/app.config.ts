@@ -16,7 +16,7 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -49,5 +49,6 @@ export const appConfig: ApplicationConfig = {
       },
     }),
     MessageService,
+    ConfirmationService,
   ],
 };

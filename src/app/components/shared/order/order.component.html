@@ -1,0 +1,176 @@
+<!-- LOADING -->
+@if (loading()) {
+  <p-skeleton width="8rem" [style]="{ 'margin-bottom': '0.5rem' }" />
+  <p-divider />
+  <p class="label">Kontakt</p>
+  <p-skeleton width="8rem" [style]="{ 'margin-bottom': '0.5rem' }" />
+  <p-skeleton width="8rem" [style]="{ 'margin-bottom': '0.5rem' }" />
+  <p-skeleton width="6rem" [style]="{ 'margin-bottom': '0.5rem' }" />
+  <p-skeleton width="4rem" [style]="{ 'margin-bottom': '0.5rem' }" />
+  <p-divider />
+  <p-skeleton width="100%" height="4rem" />
+}
+
+<!-- ORDER -->
+@if (!loading() && order(); as o) {
+  <p-divider />
+  <div class="order-container">
+    <table>
+      <tr>
+        <td>Status</td>
+        <td>
+          @if (isEdit()) {
+            <p-select
+              [options]="statusOptions"
+              [(ngModel)]="editStatus"
+              optionLabel="label"
+              optionValue="value"
+              appendTo="body"
+            />
+          } @else {
+            <p-tag [value]="o.status" [severity]="statusSeverity(o.status)" />
+          }
+        </td>
+      </tr>
+      <tr>
+        <td>Vorname</td>
+        <td>
+          @if (isEdit()) {
+            <input pInputText [(ngModel)]="editBilling.first_name" />
+          } @else {
+            {{ o.billing.first_name }}
+          }
+        </td>
+      </tr>
+      <tr>
+        <td>Nachname</td>
+        <td>
+          @if (isEdit()) {
+            <input pInputText [(ngModel)]="editBilling.last_name" />
+          } @else {
+            {{ o.billing.last_name }}
+          }
+        </td>
+      </tr>
+      <tr>
+        <td>Adresse</td>
+        <td>
+          @if (isEdit()) {
+            <input pInputText [(ngModel)]="editBilling.address_1" />
+          } @else {
+            {{ o.billing.address_1 }}
+          }
+        </td>
+      </tr>
+      <tr>
+        <td>Stadt</td>
+        <td>
+          @if (isEdit()) {
+            <input pInputText [(ngModel)]="editBilling.city" />
+          } @else {
+            {{ o.billing.city }}
+          }
+        </td>
+      </tr>
+      <tr>
+        <td>PLZ</td>
+        <td>
+          @if (isEdit()) {
+            <input pInputText [(ngModel)]="editBilling.postcode" />
+          } @else {
+            {{ o.billing.postcode }}
+          }
+        </td>
+      </tr>
+      <tr>
+        <td>Land</td>
+        <td>
+          @if (isEdit()) {
+            <input pInputText [(ngModel)]="editBilling.country" />
+          } @else {
+            {{ o.billing.country }}
+          }
+        </td>
+      </tr>
+      <tr>
+        <td>E-Mail</td>
+        <td>
+          @if (isEdit()) {
+            <input pInputText [(ngModel)]="editBilling.email" />
+          } @else {
+            {{ o.billing.email }}
+          }
+        </td>
+      </tr>
+    </table>
+
+    <div>
+      @if (isEdit()) {
+        <p-button
+          icon="pi pi-times"
+          [text]="true"
+          severity="secondary"
+          label="Cancel"
+          (onClick)="mode.set('view')"
+        />
+      } @else {
+        <p-button
+          icon="pi pi-pencil"
+          [text]="true"
+          severity="secondary"
+          label="Bearbeiten"
+          (onClick)="mode.set('edit')"
+        />
+      }
+    </div>
+  </div>
+
+  <p-divider />
+
+  <!-- Line items table -->
+  <p-table
+    [value]="o.line_items"
+    styleClass="order-table"
+    [tableStyle]="{ 'min-width': '100%' }"
+  >
+    <ng-template #header>
+      <tr>
+        <th>Artikel</th>
+        <th class="col-narrow">#</th>
+        <th class="col-price">Beitrag</th>
+        <th class="col-price">Total</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-item>
+      <tr>
+        <td>{{ item.name }}</td>
+        <td class="col-narrow">{{ item.quantity }}</td>
+        <td class="col-price">
+          {{ item.price.toFixed(2) }}{{ o.currency_symbol }}
+        </td>
+        <td class="col-price">
+          {{ (item.quantity * item.price).toFixed(2) }}{{ o.currency_symbol }}
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template #footer>
+      <tr class="total-row">
+        <td colspan="3" class="total-label">Kostenbeitrag</td>
+        <td class="col-price total-value">
+          {{ o.total }}{{ o.currency_symbol }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  @if (isEdit()) {
+    <div class="save-row">
+      <p-button
+        label="Änderungen speichern"
+        icon="pi pi-check"
+        [loading]="saving()"
+        (onClick)="saveChanges()"
+      />
+    </div>
+  }
+}
