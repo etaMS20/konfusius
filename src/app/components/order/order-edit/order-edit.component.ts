@@ -53,10 +53,10 @@ const STATUS_SEVERITY: Record<
     InputGroupModule,
     InputTextModule,
   ],
-  templateUrl: './order.component.html',
-  styleUrl: './order.component.scss',
+  templateUrl: './order-edit.component.html',
+  styleUrl: './order-edit.component.scss',
 })
-export class OrderComponent implements OnInit, OnDestroy {
+export class OrderEditComponent implements OnInit, OnDestroy {
   private readonly wcApi = inject(WcV3Service);
   private readonly config = inject(DynamicDialogConfig);
   private readonly errorService = inject(ErrorDialogService);

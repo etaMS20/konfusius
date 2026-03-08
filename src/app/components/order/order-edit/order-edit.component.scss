@@ -11,29 +11,6 @@
   }
 }
 
-.edit-table {
-  width: 100%;
-  border-collapse: collapse;
-  overflow-x: scroll;
-
-  td:first-child {
-    color: var(--p-text-muted-color);
-    white-space: nowrap;
-    width: 1%;
-    padding-right: 1.5rem;
-  }
-
-  td {
-    padding: 0.5rem 0.25rem;
-  }
-
-  input,
-  p-select {
-    width: 100%;
-    min-width: 0; // prevents overflow
-  }
-}
-
 .label {
   font-weight: 600;
   margin-right: 0.4rem;

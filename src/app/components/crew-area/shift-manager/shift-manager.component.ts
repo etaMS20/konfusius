@@ -46,7 +46,7 @@ import { DateFormatPipe } from '@pipes/date-format.pipe';
 import { OrderStatusComponent } from '@shared/status/order-status.component';
 import { findCrossItem, findMainItem } from '@utils/oder.utils';
 import { HintComponent } from '@shared/hint/hint.component';
-import { OrderComponent } from '@shared/order/order.component';
+import { OrderEditComponent } from '@components/order/order-edit/order-edit.component';
 import { HumanReadableDatePipe } from '@pipes/datetime.pipe';
 
 @Component({
@@ -370,7 +370,7 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
     const formattedDate = order?.date_created
       ? this.humanReadableDatePipe.transform(order.date_created)
       : '';
-    this.dialogService.open(OrderComponent, {
+    this.dialogService.open(OrderEditComponent, {
       header: `Anmeldung #${order?.id} vom ${formattedDate}`,
       width: '50rem',
       contentStyle: { overflow: 'auto' },
