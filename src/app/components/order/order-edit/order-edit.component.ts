@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { catchError, Subject, takeUntil, throwError } from 'rxjs';
 
-import { WC_ORDER_STATUSES, WcOrder } from '@models/order.model';
+import { WC_ORDER_STATUSES, WcOrder, WcOrderStatus } from '@models/order.model';
 import { WcV3Service } from '@services/api/wc-v3.service';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
 
@@ -23,8 +23,8 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputTextModule } from 'primeng/inputtext';
-
-export type OrderOverviewMode = 'view' | 'edit';
+import { ToolbarModule } from 'primeng/toolbar';
+import { Billing } from '@models/customer.model';
 
 const STATUS_SEVERITY: Record<
   string,
@@ -52,6 +52,7 @@ const STATUS_SEVERITY: Record<
     SkeletonModule,
     InputGroupModule,
     InputTextModule,
+    ToolbarModule,
   ],
   templateUrl: './order-edit.component.html',
   styleUrl: './order-edit.component.scss',
@@ -61,16 +62,16 @@ export class OrderEditComponent implements OnInit, OnDestroy {
   private readonly config = inject(DynamicDialogConfig);
   private readonly errorService = inject(ErrorDialogService);
   private readonly destroy$ = new Subject<void>();
-  editBilling: Partial<WcOrder['billing']> = {};
+
+  vmEdit: Pick<WcOrder, 'billing' | 'status'> = {
+    billing: {} as Billing,
+    status: 'pending',
+  };
 
   order = signal<WcOrder | null>(null);
   loading = signal(true);
   saving = signal(false);
-  editStatus = signal('');
-
-  mode = signal<OrderOverviewMode>(this.config.data?.mode ?? 'view');
-
-  isEdit = computed(() => this.mode() === 'edit');
+  editMode = signal<Boolean>(this.config.data?.editMode ?? false);
 
   statusOptions = [...WC_ORDER_STATUSES].map((status) => ({
     label: status,
@@ -104,19 +105,41 @@ export class OrderEditComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         if (data) {
           this.order.set(data);
-          this.editStatus.set(data.status);
-          this.editBilling = { ...data.billing };
+          this.vmEdit = {
+            billing: { ...data.billing },
+            status: data.status,
+          };
         }
         this.loading.set(false);
       });
   }
 
   saveChanges(): void {
-    // TODO: patch order status + line item replacements via wcApi
+    if (!this.order()) return;
+    this.wcApi
+      .updateOrder(this.order()!.id, this.vmEdit)
+      .pipe(
+        catchError((err) => {
+          this.errorService.handleError(err);
+          return throwError(() => err);
+        }),
+      )
+      .subscribe((updatedOrder) => {
+        this.order.set(updatedOrder);
+        this.editMode.set(false);
+      });
   }
 
   replaceLineItem(itemId: number): void {
     // TODO: line item replacement logic
+  }
+
+  removeLineItem(itemId: number): void {
+    // TODO: remove from order via wcApi
+  }
+
+  addLineItem(): void {
+    // TODO: open product select, then add to order via wcApi
   }
 
   statusSeverity(status: string) {

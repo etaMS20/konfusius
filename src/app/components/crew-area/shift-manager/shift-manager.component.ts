@@ -375,7 +375,7 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
       width: '50rem',
       contentStyle: { overflow: 'auto' },
       focusOnShow: false,
-      data: { orderId: order?.id, mode: 'view' },
+      data: { orderId: order?.id, editMode: false },
       closable: true,
       modal: true,
     });

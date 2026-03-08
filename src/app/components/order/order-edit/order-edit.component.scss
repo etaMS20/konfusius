@@ -1,37 +1,44 @@
 @use 'src/styles/style-vars.scss' as *;
 
-.order-container {
+.order-actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+  justify-content: flex-end;
+}
 
-  table {
-    flex: 1;
-    min-width: 250px;
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+
+  td:first-child {
+    color: var(--p-text-muted-color);
+    white-space: nowrap;
+    width: 35%;
+    padding-right: 1rem;
+  }
+
+  td {
+    vertical-align: middle;
+    padding: 0.2rem;
+  }
+
+  input {
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
   }
 }
 
-.label {
-  font-weight: 600;
-  margin-right: 0.4rem;
-}
-
-.col-narrow {
-  width: 3rem;
-  text-align: center;
-}
-.col-price {
+.col-right {
   text-align: right;
 }
 
 .total-row {
   font-weight: 600;
-  .total-label {
-    text-align: right;
-    padding-right: 1rem;
-  }
-  .total-value {
-    font-size: 1.1em;
+  font-size: 1.05em;
+
+  td {
+    padding-top: 0.6rem;
   }
 }
 
