@@ -36,7 +36,13 @@
               *ngFor="let option of productVariations"
               [value]="option.id"
             >
-              <span [innerHTML]="option.variation | safeHtml"></span>
+              <div class="option-content">
+                <span [innerHTML]="option.variation | safeHtml"></span>
+                <span class="stock-info">
+                  ({{ option.extensions.konfusius_shift.stock_count }}
+                  verfügbar)
+                </span>
+              </div>
             </mat-option>
           </mat-select>
         </mat-form-field>

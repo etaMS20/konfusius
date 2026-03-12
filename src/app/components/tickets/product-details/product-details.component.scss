@@ -134,3 +134,20 @@ $animation-duration: 0.3s;
   --mdc-outlined-text-field-outline-color: rgba(0, 0, 255, 0.575);
   --mdc-outlined-text-field-outline-width: 2px;
 }
+
+::ng-deep .mdc-list-item__primary-text {
+  display: flex !important;
+  width: 100% !important;
+}
+
+.option-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.stock-info {
+  font-size: 0.8rem;
+  color: #333;
+  white-space: nowrap;
+}

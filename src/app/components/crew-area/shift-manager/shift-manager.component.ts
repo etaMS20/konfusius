@@ -117,11 +117,6 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
       status?: WcOrderStatus;
     }[] = [
       {
-        label: 'Order Details',
-        icon: 'pi pi-info-circle',
-        action: () => this.openOrderInDialog(),
-      },
-      {
         label: 'Auf "On Hold" setzen',
         icon: 'pi pi-undo',
         status: 'on-hold',
@@ -135,6 +130,11 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
         label: 'Stornieren',
         icon: 'pi pi-times-circle',
         status: 'cancelled',
+      },
+      {
+        label: 'Anzeigen/Bearbeiten (beta)',
+        icon: 'pi pi-info-circle',
+        action: () => this.openOrderInDialog(),
       },
     ];
 
