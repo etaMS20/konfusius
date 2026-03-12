@@ -1,0 +1,49 @@
+@use 'src/styles/style-vars.scss' as *;
+
+.order-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+
+  td:first-child {
+    color: var(--p-text-muted-color);
+    white-space: nowrap;
+    width: 35%;
+    padding-right: 1rem;
+  }
+
+  td {
+    vertical-align: middle;
+    padding: 0.2rem;
+  }
+
+  input {
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+}
+
+.col-right {
+  text-align: right;
+}
+
+.total-row {
+  font-weight: 600;
+  font-size: 1.05em;
+
+  td {
+    padding-top: 0.6rem;
+  }
+}
+
+.save-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.25rem;
+}

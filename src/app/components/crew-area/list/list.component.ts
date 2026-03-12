@@ -19,10 +19,6 @@ interface TreeNodeData {
   inStock?: number | string;
   ordered?: number;
   type: string;
-  meta?: {
-    parentPlanned?: number;
-    variableBasic?: boolean;
-  };
 }
 type KTreeNode = TreeNode<TreeNodeData>;
 
@@ -82,7 +78,7 @@ export class ListComponent implements OnInit {
   }
   private loadInitialProducts() {
     this.wcStoreApi
-      .listProducts([22, 32])
+      .listProducts([22, 32, 59])
       .pipe(
         catchError((error) => {
           console.error('Error loading initial products:', error);

@@ -35,7 +35,7 @@
         [text]="true"
         [rounded]="true"
         severity="secondary"
-        (onClick)="previousDay($event)"
+        (onClick)="previousDay()"
       />
       <span>
         <b>
@@ -47,7 +47,7 @@
         [text]="true"
         [rounded]="true"
         severity="secondary"
-        (onClick)="nextDay($event)"
+        (onClick)="nextDay()"
       />
     </div>
   </ng-template>
@@ -57,27 +57,29 @@
 </ng-container>
 
 <ng-template #calendarView
-  ><div>
-    @switch (view) {
-      @case ('month') {
-        <mwl-calendar-month-view
-          [viewDate]="viewDate()"
-          [events]="calendarEntries()"
-          [locale]="timeUtil.locale"
-          [activeDayIsOpen]="activeDayIsOpen"
-          (dayClicked)="dayClicked($event.day)"
-          [weekStartsOn]="weekStartsOn"
-          [weekendDays]="weekendDays"
-        />
+  ><div style="overflow-x: auto">
+    <div style="min-width: 50rem">
+      @switch (view) {
+        @case ('month') {
+          <mwl-calendar-month-view
+            [viewDate]="viewDate()"
+            [events]="calendarEntries()"
+            [locale]="timeUtil.locale"
+            [activeDayIsOpen]="activeDayIsOpen"
+            (dayClicked)="dayClicked($event.day)"
+            [weekStartsOn]="weekStartsOn"
+            [weekendDays]="weekendDays"
+          />
+        }
+        @case ('day') {
+          <mwl-calendar-day-view
+            [viewDate]="viewDate()"
+            [events]="calendarEntries()"
+            [locale]="timeUtil.locale"
+            (beforeViewRender)="beforeDayViewRender($event)"
+          />
+        }
       }
-      @case ('day') {
-        <mwl-calendar-day-view
-          [viewDate]="viewDate()"
-          [events]="calendarEntries()"
-          [locale]="timeUtil.locale"
-          (beforeViewRender)="beforeDayViewRender($event)"
-        />
-      }
-    }
+    </div>
   </div>
 </ng-template>

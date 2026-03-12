@@ -95,4 +95,11 @@ export class WcV3Service {
       headers: this.headers,
     });
   }
+
+  updateOrder(id: number, data: Partial<WcOrder>): Observable<WcOrder> {
+    return this.http.put<WcOrder>(`${this.wcBackend}/orders/${id}`, data, {
+      headers: this.headers,
+      withCredentials: true,
+    });
+  }
 }

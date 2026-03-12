@@ -16,7 +16,10 @@
     [scrollable]="true"
     [styleClass]="'p-treetable-sm'"
     [loading]="loading$ | async"
+    [scrollable]="true"
+    [tableStyle]="{ 'min-width': '50rem' }"
   >
+    >
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th *ngFor="let col of columns" [style.width]="col.width">

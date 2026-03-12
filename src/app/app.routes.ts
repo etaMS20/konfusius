@@ -42,7 +42,7 @@ export const routes: Routes = [
     path: 'order/:id',
     loadComponent: () => {
       return import(
-        './components/order-overview/order-overview.component'
+        './components/order/order-overview/order-overview.component'
       ).then((m) => m.OrderOverviewComponent);
     },
   },
