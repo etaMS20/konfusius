@@ -56,6 +56,9 @@ export class ShiftManagerToolbarComponent {
   ];
 
   contactPersonOptions = input.required<string[]>();
+  contactPersonFilter = model<string>('');
+  statusFilter = model<string[]>([]);
+  statusOptions = input.required<{ label: string; value: string }[]>();
 
   yearOptions = ['2025', '2026', '2027'];
 

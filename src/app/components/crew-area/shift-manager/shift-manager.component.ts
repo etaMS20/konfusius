@@ -195,11 +195,23 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
   filteredOrders = computed(() => {
     const term = this.keywordFilter().toLowerCase().trim();
     const selected = this.selectedFields();
-    const data = this.orders();
+    const contactPerson = this.contactPersonFilter().toLowerCase().trim();
+    const statuses = this.statusFilter();
+    let data = this.orders();
+
+    if (contactPerson) {
+      data = data.filter((order) =>
+        (order.billing?.billing_invite ?? '').toLowerCase() === contactPerson,
+      );
+    }
+
+    if (statuses.length) {
+      data = data.filter((order) => statuses.includes(order.status as WcOrderStatus));
+    }
 
     if (!term || !selected.length) return data;
 
-    return this.orders().filter((order) => {
+    return data.filter((order) => {
       const pathsToSearch = selected.flatMap(
         (key) => this.FILTER_MAP[key] || [key],
       );
@@ -216,6 +228,8 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
     return path.split('.').reduce((acc: any, key: string) => acc?.[key], obj);
   }
 
+  contactPersonFilter = signal<string>('');
+  statusFilter = signal<string[]>([]);
   selectedOrders = signal<OrderMin[]>([]);
   contactPersons = signal<string[]>([]);
   loading$ = new BehaviorSubject<boolean>(false);
@@ -299,10 +313,10 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
   }
 
   pageRange = signal({ first: 0, rows: 10 });
+
   pageSum = computed(() => {
     const data = this.filteredOrders();
     const { first, rows } = this.pageRange();
-
     return data
       .slice(first, first + rows)
       .reduce((acc, order) => acc + (Number(order.total) || 0), 0);
