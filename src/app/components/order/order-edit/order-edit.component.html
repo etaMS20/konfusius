@@ -156,16 +156,71 @@
       </tr>
     }
 
+    <!-- Add buttons / picker -->
     @if (editMode()) {
       <tr>
         <td colspan="2">
-          <p-button
-            icon="pi pi-plus"
-            [text]="true"
-            size="small"
-            label="Schicht/Ticket hinzufügen"
-            (onClick)="addLineItem()"
-          />
+          @if (!showAddItem()) {
+            <div style="display: flex; gap: 0.25rem; flex-wrap: wrap;">
+              <p-button
+                icon="pi pi-plus"
+                [text]="true"
+                size="small"
+                label="Schicht hinzufügen"
+                (onClick)="openPicker('shift')"
+              />
+              <p-button
+                icon="pi pi-plus"
+                [text]="true"
+                size="small"
+                label="Ticket hinzufügen"
+                (onClick)="openPicker('ticket')"
+              />
+            </div>
+          } @else {
+            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+              <!-- Product select -->
+              <p-select
+                [ngModel]="selectedProductId()"
+                (ngModelChange)="onProductSelected($event)"
+                [options]="currentPickerProducts()"
+                optionLabel="name"
+                optionValue="id"
+                [placeholder]="showAddItem() === 'shift' ? 'Schicht auswählen' : 'Ticket auswählen'"
+                [loading]="loadingProducts()"
+                appendTo="body"
+                size="small"
+              />
+
+              <!-- Variation select (variable products only) -->
+              @if (selectedProductIsVariable()) {
+                <p-select
+                  [(ngModel)]="selectedVariationId"
+                  [options]="variations()"
+                  optionLabel="name"
+                  optionValue="id"
+                  placeholder="Variante auswählen"
+                  [loading]="loadingVariations()"
+                  appendTo="body"
+                  size="small"
+                />
+              }
+
+              <p-button
+                icon="pi pi-check"
+                size="small"
+                [disabled]="!canConfirmAdd()"
+                (onClick)="confirmAddLineItem()"
+              />
+              <p-button
+                icon="pi pi-times"
+                [text]="true"
+                severity="secondary"
+                size="small"
+                (onClick)="resetPicker()"
+              />
+            </div>
+          }
         </td>
       </tr>
     }
@@ -187,7 +242,7 @@
           [text]="true"
           severity="secondary"
           label="Abbrechen"
-          (onClick)="editMode.set(false)"
+          (onClick)="cancelEditMode()"
           size="small"
         />
       } @else {
@@ -196,7 +251,7 @@
           [text]="true"
           severity="secondary"
           label="Bearbeiten"
-          (onClick)="editMode.set(true)"
+          (onClick)="enterEditMode()"
           size="small"
         />
       }
