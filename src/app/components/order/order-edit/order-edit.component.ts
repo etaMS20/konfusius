@@ -135,10 +135,9 @@ export class OrderEditComponent implements OnInit, OnDestroy {
     return true;
   });
 
-  hasShift = computed(() => {
-    const shiftIds = new Set(this.shiftProducts().map((p) => p.id));
-    return this.vmLineItems().some((i) => shiftIds.has(i.product_id));
-  });
+  hasShift = computed(() =>
+    this.vmLineItems().some((i) => this.shiftProducts().some((p) => p.id === i.product_id))
+  );
 
   hasTicket = computed(() => {
     const ticketIds = new Set(this.ticketProducts().map((p) => p.id));
