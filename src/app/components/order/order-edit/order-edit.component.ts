@@ -43,6 +43,17 @@ const STATUS_SEVERITY: Record<
   'on-hold': 'warn',
 };
 
+interface VmLineItem {
+  /** Undefined for newly added items not yet saved */
+  id?: number;
+  product_id: number;
+  variation_id?: number;
+  name: string;
+  quantity: number;
+  price: number;
+  isNew: boolean;
+}
+
 @Component({
   selector: 'app-order-overview',
   imports: [
@@ -69,30 +80,43 @@ export class OrderEditComponent implements OnInit, OnDestroy {
   private readonly errorService = inject(ErrorDialogService);
   private readonly destroy$ = new Subject<void>();
 
-  vmEdit: Pick<WcOrder, 'billing' | 'status'> = {
-    billing: {} as Billing,
-    status: 'pending',
-  };
+  // --- View model (only active while in edit mode) ---
+
+  vmBilling: Billing = {} as Billing;
+  vmStatus: WcOrder['status'] = 'pending';
+  vmLineItems = signal<VmLineItem[]>([]);
+
+  vmTotal = computed(() =>
+    this.vmLineItems().reduce((sum, item) => sum + item.quantity * item.price, 0),
+  );
+
+  // --- Order state ---
 
   order = signal<WcOrder | null>(null);
   loading = signal(true);
   saving = signal(false);
-  editMode = signal<Boolean>(this.config.data?.editMode ?? false);
+  editMode = signal(false);
 
-  // Product picker state
+  // --- Product picker ---
+
   showAddItem = signal<'shift' | 'ticket' | null>(null);
   shiftProducts = signal<WcProduct[]>([]);
   ticketProducts = signal<WcProduct[]>([]);
-  loadingProducts = signal(false);
-
-  selectedProductId = signal<number | null>(null);
   variations = signal<WcProductVariationDetails[]>([]);
   loadingVariations = signal(false);
+  selectedProductId = signal<number | null>(null);
   selectedVariationId: number | null = null;
 
   currentPickerProducts = computed(() =>
     this.showAddItem() === 'shift' ? this.shiftProducts() : this.ticketProducts(),
   );
+
+  isPickerLoading = computed(() => {
+    const type = this.showAddItem();
+    if (type === 'shift') return this.shiftProducts().length === 0;
+    if (type === 'ticket') return this.ticketProducts().length === 0;
+    return false;
+  });
 
   selectedProductIsVariable = computed(() => {
     const id = this.selectedProductId();
@@ -139,25 +163,29 @@ export class OrderEditComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
       )
       .subscribe((data) => {
-        if (data) {
-          this.order.set(data);
-          this.vmEdit = {
-            billing: { ...data.billing },
-            status: data.status,
-          };
-        }
+        if (data) this.order.set(data);
         this.loading.set(false);
       });
   }
 
   enterEditMode(): void {
     const o = this.order();
-    if (o) {
-      this.vmEdit = {
-        billing: { ...o.billing },
-        status: o.status,
-      };
-    }
+    if (!o) return;
+
+    this.vmBilling = { ...o.billing };
+    this.vmStatus = o.status;
+    this.vmLineItems.set(
+      o.line_items.map((item) => ({
+        id: item.id,
+        product_id: item.product_id,
+        variation_id: item.variation_id || undefined,
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price,
+        isNew: false,
+      })),
+    );
+
     this.resetPicker();
     this.loadProducts('shift');
     this.loadProducts('ticket');
@@ -170,10 +198,35 @@ export class OrderEditComponent implements OnInit, OnDestroy {
   }
 
   saveChanges(): void {
-    if (!this.order()) return;
+    const o = this.order();
+    if (!o) return;
     this.saving.set(true);
+
+    // Diff: items in original but removed from vmLineItems → quantity 0
+    const keptIds = new Set(
+      this.vmLineItems()
+        .filter((i) => i.id !== undefined)
+        .map((i) => i.id!),
+    );
+    const removals = o.line_items
+      .filter((item) => !keptIds.has(item.id))
+      .map((item) => ({ id: item.id, quantity: 0 }));
+
+    // New items added during edit
+    const additions = this.vmLineItems()
+      .filter((i) => i.isNew)
+      .map((i) => {
+        const entry: any = { product_id: i.product_id, quantity: i.quantity };
+        if (i.variation_id) entry.variation_id = i.variation_id;
+        return entry;
+      });
+
+    const payload: any = { billing: this.vmBilling, status: this.vmStatus };
+    const lineItems = [...removals, ...additions];
+    if (lineItems.length) payload.line_items = lineItems;
+
     this.wcApi
-      .updateOrder(this.order()!.id, this.vmEdit)
+      .updateOrder(o.id, payload)
       .pipe(
         catchError((err) => {
           this.errorService.handleError(err);
@@ -189,22 +242,8 @@ export class OrderEditComponent implements OnInit, OnDestroy {
       });
   }
 
-  removeLineItem(itemId: number): void {
-    if (!this.order()) return;
-    this.wcApi
-      .updateOrder(this.order()!.id, {
-        line_items: [{ id: itemId, quantity: 0 } as any],
-      })
-      .pipe(
-        catchError((err) => {
-          this.errorService.handleError(err);
-          return throwError(() => err);
-        }),
-        takeUntil(this.destroy$),
-      )
-      .subscribe((updatedOrder) => {
-        this.order.set(updatedOrder);
-      });
+  removeLineItem(index: number): void {
+    this.vmLineItems.update((items) => items.filter((_, i) => i !== index));
   }
 
   openPicker(type: 'shift' | 'ticket'): void {
@@ -226,27 +265,50 @@ export class OrderEditComponent implements OnInit, OnDestroy {
   }
 
   confirmAddLineItem(): void {
-    if (!this.selectedProductId() || !this.order()) return;
+    const productId = this.selectedProductId();
+    if (!productId) return;
+
+    const product = this.currentPickerProducts().find((p) => p.id === productId);
+    if (!product) return;
     if (this.selectedProductIsVariable() && !this.selectedVariationId) return;
 
-    const lineItem: any = { product_id: this.selectedProductId(), quantity: 1 };
+    let name = product.name;
+    let price =
+      parseInt(product.prices.price) /
+      Math.pow(10, product.prices.currency_minor_unit);
+
     if (this.selectedVariationId) {
-      lineItem.variation_id = this.selectedVariationId;
+      const variation = this.variations().find(
+        (v) => v.id === this.selectedVariationId,
+      );
+      if (variation) {
+        name = variation.name;
+        price =
+          parseInt(variation.prices.price) /
+          Math.pow(10, variation.prices.currency_minor_unit);
+      }
     }
 
-    this.wcApi
-      .updateOrder(this.order()!.id, { line_items: [lineItem] })
-      .pipe(
-        catchError((err) => {
-          this.errorService.handleError(err);
-          return throwError(() => err);
-        }),
-        takeUntil(this.destroy$),
-      )
-      .subscribe((updatedOrder) => {
-        this.order.set(updatedOrder);
-        this.resetPicker();
-      });
+    this.vmLineItems.update((items) => [
+      ...items,
+      {
+        product_id: productId,
+        variation_id: this.selectedVariationId ?? undefined,
+        name,
+        quantity: 1,
+        price,
+        isNew: true,
+      },
+    ]);
+
+    this.resetPicker();
+  }
+
+  resetPicker(): void {
+    this.showAddItem.set(null);
+    this.selectedProductId.set(null);
+    this.selectedVariationId = null;
+    this.variations.set([]);
   }
 
   private loadProducts(type: 'shift' | 'ticket'): void {
@@ -256,13 +318,11 @@ export class OrderEditComponent implements OnInit, OnDestroy {
     const category =
       type === 'shift' ? this.authService.productCategory : [crossSaleProductCat];
 
-    this.loadingProducts.set(true);
     this.storeApi
       .listProducts(category, 'title', 'asc', 100)
       .pipe(
         catchError((err) => {
           this.errorService.handleError(err);
-          this.loadingProducts.set(false);
           return throwError(() => err);
         }),
         takeUntil(this.destroy$),
@@ -270,7 +330,6 @@ export class OrderEditComponent implements OnInit, OnDestroy {
       .subscribe((products) => {
         if (type === 'shift') this.shiftProducts.set(products);
         else this.ticketProducts.set(products);
-        this.loadingProducts.set(false);
       });
   }
 
@@ -290,13 +349,6 @@ export class OrderEditComponent implements OnInit, OnDestroy {
         this.variations.set(variations);
         this.loadingVariations.set(false);
       });
-  }
-
-  resetPicker(): void {
-    this.showAddItem.set(null);
-    this.selectedProductId.set(null);
-    this.selectedVariationId = null;
-    this.variations.set([]);
   }
 
   statusSeverity(status: string) {
