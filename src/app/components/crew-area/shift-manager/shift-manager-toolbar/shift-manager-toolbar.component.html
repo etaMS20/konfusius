@@ -28,6 +28,13 @@
           pTooltip="Festivaljahre"
           [style]="{ 'min-width': '150px' }"
         />
+        <p-button
+          icon="pi pi-refresh"
+          severity="secondary"
+          pTooltip="Liste neu laden"
+          tooltipPosition="bottom"
+          (click)="refreshRequest.emit()"
+        ></p-button>
       </div>
     </ng-template>
 

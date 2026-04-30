@@ -40,6 +40,7 @@ export class ShiftManagerToolbarComponent {
   nameFilterTypeChange = output<string[]>();
   scopeYearChange = output<string[]>();
   orderStatusChange = output<WcOrderStatus>();
+  refreshRequest = output<void>();
 
   nameFilterOptions = [
     {

@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
   OnDestroy,
   OnInit,
@@ -40,6 +41,7 @@ import {
 import { WcV3Service } from '@services/api/wc-v3.service';
 import { CustomEndpointsService } from '@services/api/custom-endpoints.service';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
+import { LocalStorageService } from '@storage/local-storage.service';
 import { OrderMin } from '@models/types.model';
 import { WC_ORDER_STATUSES, WcOrderStatus } from '@models/order.model';
 import { DateFormatPipe } from '@pipes/date-format.pipe';
@@ -79,20 +81,44 @@ import { HumanReadableDatePipe } from '@pipes/datetime.pipe';
 export class ShiftManagerComponent implements OnInit, OnDestroy {
   private dialogService = inject(DialogService);
   private humanReadableDatePipe = inject(HumanReadableDatePipe);
+  private storageService = inject(LocalStorageService);
   ref: DynamicDialogRef | undefined;
-  constructor(private confirmationService: ConfirmationService) {}
+
+  private static readonly STORAGE_KEY = 'sm_filters';
+
+  private savedFilters = this.storageService.getItem<{
+    keyword: string;
+    fields: string[];
+    contactPerson: string;
+    status: string[];
+    years: string[];
+  }>(ShiftManagerComponent.STORAGE_KEY);
+
+  constructor(private confirmationService: ConfirmationService) {
+    effect(() => {
+      this.storageService.setItem(ShiftManagerComponent.STORAGE_KEY, {
+        keyword: this.keywordFilter(),
+        fields: this.selectedFields(),
+        contactPerson: this.contactPersonFilter(),
+        status: this.statusFilter(),
+        years: this.scopeYears(),
+      });
+    });
+  }
   private wcV3 = inject(WcV3Service);
   private customEpS = inject(CustomEndpointsService);
   private errorService = inject(ErrorDialogService);
   withCheckbox = false;
-  scopeYears = signal<string[]>(['2026']);
+  scopeYears = signal<string[]>(this.savedFilters?.years ?? ['2026']);
 
   /** Raw coming from API */
   orders = signal<OrderMin[]>([]);
 
   /** Current keyword filter state */
-  keywordFilter = signal<string>('');
-  selectedFields = signal<string[]>(['name', 'email', 'shift']);
+  keywordFilter = signal<string>(this.savedFilters?.keyword ?? '');
+  selectedFields = signal<string[]>(
+    this.savedFilters?.fields ?? ['name', 'email', 'shift'],
+  );
 
   private readonly FILTER_MAP: Record<string, string[]> = {
     name: ['billing.full_name'],
@@ -200,13 +226,16 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
     let data = this.orders();
 
     if (contactPerson) {
-      data = data.filter((order) =>
-        (order.billing?.billing_invite ?? '').toLowerCase() === contactPerson,
+      data = data.filter(
+        (order) =>
+          (order.billing?.billing_invite ?? '').toLowerCase() === contactPerson,
       );
     }
 
     if (statuses.length) {
-      data = data.filter((order) => statuses.includes(order.status as WcOrderStatus));
+      data = data.filter((order) =>
+        statuses.includes(order.status as WcOrderStatus),
+      );
     }
 
     if (!term || !selected.length) return data;
@@ -228,8 +257,8 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
     return path.split('.').reduce((acc: any, key: string) => acc?.[key], obj);
   }
 
-  contactPersonFilter = signal<string>('');
-  statusFilter = signal<string[]>([]);
+  contactPersonFilter = signal<string>(this.savedFilters?.contactPerson ?? '');
+  statusFilter = signal<string[]>(this.savedFilters?.status ?? []);
   selectedOrders = signal<OrderMin[]>([]);
   contactPersons = signal<string[]>([]);
   loading$ = new BehaviorSubject<boolean>(false);
@@ -240,7 +269,7 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
     value: s,
   }));
 
-  private refreshCollection() {
+  refreshCollection() {
     this.loading$.next(true);
 
     // API Calls
@@ -384,7 +413,7 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
     const formattedDate = order?.date_created
       ? this.humanReadableDatePipe.transform(order.date_created)
       : '';
-    this.dialogService.open(OrderEditComponent, {
+    this.ref = this.dialogService.open(OrderEditComponent, {
       header: `Anmeldung #${order?.id} vom ${formattedDate}`,
       width: '50rem',
       contentStyle: { overflow: 'auto' },
@@ -393,5 +422,8 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
       closable: true,
       modal: true,
     });
+    this.ref.onClose
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((saved) => { if (saved) this.refreshCollection(); });
   }
 }

@@ -28,7 +28,7 @@ import { TableModule } from 'primeng/table';
 import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { SkeletonModule } from 'primeng/skeleton';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -83,6 +83,7 @@ export class OrderEditComponent implements OnInit, OnDestroy {
   private readonly storeApi = inject(WcStoreAPI);
   private readonly authService = inject(AuthService);
   private readonly config = inject(DynamicDialogConfig);
+  private readonly ref = inject(DynamicDialogRef, { optional: true });
   private readonly errorService = inject(ErrorDialogService);
   private readonly destroy$ = new Subject<void>();
 
@@ -261,6 +262,7 @@ export class OrderEditComponent implements OnInit, OnDestroy {
         this.order.set(updatedOrder);
         this.saving.set(false);
         this.editMode.set(false);
+        this.ref?.close(true);
       });
   }
 
