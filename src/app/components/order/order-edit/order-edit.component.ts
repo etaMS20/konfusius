@@ -11,7 +11,11 @@ import { catchError, Subject, takeUntil, throwError } from 'rxjs';
 import { WC_ORDER_STATUSES, WcOrder } from '@models/order.model';
 import { WcV3Service } from '@services/api/wc-v3.service';
 import { WcStoreAPI } from '@services/api/wc-store-api.service';
-import { WcProduct, WcProductTypes, WcProductVariationDetails } from '@models/product.model';
+import {
+  WcProduct,
+  WcProductTypes,
+  WcProductVariationDetails,
+} from '@models/product.model';
 import { crossSaleProductCat } from '@models/cross-sale.model';
 import { AuthService } from '@services/auth.service';
 import { ErrorDialogService } from '@shared/errors/error-dialog.service';
@@ -89,7 +93,10 @@ export class OrderEditComponent implements OnInit, OnDestroy {
   vmLineItems = signal<VmLineItem[]>([]);
 
   vmTotal = computed(() =>
-    this.vmLineItems().reduce((sum, item) => sum + item.quantity * item.price, 0),
+    this.vmLineItems().reduce(
+      (sum, item) => sum + item.quantity * item.price,
+      0,
+    ),
   );
 
   // --- Order state ---
@@ -110,7 +117,9 @@ export class OrderEditComponent implements OnInit, OnDestroy {
   selectedVariationId: number | null = null;
 
   currentPickerProducts = computed(() =>
-    this.showAddItem() === 'shift' ? this.shiftProducts() : this.ticketProducts(),
+    this.showAddItem() === 'shift'
+      ? this.shiftProducts()
+      : this.ticketProducts(),
   );
 
   isPickerLoading = computed(() => {
@@ -136,7 +145,9 @@ export class OrderEditComponent implements OnInit, OnDestroy {
   });
 
   hasShift = computed(() =>
-    this.vmLineItems().some((i) => this.shiftProducts().some((p) => p.id === i.product_id))
+    this.vmLineItems().some((i) =>
+      this.shiftProducts().some((p) => p.id === i.product_id),
+    ),
   );
 
   hasTicket = computed(() => {
@@ -279,7 +290,9 @@ export class OrderEditComponent implements OnInit, OnDestroy {
     const productId = this.selectedProductId();
     if (!productId) return;
 
-    const product = this.currentPickerProducts().find((p) => p.id === productId);
+    const product = this.currentPickerProducts().find(
+      (p) => p.id === productId,
+    );
     if (!product) return;
     if (this.selectedProductIsVariable() && !this.selectedVariationId) return;
 
@@ -323,11 +336,14 @@ export class OrderEditComponent implements OnInit, OnDestroy {
   }
 
   private loadProducts(type: 'shift' | 'ticket'): void {
-    const already = type === 'shift' ? this.shiftProducts() : this.ticketProducts();
+    const already =
+      type === 'shift' ? this.shiftProducts() : this.ticketProducts();
     if (already.length) return;
 
     const category =
-      type === 'shift' ? this.authService.productCategory : [crossSaleProductCat];
+      type === 'shift'
+        ? this.authService.productCategory
+        : [crossSaleProductCat];
 
     this.storeApi
       .listProducts(category, 'title', 'asc', 100)
