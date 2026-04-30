@@ -155,20 +155,36 @@
         <td colspan="2">
           @if (!showAddItem()) {
             <div style="display: flex; gap: 0.25rem; flex-wrap: wrap;">
-              <p-button
-                icon="pi pi-plus"
-                [text]="true"
-                size="small"
-                label="Schicht hinzufügen"
-                (onClick)="openPicker('shift')"
-              />
-              <p-button
-                icon="pi pi-plus"
-                [text]="true"
-                size="small"
-                label="Ticket hinzufügen"
-                (onClick)="openPicker('ticket')"
-              />
+              <span
+                pTooltip="Schicht bereits vorhanden"
+                [tooltipDisabled]="!hasShift()"
+                style="display: inline-block"
+              >
+                <p-button
+                  icon="pi pi-plus"
+                  [text]="true"
+                  size="small"
+                  label="Schicht hinzufügen"
+                  [disabled]="hasShift()"
+                  [severity]="hasShift() ? 'secondary' : undefined"
+                  (onClick)="openPicker('shift')"
+                />
+              </span>
+              <span
+                pTooltip="Ticket bereits vorhanden"
+                [tooltipDisabled]="!hasTicket()"
+                style="display: inline-block"
+              >
+                <p-button
+                  icon="pi pi-plus"
+                  [text]="true"
+                  size="small"
+                  label="Ticket hinzufügen"
+                  [disabled]="hasTicket()"
+                  [severity]="hasTicket() ? 'secondary' : undefined"
+                  (onClick)="openPicker('ticket')"
+                />
+              </span>
             </div>
           } @else {
             <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">

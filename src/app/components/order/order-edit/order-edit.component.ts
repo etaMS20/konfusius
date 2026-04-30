@@ -28,6 +28,7 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToolbarModule } from 'primeng/toolbar';
+import { TooltipModule } from 'primeng/tooltip';
 import { Billing } from '@models/customer.model';
 
 const STATUS_SEVERITY: Record<
@@ -68,6 +69,7 @@ interface VmLineItem {
     InputGroupModule,
     InputTextModule,
     ToolbarModule,
+    TooltipModule,
   ],
   templateUrl: './order-edit.component.html',
   styleUrl: './order-edit.component.scss',
@@ -131,6 +133,16 @@ export class OrderEditComponent implements OnInit, OnDestroy {
     if (!this.selectedProductId()) return false;
     if (this.selectedProductIsVariable()) return !!this.selectedVariationId;
     return true;
+  });
+
+  hasShift = computed(() => {
+    const shiftIds = new Set(this.shiftProducts().map((p) => p.id));
+    return this.vmLineItems().some((i) => shiftIds.has(i.product_id));
+  });
+
+  hasTicket = computed(() => {
+    const ticketIds = new Set(this.ticketProducts().map((p) => p.id));
+    return this.vmLineItems().some((i) => ticketIds.has(i.product_id));
   });
 
   statusOptions = [...WC_ORDER_STATUSES].map((status) => ({
