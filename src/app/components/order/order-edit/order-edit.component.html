@@ -15,14 +15,14 @@
   <p-divider />
 
   <table class="info-table">
-    <!-- Order info -->
+    <!-- Status -->
     <tr>
       <td>Status</td>
       <td>
         @if (editMode()) {
           <p-select
             [options]="statusOptions"
-            [(ngModel)]="vmEdit.status"
+            [(ngModel)]="vmStatus"
             optionLabel="label"
             optionValue="value"
             appendTo="body"
@@ -39,11 +39,7 @@
       <td>Vorname</td>
       <td>
         @if (editMode()) {
-          <input
-            pInputText
-            [(ngModel)]="vmEdit.billing.first_name"
-            pSize="small"
-          />
+          <input pInputText [(ngModel)]="vmBilling.first_name" pSize="small" />
         } @else {
           {{ o.billing.first_name }}
         }
@@ -53,11 +49,7 @@
       <td>Nachname</td>
       <td>
         @if (editMode()) {
-          <input
-            pInputText
-            [(ngModel)]="vmEdit.billing.last_name"
-            pSize="small"
-          />
+          <input pInputText [(ngModel)]="vmBilling.last_name" pSize="small" />
         } @else {
           {{ o.billing.last_name }}
         }
@@ -67,11 +59,7 @@
       <td>Adresse</td>
       <td>
         @if (editMode()) {
-          <input
-            pInputText
-            [(ngModel)]="vmEdit.billing.address_1"
-            pSize="small"
-          />
+          <input pInputText [(ngModel)]="vmBilling.address_1" pSize="small" />
         } @else {
           {{ o.billing.address_1 }}
         }
@@ -81,7 +69,7 @@
       <td>Stadt</td>
       <td>
         @if (editMode()) {
-          <input pInputText [(ngModel)]="vmEdit.billing.city" pSize="small" />
+          <input pInputText [(ngModel)]="vmBilling.city" pSize="small" />
         } @else {
           {{ o.billing.city }}
         }
@@ -91,11 +79,7 @@
       <td>PLZ</td>
       <td>
         @if (editMode()) {
-          <input
-            pInputText
-            [(ngModel)]="vmEdit.billing.postcode"
-            pSize="small"
-          />
+          <input pInputText [(ngModel)]="vmBilling.postcode" pSize="small" />
         } @else {
           {{ o.billing.postcode }}
         }
@@ -105,11 +89,7 @@
       <td>Land</td>
       <td>
         @if (editMode()) {
-          <input
-            pInputText
-            [(ngModel)]="vmEdit.billing.country"
-            pSize="small"
-          />
+          <input pInputText [(ngModel)]="vmBilling.country" pSize="small" />
         } @else {
           {{ o.billing.country }}
         }
@@ -119,7 +99,7 @@
       <td>E-Mail</td>
       <td>
         @if (editMode()) {
-          <input pInputText [(ngModel)]="vmEdit.billing.email" pSize="small" />
+          <input pInputText [(ngModel)]="vmBilling.email" pSize="small" />
         } @else {
           {{ o.billing.email }}
         }
@@ -127,9 +107,7 @@
     </tr>
     <tr>
       <td>Kommentar</td>
-      <td>
-        {{ o.customer_note }}
-      </td>
+      <td>{{ o.customer_note }}</td>
     </tr>
 
     <tr>
@@ -137,35 +115,128 @@
     </tr>
 
     <!-- Line items -->
-    @for (item of o.line_items; track item.id) {
-      <tr>
-        <td>{{ item.name }}</td>
-        <td class="col-right">
-          {{ item.quantity }}x &nbsp;
-          {{ (item.quantity * item.price).toFixed(2) }}{{ o.currency_symbol }}
-          @if (editMode()) {
+    @if (editMode()) {
+      @for (item of vmLineItems(); track $index) {
+        <tr>
+          <td>
+            {{ item.name }}
+            @if (item.isNew) {
+              <small style="opacity: 0.5">&nbsp;(neu)</small>
+            }
+          </td>
+          <td class="col-right">
+            {{ item.quantity }}x &nbsp;
+            {{ (item.quantity * item.price).toFixed(2) }}{{ o.currency_symbol }}
             <p-button
               icon="pi pi-trash"
               [text]="true"
               size="small"
               severity="danger"
-              (onClick)="removeLineItem(item.id)"
+              (onClick)="removeLineItem($index)"
             />
-          }
-        </td>
-      </tr>
+          </td>
+        </tr>
+      }
+    } @else {
+      @for (item of o.line_items; track item.id) {
+        <tr>
+          <td>{{ item.name }}</td>
+          <td class="col-right">
+            {{ item.quantity }}x &nbsp;
+            {{ (item.quantity * item.price).toFixed(2) }}{{ o.currency_symbol }}
+          </td>
+        </tr>
+      }
     }
 
+    <!-- Add buttons / picker (edit mode only) -->
     @if (editMode()) {
       <tr>
         <td colspan="2">
-          <p-button
-            icon="pi pi-plus"
-            [text]="true"
-            size="small"
-            label="Artikel hinzufügen"
-            (onClick)="addLineItem()"
-          />
+          @if (!showAddItem()) {
+            <div style="display: flex; gap: 0.25rem; flex-wrap: wrap">
+              <span
+                pTooltip="Schicht bereits vorhanden"
+                [tooltipDisabled]="!hasShift()"
+                style="display: inline-block"
+              >
+                <p-button
+                  icon="pi pi-plus"
+                  [text]="true"
+                  size="small"
+                  label="Schicht hinzufügen"
+                  [disabled]="hasShift()"
+                  [severity]="hasShift() ? 'secondary' : undefined"
+                  (onClick)="openPicker('shift')"
+                />
+              </span>
+              <span
+                pTooltip="Ticket bereits vorhanden"
+                [tooltipDisabled]="!hasTicket()"
+                style="display: inline-block"
+              >
+                <p-button
+                  icon="pi pi-plus"
+                  [text]="true"
+                  size="small"
+                  label="Ticket hinzufügen"
+                  [disabled]="hasTicket()"
+                  [severity]="hasTicket() ? 'secondary' : undefined"
+                  (onClick)="openPicker('ticket')"
+                />
+              </span>
+            </div>
+          } @else {
+            <div
+              style="
+                display: flex;
+                gap: 0.5rem;
+                align-items: center;
+                flex-wrap: wrap;
+              "
+            >
+              <p-select
+                [ngModel]="selectedProductId()"
+                (ngModelChange)="onProductSelected($event)"
+                [options]="currentPickerProducts()"
+                optionLabel="name"
+                optionValue="id"
+                [placeholder]="
+                  showAddItem() === 'shift'
+                    ? 'Schicht auswählen'
+                    : 'Ticket auswählen'
+                "
+                [loading]="isPickerLoading()"
+                appendTo="body"
+                size="small"
+              />
+              @if (selectedProductIsVariable()) {
+                <p-select
+                  [(ngModel)]="selectedVariationId"
+                  [options]="variations()"
+                  optionLabel="name"
+                  optionValue="id"
+                  placeholder="Variante auswählen"
+                  [loading]="loadingVariations()"
+                  appendTo="body"
+                  size="small"
+                />
+              }
+              <p-button
+                icon="pi pi-check"
+                size="small"
+                [disabled]="!canConfirmAdd()"
+                (onClick)="confirmAddLineItem()"
+              />
+              <p-button
+                icon="pi pi-times"
+                [text]="true"
+                severity="secondary"
+                size="small"
+                (onClick)="resetPicker()"
+              />
+            </div>
+          }
         </td>
       </tr>
     }
@@ -173,13 +244,30 @@
     <!-- Total -->
     <tr class="total-row">
       <td>Kostenbeitrag</td>
-      <td class="col-right">{{ o.total }}{{ o.currency_symbol }}</td>
+      <td class="col-right">
+        @if (editMode()) {
+          {{ vmTotal().toFixed(2) }}{{ o.currency_symbol }}
+        } @else {
+          {{ o.total }}{{ o.currency_symbol }}
+        }
+      </td>
     </tr>
   </table>
 
   <p-divider />
 
   <p-toolbar>
+    <ng-template #start>
+      @if (editMode()) {
+        <p-button
+          icon="pi pi-check"
+          label="Speichern"
+          [loading]="saving()"
+          (onClick)="saveChanges()"
+          size="small"
+        />
+      }
+    </ng-template>
     <ng-template #end>
       @if (editMode()) {
         <p-button
@@ -187,7 +275,7 @@
           [text]="true"
           severity="secondary"
           label="Abbrechen"
-          (onClick)="editMode.set(false)"
+          (onClick)="cancelEditMode()"
           size="small"
         />
       } @else {
@@ -196,18 +284,7 @@
           [text]="true"
           severity="secondary"
           label="Bearbeiten"
-          (onClick)="editMode.set(true)"
-          size="small"
-        />
-      }
-    </ng-template>
-    <ng-template #start>
-      @if (editMode()) {
-        <p-button
-          icon="pi pi-check"
-          label="Speichern"
-          [loading]="saving()"
-          (onClick)="saveChanges()"
+          (onClick)="enterEditMode()"
           size="small"
         />
       }

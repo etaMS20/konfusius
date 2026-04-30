@@ -28,6 +28,21 @@
           pTooltip="Festivaljahre"
           [style]="{ 'min-width': '150px' }"
         />
+        <p-divider layout="vertical"></p-divider>
+        <p-button
+          icon="pi pi-filter-slash"
+          severity="secondary"
+          pTooltip="Alle Filter zurücksetzen"
+          tooltipPosition="bottom"
+          (click)="resetFilters()"
+        ></p-button>
+        <p-button
+          icon="pi pi-refresh"
+          severity="secondary"
+          pTooltip="Liste neu laden"
+          tooltipPosition="bottom"
+          (click)="refreshRequest.emit()"
+        ></p-button>
       </div>
     </ng-template>
 
@@ -37,12 +52,27 @@
       <div class="toolbar-row">
         <p-select
           [options]="contactPersonOptions()"
-          (onChange)="tableRef().filterGlobal($event.value, 'contains')"
+          [ngModel]="contactPersonFilter()"
+          (ngModelChange)="contactPersonFilter.set($event ?? '')"
           [showClear]="true"
           placeholder="Kontaktperson Filter"
           panelStyleClass="slim-select-panel"
           [style]="{ 'min-width': '200px' }"
         ></p-select>
+        <p-multiSelect
+          [options]="statusOptions()"
+          [ngModel]="statusFilter()"
+          (ngModelChange)="statusFilter.set($event ?? [])"
+          placeholder="Status Filter"
+          optionLabel="label"
+          optionValue="value"
+          [filter]="false"
+          [showToggleAll]="false"
+          [showClear]="true"
+          display="chip"
+          variant="filled"
+          [style]="{ 'min-width': '180px' }"
+        />
         <p-divider layout="vertical"></p-divider>
         <p-inputGroup>
           <p-inputgroup-addon>

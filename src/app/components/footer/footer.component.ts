@@ -11,4 +11,5 @@ import { APP_VERSION, EMAIL } from '@config/http.config';
 export class FooterComponent {
   appVersion = APP_VERSION;
   email = EMAIL;
+  currentYear = new Date().getFullYear();
 }

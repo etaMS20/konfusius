@@ -61,10 +61,14 @@
   <kf-shift-manager-toolbar
     [(selectedFilters)]="selectedFields"
     [(keywordFilter)]="keywordFilter"
+    [(contactPersonFilter)]="contactPersonFilter"
+    [(statusFilter)]="statusFilter"
+    [statusOptions]="statuses"
     [selectedYears]="scopeYears()"
     [actionsDisabled]="selectedOrders().length === 0"
     (scopeYearChange)="onScopeYearChange($event)"
     (orderStatusChange)="onToolbarStatusChange($event)"
+    (refreshRequest)="refreshCollection()"
     [tableRef]="dt"
     [contactPersonOptions]="contactPersons()"
   ></kf-shift-manager-toolbar>
@@ -83,7 +87,6 @@
       [(selection)]="selectedOrders"
       [loading]="loading$ | async"
       (onPage)="onPageChange($event)"
-      [globalFilterFields]="['billing.billing_invite']"
       selectionMode="multiple"
       [metaKeySelection]="false"
       (keydown.escape)="selectedOrders.set([])"
@@ -96,37 +99,7 @@
             </th>
           }
 
-          <th pSortableColumn="status" class="status-cell">
-            <p-sortIcon field="status" />
-            <p-columnFilter
-              field="status"
-              matchMode="in"
-              display="menu"
-              [showMatchModes]="false"
-              [showOperator]="false"
-              [showAddButton]="false"
-              [hideOnClear]="true"
-            >
-              <ng-template #filter let-value let-filter="filterCallback">
-                <p-multiSelect
-                  #select
-                  [ngModel]="value"
-                  [options]="statuses"
-                  placeholder="Status Filter"
-                  (onChange)="filter($event.value); select.hide()"
-                  (onClear)="filter.hide()"
-                  optionLabel="label"
-                  optionValue="value"
-                  [filter]="false"
-                  [showToggleAll]="false"
-                  display="chip"
-                  variant="filled"
-                  [style.width]="'100%'"
-                >
-                </p-multiSelect>
-              </ng-template>
-            </p-columnFilter>
-          </th>
+          <th pSortableColumn="status">Status<p-sortIcon field="status" /></th>
           <th pSortableColumn="billing.full_name">
             Name<p-sortIcon field="billing.full_name" />
           </th>

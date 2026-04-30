@@ -40,6 +40,7 @@ export class ShiftManagerToolbarComponent {
   nameFilterTypeChange = output<string[]>();
   scopeYearChange = output<string[]>();
   orderStatusChange = output<WcOrderStatus>();
+  refreshRequest = output<void>();
 
   nameFilterOptions = [
     {
@@ -56,6 +57,9 @@ export class ShiftManagerToolbarComponent {
   ];
 
   contactPersonOptions = input.required<string[]>();
+  contactPersonFilter = model<string>('');
+  statusFilter = model<string[]>([]);
+  statusOptions = input.required<{ label: string; value: string }[]>();
 
   yearOptions = ['2025', '2026', '2027'];
 
@@ -104,5 +108,13 @@ export class ShiftManagerToolbarComponent {
 
   onScopeYearChange(years: string[]) {
     this.scopeYearChange.emit(years);
+  }
+
+  resetFilters() {
+    this.keywordFilter.set('');
+    this.selectedFilters.set(['name', 'email', 'shift']);
+    this.contactPersonFilter.set('');
+    this.statusFilter.set([]);
+    this.scopeYearChange.emit(['2026']);
   }
 }
