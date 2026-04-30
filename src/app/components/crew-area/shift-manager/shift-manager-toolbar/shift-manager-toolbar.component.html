@@ -28,6 +28,14 @@
           pTooltip="Festivaljahre"
           [style]="{ 'min-width': '150px' }"
         />
+        <p-divider layout="vertical"></p-divider>
+        <p-button
+          icon="pi pi-filter-slash"
+          severity="secondary"
+          pTooltip="Alle Filter zurücksetzen"
+          tooltipPosition="bottom"
+          (click)="resetFilters()"
+        ></p-button>
         <p-button
           icon="pi pi-refresh"
           severity="secondary"

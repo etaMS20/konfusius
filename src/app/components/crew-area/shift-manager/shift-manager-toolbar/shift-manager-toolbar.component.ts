@@ -109,4 +109,12 @@ export class ShiftManagerToolbarComponent {
   onScopeYearChange(years: string[]) {
     this.scopeYearChange.emit(years);
   }
+
+  resetFilters() {
+    this.keywordFilter.set('');
+    this.selectedFilters.set(['name', 'email', 'shift']);
+    this.contactPersonFilter.set('');
+    this.statusFilter.set([]);
+    this.scopeYearChange.emit(['2026']);
+  }
 }
