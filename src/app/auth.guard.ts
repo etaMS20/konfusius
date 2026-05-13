@@ -6,6 +6,7 @@ import {
   Router,
 } from '@angular/router';
 import { AuthService } from '@services/auth.service';
+import { TICKETS_ON } from '@config/http.config';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +21,12 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): boolean {
+    const ticketRoutes = ['tickets', 'checkout'];
+    if (ticketRoutes.includes(route.routeConfig?.path ?? '') && !TICKETS_ON) {
+      this.router.navigate(['/']);
+      return false;
+    }
+
     if (this.authService.isAuthenticatedBase()) {
       if (route.routeConfig?.path === 'crew-area') {
         if (this.authService.isAuthenticatedCrew()) {

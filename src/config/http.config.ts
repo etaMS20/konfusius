@@ -10,9 +10,11 @@ export const SALT = environment.salt;
 export const WP_USER = environment.wp_user;
 export const WP_SECRET = environment.wp_secret;
 export const APP_VERSION = environment.app_version;
-export const TICKETS_ON = true;
+
+// TODO: the following should be set in backend and fetched on app init
+export const TICKETS_ON = false;
 export const EMAIL = 'festival@konfusius.org';
-export const FESTIVAL_START = new Date(2026, 4, 15); // this should be set in backend
+export const FESTIVAL_START = new Date(2026, 4, 15);
 
 export const envLoaded = () => {
   return [
