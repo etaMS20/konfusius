@@ -69,6 +69,8 @@
     (scopeYearChange)="onScopeYearChange($event)"
     (orderStatusChange)="onToolbarStatusChange($event)"
     (refreshRequest)="refreshCollection()"
+    (exportPdfRequest)="exportToPDF()"
+    (exportExcelRequest)="exportToExcel()"
     [tableRef]="dt"
     [contactPersonOptions]="contactPersons()"
   ></kf-shift-manager-toolbar>
