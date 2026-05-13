@@ -50,6 +50,11 @@ import { findCrossItem, findMainItem } from '@utils/oder.utils';
 import { HintComponent } from '@shared/hint/hint.component';
 import { OrderEditComponent } from '@components/order/order-edit/order-edit.component';
 import { HumanReadableDatePipe } from '@pipes/datetime.pipe';
+// PDF & Excel export
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'kf-shift-manager',
@@ -425,5 +430,79 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
     this.ref.onClose
       .pipe(takeUntil(this.destroy$))
       .subscribe((saved) => { if (saved) this.refreshCollection(); });
+  }
+
+  /** Export methods */
+  private getExportData() {
+    return this.filteredOrders().map((order) => ({
+      ID: order.id,
+      Status: order.status,
+      Name: order.billing?.full_name ?? '',
+      'E-Mail': order.billing?.email ?? '',
+      Schicht: order.main_item_name ?? '',
+      Ticket: order.cross_item_name ?? '',
+      Kontaktperson: order.billing?.billing_invite ?? '',
+      'UKB (EUR)': order.total,
+      Datum: order.date_created,
+    }));
+  }
+
+  private getExportFilename(): string {
+    const years = this.scopeYears().join('-');
+    const date = new Date().toISOString().split('T')[0];
+    return `anmeldungen_${years}_${date}`;
+  }
+
+  exportToPDF() {
+    const pdf = new jsPDF();
+    const data = this.getExportData();
+    const filename = this.getExportFilename();
+
+    const headers = Object.keys(data[0] || {});
+    const rows = data.map((row) => Object.values(row));
+
+    // Add title
+    pdf.setFontSize(16);
+    pdf.text(`Anmeldungen Export - ${this.scopeYears().join(', ')}`, 14, 15);
+    pdf.setFontSize(10);
+    pdf.text(`Generiert am: ${new Date().toLocaleDateString('de-DE')}`, 14, 22);
+    pdf.text(`Anzahl: ${data.length}`, 14, 28);
+
+    autoTable(pdf, {
+      head: [headers],
+      body: rows,
+      startY: 35,
+      styles: { fontSize: 8 },
+      headStyles: { fillColor: [66, 66, 66] },
+    });
+
+    pdf.save(`${filename}.pdf`);
+  }
+
+  exportToExcel() {
+    const data = this.getExportData();
+    const filename = this.getExportFilename();
+
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Anmeldungen');
+
+    // Auto-size columns
+    const columnWidths = Object.keys(data[0] || {}).map((key) => ({
+      wch: Math.max(
+        key.length,
+        ...data.map((row) => String(row[key as keyof typeof row]).length),
+      ),
+    }));
+    worksheet['!cols'] = columnWidths;
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: 'xlsx',
+      type: 'array',
+    });
+    const blob = new Blob([excelBuffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
+    saveAs(blob, `${filename}.xlsx`);
   }
 }

@@ -43,6 +43,21 @@
           tooltipPosition="bottom"
           (click)="refreshRequest.emit()"
         ></p-button>
+        <p-divider layout="vertical"></p-divider>
+        <p-button
+          icon="pi pi-file-pdf"
+          severity="secondary"
+          pTooltip="Als PDF herunterladen"
+          tooltipPosition="bottom"
+          (click)="exportPdfRequest.emit()"
+        ></p-button>
+        <p-button
+          icon="pi pi-file-excel"
+          severity="secondary"
+          pTooltip="Als Excel herunterladen"
+          tooltipPosition="bottom"
+          (click)="exportExcelRequest.emit()"
+        ></p-button>
       </div>
     </ng-template>
 

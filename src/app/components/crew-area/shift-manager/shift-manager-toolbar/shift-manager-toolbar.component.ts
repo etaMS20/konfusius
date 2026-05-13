@@ -41,6 +41,8 @@ export class ShiftManagerToolbarComponent {
   scopeYearChange = output<string[]>();
   orderStatusChange = output<WcOrderStatus>();
   refreshRequest = output<void>();
+  exportPdfRequest = output<void>();
+  exportExcelRequest = output<void>();
 
   nameFilterOptions = [
     {
