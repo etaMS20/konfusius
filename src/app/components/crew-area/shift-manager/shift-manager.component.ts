@@ -427,24 +427,29 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
       closable: true,
       modal: true,
     });
-    this.ref.onClose
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((saved) => { if (saved) this.refreshCollection(); });
+    this.ref.onClose.pipe(takeUntil(this.destroy$)).subscribe((saved) => {
+      if (saved) this.refreshCollection();
+    });
   }
 
   /** Export methods */
   private getExportData() {
-    return this.filteredOrders().map((order) => ({
-      ID: order.id,
-      Status: order.status,
-      Name: order.billing?.full_name ?? '',
-      'E-Mail': order.billing?.email ?? '',
-      Schicht: order.main_item_name ?? '',
-      Ticket: order.cross_item_name ?? '',
-      Kontaktperson: order.billing?.billing_invite ?? '',
-      'UKB (EUR)': order.total,
-      Datum: order.date_created,
-    }));
+    return this.filteredOrders()
+      .slice()
+      .sort((a, b) =>
+        (a.main_item_name ?? '').localeCompare(b.main_item_name ?? ''),
+      )
+      .map((order) => ({
+        // ID: order.id,
+        Status: order.status,
+        Name: order.billing?.full_name ?? '',
+        'E-Mail': order.billing?.email ?? '',
+        Schicht: order.main_item_name ?? '',
+        Ticket: order.cross_item_name ?? '',
+        Kontaktperson: order.billing?.billing_invite ?? '',
+        'UKB (EUR)': order.total,
+        // Datum: order.date_created,
+      }));
   }
 
   private getExportFilename(): string {
@@ -454,7 +459,7 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
   }
 
   exportToPDF() {
-    const pdf = new jsPDF();
+    const pdf = new jsPDF({ orientation: 'landscape' });
     const data = this.getExportData();
     const filename = this.getExportFilename();
 
@@ -462,18 +467,23 @@ export class ShiftManagerComponent implements OnInit, OnDestroy {
     const rows = data.map((row) => Object.values(row));
 
     // Add title
-    pdf.setFontSize(16);
-    pdf.text(`Anmeldungen Export - ${this.scopeYears().join(', ')}`, 14, 15);
-    pdf.setFontSize(10);
-    pdf.text(`Generiert am: ${new Date().toLocaleDateString('de-DE')}`, 14, 22);
-    pdf.text(`Anzahl: ${data.length}`, 14, 28);
+    pdf.setFontSize(14);
+    pdf.text(`Anmeldungen Export - ${this.scopeYears().join(', ')}`, 5, 8);
+    pdf.setFontSize(9);
+    pdf.text(
+      `Generiert am: ${new Date().toLocaleDateString('de-DE')} | Anzahl: ${data.length}`,
+      5,
+      13,
+    );
 
     autoTable(pdf, {
       head: [headers],
       body: rows,
-      startY: 35,
-      styles: { fontSize: 8 },
+      startY: 16,
+      margin: { left: 8, right: 8 },
+      styles: { fontSize: 8, cellPadding: 1 },
       headStyles: { fillColor: [66, 66, 66] },
+      tableWidth: 'auto',
     });
 
     pdf.save(`${filename}.pdf`);
